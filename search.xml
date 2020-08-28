@@ -1,6 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CCNP交换综合实验一</title>
+    <url>/2020/08/28/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
+</li>
+<li><p>掌握 DTP 的作用和配置</p>
+</li>
+<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
+</li>
+<li><p>掌握以太通道技术的作用和配置</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="https://yqfile.alicdn.com/087d875957117a8d196f9814e5ab8644ea9c15a4.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
+<ol start="2">
+<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
+</ol>
+<p>&emsp;①网关地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
+<p>&emsp;②各主机通过DHCP获取IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTevJ1.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTmHpt.png"></p>
+<p><img src="https://yqfile.alicdn.com/9a277e2969998c21d86ebd9c962f5696a848b3e2.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTm8Fs.png"></p>
+<ol start="3">
+<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTmLX8.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTmXnS.png"></p>
+<ol start="4">
+<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步</li>
+</ol>
+<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTnfg0.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTnRCn.png"></p>
+<p>&emsp;&emsp;SW2的VLAN信息：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
+<ol start="5">
+<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
+</ol>
+<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
+<ol start="6">
+<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址</li>
+</ol>
+<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
+<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
+<p>FTP_Srv用DHCP获取IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
+<ol start="7">
+<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV</li>
+</ol>
+<p>&emsp;①启用OSPF实现内网全网可达</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuuVg.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTumqS.png"></p>
+<p>&emsp;②实现外网可达</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTu6sK.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTucqO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTu2ZD.png"></p>
+<p>③  配置NAT</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTu7sf.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuHL8.png"></p>
+<p>④  用R1给邻居下发默认路由</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
+<p>⑤  主机可以访问 ISP 上的 Web SRV</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
+<p>【实验中用到的代码】</p>
+<p><strong>VTP：</strong></p>
+<p>vtp mode server———————————————将VTP的模式该为server模式</p>
+<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
+<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
+<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
+<p>当域名与密码相同时才能进行同步</p>
+<p>NAT：</p>
+<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
+<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
+<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
+<p>捆绑链路：</p>
+<p>int range e0/1-2</p>
+<p>switchport truck encapsulation do1q</p>
+<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
+<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
+<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
+<p>下发默认路由：</p>
+<p>router ospf 1</p>
+<p>default-information originate—————————–给邻居下发默认路由</p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2020/08/27/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -70,113 +177,6 @@
       <tags>
         <tag>网络与数据通信</tag>
         <tag>CCNA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP交换综合实验一</title>
-    <url>/2020/08/28/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
-</li>
-<li><p>掌握 DTP 的作用和配置</p>
-</li>
-<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
-</li>
-<li><p>掌握以太通道技术的作用和配置</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="https://yqfile.alicdn.com/087d875957117a8d196f9814e5ab8644ea9c15a4.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建</li>
-</ol>
-<p><img src="https://yqfile.alicdn.com/e98a253b77ab58840e2f13f7a399614d1ff9c811.png"></p>
-<ol start="2">
-<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
-</ol>
-<p>&emsp;①网关地址：</p>
-<p><img src="https://yqfile.alicdn.com/b51bde20a1a507c4b85cefc73c72c88f052458e7.png"></p>
-<p>&emsp;②各主机通过DHCP获取IP地址：</p>
-<p><img src="https://yqfile.alicdn.com/5835a4f3a712344ea25d57a9289be2eea34db7f4.png"></p>
-<p><img src="https://yqfile.alicdn.com/6f9778213c5b94d5730f6e161e65b5bd2b5a9b89.png" alt="6f9778213c5b94d5730f6e161e65b5bd2b5a9b89"></p>
-<p><img src="https://yqfile.alicdn.com/9a277e2969998c21d86ebd9c962f5696a848b3e2.png" alt="9a277e2969998c21d86ebd9c962f5696a848b3e2"></p>
-<p><img src="https://yqfile.alicdn.com/1448333780417503eab98f0f60c888462bf2a3ed.png" alt="1448333780417503eab98f0f60c888462bf2a3ed"></p>
-<ol start="3">
-<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式</li>
-</ol>
-<p><img src="https://yqfile.alicdn.com/976eeddfd37a06aef27335dea0e7fc92840aab18.png" alt="976eeddfd37a06aef27335dea0e7fc92840aab18"></p>
-<p><img src="https://yqfile.alicdn.com/ff1d548738b6ff9e9b85a99a579d138d180c12d2.png" alt="ff1d548738b6ff9e9b85a99a579d138d180c12d2"></p>
-<ol start="4">
-<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步</li>
-</ol>
-<p>&emsp;对SW1和SW2VTP进行设置：</p>
-<p><img src="https://yqfile.alicdn.com/f4141372e2e154ebe3b3e150184f8191c68caaf1.png" alt="f4141372e2e154ebe3b3e150184f8191c68caaf1"></p>
-<p><img src="https://yqfile.alicdn.com/61e93b9780b10fd5b3cc5b44b152d531c271d79c.png" alt="61e93b9780b10fd5b3cc5b44b152d531c271d79c"></p>
-<p>&emsp;SW2的VLAN信息：</p>
-<p><img src="https://yqfile.alicdn.com/40926631cc1ddce7996df1d08fbda7a67af52a5e.png" alt="40926631cc1ddce7996df1d08fbda7a67af52a5e"></p>
-<ol start="5">
-<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
-</ol>
-<p>&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
-<p><img src="https://yqfile.alicdn.com/a8eba95d0b9fbaaef7d69e1a904bc5c4242efb07.png" alt="a8eba95d0b9fbaaef7d69e1a904bc5c4242efb07"></p>
-<ol start="6">
-<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址</li>
-</ol>
-<p>&emsp;在各地址池中排除10-20的IP地址：</p>
-<p><img src="https://yqfile.alicdn.com/01d354c5b70701fee60e88454086e0f14c66dde3.png" alt="01d354c5b70701fee60e88454086e0f14c66dde3"></p>
-<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）</p>
-<p><img src="https://yqfile.alicdn.com/c41d3170a19624cedd8eb821999d7883c572ce9d.png" alt="c41d3170a19624cedd8eb821999d7883c572ce9d"></p>
-<p>FTP_Srv用DHCP获取IP地址：</p>
-<p><img src="https://yqfile.alicdn.com/59372e209da18c4ccd58125876b0d4b474b3b2a9.png" alt="59372e209da18c4ccd58125876b0d4b474b3b2a9"></p>
-<ol start="7">
-<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV</li>
-</ol>
-<p>&emsp;①启用OSPF实现内网全网可达</p>
-<p><img src="https://yqfile.alicdn.com/a9f2ef47bebe6c87999adda21df2c74146e78ffc.png" alt="a9f2ef47bebe6c87999adda21df2c74146e78ffc"></p>
-<p><img src="https://yqfile.alicdn.com/70e25c50886bb22a80643f0506c12890df6d8c3d.png" alt="70e25c50886bb22a80643f0506c12890df6d8c3d"></p>
-<p>&emsp;②实现外网可达</p>
-<p><img src="https://yqfile.alicdn.com/4cb22de925e5fc8a2c07c856495ddd537bcab1bf.png" alt="4cb22de925e5fc8a2c07c856495ddd537bcab1bf"></p>
-<p><img src="https://yqfile.alicdn.com/c8e4888f446471beeda317ae3efc684077911cb0.png" alt="c8e4888f446471beeda317ae3efc684077911cb0"></p>
-<p><img src="https://yqfile.alicdn.com/5550e0bfa4c01b4f0e88632279096636cea2f567.png" alt="5550e0bfa4c01b4f0e88632279096636cea2f567"></p>
-<p>③  配置NAT</p>
-<p><img src="https://yqfile.alicdn.com/467e91e54ca7902aadeafd67b2de54584d7c5694.png" alt="467e91e54ca7902aadeafd67b2de54584d7c5694"></p>
-<p><img src="https://yqfile.alicdn.com/b6140c64e42db10084d1b34ede8d771215f281df.png" alt="b6140c64e42db10084d1b34ede8d771215f281df"></p>
-<p>④  用R1给邻居下发默认路由</p>
-<p><img src="https://yqfile.alicdn.com/164eef71b770f8e70464d44122fb1009c9776924.png" alt="164eef71b770f8e70464d44122fb1009c9776924"></p>
-<p>⑤  主机可以访问 ISP 上的 Web SRV</p>
-<p><img src="https://yqfile.alicdn.com/35f1a2e5071ef1d5ed7ce3dfd95faa56900edc12.png" alt="35f1a2e5071ef1d5ed7ce3dfd95faa56900edc12"></p>
-<p>【实验中用到的代码】</p>
-<p><strong>VTP：</strong></p>
-<p>vtp mode server———————————————将VTP的模式该为server模式</p>
-<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
-<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
-<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
-<p>当域名与密码相同时才能进行同步</p>
-<p>NAT：</p>
-<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
-<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
-<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
-<p>捆绑链路：</p>
-<p>int range e0/1-2</p>
-<p>switchport truck encapsulation do1q</p>
-<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
-<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
-<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
-<p>下发默认路由：</p>
-<p>router ospf 1</p>
-<p>default-information originate—————————–给邻居下发默认路由</p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
       </tags>
   </entry>
 </search>
