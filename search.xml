@@ -30,21 +30,16 @@
 <p>&emsp;①网关地址：</p>
 <p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
 <p>&emsp;②各主机通过DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTevJ1.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTmHpt.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dToBbd.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTm8Fs.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
 <ol start="3">
 <li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
 </ol>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTmLX8.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTmXnS.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
 <ol start="4">
 <li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
 </ol>
 <p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTnfg0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTnRCn.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
 <p>&emsp;&emsp;SW2的VLAN信息：</p>
 <p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
 <ol start="5">
