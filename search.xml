@@ -60,15 +60,11 @@
 <li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
 </ol>
 <p>&emsp;①启用OSPF实现内网全网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuuVg.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTumqS.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
 <p>&emsp;②实现外网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu6sK.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTucqO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu2ZD.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
 <p>③  配置NAT：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu7sf.png"></p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuHL8.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
 <p>④  用R1给邻居下发默认路由：</p>
 <p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
 <p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
