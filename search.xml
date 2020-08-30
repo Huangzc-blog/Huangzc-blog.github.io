@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/08/27/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>CCNP交换综合实验一</title>
     <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
@@ -118,33 +99,53 @@
       </tags>
   </entry>
   <entry>
-    <title>安恒杯四月月赛——Writeup</title>
+    <title>Hello World</title>
+    <url>/2019/01/01/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>安恒杯四月月赛misc——Writeup</title>
     <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
-    <content><![CDATA[<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。</p>
-<p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/0.png" alt="0"></p>
+    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
+<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
 <h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
-<p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/01.png" alt="01"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
 <p>​        将what_you_want.7z导出，发现需要密码。</p>
-<p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/02.png" alt="img"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
 <p>​        根据文件名的提示找到pin，解压获得flag。</p>
-<p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/03.png" alt="img"></p>
-<p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/04.png" alt="img"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
 <h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
 <p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
 <p>​        首先获取该内存的配置文件</p>
-<p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427210719184.png" alt="image-20200427210719184"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
 <p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
-<p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427210945347.png" alt="image-20200427210945347"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
 <p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
-<p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427211428474.png" alt="image-20200427211428474"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
 <p>​        将其导出</p>
-<p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427211652371.png" alt="image-20200427211652371"></p>
-<p>​        将文件打开后，发现密文，根据提示确定是qwe密码（比赛时，不知道为啥没想到）。</p>
-<p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427211730698.png" alt="image-20200427211730698"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
+<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
 <p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
-<p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427212050399.png" alt="image-20200427212050399"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
 <p>​        用winhex打开即可找到flag。</p>
-<p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427212259580.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
 ]]></content>
       <categories>
         <category>Writeup</category>

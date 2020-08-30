@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Huangzc&#39;s blog</title>
-  
+  <icon>https://huangzc.site/icon.png</icon>
   <subtitle>生于忧患,死于安乐</subtitle>
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2020-08-26T13:39:05.087Z</updated>
+  <updated>2020-08-30T11:52:28.430Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -17,36 +17,15 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="https://huangzc.site/2020/08/27/hello-world/"/>
-    <id>https://huangzc.site/2020/08/27/hello-world/</id>
-    <published>2020-08-27T01:41:51.004Z</published>
-    <updated>2020-08-26T13:39:05.087Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><a id="more"></a><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</summary>
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>安恒杯四月月赛——Writeup</title>
+    <title>安恒杯四月月赛misc——Writeup</title>
     <link href="https://huangzc.site/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/"/>
     <id>https://huangzc.site/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</id>
     <published>2020-04-27T07:46:02.000Z</published>
-    <updated>2020-08-29T07:55:47.694Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。</p><p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/0.png" alt="0"></p><h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p><p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/01.png" alt="01"></p><p>​        将what_you_want.7z导出，发现需要密码。</p><p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/02.png" alt="img"></p><p>​        根据文件名的提示找到pin，解压获得flag。</p><p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/03.png" alt="img"></p><p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/04.png" alt="img"></p><h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p><p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p><p>​        首先获取该内存的配置文件</p><p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427210719184.png" alt="image-20200427210719184"></p><p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p><p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427210945347.png" alt="image-20200427210945347"></p><p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p><p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427211428474.png" alt="image-20200427211428474"></p><p>​        将其导出</p><p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427211652371.png" alt="image-20200427211652371"></p><p>​        将文件打开后，发现密文，根据提示确定是qwe密码（比赛时，不知道为啥没想到）。</p><p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427211730698.png" alt="image-20200427211730698"></p><p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p><p><img src="/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427212050399.png" alt="image-20200427212050399"></p><p>​        用winhex打开即可找到flag。</p><p><img src="%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup.assets/image-20200427212259580.png"></p>]]></content>
+    <updated>2020-08-30T11:52:28.430Z</updated>
     
     
-      
-      
-    <summary type="html">&lt;h3 id=&quot;1-6G还远吗？&quot;&gt;&lt;a href=&quot;#1-6G还远吗？&quot; class=&quot;headerlink&quot; title=&quot;1.6G还远吗？&quot;&gt;&lt;/a&gt;1.6G还远吗？&lt;/h3&gt;&lt;p&gt;​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。&lt;/</summary>
-      
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;内存取证还是蛮有意思的呀！&lt;/p&gt;
+&lt;h3 id=&quot;1-6G还远吗？&quot;&gt;&lt;a href=&quot;#1-6G还远吗？&quot; class=&quot;headerlink&quot; title=&quot;1.6G还远吗？&quot;&gt;&lt;/a&gt;1.6G还远吗？&lt;/h3&gt;&lt;p&gt;​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。</summary>
     
     
     
@@ -65,8 +44,6 @@
     <id>https://huangzc.site/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</id>
     <published>2019-02-18T06:58:23.000Z</published>
     <updated>2020-08-29T07:35:32.942Z</updated>
-    
-    <content type="html"><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p><a id="more"></a><p>【实验目的】</p><ol><li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p></li><li><p>掌握 DTP 的作用和配置</p></li><li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p></li><li><p>掌握以太通道技术的作用和配置</p></li></ol><p>【实验拓扑】</p><p><img src="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p><p>【实验需求】</p><ol><li>参考图示，完成物理拓扑的搭建。</li></ol><p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p><ol start="2"><li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li></ol><p>&emsp;①网关地址：</p><p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p><p>&emsp;②各主机通过DHCP获取IP地址：</p><p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p><ol start="3"><li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li></ol><p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p><ol start="4"><li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li></ol><p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p><p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p><p>&emsp;&emsp;SW2的VLAN信息：</p><p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p><ol start="5"><li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li></ol><p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p><p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p><ol start="6"><li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li></ol><p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p><p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p><p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p><p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p><p>FTP_Srv用DHCP获取IP地址：</p><p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p><ol start="7"><li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li></ol><p>&emsp;①启用OSPF实现内网全网可达：</p><p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p><p>&emsp;②实现外网可达：</p><p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p><p>③  配置NAT：</p><p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p><p>④  用R1给邻居下发默认路由：</p><p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p><p>⑤  主机可以访问 ISP 上的 Web SRV：</p><p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p><p>【实验中用到的代码】</p><p><strong>VTP：</strong></p><p>vtp mode server———————————————将VTP的模式该为server模式</p><p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p><p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p><p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p><p>当域名与密码相同时才能进行同步</p><p>NAT：</p><p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p><p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p><p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p><p>捆绑链路：</p><p>int range e0/1-2</p><p>switchport truck encapsulation do1q</p><p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p><p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p><p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p><p>下发默认路由：</p><p>router ospf 1</p><p>default-information originate—————————–给邻居下发默认路由</p>]]></content>
     
     
     <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。&lt;/p&gt;</summary>
@@ -89,8 +66,6 @@
     <published>2019-01-29T05:56:38.000Z</published>
     <updated>2020-08-29T07:36:09.456Z</updated>
     
-    <content type="html"><![CDATA[<p>&emsp;&emsp;在计算机的网络中，有两个十分重要的参考模型，所有网络通信设备都是以参考模型为标准来研发的。因此熟知参考模型在学习网络知识的过程中是十分重要的。下面就简单的介绍一下两个参考模型。</p><a id="more"></a><p><strong>一、OSI参考模型</strong></p><p>&emsp;&emsp;OSI（Open System Interconnect），即开放式系统互联。 一般都叫OSI参考模型，是ISO（国际标准化组织）组织在1985年研究的网络互联模型。</p><p>&emsp;&emsp;它将网络划分成了七层，从下往依次为物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。</p><p>&emsp;&emsp;第一层<strong>物理层（physical layer）</strong>的主要功能:是完成相邻节点之间原始比特流的传输物理层的设计主要涉及物理接口的机械电气功能和过程特性，以及物理层接口连接的传输介质等问题。</p><p>&emsp;&emsp;第二层<strong>数据链路层（data link layer）</strong>负责将上层数据封装成固定格式的帧</p><p>&emsp;&emsp;第三层<strong>网络层(network layer）</strong>的主要功能:是实现数据从源端到目的端的传输</p><p>&emsp;&emsp;第四层<strong>传输层（transport layer）</strong>的主要功能:是实现网络中不同主机上用户进程之间的数据通信。</p><p>&emsp;&emsp;第五层<strong>会话层（session layer）</strong>允许不同机器上的用户之间建立会话关系。管理会话控制令牌管理（token management）数据中插入同步点</p><p>&emsp;&emsp;第六层<strong>表示层（presentation layer ）</strong>表示层以下各层只关心从源端机到目标机可靠地传输比特，而表示层关心的是所传输的语法和语义。用一种大家一致选定的标准方法对数据进行编码。同时，也能提供压缩解压、加密解密。</p><p>&emsp;&emsp;第七层<strong>应用层（application layer）</strong>应用层能与应用程序界面沟通，以达到展示给用户的目的。在此常见的协议有:HTTP，HTTPS，FTP，TELNET，SSH，SMTP，POP3等。</p><p>&emsp;&emsp;传输层要决定对会话层用户（最终的网络用户）提供什么样的服务。因此我们把1-3层的协议称为点对点的协议，而把4-7层的协议叫做端对端协议。</p><p><strong>二、TCP/IP参考模型</strong></p><p>&emsp;&emsp;TCP/IP参考模型是计算机网络的祖父ARPANET和其后续的因特网使用的参考模型。当无线网络和卫星出现以后，现有的协议在和它们相连的时候出现了问题，所以需要一种新的参考体系结构。这个体系结构在它的两个主要协议出现以后，被称为TCP/IP参考模型。</p><p>&emsp;&emsp;TCP/IP是如今用于现实网络互联的通信协议。TCP/IP参考模型以TCP/IP为核心，将协议分成四个层次，分别是：网络接口层、网路层、传输层、应用层。</p><p>&emsp;&emsp;但是由于TCP/IP的网络接口层并未定义该层的协议，且参与互联的各网络使用自己的物理层和数据链路层协议，然后与TCP/IP的网络接入层（即网络层）进行连接。所以后期的TCP/IP参考模型为五层：即将网络接口层分为物理层和数据链路层。</p><p>第一层<strong>网络接入层</strong></p><p>&emsp;&emsp;该层提供的服务与OSI参考模型中的物理层与数据链路层相对应。它负责监视数据在主机和网络之间的交换。事实上，TCP/IP本身并未定义该层的协议，而由参与互连的各网络使用自己的物理层和数据链路层协议，然后与TCP/IP的网络接入层进行连接。地址解析协议（ARP）工作在此层，即OSI参考模型的数据链路层。在前文也说过TCP/IP参考模型并未定义网络接入层的协议，又因为TCP/IP参考模型的广泛应用，所以为了方便理解网络接入层采用了OSI参考模型的物理层和数据链路层的定义。</p><p>第二层<strong>网络层</strong>  </p><p>&emsp;&emsp;网际互联层对应于OSI参考模型的网络层，主要解决主机到主机的通信问题。它所包含的协议设计数据包在整个网络上的逻辑传输。注重重新赋予主机一个IP地址来完成对主机的寻址，它还负责数据包在多种网络中的路由。该层有三个主要协议：网际协议（IP）、互联网组管理协议（IGMP）和互联网控制报文协议（ICMP）。</p><p>第三层<strong>传输层</strong></p><p>&emsp;&emsp;传输层对应于OSI参考模型的传输层，为应用层实体提供端到端的通信功能，保证了数据包的顺序传送及数据的完整性。该层定义了两个主要的协议：传输控制协议（TCP）和用户数据报协议（UDP)。</p><p>&emsp;&emsp;TCP协议提供的是一种可靠的、通过“三次握手”来连接的数据传输服务；而UDP协议提供的则是不保证可靠的（并不是不可靠）、无连接的数据传输服务。</p><p>第四层<strong>应用层</strong></p><p>&emsp;&emsp;应用层对应于OSI参考模型的高层，为用户提供所需要的各种服务，例如：FTP、Telnet、DNS、SMTP等。</p><p>&emsp;&emsp;以上就是计算机网络模型的大致内容，下面简单写下OSI参考模型和TCP/IP参考模型的<strong>异同点</strong>：</p><p><strong>共同点：</strong></p><p>&emsp;&emsp;（1）OSI参考模型和TCP/IP参考模型都采用了层次结构的概念。</p><p>&emsp;&emsp;（2）都能够提供面向连接和无连接两种通信服务机制。</p><p><strong>不同点：</strong></p><p>&emsp;&emsp;（1）OSI采用的七层模型，而TCP/IP是四层结构。</p><p>&emsp;&emsp;（2）TCP/IP参考模型的网络接口层实际上并没有真正的定义，只是一些概念性的描述。而OSI参考模型不仅分了两层，而且每一层的功能都很详尽，甚至在数据链路层又分出一个介质访问子层，专门解决局域网的共享介质问题。</p><p>&emsp;&emsp;（3）OSI模型是在协议开发前设计的，具有通用性。TCP/IP是先有协议集然后建立模型，不适用于非TCP/IP网络。</p><p>&emsp;&emsp;（4）OSI参考模型与TCP/IP参考模型的传输层功能基本相似，都是负责为用户提供真正的端对端的通信服务，也对高层屏蔽了底层网络的实现细节。所不同的是TCP/IP参考模型的传输层是建立在网络互联层基础之上的，而网络互联层只提供无连接的网络服务，所以面向连接的功能完全在TCP协议中实现，当然TCP/IP的传输层还提供无连接的服务，如UDP；相反OSI参考模型的传输层是建立在网络层基础之上的，网络层既提供面向连接的服务，又提供无连接的服务，但传输层只提供面向连接的服务。</p><p>&emsp;&emsp;（5）OSI参考模型的抽象能力高，适合与描述各种网络；而TCP/IP是先有了协议，才制定TCP/IP模型的。</p><p>&emsp;&emsp;（6）OSI参考模型的概念划分清晰，但过于复杂；而TCP/IP参考模型在服务、接口和协议的 区别上不清楚，功能描述和实现细节混在一起。</p><p>&emsp;&emsp;（7）TCP/IP参考模型的网络接口层并不是真正的一层；OSI参考模型的缺点是层次过多，划分意义不大但增加了复杂性。</p><p>&emsp;&emsp;（8）OSI参考模型虽然被看好，由于没把握好时机，技术不成熟，实现困难；相反，TCP/IP参考模型虽然有许多不尽人意的地方，但还是比较成功的。</p><p>&emsp;&emsp;本篇本章只是作者在学习过程中整理的一些笔记。仅仅对计算机网络参考模型做了简单的介绍，概念的定义是网上收集的一些资料。因此如果想要更深入学习计算机网络参考模型，可以查找更专业的书籍。</p>]]></content>
-    
     
     <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;在计算机的网络中，有两个十分重要的参考模型，所有网络通信设备都是以参考模型为标准来研发的。因此熟知参考模型在学习网络知识的过程中是十分重要的。下面就简单的介绍一下两个参考模型。&lt;/p&gt;</summary>
     
@@ -102,6 +77,21 @@
     <category term="网络与数据通信" scheme="https://huangzc.site/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/"/>
     
     <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://huangzc.site/2019/01/01/hello-world/"/>
+    <id>https://huangzc.site/2019/01/01/hello-world/</id>
+    <published>2018-12-31T16:00:00.000Z</published>
+    <updated>2020-08-29T08:08:45.694Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</summary>
+    
+    
+    
     
   </entry>
   
