@@ -35,38 +35,60 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。">
+  <meta name="description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CCNP交换综合实验一">
-<meta property="og:url" content="https://huangzc.site/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/index.html">
+<meta property="og:title" content="CCNP交换综合实验二">
+<meta property="og:url" content="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTTPG6.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTeUVH.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/28/dTexRx.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTL0r8.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTLbGR.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTOLkQ.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTnjv6.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTu9Ve.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuP5d.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuExP.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuer8.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/d7sGvt.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/d7sLVO.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/d7s6K0.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuqeS.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/08/29/dTuLdg.png">
-<meta property="article:published_time" content="2019-02-18T06:58:23.000Z">
-<meta property="article:modified_time" content="2020-08-29T07:35:32.942Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOdkOP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOdQln.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOdtkF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOdwlR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOdckD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOwSBV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOwk9J.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOwKAO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOwovR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOwrgs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOBmFO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOBnYD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOBZTK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dODsvd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOrFVx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOrPq1.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOrCrR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOrAIK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOrka6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOcQ1S.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOcMp8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOc1XQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOcl6g.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dO2MLQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dO2lZj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dO2JJ0.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOTVFe.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOTJYQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOTUln.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOTBwT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOTv0f.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dO7SAS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOTx78.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dOTjnP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dXJ3bF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dXJGE4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dXJ1DU.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/31/dXJBDO.png">
+<meta property="article:published_time" content="2019-03-07T06:45:00.000Z">
+<meta property="article:modified_time" content="2020-08-31T12:14:06.367Z">
 <meta property="article:author" content="Huangzc">
 <meta property="article:tag" content="CCNP">
 <meta property="article:tag" content="交换">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.ax1x.com/2020/08/29/dTTPG6.png">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/08/31/dOdkOP.png">
 
-<link rel="canonical" href="https://huangzc.site/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/">
+<link rel="canonical" href="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/">
 
 
 <script id="page-configurations">
@@ -79,7 +101,7 @@
   };
 </script>
 
-  <title>CCNP交换综合实验一 | Huangzc's blog</title>
+  <title>CCNP交换综合实验二 | Huangzc's blog</title>
   
 
 
@@ -232,7 +254,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/">
+    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -245,7 +267,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CCNP交换综合实验一
+          CCNP交换综合实验二
         </h1>
 
         <div class="post-meta">
@@ -255,14 +277,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-02-18 14:58:23" itemprop="dateCreated datePublished" datetime="2019-02-18T14:58:23+08:00">2019-02-18</time>
+              <time title="创建时间：2019-03-07 14:45:00" itemprop="dateCreated datePublished" datetime="2019-03-07T14:45:00+08:00">2019-03-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-29 15:35:32" itemprop="dateModified" datetime="2020-08-29T15:35:32+08:00">2020-08-29</time>
+                <time title="修改时间：2020-08-31 20:14:06" itemprop="dateModified" datetime="2020-08-31T20:14:06+08:00">2020-08-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -280,7 +302,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -299,92 +321,164 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
+        <p>&emsp;&emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。</p>
 <a id="more"></a>
 
 <p>【实验目的】</p>
 <ol>
-<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
+<li><p>掌握 RSTP 的配置与检验</p>
 </li>
-<li><p>掌握 DTP 的作用和配置</p>
+<li><p>掌握 MST 的配置与检验</p>
 </li>
-<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
+<li><p>掌握生成树特性的应用</p>
 </li>
-<li><p>掌握以太通道技术的作用和配置</p>
+<li><p>实现 VLAN 间的通信</p>
 </li>
 </ol>
 <p>【实验拓扑】</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdkOP.png"></p>
 <p>【实验需求】</p>
 <ol>
 <li>参考图示，完成物理拓扑的搭建。</li>
 </ol>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdQln.png"></p>
 <ol start="2">
-<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
+<li>在该园区网络中有 4 个 VLAN，VLAN10、VLAN20、VLAN30 和 VLAN40，要求在 DSW1 上创建这些 VLAN，其他交换机同步 DSW1 上的 VLAN 信息，并且设置 VTP 域名为 huang.com，VTP 密码为 huang，所有 TRUNK 链路全部采用标准的封装模式。</li>
 </ol>
-<p>&emsp;①网关地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
-<p>&emsp;②各主机通过DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdtkF.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdwlR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdckD.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwSBV.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwk9J.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwKAO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwovR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwrgs.png"></p>
 <ol start="3">
-<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
+<li>DSW1 与 DSW2 之间的链路不足以传递园区内部流量，使用合适的方式建立DSW1 与 DSW2 之间的以太通道链路。</li>
 </ol>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOBmFO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOBnYD.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOBZTK.png"></p>
 <ol start="4">
-<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
+<li>要求全网启用基于 802.1w 标准的生成树，并且实现 DSW1 为 VLAN 10 和 20 的主根，为 VLAN 30 和 40 的次根，实现 DSW2 为 VLAN 10 和 20 的次根， 为 VLAN 30 和 40 的主根,并且哪怕将来在接入层中有新的交换机添加进园区网络，也要确保这两台交换机的地位。</li>
 </ol>
-<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
-<p>&emsp;&emsp;SW2的VLAN信息：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
+<p>&emsp;&emsp;全网启用基于 802.1w 标准的生成树：</p>
+<p> <img src="https://s1.ax1x.com/2020/08/31/dODsvd.png"></p>
+<p>&emsp;&emsp;实现 DSW1 为 VLAN 10 和 20 的主根，为 VLAN 30 和 40 的次根，实现 DSW2 为 VLAN 10 和 20 的次根， 为 VLAN 30 和 40 的主根：</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOrFVx.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOrPq1.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOrCrR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOrAIK.png"></p>
+<p>&emsp;&emsp;确保两台交换机的地位：</p>
+<p> <img src="https://s1.ax1x.com/2020/08/31/dOrka6.png"></p>
 <ol start="5">
-<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
+<li>各 PC 和 VLAN 的 IP 编址如下表：</li>
 </ol>
-<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
+<table>
+<thead>
+<tr>
+<th><strong>设备</strong></th>
+<th><strong>VLAN</strong></th>
+<th><strong>IP 地址</strong></th>
+<th><strong>默认网关</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PC1</td>
+<td>10</td>
+<td>192.168.10.100</td>
+<td>192.168.10.254</td>
+</tr>
+<tr>
+<td>PC2</td>
+<td>20</td>
+<td>192.168.20.100</td>
+<td>192.168.20.254</td>
+</tr>
+<tr>
+<td>PC3</td>
+<td>30</td>
+<td>192.168.30.100</td>
+<td>192.168.30.254</td>
+</tr>
+<tr>
+<td>PC4</td>
+<td>40</td>
+<td>192.168.40.100</td>
+<td>192.168.40.254</td>
+</tr>
+</tbody></table>
 <ol start="6">
-<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
+<li>要求连接这些主机的交换端口忽视生成树过程，能够直接进入到转发状态， 并且这些端口在接收到配置 BPDU 时就进入 err-disrable 状态。</li>
 </ol>
-<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
-<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
-<p>FTP_Srv用DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
+<p>&emsp;&emsp;忽视生成树过程，直接进入到转发状态：</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOcQ1S.png"></p>
+<p>&emsp;&emsp;端口在接收到配置 BPDU 时就进入 err-disrable 状态：</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOcMp8.png"></p>
 <ol start="7">
-<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
+<li>在 R1 上完成必要的配置，实现各 PC 间可以互相访问。</li>
 </ol>
-<p>&emsp;①启用OSPF实现内网全网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
-<p>&emsp;②实现外网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
-<p>③  配置NAT：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
-<p>④  用R1给邻居下发默认路由：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
-<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
-<p>【实验中用到的代码】</p>
-<p><strong>VTP：</strong></p>
-<p>vtp mode server———————————————将VTP的模式该为server模式</p>
-<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
-<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
-<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
-<p>当域名与密码相同时才能进行同步</p>
-<p>NAT：</p>
-<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
-<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
-<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
-<p>捆绑链路：</p>
-<p>int range e0/1-2</p>
-<p>switchport truck encapsulation do1q</p>
-<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
-<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
-<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
-<p>下发默认路由：</p>
-<p>router ospf 1</p>
-<p>default-information originate—————————–给邻居下发默认路由</p>
+<p>&emsp;&emsp;配置单臂路由，实现各PC间可以互相访问：</p>
+<p>&emsp;&emsp;①  将子接口划分进各个VLAN中</p>
+<p>&emsp;&emsp;②  在子接口中配置各网段的网关地址 </p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOc1XQ.png"></p>
+<p>&emsp;&emsp;③  PC间实现互相访问</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOcl6g.png"></p>
+<ol start="8">
+<li>随着网络规模的扩大，该园区网将来可能需要配置更多的 VLAN，大量的VLAN 实例会影响交换机的性能，要求将该客户网络迁移到 MST 中，具体MST 需求如下：</li>
+</ol>
+<ul>
+<li><p>创建两个 MST 实例，MST1 和 MST2，其中 MST1 用于 VLAN 10 到 25, MST2 用于 VLAN 26 到 50，其它 VLAN 属于 CIST。</p>
+</li>
+<li><p>使用 MST 区域名“SWITCH”，修订号“1”。</p>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/31/dO2MLQ.png"></p>
+<ul>
+<li>将 DSW1 配置为 MST1 及 CIST 的主根，为 MST2 的次根。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/31/dO2lZj.png"></p>
+<ul>
+<li>将 DSW2 配置为 MST2 的主根，为 MST1 及 CIST 的次根。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/31/dO2JJ0.png"></p>
+<p>&emsp;&emsp;实验结果：</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTVFe.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTJYQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTUln.png"></p>
+<ol start="9">
+<li><p>该客户网络进行了升级，购买了两台新的多层交换机，升级之后的网络拓扑如下，其中客户所属的 VLAN 角色及地址段信息保持不变</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTBwT.png"></p>
+</li>
+<li><p>现要求你完成如下网络配置：</p>
+</li>
+</ol>
+<ul>
+<li><p>配置DSW1 和DSW2 以执行 VLAN 间路由。将 DSW1 用作与交换机ASW1 连接的 PC1 和 PC2 的默认网关。连接 DSW2 的客户端使用 DSW2 作为默认网关，所有 PC 都保留网络升级改造之前的 IP 地址和默认网关。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTv0f.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dO7SAS.png"></p>
+</li>
+<li><p>R1 与两多层交换机链路的 IP 地址，以及园区外部的 ISP 和 Web SRV 地址自行规划。</p>
+</li>
+</ul>
+<p>&emsp;&emsp;各接口的具体地址如下图所示。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTx78.png"></p>
+<ul>
+<li><p>在园区网络内启用 OSPF，并且将园区网络划分到区域 0 中。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTjnP.png"></p>
+</li>
+<li><p>将 ASW1 和 DSW1 之间的链路捆绑到一个基于标准的 EtherChannel 中。</p>
+</li>
+</ul>
+<p>&emsp;&emsp;具体实现方法已在3中详细列出，在此不在列出。</p>
+<ul>
+<li>完成其他必要配置，实现各 VLAN 间的用户可以互相通信，并且实现园区网络内的用户可以访问 ISP 上的 Web SRV。</li>
+</ul>
+<p>&emsp;&emsp;由于前面以实现内网全网可达，外网也实现了可达性。故只需在R1上配置NAT。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dXJ3bF.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dXJGE4.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dXJ1DU.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dXJBDO.png"></p>
 
     </div>
 
@@ -420,7 +514,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://huangzc.site/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/" title="CCNP交换综合实验一">https://huangzc.site/2019/02/18/CCNP交换综合实验一/</a>
+    <a href="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/" title="CCNP交换综合实验二">https://huangzc.site/2019/03/07/CCNP交换综合实验二/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -452,12 +546,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/01/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/" rel="prev" title="计算机网络参考模型">
-      <i class="fa fa-chevron-left"></i> 计算机网络参考模型
+    <a href="/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/" rel="prev" title="CCNP交换综合实验一">
+      <i class="fa fa-chevron-left"></i> CCNP交换综合实验一
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/" rel="next" title="CCNP交换综合实验二">
-      CCNP交换综合实验二 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/" rel="next" title="安恒杯四月月赛misc——Writeup">
+      安恒杯四月月赛misc——Writeup <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

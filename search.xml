@@ -99,6 +99,176 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP交换综合实验二</title>
+    <url>/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 RSTP 的配置与检验</p>
+</li>
+<li><p>掌握 MST 的配置与检验</p>
+</li>
+<li><p>掌握生成树特性的应用</p>
+</li>
+<li><p>实现 VLAN 间的通信</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdkOP.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdQln.png"></p>
+<ol start="2">
+<li>在该园区网络中有 4 个 VLAN，VLAN10、VLAN20、VLAN30 和 VLAN40，要求在 DSW1 上创建这些 VLAN，其他交换机同步 DSW1 上的 VLAN 信息，并且设置 VTP 域名为 huang.com，VTP 密码为 huang，所有 TRUNK 链路全部采用标准的封装模式。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdtkF.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdwlR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOdckD.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwSBV.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwk9J.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwKAO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwovR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOwrgs.png"></p>
+<ol start="3">
+<li>DSW1 与 DSW2 之间的链路不足以传递园区内部流量，使用合适的方式建立DSW1 与 DSW2 之间的以太通道链路。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOBmFO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOBnYD.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOBZTK.png"></p>
+<ol start="4">
+<li>要求全网启用基于 802.1w 标准的生成树，并且实现 DSW1 为 VLAN 10 和 20 的主根，为 VLAN 30 和 40 的次根，实现 DSW2 为 VLAN 10 和 20 的次根， 为 VLAN 30 和 40 的主根,并且哪怕将来在接入层中有新的交换机添加进园区网络，也要确保这两台交换机的地位。</li>
+</ol>
+<p>&emsp;&emsp;全网启用基于 802.1w 标准的生成树：</p>
+<p> <img src="https://s1.ax1x.com/2020/08/31/dODsvd.png"></p>
+<p>&emsp;&emsp;实现 DSW1 为 VLAN 10 和 20 的主根，为 VLAN 30 和 40 的次根，实现 DSW2 为 VLAN 10 和 20 的次根， 为 VLAN 30 和 40 的主根：</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOrFVx.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOrPq1.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOrCrR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOrAIK.png"></p>
+<p>&emsp;&emsp;确保两台交换机的地位：</p>
+<p> <img src="https://s1.ax1x.com/2020/08/31/dOrka6.png"></p>
+<ol start="5">
+<li>各 PC 和 VLAN 的 IP 编址如下表：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>设备</strong></th>
+<th><strong>VLAN</strong></th>
+<th><strong>IP 地址</strong></th>
+<th><strong>默认网关</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PC1</td>
+<td>10</td>
+<td>192.168.10.100</td>
+<td>192.168.10.254</td>
+</tr>
+<tr>
+<td>PC2</td>
+<td>20</td>
+<td>192.168.20.100</td>
+<td>192.168.20.254</td>
+</tr>
+<tr>
+<td>PC3</td>
+<td>30</td>
+<td>192.168.30.100</td>
+<td>192.168.30.254</td>
+</tr>
+<tr>
+<td>PC4</td>
+<td>40</td>
+<td>192.168.40.100</td>
+<td>192.168.40.254</td>
+</tr>
+</tbody></table>
+<ol start="6">
+<li>要求连接这些主机的交换端口忽视生成树过程，能够直接进入到转发状态， 并且这些端口在接收到配置 BPDU 时就进入 err-disrable 状态。</li>
+</ol>
+<p>&emsp;&emsp;忽视生成树过程，直接进入到转发状态：</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOcQ1S.png"></p>
+<p>&emsp;&emsp;端口在接收到配置 BPDU 时就进入 err-disrable 状态：</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOcMp8.png"></p>
+<ol start="7">
+<li>在 R1 上完成必要的配置，实现各 PC 间可以互相访问。</li>
+</ol>
+<p>&emsp;&emsp;配置单臂路由，实现各PC间可以互相访问：</p>
+<p>&emsp;&emsp;①  将子接口划分进各个VLAN中</p>
+<p>&emsp;&emsp;②  在子接口中配置各网段的网关地址 </p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOc1XQ.png"></p>
+<p>&emsp;&emsp;③  PC间实现互相访问</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOcl6g.png"></p>
+<ol start="8">
+<li>随着网络规模的扩大，该园区网将来可能需要配置更多的 VLAN，大量的VLAN 实例会影响交换机的性能，要求将该客户网络迁移到 MST 中，具体MST 需求如下：</li>
+</ol>
+<ul>
+<li><p>创建两个 MST 实例，MST1 和 MST2，其中 MST1 用于 VLAN 10 到 25, MST2 用于 VLAN 26 到 50，其它 VLAN 属于 CIST。</p>
+</li>
+<li><p>使用 MST 区域名“SWITCH”，修订号“1”。</p>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/31/dO2MLQ.png"></p>
+<ul>
+<li>将 DSW1 配置为 MST1 及 CIST 的主根，为 MST2 的次根。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/31/dO2lZj.png"></p>
+<ul>
+<li>将 DSW2 配置为 MST2 的主根，为 MST1 及 CIST 的次根。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/08/31/dO2JJ0.png"></p>
+<p>&emsp;&emsp;实验结果：</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTVFe.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTJYQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTUln.png"></p>
+<ol start="9">
+<li><p>该客户网络进行了升级，购买了两台新的多层交换机，升级之后的网络拓扑如下，其中客户所属的 VLAN 角色及地址段信息保持不变</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTBwT.png"></p>
+</li>
+<li><p>现要求你完成如下网络配置：</p>
+</li>
+</ol>
+<ul>
+<li><p>配置DSW1 和DSW2 以执行 VLAN 间路由。将 DSW1 用作与交换机ASW1 连接的 PC1 和 PC2 的默认网关。连接 DSW2 的客户端使用 DSW2 作为默认网关，所有 PC 都保留网络升级改造之前的 IP 地址和默认网关。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTv0f.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dO7SAS.png"></p>
+</li>
+<li><p>R1 与两多层交换机链路的 IP 地址，以及园区外部的 ISP 和 Web SRV 地址自行规划。</p>
+</li>
+</ul>
+<p>&emsp;&emsp;各接口的具体地址如下图所示。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTx78.png"></p>
+<ul>
+<li><p>在园区网络内启用 OSPF，并且将园区网络划分到区域 0 中。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dOTjnP.png"></p>
+</li>
+<li><p>将 ASW1 和 DSW1 之间的链路捆绑到一个基于标准的 EtherChannel 中。</p>
+</li>
+</ul>
+<p>&emsp;&emsp;具体实现方法已在3中详细列出，在此不在列出。</p>
+<ul>
+<li>完成其他必要配置，实现各 VLAN 间的用户可以互相通信，并且实现园区网络内的用户可以访问 ISP 上的 Web SRV。</li>
+</ul>
+<p>&emsp;&emsp;由于前面以实现内网全网可达，外网也实现了可达性。故只需在R1上配置NAT。</p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dXJ3bF.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dXJGE4.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dXJ1DU.png"></p>
+<p><img src="https://s1.ax1x.com/2020/08/31/dXJBDO.png"></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2019/01/01/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>

@@ -39,6 +39,27 @@
   </entry>
   
   <entry>
+    <title>CCNP交换综合实验二</title>
+    <link href="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/"/>
+    <id>https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</id>
+    <published>2019-03-07T06:45:00.000Z</published>
+    <updated>2020-08-31T12:14:06.367Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CCNP实验" scheme="https://huangzc.site/categories/CCNP%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+    <category term="CCNP" scheme="https://huangzc.site/tags/CCNP/"/>
+    
+    <category term="交换" scheme="https://huangzc.site/tags/%E4%BA%A4%E6%8D%A2/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CCNP交换综合实验一</title>
     <link href="https://huangzc.site/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/"/>
     <id>https://huangzc.site/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</id>
