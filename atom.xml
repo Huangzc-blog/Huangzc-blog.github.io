@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2020-08-30T11:52:28.430Z</updated>
+  <updated>2020-09-01T12:13:02.867Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="https://huangzc.site/2020/08/31/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/"/>
+    <id>https://huangzc.site/2020/08/31/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</id>
+    <published>2020-08-31T15:53:57.296Z</published>
+    <updated>2020-09-01T12:13:02.867Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;title: CCNP交换综合实验三&lt;br&gt;date: 2019-03-14 14:45:00&lt;br&gt;tags:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CCNP&lt;/li&gt;
+&lt;li&gt;交换&lt;br&gt;categories:&lt;/li&gt;
+&lt;li&gt;CCNP实验&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>安恒杯四月月赛misc——Writeup</title>
