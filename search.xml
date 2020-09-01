@@ -99,15 +99,9 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2020/08/31/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
-    <content><![CDATA[<p>title: CCNP交换综合实验三<br>date: 2019-03-14 14:45:00<br>tags:</p>
-<ul>
-<li>CCNP</li>
-<li>交换<br>categories:</li>
-<li>CCNP实验</li>
-</ul>
-<p>&emsp;&emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
+    <title>CCNP交换综合实验三</title>
+    <url>/2019/03/14/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
 <a id="more"></a>
 
 <p>【实验目的】</p>
@@ -228,10 +222,16 @@
 
 
 
-
 </li>
 </ol>
 ]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
   </entry>
   <entry>
     <title>CCNP交换综合实验二</title>
