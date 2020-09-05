@@ -506,6 +506,110 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP路由综合实验一</title>
+    <url>/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>熟悉 OSPF 的基本配置</p>
+</li>
+<li><p>熟悉OSPF 网络类型的应用</p>
+</li>
+<li><p>理解不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响</p>
+</li>
+<li><p>掌握 OSPF 不连续区域的几种解决方案</p>
+</li>
+<li><p>掌握 OSPF 区域间和外部路由的汇总</p>
+</li>
+<li><p>掌握 OSPF 默认路由的配置及控制</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipiIP.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划，并分别在路由器 R1、R2、R3、R5 和R6 上各起一个loopback 接口，地址为各路由器的编号，如 R1 的 loopback 地址就为 1.1.1.1，其他以此类推；</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipPat.png"></p>
+<ol start="2">
+<li>除ISP 区域外，全网启用 OSPF，并设置各路由器的 RID 为各路由器的编号，根据图示将各网段划分进相应的 OSPF 区域中，要求在 R5 上采用接口级命令将R5 相应的接口加入到 OSPF 区域中，在其他路由器上采用合适的方式启用 OSPF，并在 R2 上进行EIGRP 和 OSPF 的双向重分布；</li>
+</ol>
+<p>R1中的OSPF的配置：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image009.jpg" alt="img"></p>
+<p>R2中的OSPF的配置：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image011.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image013.jpg" alt="img"></p>
+<p>R5中的OSPF的配置：<img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image015.jpg" alt="img"></p>
+<p>R9中的eigrp的配置：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image017.jpg" alt="img"></p>
+<ol start="3">
+<li>采用合适的命令观察 OSPF 的邻居表、拓扑表和路由表，仔细观察路由表的各路由类型，并测试图示标注loopback 接口网段间的连通性；</li>
+</ol>
+<p>R9中的loopback接口与R7中的loopback接口：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image019.jpg" alt="img"></p>
+<p>R9中的loopback接口与R8中的loopback接口：</p>
+<p><img src="/images/loading.gif" data-original="file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image021.jpg" alt="img"></p>
+<p>R9中的loopback接口与R4中的loopback接口：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image023.jpg" alt="img"></p>
+<ol start="4">
+<li>要求骨干区域能够快速收敛，并让R5 成为区域 578 中的 DR；</li>
+</ol>
+<p>要求骨干区域能够快速收敛，在骨干区域的路由器中配置点对点的OSPF</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image025.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image027.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image029.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image031.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image033.jpg" alt="img"></p>
+<p>更改R5的优先级，让R5成为578区域的DR</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image035.jpg" alt="img"></p>
+<ol start="5">
+<li>采用合适的方案确保当骨干网络的任意链路中断的时候不会影响骨干网的连通性；</li>
+</ol>
+<p>在R3与R5中配置虚链路：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image037.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image039.jpg" alt="img"></p>
+<p>将R1的e0/0端口关闭，验证其连通性：<br> <img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image041.jpg" alt="img"></p>
+<ol start="6">
+<li>观察各路由器上的路由表信息，然后在合适的路由器上进行必要的路由汇总，对比汇总之后各路由器路由表的变化，并观察和测试明细路由与汇总路由之间的关系；</li>
+</ol>
+<p>在各边界路由器上汇总路由：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image043.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image045.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image047.jpg" alt="img"></p>
+<p>R1的路由表：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image049.jpg" alt="img"></p>
+<ol start="7">
+<li>采用合适的方案，实现图示标注的 loopback 网段可以访问 ISP 上的主机100.100.100.100；</li>
+</ol>
+<p>在R1和R6上配置NAT转换：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image051.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image053.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image055.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image057.jpg" alt="img"></p>
+<p>验证其连通性：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image059.jpg" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image061.jpg" alt="img"></p>
+<ol start="8">
+<li>要求各链路正常情况下，内网优选 ISP1 的链路对外部网络进行访问，当与 ISP1 的链路出现故障的时候，自动切换到 ISP2 的链路对外部网络进行访问，使用tracert 观察验证该现象。</li>
+</ol>
+<p>为使内网优先选择ISP1对外部网络进行访问，故更改链路的cost值，使内网从ISP1访问外网的cost比从ISP2访问外网的cost小：</p>
+<p>验证结果如下：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image063.jpg" alt="img"></p>
+<p>当ISP1出现故障时（关闭R1中的S1/0端口）：</p>
+<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image065.jpg" alt="img"></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
+        <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2019/01/01/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -613,110 +717,6 @@
       <tags>
         <tag>网络与数据通信</tag>
         <tag>CCNA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP路由综合实验一</title>
-    <url>/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>熟悉 OSPF 的基本配置</p>
-</li>
-<li><p>熟悉OSPF 网络类型的应用</p>
-</li>
-<li><p>理解不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响</p>
-</li>
-<li><p>掌握 OSPF 不连续区域的几种解决方案</p>
-</li>
-<li><p>掌握 OSPF 区域间和外部路由的汇总</p>
-</li>
-<li><p>掌握 OSPF 默认路由的配置及控制</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipiIP.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划，并分别在路由器 R1、R2、R3、R5 和R6 上各起一个loopback 接口，地址为各路由器的编号，如 R1 的 loopback 地址就为 1.1.1.1，其他以此类推；</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipPat.png"></p>
-<ol start="2">
-<li>除ISP 区域外，全网启用 OSPF，并设置各路由器的 RID 为各路由器的编号，根据图示将各网段划分进相应的 OSPF 区域中，要求在 R5 上采用接口级命令将R5 相应的接口加入到 OSPF 区域中，在其他路由器上采用合适的方式启用 OSPF，并在 R2 上进行EIGRP 和 OSPF 的双向重分布；</li>
-</ol>
-<p>R1中的OSPF的配置：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image009.jpg" alt="img"></p>
-<p>R2中的OSPF的配置：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image011.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image013.jpg" alt="img"></p>
-<p>R5中的OSPF的配置：<img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image015.jpg" alt="img"></p>
-<p>R9中的eigrp的配置：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image017.jpg" alt="img"></p>
-<ol start="3">
-<li>采用合适的命令观察 OSPF 的邻居表、拓扑表和路由表，仔细观察路由表的各路由类型，并测试图示标注loopback 接口网段间的连通性；</li>
-</ol>
-<p>R9中的loopback接口与R7中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image019.jpg" alt="img"></p>
-<p>R9中的loopback接口与R8中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image021.jpg" alt="img"></p>
-<p>R9中的loopback接口与R4中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image023.jpg" alt="img"></p>
-<ol start="4">
-<li>要求骨干区域能够快速收敛，并让R5 成为区域 578 中的 DR；</li>
-</ol>
-<p>要求骨干区域能够快速收敛，在骨干区域的路由器中配置点对点的OSPF</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image025.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image027.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image029.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image031.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image033.jpg" alt="img"></p>
-<p>更改R5的优先级，让R5成为578区域的DR</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image035.jpg" alt="img"></p>
-<ol start="5">
-<li>采用合适的方案确保当骨干网络的任意链路中断的时候不会影响骨干网的连通性；</li>
-</ol>
-<p>在R3与R5中配置虚链路：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image037.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image039.jpg" alt="img"></p>
-<p>将R1的e0/0端口关闭，验证其连通性：<br> <img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image041.jpg" alt="img"></p>
-<ol start="6">
-<li>观察各路由器上的路由表信息，然后在合适的路由器上进行必要的路由汇总，对比汇总之后各路由器路由表的变化，并观察和测试明细路由与汇总路由之间的关系；</li>
-</ol>
-<p>在各边界路由器上汇总路由：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image043.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image045.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image047.jpg" alt="img"></p>
-<p>R1的路由表：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image049.jpg" alt="img"></p>
-<ol start="7">
-<li>采用合适的方案，实现图示标注的 loopback 网段可以访问 ISP 上的主机100.100.100.100；</li>
-</ol>
-<p>在R1和R6上配置NAT转换：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image051.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image053.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image055.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image057.jpg" alt="img"></p>
-<p>验证其连通性：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image059.jpg" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image061.jpg" alt="img"></p>
-<ol start="8">
-<li>要求各链路正常情况下，内网优选 ISP1 的链路对外部网络进行访问，当与 ISP1 的链路出现故障的时候，自动切换到 ISP2 的链路对外部网络进行访问，使用tracert 观察验证该现象。</li>
-</ol>
-<p>为使内网优先选择ISP1对外部网络进行访问，故更改链路的cost值，使内网从ISP1访问外网的cost比从ISP2访问外网的cost小：</p>
-<p>验证结果如下：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image063.jpg" alt="img"></p>
-<p>当ISP1出现故障时（关闭R1中的S1/0端口）：</p>
-<p><img src="/images/loading.gif" data-original="CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/clip_image065.jpg" alt="img"></p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>路由</tag>
-        <tag>OSPF</tag>
       </tags>
   </entry>
 </search>
