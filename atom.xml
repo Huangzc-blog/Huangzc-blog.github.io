@@ -43,7 +43,7 @@
     <link href="https://huangzc.site/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/"/>
     <id>https://huangzc.site/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</id>
     <published>2019-03-28T06:58:23.000Z</published>
-    <updated>2020-09-03T11:52:01.577Z</updated>
+    <updated>2020-09-06T10:38:26.864Z</updated>
     
     
     <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。&lt;/p&gt;</summary>
