@@ -99,140 +99,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNP交换综合实验三</title>
-    <url>/2019/03/14/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握 HSRP 的配置与检验</p>
-</li>
-<li><p>掌握 VRRP 的配置与检验</p>
-</li>
-<li><p>掌握 GLBP 的配置与检验</p>
-</li>
-<li><p>熟悉 NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p> <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/djuPsJ.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/djxDrF.png"></p>
-<ol start="2">
-<li>根据图示，将各主机与 NMS 划分进相应的 VLAN 中，各主机以及 NMS 的地址自己规划，其中 NMS 是一台安装了 SNMP 网管软件、Syslog 日志服务器和网络嗅探器的网络管理服务器，并且两多层交换机做为各 PC 的网关。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10 </span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 20 </span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 30</span></span><br><span class="line"><span class="comment">#将NMS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/2</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e0/3,e1/0</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;各主机的端口配置情况（可以通过端口是否出现在vlan中来判断是否为trunk）：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxiAgA.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvtr9J.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvNS3j.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvts39.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvN8UO.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvtBh4.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvt0NF.png"></p>
-<ol start="2">
-<li>采用 HSRP 协议实现 VLAN10 的主网关为 DSW1，备份网关为 DSW2,VLAN20的主网关为 DSW2，备份网关为 DSW1,在园区网络内采用任意协议实现 PC 机可以访问 Internet 网络，HSRP 组编号应与它们为之提供服务的 VLAN 的编号匹配。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行HSRP协议</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10</span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在HRSP协议中，虚拟IP不可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认关闭）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt</span></span><br><span class="line"><span class="comment">#设置standby 10的优先级为110（可通过设置优先级来确定主/备份设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110</span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#在DSW2上运行HSRP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxi3gs.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxi13j.png"></p>
-<ol start="4">
-<li>当多层交换机的上行链路发生故障，确保来自 PC 的流量不会采用次优路径。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;关闭DSW1上e0/0的端口，用追踪路由查看路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 08:21:57.629: %TRACK-6-STATE: 10 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 08:21:59.634: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 08:22:00.239: %HSRP-5-STATECHANGE: Vlan10 Grp 10 state Active -&gt; Speak</span><br><span class="line">*Sep  1 08:22:00.637: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0,changed state to down</span><br><span class="line">*Sep  1 08:22:11.522: %HSRP-5-STATECHANGE: Vlan10 Grp 10 state Speak -&gt; Standby</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;由于DSW1的e0/0端口被关闭，优先级减少6，小于DSW2的105，故DSW1的Group 10状态转为Standby，DSW2的Group 10状态转为Active。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxmmt0.png"></p>
-<p>在PC 1上进行对Internet的路由跟踪，从下图可以得知，数据是从DSW2上转发的。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxmDnH.png"></p>
-<ol start="5">
-<li>删除 HSRP 的配置，使用 VRRP 实现 VLAN10 的主网关为 DSW1，备份网关为 DSW2,VLAN20 的主网关为 DSW2，备份网关为 DSW1, VRRP 组编号应与它们为之提供服务的 VLAN 的编号匹配，如果多层交换机的上行链路发生故障，同样请确保来自 PC 的流量不会采用次优路径。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行VRRP协议</span></span><br><span class="line">DSW1(config-if)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在VRRP协议中，虚拟IP可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认开启）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 preempt </span></span><br><span class="line"><span class="comment">#设置vrrp 10的优先级为110（可通过设置优先级来确定主/备份设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 priority 110</span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 authentication text huangzc</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 authentication text huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上运行VRRP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 priority 105 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10  authentication text huangzc</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 priority 110 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20  authentication text huangzc</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxoMGD.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxoQRe.png"></p>
-<p>&emsp;&emsp;使用track使 PC 的流量不会采用次优路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 track 10 decrement 6</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;关闭DSW2 的e0/0, 用追踪路由查看路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW2(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW2(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 09:03:34.438: %TRACK-6-STATE: 20 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 09:03:34.443: %OSPF-5-ADJCHG: Process 110, Nbr 12.12.12.2 on Ethernet0/0 from FULL to DOWN, Neighbor Down: Interface down or detached</span><br><span class="line">*Sep  1 09:03:36.441: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 09:03:37.449: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to down</span><br><span class="line">*Sep  1 09:03:37.722: %VRRP-6-STATECHANGE: Vl20 Grp 20 state Master -&gt; Backup</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;由于DSW2的e0/0端口被关闭，优先级减少6，小于DSW2的105，故DSW2的Group 20状态转为Backup，DSW1的Group 10状态转为Master。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxrEz8.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxrmLQ.png"></p>
-<ol start="6">
-<li>删除 VRRP 的配置，在该园区网络中部署 GLBP 实现各 VLAN 的主机可以同时通过DSW1 和DSW2 进行外部网络资源的访问，并且实现DSW1 为VLAN10 的 AVG，DSW2 为 VLAN20 的 AVG。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行GLBP协议</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在GLBP协议中，虚拟IP不可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认关闭）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 preempt </span></span><br><span class="line"><span class="comment">#设置glbp 10的优先级为120（可通过设置优先级来确定AVG/AVF设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 priority 120 </span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#修改负载均衡方式</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 load-balancing weighted </span></span><br><span class="line"><span class="comment">#修改权重为140。（最低为100，最高为140。如果权重低于100，将不能进行数据的转发。如果想恢复转发数据，那么权重必须大于或等于140）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 weighting 140 lower 100 upper 140</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 ip 192.168.20.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 load-balancing weighted </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 weighting 140 lower 100 upper 140</span></span><br><span class="line"><span class="comment">#在DSW2上运行GLBP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 load-balancing weighted </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 weighting 140 lower 100 upper 140</span></span><br><span class="line">DSW2(config-if)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 priority 120 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 load-balancing weighted </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 weighting 140 lower 100 upper 140</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;查看GLBP的详细信息，DSW1为Vlan 10的AVG，负责分发虚拟MAC地址，AVG同时也可以是AVF。DSW2为Vlan 20的AVF。DSW2为Vlan 20的AVG，负责分发虚拟MAC地址，同时也是AVF。DSW1为Vlan 20的AVF。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxWAK0.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxWVbT.png"></p>
-<p>&emsp;&emsp;在PC1与PC2上对路由进行跟踪，PC1的数据由DSW1转发，PC2的数据由DSW2转发。实现负载均衡。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dx4ma8.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dx4MGQ.png"></p>
-<p>&emsp;&emsp;使用track使 PC 的流量不会采用次优路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的权重减少50为90，小于100，无法转发数据</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 weighting track 10 decrement 50</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config-if)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 weighting track 20 decrement 50</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;关闭DSW2 的e0/0, 用追踪路由查看路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 11:35:58.763: %TRACK-6-STATE: 10 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 11:36:00.762: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 11:36:01.768: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to down</span><br><span class="line">*Sep  1 11:36:29.913: %GLBP-6-FWDSTATECHANGE: Vlan10 Grp 10 Fwd 2 state Active -&gt; Listen</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;当上层链路发生故障时，DSW1的Group 10的权重小于100，故不能转发数据，处于Listen状态。但是DSW1仍是Group 10 的AVG，它将原本自己的MAC地址分配给了DSW2的Group 10，因此，此时的DSW2的负责Vlan 10的所有数据转发。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxfxhQ.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxh9cn.png"></p>
-<p>&emsp;&emsp;PC1与PC2访问Internet时，均为DSW2转发。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxhy4g.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxh2gs.png"></p>
-<ol start="7">
-<li>在路由器 R1 上设置路由器的当前时间为 12:00:00 Mar 7 2019，时区为 CN， NTP 的master 值为2，使用安全的方式实现多层交换通过R1 完成时钟同步。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#clock set 12:00:00 Mar 7 2019</span></span><br><span class="line">R1(config)<span class="comment">#clock timezone CN +8</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;Server：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ntp master 2</span></span><br><span class="line">R1(config)<span class="comment">#int range e0/0-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ntp broadcast </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;Client :</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#int e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ntp broadcast client </span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>将多层交换以及 R1 上的日志信息发送到 NMS 上的 Syslog 日志服务器上， 并且设置这些设备的 Log Buffer 为 8192 bytes，logging trap 为 5。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#logging buffered 8192</span></span><br><span class="line">R1(config)<span class="comment">#logging trap 5    </span></span><br><span class="line">R1(config)<span class="comment">#logging host 192.168.30.1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="9">
-<li>在 R1 上设置 SNMP 的 community 为huangzc，并且权限为 RW，通过 PC 机上的 SNMP 工具实现对 R1 设备的管理和监控。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#snmp-server community huangzc rw </span></span><br></pre></td></tr></table></figure>
-
-<ol start="10">
-<li>使用 SPAN 将 DSW1 上的 VLAN10 数据发送到 NMS 上进行流量分析。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#no monitor session all </span></span><br><span class="line">DSW1(config)<span class="comment">#monitor session 8 source vlan 10 </span></span><br><span class="line">DSW1(config)<span class="comment">#monitor session 8 destination interface e0/2</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNP交换综合实验二</title>
     <url>/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。</p>
@@ -403,6 +269,140 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP交换综合实验三</title>
+    <url>/2019/03/14/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 HSRP 的配置与检验</p>
+</li>
+<li><p>掌握 VRRP 的配置与检验</p>
+</li>
+<li><p>掌握 GLBP 的配置与检验</p>
+</li>
+<li><p>熟悉 NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p> <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/djuPsJ.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建。</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/djxDrF.png"></p>
+<ol start="2">
+<li>根据图示，将各主机与 NMS 划分进相应的 VLAN 中，各主机以及 NMS 的地址自己规划，其中 NMS 是一台安装了 SNMP 网管软件、Syslog 日志服务器和网络嗅探器的网络管理服务器，并且两多层交换机做为各 PC 的网关。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10 </span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 20 </span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 30</span></span><br><span class="line"><span class="comment">#将NMS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/2</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e0/3,e1/0</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;各主机的端口配置情况（可以通过端口是否出现在vlan中来判断是否为trunk）：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxiAgA.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvtr9J.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvNS3j.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvts39.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvN8UO.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvtBh4.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dvt0NF.png"></p>
+<ol start="2">
+<li>采用 HSRP 协议实现 VLAN10 的主网关为 DSW1，备份网关为 DSW2,VLAN20的主网关为 DSW2，备份网关为 DSW1,在园区网络内采用任意协议实现 PC 机可以访问 Internet 网络，HSRP 组编号应与它们为之提供服务的 VLAN 的编号匹配。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行HSRP协议</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10</span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在HRSP协议中，虚拟IP不可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认关闭）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt</span></span><br><span class="line"><span class="comment">#设置standby 10的优先级为110（可通过设置优先级来确定主/备份设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110</span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#在DSW2上运行HSRP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxi3gs.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxi13j.png"></p>
+<ol start="4">
+<li>当多层交换机的上行链路发生故障，确保来自 PC 的流量不会采用次优路径。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;关闭DSW1上e0/0的端口，用追踪路由查看路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 08:21:57.629: %TRACK-6-STATE: 10 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 08:21:59.634: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 08:22:00.239: %HSRP-5-STATECHANGE: Vlan10 Grp 10 state Active -&gt; Speak</span><br><span class="line">*Sep  1 08:22:00.637: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0,changed state to down</span><br><span class="line">*Sep  1 08:22:11.522: %HSRP-5-STATECHANGE: Vlan10 Grp 10 state Speak -&gt; Standby</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;由于DSW1的e0/0端口被关闭，优先级减少6，小于DSW2的105，故DSW1的Group 10状态转为Standby，DSW2的Group 10状态转为Active。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxmmt0.png"></p>
+<p>在PC 1上进行对Internet的路由跟踪，从下图可以得知，数据是从DSW2上转发的。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxmDnH.png"></p>
+<ol start="5">
+<li>删除 HSRP 的配置，使用 VRRP 实现 VLAN10 的主网关为 DSW1，备份网关为 DSW2,VLAN20 的主网关为 DSW2，备份网关为 DSW1, VRRP 组编号应与它们为之提供服务的 VLAN 的编号匹配，如果多层交换机的上行链路发生故障，同样请确保来自 PC 的流量不会采用次优路径。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行VRRP协议</span></span><br><span class="line">DSW1(config-if)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在VRRP协议中，虚拟IP可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认开启）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 preempt </span></span><br><span class="line"><span class="comment">#设置vrrp 10的优先级为110（可通过设置优先级来确定主/备份设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 priority 110</span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 authentication text huangzc</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 authentication text huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上运行VRRP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 priority 105 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10  authentication text huangzc</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 priority 110 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20  authentication text huangzc</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxoMGD.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxoQRe.png"></p>
+<p>&emsp;&emsp;使用track使 PC 的流量不会采用次优路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 track 10 decrement 6</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;关闭DSW2 的e0/0, 用追踪路由查看路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW2(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW2(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 09:03:34.438: %TRACK-6-STATE: 20 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 09:03:34.443: %OSPF-5-ADJCHG: Process 110, Nbr 12.12.12.2 on Ethernet0/0 from FULL to DOWN, Neighbor Down: Interface down or detached</span><br><span class="line">*Sep  1 09:03:36.441: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 09:03:37.449: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to down</span><br><span class="line">*Sep  1 09:03:37.722: %VRRP-6-STATECHANGE: Vl20 Grp 20 state Master -&gt; Backup</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;由于DSW2的e0/0端口被关闭，优先级减少6，小于DSW2的105，故DSW2的Group 20状态转为Backup，DSW1的Group 10状态转为Master。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxrEz8.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxrmLQ.png"></p>
+<ol start="6">
+<li>删除 VRRP 的配置，在该园区网络中部署 GLBP 实现各 VLAN 的主机可以同时通过DSW1 和DSW2 进行外部网络资源的访问，并且实现DSW1 为VLAN10 的 AVG，DSW2 为 VLAN20 的 AVG。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行GLBP协议</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在GLBP协议中，虚拟IP不可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认关闭）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 preempt </span></span><br><span class="line"><span class="comment">#设置glbp 10的优先级为120（可通过设置优先级来确定AVG/AVF设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 priority 120 </span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#修改负载均衡方式</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 load-balancing weighted </span></span><br><span class="line"><span class="comment">#修改权重为140。（最低为100，最高为140。如果权重低于100，将不能进行数据的转发。如果想恢复转发数据，那么权重必须大于或等于140）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 weighting 140 lower 100 upper 140</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 ip 192.168.20.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 load-balancing weighted </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 weighting 140 lower 100 upper 140</span></span><br><span class="line"><span class="comment">#在DSW2上运行GLBP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 load-balancing weighted </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 weighting 140 lower 100 upper 140</span></span><br><span class="line">DSW2(config-if)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 priority 120 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 load-balancing weighted </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 weighting 140 lower 100 upper 140</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看GLBP的详细信息，DSW1为Vlan 10的AVG，负责分发虚拟MAC地址，AVG同时也可以是AVF。DSW2为Vlan 20的AVF。DSW2为Vlan 20的AVG，负责分发虚拟MAC地址，同时也是AVF。DSW1为Vlan 20的AVF。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxWAK0.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxWVbT.png"></p>
+<p>&emsp;&emsp;在PC1与PC2上对路由进行跟踪，PC1的数据由DSW1转发，PC2的数据由DSW2转发。实现负载均衡。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dx4ma8.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dx4MGQ.png"></p>
+<p>&emsp;&emsp;使用track使 PC 的流量不会采用次优路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的权重减少50为90，小于100，无法转发数据</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 weighting track 10 decrement 50</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config-if)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 weighting track 20 decrement 50</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;关闭DSW2 的e0/0, 用追踪路由查看路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 11:35:58.763: %TRACK-6-STATE: 10 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 11:36:00.762: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 11:36:01.768: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to down</span><br><span class="line">*Sep  1 11:36:29.913: %GLBP-6-FWDSTATECHANGE: Vlan10 Grp 10 Fwd 2 state Active -&gt; Listen</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;当上层链路发生故障时，DSW1的Group 10的权重小于100，故不能转发数据，处于Listen状态。但是DSW1仍是Group 10 的AVG，它将原本自己的MAC地址分配给了DSW2的Group 10，因此，此时的DSW2的负责Vlan 10的所有数据转发。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxfxhQ.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxh9cn.png"></p>
+<p>&emsp;&emsp;PC1与PC2访问Internet时，均为DSW2转发。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxhy4g.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/01/dxh2gs.png"></p>
+<ol start="7">
+<li>在路由器 R1 上设置路由器的当前时间为 12:00:00 Mar 7 2019，时区为 CN， NTP 的master 值为2，使用安全的方式实现多层交换通过R1 完成时钟同步。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#clock set 12:00:00 Mar 7 2019</span></span><br><span class="line">R1(config)<span class="comment">#clock timezone CN +8</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;Server：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ntp master 2</span></span><br><span class="line">R1(config)<span class="comment">#int range e0/0-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ntp broadcast </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;Client :</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#int e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ntp broadcast client </span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>将多层交换以及 R1 上的日志信息发送到 NMS 上的 Syslog 日志服务器上， 并且设置这些设备的 Log Buffer 为 8192 bytes，logging trap 为 5。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#logging buffered 8192</span></span><br><span class="line">R1(config)<span class="comment">#logging trap 5    </span></span><br><span class="line">R1(config)<span class="comment">#logging host 192.168.30.1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>在 R1 上设置 SNMP 的 community 为huangzc，并且权限为 RW，通过 PC 机上的 SNMP 工具实现对 R1 设备的管理和监控。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#snmp-server community huangzc rw </span></span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li>使用 SPAN 将 DSW1 上的 VLAN10 数据发送到 NMS 上进行流量分析。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#no monitor session all </span></span><br><span class="line">DSW1(config)<span class="comment">#monitor session 8 source vlan 10 </span></span><br><span class="line">DSW1(config)<span class="comment">#monitor session 8 destination interface e0/2</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP交换综合实验四</title>
     <url>/2019/03/21/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了掌握交换端口安全的应用与配置；DHCP SNOOPING 的应用与配置；DAI 的应用与配置；IP SG 的应用与配置；PVLAN 的应用与配置；802.1x 的应用与配置 。</p>
@@ -506,6 +506,232 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2019/01/01/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>CCNP路由综合实验二</title>
+    <url>/2019/04/05/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
+    <content><![CDATA[<p>【实验目的】</p>
+<ol>
+<li><p>理解和掌握 OSPF stub 区域的特点和配置</p>
+</li>
+<li><p>理解和掌握 OSPF totally stub 区域的特点和配置</p>
+</li>
+<li><p>理解和掌握 OSPF NSSA 区域的特点和配置</p>
+</li>
+<li><p>理解和掌握 OSPF totally NSSA 区域的特点和配置</p>
+</li>
+<li><p>掌握被动接口的作用</p>
+</li>
+<li><p>掌握 OSPF LSA7 的作用</p>
+</li>
+<li><p>掌握 OSPF 邻居间的验证</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p>   <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/08/wQ9aSU.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划。</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/08/wQ9NWT.png"></p>
+<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R1上的11.1.1.1/24、11.1.2.1/24……。以R1、R2的端口配置情况为例。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYKHVH.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYKTqe.png"></p>
+<ol start="2">
+<li>完成各路由协议的基本配置，在 R2 上进行 OSPF 与 RIPv2 的双向重分布，在 R6 上进行 EIGRP 与 OSPF 的双向重分布，然后完成必要的配置， 实现全网可达，并且在 OSPF 区域内的各个路由器上手工指定各路由器的 RID 为各路由器的编号。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各路由器上完成动态路由的配置（此处以R1为例），在端口上进行ospf的通告</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.1.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment"># exit     </span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback2</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.2.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback3</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.3.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback4</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.4.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback5</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.5.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback6</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.6.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback7</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.7.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback8</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.8.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R2上启用OSPF协议（略）与RIP协议</span></span><br><span class="line">R2(config)<span class="comment">#router rip </span></span><br><span class="line">R2(config-router)<span class="comment">#version 2</span></span><br><span class="line">R2(config-router)<span class="comment">#network 29.0.0.0</span></span><br><span class="line">R2(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"><span class="comment">#R2双向重分布</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#redistribute rip metric 2 subnets</span></span><br><span class="line">R2(config)<span class="comment">#router rip </span></span><br><span class="line">R2(config-router)<span class="comment">#redistribute ospf 1 metric 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R6上启用OSPF协议（略）与EIGRP协议</span></span><br><span class="line">R6(config)<span class="comment">#router eigrp 90 </span></span><br><span class="line">R6(config-router)<span class="comment">#network 61.0.0.0</span></span><br><span class="line"><span class="comment">#R6双向重分布</span></span><br><span class="line">R6(config)<span class="comment">#router eigrp 90 </span></span><br><span class="line">R6(config-router)<span class="comment">#redistribute ospf 1 metric 1 1 1 1 1 </span></span><br><span class="line">R6(config-router)<span class="comment">#router ospf 1 </span></span><br><span class="line">R6(config-router)<span class="comment">#redistribute eigrp 90 subnets </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#由于非骨干之间的通信需要经过骨干区域，所以需要在将area 78与骨干区域连接在一起（可以通过配置“虚链路”或“隧道”），此处采用隧道的方法</span></span><br><span class="line">R7(config)<span class="comment">#int tunnel 1</span></span><br><span class="line">R7(config-if)<span class="comment">#tunnel source 47.47.47.7</span></span><br><span class="line">R7(config-if)<span class="comment">#tunnel destination 47.47.47.4</span></span><br><span class="line">R7(config-if)<span class="comment">#ip address 7.7.7.7 255.255.255.255</span></span><br><span class="line">R7(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line">R7(config-if)<span class="comment">#exit </span></span><br><span class="line">R7(config)<span class="comment">#int tunnel 2</span></span><br><span class="line">R7(config-if)<span class="comment">#tunnel source 47.47.47.7 </span></span><br><span class="line">R7(config-if)<span class="comment">#tunnel destination 56.56.56.5</span></span><br><span class="line">R7(config-if)<span class="comment">#ip address 5.5.5.7 255.255.255.255</span></span><br><span class="line">R7(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int tunnel 1</span></span><br><span class="line">R4(config-if)<span class="comment">#tunnel source 47.47.47.4 </span></span><br><span class="line">R4(config-if)<span class="comment">#tunnel destination 47.47.47.7</span></span><br><span class="line">R4(config-if)<span class="comment">#ip address 7.7.7.8 255.255.255.255</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#int tunnel 2 </span></span><br><span class="line">R5(config-if)<span class="comment">#tunnel source 56.56.56.5</span></span><br><span class="line">R5(config-if)<span class="comment">#tunnel destination 47.47.47.7</span></span><br><span class="line">R5(config-if)<span class="comment">#ip address 5.5.5.5 255.255.255.255</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMCZQ.png"></p>
+<ol start="3">
+<li>在 R1 上，采用合适的方式将相应的接口设置为 passive-interface。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line"><span class="comment">#将R1上所有的端口设置成passive-interface</span></span><br><span class="line">R1(config-router)<span class="comment">#passive-interface default </span></span><br><span class="line"><span class="comment">#取消Serial1/0、Serial 1/1的passive-interface</span></span><br><span class="line">R1(config-router)<span class="comment">#no passive-interface serial 1/0</span></span><br><span class="line">R1(config-router)<span class="comment">#no passive-interface serial 1/1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>在 R1 与 R2 的链路之间使用链路明文认证，密码为“huangzc”，并使用 wireshark 抓包观察认证信息。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#int s1/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br><span class="line">R2(config)<span class="comment">#int s1/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;由于使用eve模拟无法使用Wireshark抓包观察串行端口，所以暂时无法实现。</p>
+<ol start="5">
+<li>在 R1 与 R3 的链路之间使用链路 MD5 认证，密码为“huangzc”，并使用 wireshark 抓包观察认证信息。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf authentication message-digest </span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s1/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf authentication message-digest </span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;由于使用eve模拟无法使用Wireshark抓包观察串行端口，所以暂时无法实现。</p>
+<ol start="6">
+<li>在 area 4567 上使用区域间的 MD5 认证，密码自定。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在ospf进程中启用area 4567的区域间认证</span></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#area 4567 authentication message-digest </span></span><br><span class="line">R4(config-router)<span class="comment">#exit   </span></span><br><span class="line"><span class="comment">#在端口上配置区域间的密码</span></span><br><span class="line">R4(config)<span class="comment">#int e0/1</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 4567 authentication message-digest </span></span><br><span class="line">R5(config-router)<span class="comment">#exit </span></span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R6(config-router)<span class="comment">#area 4567 authentication message-digest </span></span><br><span class="line">R6(config-router)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#int e0/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line">R6(config-if)<span class="comment">#int e0/1                                                     </span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R7(config-router)<span class="comment">#area 4567 authentication message-digest </span></span><br><span class="line">R7(config-router)<span class="comment">#exit</span></span><br><span class="line">R7(config)<span class="comment">#int e0/1</span></span><br><span class="line">R7(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line">R7(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R7(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>在骨干区域上采用区域间的明文认证，密码自定。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config-router)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf authentication </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#int e0/0</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int e0/0</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>仔细观察各区域路由器的路由表，观察各 OSPF 路由器 LSDB 数据库的信息，重点观察各 OSPF 路由器存在哪些类型的 LSA 信息。</li>
+</ol>
+<p>&emsp;&emsp;此处以R1、R2路由器上的LSDB数据库信息为例，观察路由器上存在LSA类型信息。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMeMT.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMYQK.png"><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMGz6.png"></p>
+<ol start="9">
+<li>将 area 123 设置为 stub 区域，然后观察 R1 上的 OSPF 数据库和 R1 路由条目的变化，并测试 R1 与其他区域的连通性。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将area 123设置为stub区域</span></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#area 123 stub </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#area 123 stub </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#area 123 stub </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从R1的OSPF数据库中可以看出，将area 123设置为stub区域后，LSA 4类和LSA 5类的路由被过滤掉了，并下发三类的默认路由。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMDJI.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMcy8.png"></p>
+<p>&emsp;&emsp;R1与其他区域的联通性良好，如下图所示。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMfoj.png"></p>
+<ol start="10">
+<li>将 area 123 设置为 totally stub 区域，再次观察 R1 上的 OSPF 数据库和路由条目的变化，并测试 R1 与其他区域的连通性。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在9的基础上进行totally stub的配置 只需在ABR上进行配置</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#are 123 stub no-summary </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#are 123 stub no-summary </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;观察R1上的OSPF数据库和路由条目的变化可得知，将area 123设置为totally stub区域后，LSA 3类、LSA 4类、LSA 5类的路由均被过滤，并下发LSA 3类的默认路由。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMHyT.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMbOU.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYQ9l6.png"></p>
+<ol start="10">
+<li>将 area 4567 设置为 NSSA 区域，再次观察各路由条目的变化，完成必要的配置，实现全网可达。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在进程下将area 4567设置为nssa区域（由于area 4567存在ASBR（R6），所以只能设置为nssa区域）</span></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#area 4567 nssa  </span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1  </span></span><br><span class="line">R5(config-router)<span class="comment">#area 4567 nssa</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router ospf 1  </span></span><br><span class="line">R6(config-router)<span class="comment">#area 4567 nssa</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R7(config-router)<span class="comment">#area 4567 nssa</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;通过观察R5的路由表可以发现，将area 4567设置为nssa区域后，LSA 4类、LSA 5类的路由均被过滤，且不会下发LSA 3类的默认路由。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYKGDg.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在ABR手动向内部下发默认路由</span></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#area 4567 nssa default-information-originate </span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1 </span></span><br><span class="line">R5(config-router)<span class="comment">#area 4567 nssa default-information-originate</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYQVkd.png"></p>
+<ol start="11">
+<li>将 area 4567 设置为 Totally NSSA 区域，再次观察各路由条目的变化， 完成必要的配置，实现全网可达。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#area 4567 nssa no-summary </span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 4567 nssa no-summary</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router ospf 1  </span></span><br><span class="line">R6(config-router)<span class="comment">#area 4567 nssa no-summary</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R7(config-router)<span class="comment">#area 4567 nssa no-summary</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;观察R6上路由表的变化可以发现，将area 123设置为totally nssa区域后，LSA 3类、LSA 4类、LSA 5类的路由均被过滤，并下发LSA 3类的默认路由。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYQu1P.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYQnpt.png"></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
+        <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络参考模型</title>
+    <url>/2019/01/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<p>&emsp;&emsp;在计算机的网络中，有两个十分重要的参考模型，所有网络通信设备都是以参考模型为标准来研发的。因此熟知参考模型在学习网络知识的过程中是十分重要的。下面就简单的介绍一下两个参考模型。</p>
+<a id="more"></a>
+
+<p><strong>一、OSI参考模型</strong></p>
+<p>&emsp;&emsp;OSI（Open System Interconnect），即开放式系统互联。 一般都叫OSI参考模型，是ISO（国际标准化组织）组织在1985年研究的网络互联模型。</p>
+<p>&emsp;&emsp;它将网络划分成了七层，从下往依次为物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。</p>
+<p>&emsp;&emsp;第一层<strong>物理层（physical layer）</strong>的主要功能:是完成相邻节点之间原始比特流的传输物理层的设计主要涉及物理接口的机械电气功能和过程特性，以及物理层接口连接的传输介质等问题。</p>
+<p>&emsp;&emsp;第二层<strong>数据链路层（data link layer）</strong>负责将上层数据封装成固定格式的帧</p>
+<p>&emsp;&emsp;第三层<strong>网络层(network layer）</strong>的主要功能:是实现数据从源端到目的端的传输</p>
+<p>&emsp;&emsp;第四层<strong>传输层（transport layer）</strong>的主要功能:是实现网络中不同主机上用户进程之间的数据通信。</p>
+<p>&emsp;&emsp;第五层<strong>会话层（session layer）</strong>允许不同机器上的用户之间建立会话关系。管理会话控制令牌管理（token management）数据中插入同步点</p>
+<p>&emsp;&emsp;第六层<strong>表示层（presentation layer ）</strong>表示层以下各层只关心从源端机到目标机可靠地传输比特，而表示层关心的是所传输的语法和语义。用一种大家一致选定的标准方法对数据进行编码。同时，也能提供压缩解压、加密解密。</p>
+<p>&emsp;&emsp;第七层<strong>应用层（application layer）</strong>应用层能与应用程序界面沟通，以达到展示给用户的目的。在此常见的协议有:HTTP，HTTPS，FTP，TELNET，SSH，SMTP，POP3等。</p>
+<p>&emsp;&emsp;传输层要决定对会话层用户（最终的网络用户）提供什么样的服务。因此我们把1-3层的协议称为点对点的协议，而把4-7层的协议叫做端对端协议。</p>
+<p><strong>二、TCP/IP参考模型</strong></p>
+<p>&emsp;&emsp;TCP/IP参考模型是计算机网络的祖父ARPANET和其后续的因特网使用的参考模型。当无线网络和卫星出现以后，现有的协议在和它们相连的时候出现了问题，所以需要一种新的参考体系结构。这个体系结构在它的两个主要协议出现以后，被称为TCP/IP参考模型。</p>
+<p>&emsp;&emsp;TCP/IP是如今用于现实网络互联的通信协议。TCP/IP参考模型以TCP/IP为核心，将协议分成四个层次，分别是：网络接口层、网路层、传输层、应用层。</p>
+<p>&emsp;&emsp;但是由于TCP/IP的网络接口层并未定义该层的协议，且参与互联的各网络使用自己的物理层和数据链路层协议，然后与TCP/IP的网络接入层（即网络层）进行连接。所以后期的TCP/IP参考模型为五层：即将网络接口层分为物理层和数据链路层。</p>
+<p>第一层<strong>网络接入层</strong></p>
+<p>&emsp;&emsp;该层提供的服务与OSI参考模型中的物理层与数据链路层相对应。它负责监视数据在主机和网络之间的交换。事实上，TCP/IP本身并未定义该层的协议，而由参与互连的各网络使用自己的物理层和数据链路层协议，然后与TCP/IP的网络接入层进行连接。地址解析协议（ARP）工作在此层，即OSI参考模型的数据链路层。在前文也说过TCP/IP参考模型并未定义网络接入层的协议，又因为TCP/IP参考模型的广泛应用，所以为了方便理解网络接入层采用了OSI参考模型的物理层和数据链路层的定义。</p>
+<p>第二层<strong>网络层</strong>  </p>
+<p>&emsp;&emsp;网际互联层对应于OSI参考模型的网络层，主要解决主机到主机的通信问题。它所包含的协议设计数据包在整个网络上的逻辑传输。注重重新赋予主机一个IP地址来完成对主机的寻址，它还负责数据包在多种网络中的路由。该层有三个主要协议：网际协议（IP）、互联网组管理协议（IGMP）和互联网控制报文协议（ICMP）。</p>
+<p>第三层<strong>传输层</strong></p>
+<p>&emsp;&emsp;传输层对应于OSI参考模型的传输层，为应用层实体提供端到端的通信功能，保证了数据包的顺序传送及数据的完整性。该层定义了两个主要的协议：传输控制协议（TCP）和用户数据报协议（UDP)。</p>
+<p>&emsp;&emsp;TCP协议提供的是一种可靠的、通过“三次握手”来连接的数据传输服务；而UDP协议提供的则是不保证可靠的（并不是不可靠）、无连接的数据传输服务。</p>
+<p>第四层<strong>应用层</strong></p>
+<p>&emsp;&emsp;应用层对应于OSI参考模型的高层，为用户提供所需要的各种服务，例如：FTP、Telnet、DNS、SMTP等。</p>
+<p>&emsp;&emsp;以上就是计算机网络模型的大致内容，下面简单写下OSI参考模型和TCP/IP参考模型的<strong>异同点</strong>：</p>
+<p><strong>共同点：</strong></p>
+<p>&emsp;&emsp;（1）OSI参考模型和TCP/IP参考模型都采用了层次结构的概念。</p>
+<p>&emsp;&emsp;（2）都能够提供面向连接和无连接两种通信服务机制。</p>
+<p><strong>不同点：</strong></p>
+<p>&emsp;&emsp;（1）OSI采用的七层模型，而TCP/IP是四层结构。</p>
+<p>&emsp;&emsp;（2）TCP/IP参考模型的网络接口层实际上并没有真正的定义，只是一些概念性的描述。而OSI参考模型不仅分了两层，而且每一层的功能都很详尽，甚至在数据链路层又分出一个介质访问子层，专门解决局域网的共享介质问题。</p>
+<p>&emsp;&emsp;（3）OSI模型是在协议开发前设计的，具有通用性。TCP/IP是先有协议集然后建立模型，不适用于非TCP/IP网络。</p>
+<p>&emsp;&emsp;（4）OSI参考模型与TCP/IP参考模型的传输层功能基本相似，都是负责为用户提供真正的端对端的通信服务，也对高层屏蔽了底层网络的实现细节。所不同的是TCP/IP参考模型的传输层是建立在网络互联层基础之上的，而网络互联层只提供无连接的网络服务，所以面向连接的功能完全在TCP协议中实现，当然TCP/IP的传输层还提供无连接的服务，如UDP；相反OSI参考模型的传输层是建立在网络层基础之上的，网络层既提供面向连接的服务，又提供无连接的服务，但传输层只提供面向连接的服务。</p>
+<p>&emsp;&emsp;（5）OSI参考模型的抽象能力高，适合与描述各种网络；而TCP/IP是先有了协议，才制定TCP/IP模型的。</p>
+<p>&emsp;&emsp;（6）OSI参考模型的概念划分清晰，但过于复杂；而TCP/IP参考模型在服务、接口和协议的 区别上不清楚，功能描述和实现细节混在一起。</p>
+<p>&emsp;&emsp;（7）TCP/IP参考模型的网络接口层并不是真正的一层；OSI参考模型的缺点是层次过多，划分意义不大但增加了复杂性。</p>
+<p>&emsp;&emsp;（8）OSI参考模型虽然被看好，由于没把握好时机，技术不成熟，实现困难；相反，TCP/IP参考模型虽然有许多不尽人意的地方，但还是比较成功的。</p>
+<p>&emsp;&emsp;本篇本章只是作者在学习过程中整理的一些笔记。仅仅对计算机网络参考模型做了简单的介绍，概念的定义是网上收集的一些资料。因此如果想要更深入学习计算机网络参考模型，可以查找更专业的书籍。</p>
+]]></content>
+      <categories>
+        <category>网络基础</category>
+      </categories>
+      <tags>
+        <tag>网络与数据通信</tag>
+        <tag>CCNA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安恒杯四月月赛misc——Writeup</title>
+    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
+    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
+<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
+<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
+<p>​        将what_you_want.7z导出，发现需要密码。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
+<p>​        根据文件名的提示找到pin，解压获得flag。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
+<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
+<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
+<p>​        首先获取该内存的配置文件</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
+<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
+<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
+<p>​        将其导出</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
+<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
+<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
+<p>​        用winhex打开即可找到flag。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
+]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>ctf</tag>
+        <tag>网络安全</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP路由综合实验一</title>
     <url>/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。</p>
@@ -533,7 +759,7 @@
 <li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划，并分别在路由器 R1、R2、R3、R5 和R6 上各起一个loopback 接口，地址为各路由器的编号，如 R1 的 loopback 地址就为 1.1.1.1，其他以此类推；</li>
 </ol>
 <p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipPat.png"></p>
-<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R9上的172.16.1.1、172.16.2.1……。如图所示，为R1、R4的端口配置情况。</p>
+<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R9上的172.16.1.1/24、172.16.2.1/24……。以R1、R4的端口配置情况为例。</p>
 <p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we58CF.png"></p>
 <p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5NuR.png"></p>
 <ol start="2">
@@ -608,116 +834,6 @@
         <tag>CCNP</tag>
         <tag>路由</tag>
         <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2019/01/01/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>安恒杯四月月赛misc——Writeup</title>
-    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
-    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
-<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
-<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
-<p>​        将what_you_want.7z导出，发现需要密码。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
-<p>​        根据文件名的提示找到pin，解压获得flag。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
-<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
-<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
-<p>​        首先获取该内存的配置文件</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
-<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
-<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
-<p>​        将其导出</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
-<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
-<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
-<p>​        用winhex打开即可找到flag。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
-]]></content>
-      <categories>
-        <category>Writeup</category>
-      </categories>
-      <tags>
-        <tag>ctf</tag>
-        <tag>网络安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算机网络参考模型</title>
-    <url>/2019/01/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</url>
-    <content><![CDATA[<p>&emsp;&emsp;在计算机的网络中，有两个十分重要的参考模型，所有网络通信设备都是以参考模型为标准来研发的。因此熟知参考模型在学习网络知识的过程中是十分重要的。下面就简单的介绍一下两个参考模型。</p>
-<a id="more"></a>
-
-<p><strong>一、OSI参考模型</strong></p>
-<p>&emsp;&emsp;OSI（Open System Interconnect），即开放式系统互联。 一般都叫OSI参考模型，是ISO（国际标准化组织）组织在1985年研究的网络互联模型。</p>
-<p>&emsp;&emsp;它将网络划分成了七层，从下往依次为物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。</p>
-<p>&emsp;&emsp;第一层<strong>物理层（physical layer）</strong>的主要功能:是完成相邻节点之间原始比特流的传输物理层的设计主要涉及物理接口的机械电气功能和过程特性，以及物理层接口连接的传输介质等问题。</p>
-<p>&emsp;&emsp;第二层<strong>数据链路层（data link layer）</strong>负责将上层数据封装成固定格式的帧</p>
-<p>&emsp;&emsp;第三层<strong>网络层(network layer）</strong>的主要功能:是实现数据从源端到目的端的传输</p>
-<p>&emsp;&emsp;第四层<strong>传输层（transport layer）</strong>的主要功能:是实现网络中不同主机上用户进程之间的数据通信。</p>
-<p>&emsp;&emsp;第五层<strong>会话层（session layer）</strong>允许不同机器上的用户之间建立会话关系。管理会话控制令牌管理（token management）数据中插入同步点</p>
-<p>&emsp;&emsp;第六层<strong>表示层（presentation layer ）</strong>表示层以下各层只关心从源端机到目标机可靠地传输比特，而表示层关心的是所传输的语法和语义。用一种大家一致选定的标准方法对数据进行编码。同时，也能提供压缩解压、加密解密。</p>
-<p>&emsp;&emsp;第七层<strong>应用层（application layer）</strong>应用层能与应用程序界面沟通，以达到展示给用户的目的。在此常见的协议有:HTTP，HTTPS，FTP，TELNET，SSH，SMTP，POP3等。</p>
-<p>&emsp;&emsp;传输层要决定对会话层用户（最终的网络用户）提供什么样的服务。因此我们把1-3层的协议称为点对点的协议，而把4-7层的协议叫做端对端协议。</p>
-<p><strong>二、TCP/IP参考模型</strong></p>
-<p>&emsp;&emsp;TCP/IP参考模型是计算机网络的祖父ARPANET和其后续的因特网使用的参考模型。当无线网络和卫星出现以后，现有的协议在和它们相连的时候出现了问题，所以需要一种新的参考体系结构。这个体系结构在它的两个主要协议出现以后，被称为TCP/IP参考模型。</p>
-<p>&emsp;&emsp;TCP/IP是如今用于现实网络互联的通信协议。TCP/IP参考模型以TCP/IP为核心，将协议分成四个层次，分别是：网络接口层、网路层、传输层、应用层。</p>
-<p>&emsp;&emsp;但是由于TCP/IP的网络接口层并未定义该层的协议，且参与互联的各网络使用自己的物理层和数据链路层协议，然后与TCP/IP的网络接入层（即网络层）进行连接。所以后期的TCP/IP参考模型为五层：即将网络接口层分为物理层和数据链路层。</p>
-<p>第一层<strong>网络接入层</strong></p>
-<p>&emsp;&emsp;该层提供的服务与OSI参考模型中的物理层与数据链路层相对应。它负责监视数据在主机和网络之间的交换。事实上，TCP/IP本身并未定义该层的协议，而由参与互连的各网络使用自己的物理层和数据链路层协议，然后与TCP/IP的网络接入层进行连接。地址解析协议（ARP）工作在此层，即OSI参考模型的数据链路层。在前文也说过TCP/IP参考模型并未定义网络接入层的协议，又因为TCP/IP参考模型的广泛应用，所以为了方便理解网络接入层采用了OSI参考模型的物理层和数据链路层的定义。</p>
-<p>第二层<strong>网络层</strong>  </p>
-<p>&emsp;&emsp;网际互联层对应于OSI参考模型的网络层，主要解决主机到主机的通信问题。它所包含的协议设计数据包在整个网络上的逻辑传输。注重重新赋予主机一个IP地址来完成对主机的寻址，它还负责数据包在多种网络中的路由。该层有三个主要协议：网际协议（IP）、互联网组管理协议（IGMP）和互联网控制报文协议（ICMP）。</p>
-<p>第三层<strong>传输层</strong></p>
-<p>&emsp;&emsp;传输层对应于OSI参考模型的传输层，为应用层实体提供端到端的通信功能，保证了数据包的顺序传送及数据的完整性。该层定义了两个主要的协议：传输控制协议（TCP）和用户数据报协议（UDP)。</p>
-<p>&emsp;&emsp;TCP协议提供的是一种可靠的、通过“三次握手”来连接的数据传输服务；而UDP协议提供的则是不保证可靠的（并不是不可靠）、无连接的数据传输服务。</p>
-<p>第四层<strong>应用层</strong></p>
-<p>&emsp;&emsp;应用层对应于OSI参考模型的高层，为用户提供所需要的各种服务，例如：FTP、Telnet、DNS、SMTP等。</p>
-<p>&emsp;&emsp;以上就是计算机网络模型的大致内容，下面简单写下OSI参考模型和TCP/IP参考模型的<strong>异同点</strong>：</p>
-<p><strong>共同点：</strong></p>
-<p>&emsp;&emsp;（1）OSI参考模型和TCP/IP参考模型都采用了层次结构的概念。</p>
-<p>&emsp;&emsp;（2）都能够提供面向连接和无连接两种通信服务机制。</p>
-<p><strong>不同点：</strong></p>
-<p>&emsp;&emsp;（1）OSI采用的七层模型，而TCP/IP是四层结构。</p>
-<p>&emsp;&emsp;（2）TCP/IP参考模型的网络接口层实际上并没有真正的定义，只是一些概念性的描述。而OSI参考模型不仅分了两层，而且每一层的功能都很详尽，甚至在数据链路层又分出一个介质访问子层，专门解决局域网的共享介质问题。</p>
-<p>&emsp;&emsp;（3）OSI模型是在协议开发前设计的，具有通用性。TCP/IP是先有协议集然后建立模型，不适用于非TCP/IP网络。</p>
-<p>&emsp;&emsp;（4）OSI参考模型与TCP/IP参考模型的传输层功能基本相似，都是负责为用户提供真正的端对端的通信服务，也对高层屏蔽了底层网络的实现细节。所不同的是TCP/IP参考模型的传输层是建立在网络互联层基础之上的，而网络互联层只提供无连接的网络服务，所以面向连接的功能完全在TCP协议中实现，当然TCP/IP的传输层还提供无连接的服务，如UDP；相反OSI参考模型的传输层是建立在网络层基础之上的，网络层既提供面向连接的服务，又提供无连接的服务，但传输层只提供面向连接的服务。</p>
-<p>&emsp;&emsp;（5）OSI参考模型的抽象能力高，适合与描述各种网络；而TCP/IP是先有了协议，才制定TCP/IP模型的。</p>
-<p>&emsp;&emsp;（6）OSI参考模型的概念划分清晰，但过于复杂；而TCP/IP参考模型在服务、接口和协议的 区别上不清楚，功能描述和实现细节混在一起。</p>
-<p>&emsp;&emsp;（7）TCP/IP参考模型的网络接口层并不是真正的一层；OSI参考模型的缺点是层次过多，划分意义不大但增加了复杂性。</p>
-<p>&emsp;&emsp;（8）OSI参考模型虽然被看好，由于没把握好时机，技术不成熟，实现困难；相反，TCP/IP参考模型虽然有许多不尽人意的地方，但还是比较成功的。</p>
-<p>&emsp;&emsp;本篇本章只是作者在学习过程中整理的一些笔记。仅仅对计算机网络参考模型做了简单的介绍，概念的定义是网上收集的一些资料。因此如果想要更深入学习计算机网络参考模型，可以查找更专业的书籍。</p>
-]]></content>
-      <categories>
-        <category>网络基础</category>
-      </categories>
-      <tags>
-        <tag>网络与数据通信</tag>
-        <tag>CCNA</tag>
       </tags>
   </entry>
 </search>
