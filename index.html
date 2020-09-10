@@ -342,7 +342,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-10 21:49:36" itemprop="dateModified" datetime="2020-09-10T21:49:36+08:00">2020-09-10</time>
+                <time title="修改时间：2020-09-10 22:33:59" itemprop="dateModified" datetime="2020-09-10T22:33:59+08:00">2020-09-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -360,7 +360,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.9k</span>
+              <span>7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -379,110 +379,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>【实验目的】</p>
-<ol>
-<li><p>理解和掌握 OSPF stub 区域的特点和配置</p>
-</li>
-<li><p>理解和掌握 OSPF totally stub 区域的特点和配置</p>
-</li>
-<li><p>理解和掌握 OSPF NSSA 区域的特点和配置</p>
-</li>
-<li><p>理解和掌握 OSPF totally NSSA 区域的特点和配置</p>
-</li>
-<li><p>掌握被动接口的作用</p>
-</li>
-<li><p>掌握 OSPF LSA7 的作用</p>
-</li>
-<li><p>掌握 OSPF 邻居间的验证</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p>   <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/08/wQ9aSU.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/08/wQ9NWT.png"></p>
-<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R1上的11.1.1.1/24、11.1.2.1/24……。以R1、R2的端口配置情况为例。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYKHVH.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYKTqe.png"></p>
-<ol start="2">
-<li>完成各路由协议的基本配置，在 R2 上进行 OSPF 与 RIPv2 的双向重分布，在 R6 上进行 EIGRP 与 OSPF 的双向重分布，然后完成必要的配置， 实现全网可达，并且在 OSPF 区域内的各个路由器上手工指定各路由器的 RID 为各路由器的编号。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在各路由器上完成动态路由的配置（此处以R1为例），在端口上进行ospf的通告</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.1.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment"># exit     </span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback2</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.2.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback3</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.3.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback4</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.4.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback5</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.5.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback6</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.6.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback7</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.7.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#interface Loopback8</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 11.1.8.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf 1 area 123</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R2上启用OSPF协议（略）与RIP协议</span></span><br><span class="line">R2(config)<span class="comment">#router rip </span></span><br><span class="line">R2(config-router)<span class="comment">#version 2</span></span><br><span class="line">R2(config-router)<span class="comment">#network 29.0.0.0</span></span><br><span class="line">R2(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"><span class="comment">#R2双向重分布</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#redistribute rip metric 2 subnets</span></span><br><span class="line">R2(config)<span class="comment">#router rip </span></span><br><span class="line">R2(config-router)<span class="comment">#redistribute ospf 1 metric 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R6上启用OSPF协议（略）与EIGRP协议</span></span><br><span class="line">R6(config)<span class="comment">#router eigrp 90 </span></span><br><span class="line">R6(config-router)<span class="comment">#network 61.0.0.0</span></span><br><span class="line"><span class="comment">#R6双向重分布</span></span><br><span class="line">R6(config)<span class="comment">#router eigrp 90 </span></span><br><span class="line">R6(config-router)<span class="comment">#redistribute ospf 1 metric 1 1 1 1 1 </span></span><br><span class="line">R6(config-router)<span class="comment">#router ospf 1 </span></span><br><span class="line">R6(config-router)<span class="comment">#redistribute eigrp 90 subnets </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#由于非骨干之间的通信需要经过骨干区域，所以需要在将area 78与骨干区域连接在一起（可以通过配置“虚链路”或“隧道”），此处采用隧道的方法</span></span><br><span class="line">R7(config)<span class="comment">#int tunnel 1</span></span><br><span class="line">R7(config-if)<span class="comment">#tunnel source 47.47.47.7</span></span><br><span class="line">R7(config-if)<span class="comment">#tunnel destination 47.47.47.4</span></span><br><span class="line">R7(config-if)<span class="comment">#ip address 7.7.7.7 255.255.255.255</span></span><br><span class="line">R7(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line">R7(config-if)<span class="comment">#exit </span></span><br><span class="line">R7(config)<span class="comment">#int tunnel 2</span></span><br><span class="line">R7(config-if)<span class="comment">#tunnel source 47.47.47.7 </span></span><br><span class="line">R7(config-if)<span class="comment">#tunnel destination 56.56.56.5</span></span><br><span class="line">R7(config-if)<span class="comment">#ip address 5.5.5.7 255.255.255.255</span></span><br><span class="line">R7(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int tunnel 1</span></span><br><span class="line">R4(config-if)<span class="comment">#tunnel source 47.47.47.4 </span></span><br><span class="line">R4(config-if)<span class="comment">#tunnel destination 47.47.47.7</span></span><br><span class="line">R4(config-if)<span class="comment">#ip address 7.7.7.8 255.255.255.255</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#int tunnel 2 </span></span><br><span class="line">R5(config-if)<span class="comment">#tunnel source 56.56.56.5</span></span><br><span class="line">R5(config-if)<span class="comment">#tunnel destination 47.47.47.7</span></span><br><span class="line">R5(config-if)<span class="comment">#ip address 5.5.5.5 255.255.255.255</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMCZQ.png"></p>
-<ol start="3">
-<li>在 R1 上，采用合适的方式将相应的接口设置为 passive-interface。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line"><span class="comment">#将R1上所有的端口设置成passive-interface</span></span><br><span class="line">R1(config-router)<span class="comment">#passive-interface default </span></span><br><span class="line"><span class="comment">#取消Serial1/0、Serial 1/1的passive-interface</span></span><br><span class="line">R1(config-router)<span class="comment">#no passive-interface serial 1/0</span></span><br><span class="line">R1(config-router)<span class="comment">#no passive-interface serial 1/1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>在 R1 与 R2 的链路之间使用链路明文认证，密码为“huangzc”，并使用 wireshark 抓包观察认证信息。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#int s1/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br><span class="line">R2(config)<span class="comment">#int s1/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;由于使用eve模拟无法使用Wireshark抓包观察串行端口，所以暂时无法实现。</p>
-<ol start="5">
-<li>在 R1 与 R3 的链路之间使用链路 MD5 认证，密码为“huangzc”，并使用 wireshark 抓包观察认证信息。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf authentication message-digest </span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s1/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf authentication message-digest </span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;由于使用eve模拟无法使用Wireshark抓包观察串行端口，所以暂时无法实现。</p>
-<ol start="6">
-<li>在 area 4567 上使用区域间的 MD5 认证，密码自定。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在ospf进程中启用area 4567的区域间认证</span></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#area 4567 authentication message-digest </span></span><br><span class="line">R4(config-router)<span class="comment">#exit   </span></span><br><span class="line"><span class="comment">#在端口上配置区域间的密码</span></span><br><span class="line">R4(config)<span class="comment">#int e0/1</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 4567 authentication message-digest </span></span><br><span class="line">R5(config-router)<span class="comment">#exit </span></span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R6(config-router)<span class="comment">#area 4567 authentication message-digest </span></span><br><span class="line">R6(config-router)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#int e0/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line">R6(config-if)<span class="comment">#int e0/1                                                     </span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R7(config-router)<span class="comment">#area 4567 authentication message-digest </span></span><br><span class="line">R7(config-router)<span class="comment">#exit</span></span><br><span class="line">R7(config)<span class="comment">#int e0/1</span></span><br><span class="line">R7(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br><span class="line">R7(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R7(config-if)<span class="comment">#ip ospf message-digest-key 1 md5 huangzc</span></span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>在骨干区域上采用区域间的明文认证，密码自定。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">R2(config-router)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf authentication </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#int e0/0</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int e0/0</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf authentication</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf authentication-key huangzc</span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>仔细观察各区域路由器的路由表，观察各 OSPF 路由器 LSDB 数据库的信息，重点观察各 OSPF 路由器存在哪些类型的 LSA 信息。</li>
-</ol>
-<p>&emsp;&emsp;此处以R1、R2路由器上的LSDB数据库信息为例，观察路由器上存在LSA类型信息。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMeMT.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMYQK.png"><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMGz6.png"></p>
-<ol start="9">
-<li>将 area 123 设置为 stub 区域，然后观察 R1 上的 OSPF 数据库和 R1 路由条目的变化，并测试 R1 与其他区域的连通性。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将area 123设置为stub区域</span></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#area 123 stub </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#area 123 stub </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#area 123 stub </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;从R1的OSPF数据库中可以看出，将area 123设置为stub区域后，LSA 4类和LSA 5类的路由被过滤掉了，并下发三类的默认路由。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMDJI.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMcy8.png"></p>
-<p>&emsp;&emsp;R1与其他区域的联通性良好，如下图所示。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMfoj.png"></p>
-<ol start="10">
-<li>将 area 123 设置为 totally stub 区域，再次观察 R1 上的 OSPF 数据库和路由条目的变化，并测试 R1 与其他区域的连通性。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在9的基础上进行totally stub的配置 只需在ABR上进行配置</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#are 123 stub no-summary </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#are 123 stub no-summary </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;观察R1上的OSPF数据库和路由条目的变化可得知，将area 123设置为totally stub区域后，LSA 3类、LSA 4类、LSA 5类的路由均被过滤，并下发LSA 3类的默认路由。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMHyT.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYMbOU.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYQ9l6.png"></p>
-<ol start="10">
-<li>将 area 4567 设置为 NSSA 区域，再次观察各路由条目的变化，完成必要的配置，实现全网可达。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在进程下将area 4567设置为nssa区域（由于area 4567存在ASBR（R6），所以只能设置为nssa区域）</span></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#area 4567 nssa  </span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1  </span></span><br><span class="line">R5(config-router)<span class="comment">#area 4567 nssa</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router ospf 1  </span></span><br><span class="line">R6(config-router)<span class="comment">#area 4567 nssa</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R7(config-router)<span class="comment">#area 4567 nssa</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;通过观察R5的路由表可以发现，将area 4567设置为nssa区域后，LSA 4类、LSA 5类的路由均被过滤，且不会下发LSA 3类的默认路由。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYKGDg.png"></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在ABR手动向内部下发默认路由</span></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#area 4567 nssa default-information-originate </span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1 </span></span><br><span class="line">R5(config-router)<span class="comment">#area 4567 nssa default-information-originate</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYQVkd.png"></p>
-<ol start="11">
-<li>将 area 4567 设置为 Totally NSSA 区域，再次观察各路由条目的变化， 完成必要的配置，实现全网可达。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#area 4567 nssa no-summary </span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 4567 nssa no-summary</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router ospf 1  </span></span><br><span class="line">R6(config-router)<span class="comment">#area 4567 nssa no-summary</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R7(config-router)<span class="comment">#area 4567 nssa no-summary</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;观察R6上路由表的变化可以发现，将area 123设置为totally nssa区域后，LSA 3类、LSA 4类、LSA 5类的路由均被过滤，并下发LSA 3类的默认路由。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYQu1P.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/10/wYQnpt.png"></p>
-
+          <p>&emsp;&emsp;本篇文章主要介绍 OSPF stub 区域的特点和配置； OSPF totally stub 区域的特点和配置； OSPF NSSA 区域的特点和配置； OSPF totally NSSA 区域的特点和配置；被动接口的作用掌握 OSPF LSA7 的作用； OSPF 邻居间的验证。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/05/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1302,7 +1207,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">40k</span>
+    <span title="站点总字数">41k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
