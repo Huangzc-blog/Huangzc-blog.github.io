@@ -403,6 +403,109 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP交换综合实验四</title>
+    <url>/2019/03/21/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了掌握交换端口安全的应用与配置；DHCP SNOOPING 的应用与配置；DAI 的应用与配置；IP SG 的应用与配置；PVLAN 的应用与配置；802.1x 的应用与配置 。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握交换端口安全的应用与配置</p>
+</li>
+<li><p>掌握 DHCP SNOOPING 的应用与配置</p>
+</li>
+<li><p>掌握 DAI 的应用与配置</p>
+</li>
+<li><p>掌握 IP SG 的应用与配置</p>
+</li>
+<li><p>熟悉 PVLAN 的应用与配置</p>
+</li>
+<li><p>熟悉 802.1x 的应用与配置 </p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p> <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/wpEfUI.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/wpEWVA.png"></p>
+<ol start="2">
+<li>根据图示，将各主机、DHCP 服务器以及 ACS 服务器划分进相应的 VLAN 中， 各 VLAN 地址段信息，以及路由器与多层交换间链路的地址自己规划，其中VLAN10 和 VLAN20 的主机通过 DHCP 方式获取 IP 地址。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10,20,30,40 </span></span><br><span class="line"><span class="comment">#将ACS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/3</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e1/0-1</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line"><span class="comment">#由于各PC机与DHCP服务器不在同一Vlan中，所以需要配置DHCP中继来确保PC能够通过DHCP获取IP地址</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w98NgH.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w98s58.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w93s1J.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91tIO.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91Eq0.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91KG4.png"></p>
+<ol start="3">
+<li>在该园区网络内部署合适的第一跳冗余技术以及合适的路由协议，并且要求在正常情况下，DSW1 作为 VLAN10 主网关，DSW2 作为 VLAN20 的主网关， DSW1 和 DSW2 中的任何一台设备出现故障都不能影响用户的网络访问。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上启用HRSP协议，使DSW1作为Vlan 10的主网关</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config)<span class="comment">#intterface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为Vlan 10的主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line">DSW1(config-if)<span class="comment">#intterface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上启用HRSP协议，使DSW2作为Vlan 20的主网关</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt  </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit </span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangnzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW2的优先级减少6小于DSW2的105，DSW1成为Vlan 20的主网关 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9J9wq.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JFYT.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Y6PK.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Y8U0.png"></p>
+<ol start="4">
+<li>要求连接所有 PC 机和 SRV 的端口忽视生成树过程，直接跳转到转发状态。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#spanning-tree mode rapid-pvst  </span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">DSW2(config)<span class="comment">#spanning-tree mode rapid-pvst </span></span><br><span class="line">DSW2(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW2(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#spanning-tree mode rapid-pvst   </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#spanning-tree mode rapid-pvst      </span></span><br><span class="line">ASW2(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>完成必要配置，实现 VLAN10 和 VLAN20 的主机可以通过 DHCP 获取 IP 地址，并且各主机可以访问因特网。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置DHCP服务器,使得vlan 10，vlan 20的主机通过DHCP的方式获取IP地址</span></span><br><span class="line">DHCP(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DHCP(config-if)<span class="comment">#ip address 192.168.40.100 255.255.255.0</span></span><br><span class="line">DHCP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DHCP(config-if)<span class="comment">#exit </span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 10 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.10.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.10.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 20</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.20.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.20.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Ja7t.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JwAP.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JU0I.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JNnA.png"></p>
+<p>&emsp;&emsp;在R1上配置NAT，使各主机能够访问Internet</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#设置ACL，匹配感兴趣流量</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.10.0 0.0.0.255 </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.20.0 0.0.0.255 </span></span><br><span class="line"><span class="comment">#指定内外接口</span></span><br><span class="line">R1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">R1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip nat inside</span></span><br><span class="line"><span class="comment">#配置NAT，将内网IP地址转换为外网IP地址</span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 1 interface e0/0 overload </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用PC 1访问Internet：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JQk6.png"></p>
+<ol start="6">
+<li>在 ASW1 和 ASW2 上，采用合适的方式实现连着 PC 的接口避免 MAC 地址洪泛攻击，并且一个接口只允许接入一台 PC，当有非法 PC 接入时，能够产生告警消息。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br><span class="line">ASW2(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>将连接 PC1 的端口设置成该端口只允许 PC1 接入，实现任何情况下，其他主机都不允许通过该端口接入园区网络。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将PC机与交换机对应的端口绑定起来，防止其他主机通过该端口接入园区网络</span></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:09</span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/2</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0a</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0b</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/2                                                    </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky                 </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0c</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>为了确保该园区网内的用户可以正常获取 IP 地址，避免未授权的 DHCP 服务器接入，在该园区网合适的交换机上部署 DHCP Snooping 技术，并且为了提高园区网的安全，最大限度的降低 ARP 攻击和 IP 地址欺骗等攻击对网络造成的影响，在合适的交换机上部署动态 ARP 检测和 IP 源防护技术。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW2上部署DHCP Snooping 技术</span></span><br><span class="line">DSW2(config)<span class="comment">#ip dhcp snooping </span></span><br><span class="line"><span class="comment">#在ASW1部署动态ARP检测</span></span><br><span class="line">ASW1(config)<span class="comment">#ip arp inspection vlan 10 </span></span><br><span class="line"><span class="comment">#将e0/1设置为信任端口</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line"><span class="comment">#将非信任端口设置限制速率（此处的非信任端口为所有闲置端口）</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection trust </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/0,e0/3,e0/2-3</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection limit rate 10</span></span><br><span class="line"><span class="comment">#在e0/1、e0/2上部署IP源防护技术</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip verify source port-security</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>实现其他 PC 通过 ASW1 接入园区网络的时候，需要通过 802.1x 认证才能正常连入网络，如果PC 不支持802.1X 认证，那么就将该PC 划分到来宾VLAN60 里面，要求认证方式使用 AAA。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#aaa new-model </span></span><br><span class="line">ASW1(config)<span class="comment">#aaa authentication login default group radius local enable none </span></span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li><p>在 ACS 上添加一个账户，用户名和密码自定，实现该用户通过 802.1x 验证后，就被自动划分到 VLAN50。</p>
+</li>
+<li><p>要求对所有设备的vty 登录都采用AAA 认证，并且当 AAA 服务器不可达时， 采用本地数据库进行认证。</p>
+</li>
+</ol>
+<p>&emsp;&emsp;<strong>由于受到实验条件的限制，第10、11条要求暂时无法实现。</strong></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP路由综合实验一</title>
     <url>/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。</p>
@@ -505,109 +608,6 @@
         <tag>CCNP</tag>
         <tag>路由</tag>
         <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP交换综合实验四</title>
-    <url>/2019/03/21/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了掌握交换端口安全的应用与配置；DHCP SNOOPING 的应用与配置；DAI 的应用与配置；IP SG 的应用与配置；PVLAN 的应用与配置；802.1x 的应用与配置 。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握交换端口安全的应用与配置</p>
-</li>
-<li><p>掌握 DHCP SNOOPING 的应用与配置</p>
-</li>
-<li><p>掌握 DAI 的应用与配置</p>
-</li>
-<li><p>掌握 IP SG 的应用与配置</p>
-</li>
-<li><p>熟悉 PVLAN 的应用与配置</p>
-</li>
-<li><p>熟悉 802.1x 的应用与配置 </p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p> <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/wpEfUI.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/wpEWVA.png"></p>
-<ol start="2">
-<li>根据图示，将各主机、DHCP 服务器以及 ACS 服务器划分进相应的 VLAN 中， 各 VLAN 地址段信息，以及路由器与多层交换间链路的地址自己规划，其中VLAN10 和 VLAN20 的主机通过 DHCP 方式获取 IP 地址。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10,20,30,40 </span></span><br><span class="line"><span class="comment">#将ACS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/3</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e1/0-1</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line"><span class="comment">#由于各PC机与DHCP服务器不在同一Vlan中，所以需要配置DHCP中继来确保PC能够通过DHCP获取IP地址</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w98NgH.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w98s58.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w93s1J.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91tIO.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91Eq0.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91KG4.png"></p>
-<ol start="3">
-<li>在该园区网络内部署合适的第一跳冗余技术以及合适的路由协议，并且要求在正常情况下，DSW1 作为 VLAN10 主网关，DSW2 作为 VLAN20 的主网关， DSW1 和 DSW2 中的任何一台设备出现故障都不能影响用户的网络访问。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上启用HRSP协议，使DSW1作为Vlan 10的主网关</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config)<span class="comment">#intterface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为Vlan 10的主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line">DSW1(config-if)<span class="comment">#intterface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上启用HRSP协议，使DSW2作为Vlan 20的主网关</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt  </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit </span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangnzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW2的优先级减少6小于DSW2的105，DSW1成为Vlan 20的主网关 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9J9wq.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JFYT.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Y6PK.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Y8U0.png"></p>
-<ol start="4">
-<li>要求连接所有 PC 机和 SRV 的端口忽视生成树过程，直接跳转到转发状态。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#spanning-tree mode rapid-pvst  </span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">DSW2(config)<span class="comment">#spanning-tree mode rapid-pvst </span></span><br><span class="line">DSW2(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW2(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#spanning-tree mode rapid-pvst   </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#spanning-tree mode rapid-pvst      </span></span><br><span class="line">ASW2(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>完成必要配置，实现 VLAN10 和 VLAN20 的主机可以通过 DHCP 获取 IP 地址，并且各主机可以访问因特网。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置DHCP服务器,使得vlan 10，vlan 20的主机通过DHCP的方式获取IP地址</span></span><br><span class="line">DHCP(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DHCP(config-if)<span class="comment">#ip address 192.168.40.100 255.255.255.0</span></span><br><span class="line">DHCP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DHCP(config-if)<span class="comment">#exit </span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 10 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.10.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.10.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 20</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.20.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.20.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Ja7t.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JwAP.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JU0I.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JNnA.png"></p>
-<p>&emsp;&emsp;在R1上配置NAT，使各主机能够访问Internet</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#设置ACL，匹配感兴趣流量</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.10.0 0.0.0.255 </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.20.0 0.0.0.255 </span></span><br><span class="line"><span class="comment">#指定内外接口</span></span><br><span class="line">R1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">R1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip nat inside</span></span><br><span class="line"><span class="comment">#配置NAT，将内网IP地址转换为外网IP地址</span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 1 interface e0/0 overload </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用PC 1访问Internet：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JQk6.png"></p>
-<ol start="6">
-<li>在 ASW1 和 ASW2 上，采用合适的方式实现连着 PC 的接口避免 MAC 地址洪泛攻击，并且一个接口只允许接入一台 PC，当有非法 PC 接入时，能够产生告警消息。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br><span class="line">ASW2(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>将连接 PC1 的端口设置成该端口只允许 PC1 接入，实现任何情况下，其他主机都不允许通过该端口接入园区网络。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将PC机与交换机对应的端口绑定起来，防止其他主机通过该端口接入园区网络</span></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:09</span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/2</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0a</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0b</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/2                                                    </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky                 </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0c</span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>为了确保该园区网内的用户可以正常获取 IP 地址，避免未授权的 DHCP 服务器接入，在该园区网合适的交换机上部署 DHCP Snooping 技术，并且为了提高园区网的安全，最大限度的降低 ARP 攻击和 IP 地址欺骗等攻击对网络造成的影响，在合适的交换机上部署动态 ARP 检测和 IP 源防护技术。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW2上部署DHCP Snooping 技术</span></span><br><span class="line">DSW2(config)<span class="comment">#ip dhcp snooping </span></span><br><span class="line"><span class="comment">#在ASW1部署动态ARP检测</span></span><br><span class="line">ASW1(config)<span class="comment">#ip arp inspection vlan 10 </span></span><br><span class="line"><span class="comment">#将e0/1设置为信任端口</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line"><span class="comment">#将非信任端口设置限制速率（此处的非信任端口为所有闲置端口）</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection trust </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/0,e0/3,e0/2-3</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection limit rate 10</span></span><br><span class="line"><span class="comment">#在e0/1、e0/2上部署IP源防护技术</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip verify source port-security</span></span><br></pre></td></tr></table></figure>
-
-<ol start="9">
-<li>实现其他 PC 通过 ASW1 接入园区网络的时候，需要通过 802.1x 认证才能正常连入网络，如果PC 不支持802.1X 认证，那么就将该PC 划分到来宾VLAN60 里面，要求认证方式使用 AAA。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#aaa new-model </span></span><br><span class="line">ASW1(config)<span class="comment">#aaa authentication login default group radius local enable none </span></span><br></pre></td></tr></table></figure>
-
-<ol start="10">
-<li><p>在 ACS 上添加一个账户，用户名和密码自定，实现该用户通过 802.1x 验证后，就被自动划分到 VLAN50。</p>
-</li>
-<li><p>要求对所有设备的vty 登录都采用AAA 认证，并且当 AAA 服务器不可达时， 采用本地数据库进行认证。</p>
-</li>
-</ol>
-<p>&emsp;&emsp;<strong>由于受到实验条件的限制，第10、11条要求暂时无法实现。</strong></p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
       </tags>
   </entry>
   <entry>
@@ -814,6 +814,25 @@
         <tag>路由</tag>
         <tag>OSPF</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2019/01/01/hello-world%20-%20%E5%89%AF%E6%9C%AC%20(2)/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>CCNP路由综合实验五——BGP</title>
