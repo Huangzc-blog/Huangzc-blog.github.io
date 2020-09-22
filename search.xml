@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CCNA实验一</title>
+    <title>CCNA实验一——简单的基础实验</title>
     <url>/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
     <content><![CDATA[<p>&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
 <a id="more"></a>
