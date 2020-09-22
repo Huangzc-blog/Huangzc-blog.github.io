@@ -1,6 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CCNA实验一</title>
+    <url>/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>熟练掌握 GNS3 模拟器的安装与使用</p>
+</li>
+<li><p>掌握 GNS3 与 CRT 的关联</p>
+</li>
+<li><p>掌握通过 console 口方式登入设备</p>
+</li>
+<li><p>掌握通过 Telnet 方式远程登入设备</p>
+</li>
+<li><p>熟悉设备命令行界面的三种模式</p>
+</li>
+<li><p>熟悉查看路由器相关信息的基本命令</p>
+<p>【实验需求】</p>
+</li>
+<li><p>安装并使用 GNS3 模拟器及将 GNS3 与 CRT 关联</p>
+</li>
+<li><p>路由器不同模式的转换</p>
+</li>
+</ol>
+<p>&emsp;&emsp;路由器的三个模式：用户模式**&gt;<strong>、特权模式</strong>#<strong>、全局/配置模式</strong>（config）#**。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#用户模式转换为特权模式</span></span><br><span class="line">R1&gt;<span class="built_in">enable</span></span><br><span class="line"><span class="comment">#特权模式转换为全局/配置模式</span></span><br><span class="line">R1<span class="comment">#configure terminal </span></span><br><span class="line">R1(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>配置关闭域名解析、控制台超时和同步</li>
+</ol>
+<p>&emsp;&emsp;当配置Cisco设备长时间不进行配置时，就会退出用户模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#这是在做实验的时候的优化命令时，往往会由于打错命令，造成路由器会自动去向DNS服务器发送域名解析请求，造成耗损路由器CPU，而且解析时间很长而没法继续其他命令。为了加快命令的执行就关闭域名解析功能。在连入公网的路由器上，不需要关于域名解析，可以直接通过输入www.baidu.com去访问百度网站。输入下行命令可关闭域名解析</span></span><br><span class="line">R1(config)<span class="comment">#no ip domain lookup </span></span><br><span class="line"><span class="comment">#当配置Cisco设备长时间不进行配置时，就会退出用户模式。可以进入console口，将控制台超时的时间置为0（永不超时）</span></span><br><span class="line">R1(config)<span class="comment">#line console 0</span></span><br><span class="line">R1(config-line)<span class="comment">#exec-timeout 0</span></span><br><span class="line"><span class="comment">#在实验过程中控制台尝尝或出现一些提示信息，可以输入下行命令关闭日志同步，</span></span><br><span class="line">R1(config-line)<span class="comment">#logging synchronous </span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>设置设备名称</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#hostname Huangzc</span></span><br><span class="line">Huangzc(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>查看路由器的 IOS 版本，IOS 文件名，flash 大小，flash 可用空间及CPU 的利用率以及接口的简要信息</li>
+</ol>
+<p>&emsp;&emsp;查看路由器的IOS版本，IOS文件名：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show version </span></span><br><span class="line">Cisco IOS Software, 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line">Technical Support: http://www.cisco.com/techsupport</span><br><span class="line">Copyright (c) 1986-2010 by Cisco Systems, Inc.</span><br><span class="line">Compiled Wed 18-Aug-10 08:18 by prod_rel_team</span><br><span class="line"></span><br><span class="line">ROM: ROMMON Emulation Microcode</span><br><span class="line">ROM: 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line"></span><br><span class="line">Huangzc uptime is 21 minutes</span><br><span class="line">System returned to ROM by unknown reload cause - suspect boot_data[BOOT_COUNT] 0x0, BOOT_COUNT 0, BOOTDATA 19</span><br><span class="line">System image file is <span class="string">&quot;tftp://255.255.255.255/unknown&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">This product contains cryptographic features and is subject to United</span><br><span class="line">States and <span class="built_in">local</span> country laws governing import, <span class="built_in">export</span>, transfer and</span><br><span class="line">use. Delivery of Cisco cryptographic products does not imply</span><br><span class="line">third-party authority to import, <span class="built_in">export</span>, distribute or use encryption.</span><br><span class="line">Importers, exporters, distributors and users are responsible <span class="keyword">for</span></span><br><span class="line">compliance with U.S. and <span class="built_in">local</span> country laws. By using this product you</span><br><span class="line">agree to comply with applicable laws and regulations. If you are unable</span><br><span class="line">to comply with U.S. and <span class="built_in">local</span> laws, <span class="built_in">return</span> this product immediately.</span><br><span class="line"></span><br><span class="line">A summary of U.S. laws governing Cisco cryptographic products may be found at:</span><br><span class="line">http://www.cisco.com/wwl/<span class="built_in">export</span>/crypto/tool/stqrg.html</span><br><span class="line"></span><br><span class="line">If you require further assistance please contact us by sending email to</span><br><span class="line"><span class="built_in">export</span>@cisco.com.</span><br><span class="line"></span><br><span class="line">Cisco 3745 (R7000) processor (revision 2.0) with 249856K/12288K bytes of memory.</span><br><span class="line">Processor board ID FTX0945W0MY</span><br><span class="line">R7000 CPU at 350MHz, Implementation 39, Rev 2.1, 256KB L2, 512KB L3 Cache</span><br><span class="line">18 FastEthernet interfaces</span><br><span class="line">8 Serial interfaces</span><br><span class="line">1 Serial(sync/async) interface</span><br><span class="line">DRAM configuration is 64 bits wide with parity enabled.</span><br><span class="line">151K bytes of NVRAM.</span><br><span class="line"></span><br><span class="line">Configuration register is 0x2102</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看CPU 的利用率：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Huangzc#show processes cpu </span><br><span class="line">CPU utilization <span class="keyword">for</span> five seconds: <span class="number">0</span>%/<span class="number">0</span>%; one minute: <span class="number">0</span>%; five minutes: <span class="number">0</span>%</span><br><span class="line"> PID Runtime(ms)   Invoked      uSecs   <span class="number">5</span>Sec   <span class="number">1</span>Min   <span class="number">5</span>Min TTY Process </span><br><span class="line">   <span class="number">1</span>           <span class="number">4</span>         <span class="number">5</span>        <span class="number">800</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Chunk Manager    </span><br><span class="line">   <span class="number">2</span>           <span class="number">4</span>       <span class="number">284</span>         <span class="number">14</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Load Meter       </span><br><span class="line">   <span class="number">3</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> chkpt message ha </span><br><span class="line">   <span class="number">4</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> EDDRI_MAIN       </span><br><span class="line">   <span class="number">5</span>         <span class="number">296</span>       <span class="number">145</span>       <span class="number">2041</span>  <span class="number">0.00</span>%  <span class="number">0.01</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Check heaps      </span><br><span class="line">   <span class="number">6</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Pool Manager     </span><br><span class="line">   <span class="number">7</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Timers           </span><br><span class="line">   <span class="number">8</span>           <span class="number">0</span>        <span class="number">24</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Dynamic Cach </span><br><span class="line">   <span class="number">9</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Zone Manager </span><br><span class="line">  <span class="number">10</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Periodic Tim </span><br><span class="line">  <span class="number">11</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Deferred Por </span><br><span class="line">  <span class="number">12</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Seat Manager </span><br><span class="line">  <span class="number">13</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC BackPressure </span><br><span class="line">  <span class="number">14</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> OIR Handler      </span><br><span class="line">  <span class="number">15</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Crash writer     </span><br><span class="line">  <span class="number">16</span>           <span class="number">4</span>        <span class="number">49</span>         <span class="number">81</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Environmental mo </span><br><span class="line">  <span class="number">17</span>          <span class="number">12</span>        <span class="number">28</span>        <span class="number">428</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ARP Input        </span><br><span class="line">  <span class="number">18</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ATM Idle Timer   </span><br><span class="line">  <span class="number">19</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA high-capacit </span><br><span class="line">  <span class="number">20</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA_SERVER_DEADT </span><br><span class="line">  <span class="number">21</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Policy Manager  </span><br><span class="line">  --more--</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看接口的简要信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show ip interface brief </span></span><br><span class="line">Interface                  IP-Address      OK? Method Status                Protocol</span><br><span class="line">FastEthernet0/0            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial0/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet0/1            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet3/0            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/1            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/2            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/3            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/4            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/5            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/6            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/7            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/8            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/9            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/10           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/11           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/12           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/13           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/14           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/15           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">Vlan1                      unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;受实验环境所限，flash信息暂时无法查看</p>
+<ol start="6">
+<li>路由器的安全加固：console 口加密和进入特权模式的加密</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置console口的密码，并应用</span></span><br><span class="line">Huangzc(config)<span class="comment">#line console 0</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#login</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（明文）</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable password 456</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（密文），若两者都启用的话，则明文不生效</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable secret 789</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/image-20200922200322569.png" alt="image-20200922200322569"></p>
+<ol start="7">
+<li>使用 Telnet 远程登入设备</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123456</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#transport input telnet </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/image-20200922200421766.png" alt="image-20200922200421766"></p>
+<ol start="8">
+<li>了解 DTE 和 DCE 的区别以及 DCE 的时钟频率设置</li>
+</ol>
+<p>① 意思不同</p>
+<p>&emsp;&emsp;DCE的意思是数bai据通信设du备或者数据电路终端设zhi备，该设备和其与通信网络的连dao接构成了网络终端的用户网络接口。DTE的意思是数据终端设备，指的是位于用户网络接口用户端的设备。</p>
+<p>② 作用不同</p>
+<p>&emsp;&emsp;DCE提供了到网络的一条物理连接、转发业务量，并且提供了一个用于同步DCE设备和DTE设备之间数据传输的时钟信号。调制解调器和接口卡都是DCE设备的例子。</p>
+<p>&emsp;&emsp;DTE它能够作为信源、信宿或同时为二者。数据终端设备通过数据通信设备连接到一个数据网络上，并且通常使用数据通信设备产生的时钟信号。</p>
+<p>③用法和功能不同</p>
+<p>&emsp;&emsp;DTE与DCE比较Data Communications Equipment（数据通讯设备）的首字母缩略词DCE，它在DTE和传输线路之间提供信号变换和编码功能，并负责建立、保持和释放链路的连接，如 Modem。DCE设备通常是与DTE对接，因此针脚的分配相反，也就是2是接收，3是发送。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#int s1/0</span></span><br><span class="line">Huangzc(config-if)<span class="comment">#clock rate 1000</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>查看当前的配置信息以及保存配置文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前的配置信息</span></span><br><span class="line">R1<span class="comment">#show running-config </span></span><br><span class="line"><span class="comment">#保存配置文件</span></span><br><span class="line">R1<span class="comment">#write </span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>基础配置</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP交换综合实验一</title>
     <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
@@ -816,25 +907,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2019/01/01/hello-world%20-%20%E5%89%AF%E6%9C%AC%20(2)/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>CCNP路由综合实验五——BGP</title>
     <url>/2019/04/26/hello-world%20-%20%E5%89%AF%E6%9C%AC/</url>
     <content><![CDATA[<ol>
@@ -963,8 +1035,8 @@
         <category>网络基础</category>
       </categories>
       <tags>
-        <tag>网络与数据通信</tag>
         <tag>CCNA</tag>
+        <tag>网络与数据通信</tag>
       </tags>
   </entry>
   <entry>
