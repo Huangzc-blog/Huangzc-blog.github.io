@@ -58,13 +58,13 @@
 </ol>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置console口的密码，并应用</span></span><br><span class="line">Huangzc(config)<span class="comment">#line console 0</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#login</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（明文）</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable password 456</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（密文），若两者都启用的话，则明文不生效</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable secret 789</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/image-20200922200322569.png" alt="image-20200922200322569"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/22/wOvXwV.png"></p>
 <ol start="7">
 <li>使用 Telnet 远程登入设备</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123456</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#transport input telnet </span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80.assets/image-20200922200421766.png" alt="image-20200922200421766"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/22/wOvjoT.png"></p>
 <ol start="8">
 <li>了解 DTE 和 DCE 的区别以及 DCE 的时钟频率设置</li>
 </ol>
