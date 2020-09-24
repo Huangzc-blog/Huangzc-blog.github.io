@@ -35,30 +35,42 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="emmmmmmmmmmmm">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Huangzc&#39;s blog">
-<meta property="og:url" content="https://huangzc.site/page/2/index.html">
+  <meta name="description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。 【实验目的】  掌握 RIPv2 的基本配置 理解 RIPv2 路由条目的结构含义 理解自动汇总的含义 理解和观察周期性更新 理解 debug ip rip 命令的作用  【拓扑结构】  &amp;emsp;&amp;emsp;&amp;emsp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CCNA实验三——RIP 的应用">
+<meta property="og:url" content="https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="emmmmmmmmmmmm">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。 【实验目的】  掌握 RIPv2 的基本配置 理解 RIPv2 路由条目的结构含义 理解自动汇总的含义 理解和观察周期性更新 理解 debug ip rip 命令的作用  【拓扑结构】  &amp;emsp;&amp;emsp;&amp;emsp;">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="article:published_time" content="2018-10-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-24T11:42:42.977Z">
 <meta property="article:author" content="Huangzc">
+<meta property="article:tag" content="CCNA">
+<meta property="article:tag" content="RIP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
 
-<link rel="canonical" href="https://huangzc.site/page/2/">
+<link rel="canonical" href="https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Huangzc's blog</title>
+  <title>CCNA实验三——RIP 的应用 | Huangzc's blog</title>
   
 
 
@@ -209,9 +221,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -227,10 +240,9 @@
       <meta itemprop="name" content="Huangzc's blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/" class="post-title-link" itemprop="url">CCNA实验三——RIP 的应用</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          CCNA实验三——RIP 的应用
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -283,7 +295,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>&emsp;&emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。</p>
+        <p>&emsp;&emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。</p>
 <p>【实验目的】</p>
 <ol>
 <li>掌握 RIPv2 的基本配置</li>
@@ -381,220 +393,96 @@
 </ol>
 <p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/0pZtJS.png" alt="图片3"></p>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
+        <div class="reward-container">
+  <div>听说这是一个让人变帅的按钮！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
       
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/" class="post-title-link" itemprop="url">CCNA实验二——静态路由的应用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-10-03 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-03T00:00:00+08:00">2018-10-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-24 10:52:12" itemprop="dateModified" datetime="2020-09-24T10:52:12+08:00">2020-09-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CCNA%E5%AE%9E%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">CCNA实验</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Huangzc 微信支付">
+        <p>微信支付</p>
+      </div>
       
-          <p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Huangzc 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
         
-      
-    </div>
 
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Huangzc
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/" title="CCNA实验三——RIP 的应用">https://huangzc.site/2018/10/05/CCNA实验三/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+	  
+	  <div>
+		
+			<div>
     
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-bug"></i>感谢您的阅读-------------</div>
     
-    
+</div>
+		
+	  </div>
+	  
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/" class="post-title-link" itemprop="url">CCNA实验一——简单的基础实验</a>
-        </h2>
+          <div class="post-tags">
+              <a href="/tags/CCNA/" rel="tag"><i class="fa fa-tag"></i> CCNA</a>
+              <a href="/tags/RIP/" rel="tag"><i class="fa fa-tag"></i> RIP</a>
+          </div>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-10-01 14:58:23" itemprop="dateCreated datePublished" datetime="2018-10-01T14:58:23+08:00">2018-10-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-24 10:51:24" itemprop="dateModified" datetime="2020-09-24T10:51:24+08:00">2020-09-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CCNA%E5%AE%9E%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">CCNA实验</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/" rel="prev" title="CCNA实验二——静态路由的应用">
+      <i class="fa fa-chevron-left"></i> CCNA实验二——静态路由的应用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/" rel="next" title="计算机网络参考模型">
+      计算机网络参考模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
 
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTQ0Mi8yNzkyMw=="></div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -852,6 +740,21 @@ setInterval("createtime()",250);
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
 
   
   <script type="text/javascript"
