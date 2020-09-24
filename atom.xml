@@ -241,19 +241,10 @@
     <link href="https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/"/>
     <id>https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/</id>
     <published>2018-10-04T16:00:00.000Z</published>
-    <updated>2020-09-24T11:42:42.977Z</updated>
+    <updated>2020-09-24T15:40:32.684Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。&lt;/p&gt;
-&lt;p&gt;【实验目的】&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;掌握 RIPv2</summary>
-        
-      
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。&lt;/p&gt;</summary>
     
     
     

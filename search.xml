@@ -995,6 +995,44 @@
       </tags>
   </entry>
   <entry>
+    <title>安恒杯四月月赛misc——Writeup</title>
+    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
+    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
+<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
+<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
+<p>​        将what_you_want.7z导出，发现需要密码。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
+<p>​        根据文件名的提示找到pin，解压获得flag。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
+<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
+<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
+<p>​        首先获取该内存的配置文件</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
+<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
+<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
+<p>​        将其导出</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
+<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
+<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
+<p>​        用winhex打开即可找到flag。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
+]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>ctf</tag>
+        <tag>网络安全</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计算机网络参考模型</title>
     <url>/2019/01/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</url>
     <content><![CDATA[<p>&emsp;&emsp;在计算机的网络中，有两个十分重要的参考模型，所有网络通信设备都是以参考模型为标准来研发的。因此熟知参考模型在学习网络知识的过程中是十分重要的。下面就简单的介绍一下两个参考模型。</p>
@@ -1048,47 +1086,11 @@
       </tags>
   </entry>
   <entry>
-    <title>安恒杯四月月赛misc——Writeup</title>
-    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
-    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
-<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
-<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
-<p>​        将what_you_want.7z导出，发现需要密码。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
-<p>​        根据文件名的提示找到pin，解压获得flag。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
-<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
-<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
-<p>​        首先获取该内存的配置文件</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
-<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
-<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
-<p>​        将其导出</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
-<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
-<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
-<p>​        用winhex打开即可找到flag。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
-]]></content>
-      <categories>
-        <category>Writeup</category>
-      </categories>
-      <tags>
-        <tag>ctf</tag>
-        <tag>网络安全</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNA实验三——RIP 的应用</title>
     <url>/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。</p>
+<a id="more"></a>
+
 <p>【实验目的】</p>
 <ol>
 <li>掌握 RIPv2 的基本配置</li>
@@ -1099,7 +1101,9 @@
 </ol>
 <p>【拓扑结构】</p>
 <p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/0pV0UK.png" alt="图片1"></p>
-<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;RIP 的应用拓扑<br>【实验需求】</p>
+<center>RIP 的应用拓扑</center>
+
+<p>【实验需求】</p>
 <ol>
 <li>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</li>
 </ol>
