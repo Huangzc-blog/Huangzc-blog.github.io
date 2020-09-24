@@ -246,7 +246,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-24 10:42:52" itemprop="dateModified" datetime="2020-09-24T10:42:52+08:00">2020-09-24</time>
+                <time title="修改时间：2020-09-24 10:52:12" itemprop="dateModified" datetime="2020-09-24T10:52:12+08:00">2020-09-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -264,7 +264,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -283,80 +283,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>【实验目的】</p>
-<ol>
-<li>理解路由的作用</li>
-<li>掌握静态路由的配置</li>
-<li>理解路由表的含义</li>
-<li>理解默认路由的作用与配置</li>
-<li>理解默认路由的使用场合</li>
-<li>理解 traceroute 和 ping 命令的使用</li>
-<li>理解 loopback 接口的作用</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/22/wXSEGD.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li><p>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/23/wvabTg.png"></p>
-</li>
-<li><p>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.10.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.10.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.20.1 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.20.2 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.2.254 255.255.255.0                             </span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0 192.168.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0 gateway 192.168.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.2.1 255.255.255.0 192.168.2.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC2 : 192.168.2.1 255.255.255.0 gateway 192.168.2.254</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>测试 PC1 与 PC2 两主机之间的连通性</li>
-</ol>
-<p>&emsp;&emsp;PC1与PC2之间不可达，因为PC1的网关R1处没有去往192.168.2.0/24网段的路由。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz1LfP.png"></p>
-<ol start="4">
-<li>在 R1 上创建一条到达对端主机 PC2 所在网络的静态路由，要求使用下一跳方式实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.10.2</span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>在 R3 上创建一条到达对端主机 PC1 所在网络的静态路由，要求使用出接口方式实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>观察 R1 和 R3 上的路由表，仔细观察使用出接口与使用下一跳方式的静态路由表项的不同</li>
-</ol>
-<p>&emsp;&emsp;R1为下一跳：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz1v6S.png"></p>
-<p>&emsp;&emsp;R2为出接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz1xOg.png"></p>
-<ol start="6">
-<li>添加合适的配置，实现 PC1 与 PC2 之间的连通性，使用 ping 进行测试</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 192.168.10.1</span></span><br><span class="line">R2(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.20.2</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz3SmQ.png"></p>
-<ol start="6">
-<li>分别在 PC1 和 PC2 上使用 tracert 观察两主机通信过程的传输路径</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz39Ts.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz3iYq.png"></p>
-<ol start="6">
-<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.255</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R1(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 192.168.10.2</span><br><span class="line"></span><br><span class="line">R3(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 s2/1</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz3Ff0.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz3n0J.png"></p>
-<ol start="6">
-<li>删除 R1 和 R3 上的静态路由条目，使用默认路由实现 PC1 与 PC2 之间的连通性</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 192.168.10.2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/24/wz3mm4.png"></p>
-
+          <p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -406,7 +341,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-22 20:20:46" itemprop="dateModified" datetime="2020-09-22T20:20:46+08:00">2020-09-22</time>
+                <time title="修改时间：2020-09-24 10:51:24" itemprop="dateModified" datetime="2020-09-24T10:51:24+08:00">2020-09-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -443,7 +378,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
+          <p>&emsp;&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/#more" rel="contents">

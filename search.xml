@@ -3,7 +3,7 @@
   <entry>
     <title>CCNA实验一——简单的基础实验</title>
     <url>/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
 <a id="more"></a>
 
 <p>【实验目的】</p>
@@ -94,7 +94,10 @@
   <entry>
     <title>CCNA实验二——静态路由的应用</title>
     <url>/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
-    <content><![CDATA[<p>【实验目的】</p>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
 <ol>
 <li>理解路由的作用</li>
 <li>掌握静态路由的配置</li>
