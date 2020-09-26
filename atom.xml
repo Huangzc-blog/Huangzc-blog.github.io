@@ -237,6 +237,27 @@
   </entry>
   
   <entry>
+    <title>CCNA实验四——EIGRP 的简单应用</title>
+    <link href="https://huangzc.site/2018/10/07/CCNA%E5%AE%9E%E9%AA%8C%E5%9B%9B/"/>
+    <id>https://huangzc.site/2018/10/07/CCNA%E5%AE%9E%E9%AA%8C%E5%9B%9B/</id>
+    <published>2018-10-06T16:00:00.000Z</published>
+    <updated>2020-09-26T07:39:40.490Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 EIGRP 的基本配置； EIGRP 的邻居表、拓扑表以及路由表的含义；查看 EIGRP 路由协议的相关信息； FD、AD、S、FS 以及 FC 的含义； EIGRP 的 hello 报文作用；路由快速收敛的含义； EIGRP 的不等价负载均衡。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CCNA实验" scheme="https://huangzc.site/categories/CCNA%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
+    
+    <category term="EIGRP" scheme="https://huangzc.site/tags/EIGRP/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CCNA实验三——RIP 的应用</title>
     <link href="https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/"/>
     <id>https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/</id>
