@@ -790,92 +790,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNP路由综合实验三</title>
-    <url>/2019/04/12/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 IS-IS 的基本配置； IS-IS 路由器等级； IS-IS 的路由汇总； IS-IS 的基本查看和验证； IS-IS 的报文类型及报文的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>熟悉 IS-IS 的基本配置</p>
-</li>
-<li><p>理解 IS-IS 路由器等级</p>
-</li>
-<li><p>理解 IS-IS 的路由汇总</p>
-</li>
-<li><p>掌握 IS-IS 的基本查看和验证</p>
-</li>
-<li><p>理解 IS-IS 的报文类型及报文的作用</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p>​     <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wtxetH.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNSuOP.png"></p>
-<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R1上的11.1.1.1/24、11.1.2.1/24……。以R1、R2的端口配置情况为例。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNp7UU.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNpTET.png"></p>
-<ol start="2">
-<li>全网启用集成 IS-IS，区域划分参考图示，IS-IS 路由器的 System id 指定为各设备第一个以太网接口的 MAC 地址，实现全网的连通性</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网启用IS-IS协议</span></span><br><span class="line">R1(config)<span class="comment">#router isis</span></span><br><span class="line">R1(config-router)<span class="comment">#net 49.0123.aabb.cc00.1000.00</span></span><br><span class="line">R1(config-router)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int range loopback 1-8 </span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis  </span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#int s1/1       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#net 49.0123.aabb.cc00.2000.00</span></span><br><span class="line">R2(config-router)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R2(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int s1/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#net 49.0123.aabb.cc00.3000.00</span></span><br><span class="line">R3(config-router)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R3(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int s1/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router isis </span></span><br><span class="line">R4(config-router)<span class="comment">#net 49.0456.aabb.cc00.4000.00</span></span><br><span class="line">R4(config-router)<span class="comment">#exit </span></span><br><span class="line">R4(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R4(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R4(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R5(config-router)<span class="comment">#router isis                                     </span></span><br><span class="line">R5(config-router)<span class="comment">#net 49.0456.aabb.cc00.5000.00</span></span><br><span class="line">R5(config-router)<span class="comment">#exit </span></span><br><span class="line">R5(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R5(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R5(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router isis</span></span><br><span class="line">R6(config-router)<span class="comment">#net 49.0456.aabb.cc00.9000.00</span></span><br><span class="line">R6(config-router)<span class="comment">#exit </span></span><br><span class="line">R6(config)<span class="comment">#int range e0/1,lo1-2</span></span><br><span class="line">R6(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#int s1/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router isis</span></span><br><span class="line">R7(config-router)<span class="comment">#net 49.0007.aabb.cc00.7000.00</span></span><br><span class="line">R7(config-router)<span class="comment">#exit </span></span><br><span class="line">R7(config)<span class="comment">#int range lo1-2</span></span><br><span class="line">R7(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R7(config)<span class="comment">#int s1/0</span></span><br><span class="line">R7(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R8(config)<span class="comment">#router isis</span></span><br><span class="line">R8(config-router)<span class="comment">#net 49.0008.aabb.cc00.8000.00</span></span><br><span class="line">R8(config-router)<span class="comment">#exit</span></span><br><span class="line">R8(config)<span class="comment">#int range e0/0,lo1-2</span></span><br><span class="line">R8(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R8(config-if-range)<span class="comment">#exit </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNjB11.png"></p>
-<ol start="3">
-<li>查看 IS-IS 的邻居表、拓扑表、数据库和路由表，根据拓扑，修改合适的路由器类型，对比修改完路由器类型之后 IS-IS 各数据库的变化</li>
-</ol>
-<p>&emsp;&emsp;由于在拓扑中，只有R1的端口在同一区域中，故在此以R1为例。</p>
-<p>&emsp;&emsp;R1的邻居表：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNj2Ae.png"></p>
-<p>&emsp;&emsp;R1的拓扑表： </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNjqAg.png"></p>
-<p>&emsp;&emsp;R1的数据库： </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvejx.png"></p>
-<p>&emsp;&emsp;R1的路由表： </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNv8Cd.png"></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将R1的路由器类型改为level-<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> isis</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#is-type</span> level-<span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;修改之后R1的数据库：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvNKP.png"></p>
-<ol start="4">
-<li>实现 R1 优选 R2 对外部网络进行访问</li>
-</ol>
-<p>&emsp;&emsp;通过R1的路由表和路由跟踪可以发现R1对外部路由的访问是通过指向R2和R3的默认路由实现的，且两条路由的开销相等，负载均衡。我们可以通过更改开销来实现 R1 优选 R2 对外部网络进行访问。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvwVS.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvgK0.png"></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过配置使R1与R2之间的开销变小，从而使R1优选 R2 对外部网络进行访问</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#int</span> s1/<span class="number">0</span>     </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#isis</span> metric <span class="number">9</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvqr6.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvjaD.png"></p>
-<ol start="5">
-<li>对 R1 上 loopback 接口网段进行合适的路由汇总</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R2、R3上进行汇总：</span></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br></pre></td></tr></table></figure>
-
-<p>R8的路由表：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvzPH.png"></p>
-<ol start="6">
-<li>实现 R5 为多路访问网络的 DIS</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改R5的优先级</span></span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#isis priority 100</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNx9xI.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#验证和查看 IS-IS 的相关信息的命令</span></span><br><span class="line">Router<span class="comment">#show ip protocols</span></span><br><span class="line">Router<span class="comment">#show clns protocols</span></span><br><span class="line">Router<span class="comment">#show ip route</span></span><br><span class="line">Router<span class="comment">#show clns neighbor</span></span><br><span class="line">Router<span class="comment">#show clns interface</span></span><br><span class="line">Router<span class="comment">#show isis</span></span><br><span class="line">Router<span class="comment">#show clns route</span></span><br><span class="line">Router<span class="comment">#show isis topology</span></span><br><span class="line">Router<span class="comment">#show isis database</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>路由</tag>
-        <tag>IS-IS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNP路由综合实验二</title>
     <url>/2019/04/05/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF stub 区域的特点和配置； OSPF totally stub 区域的特点和配置； OSPF NSSA 区域的特点和配置； OSPF totally NSSA 区域的特点和配置；被动接口的作用掌握 OSPF LSA7 的作用； OSPF 邻居间的验证。</p>
@@ -992,6 +906,92 @@
         <tag>CCNP</tag>
         <tag>路由</tag>
         <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNP路由综合实验三</title>
+    <url>/2019/04/12/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 IS-IS 的基本配置； IS-IS 路由器等级； IS-IS 的路由汇总； IS-IS 的基本查看和验证； IS-IS 的报文类型及报文的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>熟悉 IS-IS 的基本配置</p>
+</li>
+<li><p>理解 IS-IS 路由器等级</p>
+</li>
+<li><p>理解 IS-IS 的路由汇总</p>
+</li>
+<li><p>掌握 IS-IS 的基本查看和验证</p>
+</li>
+<li><p>理解 IS-IS 的报文类型及报文的作用</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p>​     <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wtxetH.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNSuOP.png"></p>
+<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R1上的11.1.1.1/24、11.1.2.1/24……。以R1、R2的端口配置情况为例。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNp7UU.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNpTET.png"></p>
+<ol start="2">
+<li>全网启用集成 IS-IS，区域划分参考图示，IS-IS 路由器的 System id 指定为各设备第一个以太网接口的 MAC 地址，实现全网的连通性</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网启用IS-IS协议</span></span><br><span class="line">R1(config)<span class="comment">#router isis</span></span><br><span class="line">R1(config-router)<span class="comment">#net 49.0123.aabb.cc00.1000.00</span></span><br><span class="line">R1(config-router)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int range loopback 1-8 </span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis  </span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#int s1/1       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#net 49.0123.aabb.cc00.2000.00</span></span><br><span class="line">R2(config-router)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R2(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int s1/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#net 49.0123.aabb.cc00.3000.00</span></span><br><span class="line">R3(config-router)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R3(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int s1/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router isis </span></span><br><span class="line">R4(config-router)<span class="comment">#net 49.0456.aabb.cc00.4000.00</span></span><br><span class="line">R4(config-router)<span class="comment">#exit </span></span><br><span class="line">R4(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R4(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R4(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R5(config-router)<span class="comment">#router isis                                     </span></span><br><span class="line">R5(config-router)<span class="comment">#net 49.0456.aabb.cc00.5000.00</span></span><br><span class="line">R5(config-router)<span class="comment">#exit </span></span><br><span class="line">R5(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R5(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R5(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router isis</span></span><br><span class="line">R6(config-router)<span class="comment">#net 49.0456.aabb.cc00.9000.00</span></span><br><span class="line">R6(config-router)<span class="comment">#exit </span></span><br><span class="line">R6(config)<span class="comment">#int range e0/1,lo1-2</span></span><br><span class="line">R6(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#int s1/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router isis</span></span><br><span class="line">R7(config-router)<span class="comment">#net 49.0007.aabb.cc00.7000.00</span></span><br><span class="line">R7(config-router)<span class="comment">#exit </span></span><br><span class="line">R7(config)<span class="comment">#int range lo1-2</span></span><br><span class="line">R7(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R7(config)<span class="comment">#int s1/0</span></span><br><span class="line">R7(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R8(config)<span class="comment">#router isis</span></span><br><span class="line">R8(config-router)<span class="comment">#net 49.0008.aabb.cc00.8000.00</span></span><br><span class="line">R8(config-router)<span class="comment">#exit</span></span><br><span class="line">R8(config)<span class="comment">#int range e0/0,lo1-2</span></span><br><span class="line">R8(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R8(config-if-range)<span class="comment">#exit </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNjB11.png"></p>
+<ol start="3">
+<li>查看 IS-IS 的邻居表、拓扑表、数据库和路由表，根据拓扑，修改合适的路由器类型，对比修改完路由器类型之后 IS-IS 各数据库的变化</li>
+</ol>
+<p>&emsp;&emsp;由于在拓扑中，只有R1的端口在同一区域中，故在此以R1为例。</p>
+<p>&emsp;&emsp;R1的邻居表：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNj2Ae.png"></p>
+<p>&emsp;&emsp;R1的拓扑表： </p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNjqAg.png"></p>
+<p>&emsp;&emsp;R1的数据库： </p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvejx.png"></p>
+<p>&emsp;&emsp;R1的路由表： </p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNv8Cd.png"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将R1的路由器类型改为level-<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> isis</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#is-type</span> level-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;修改之后R1的数据库：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvNKP.png"></p>
+<ol start="4">
+<li>实现 R1 优选 R2 对外部网络进行访问</li>
+</ol>
+<p>&emsp;&emsp;通过R1的路由表和路由跟踪可以发现R1对外部路由的访问是通过指向R2和R3的默认路由实现的，且两条路由的开销相等，负载均衡。我们可以通过更改开销来实现 R1 优选 R2 对外部网络进行访问。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvwVS.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvgK0.png"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过配置使R1与R2之间的开销变小，从而使R1优选 R2 对外部网络进行访问</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#int</span> s1/<span class="number">0</span>     </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#isis</span> metric <span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvqr6.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvjaD.png"></p>
+<ol start="5">
+<li>对 R1 上 loopback 接口网段进行合适的路由汇总</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R2、R3上进行汇总：</span></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br></pre></td></tr></table></figure>
+
+<p>R8的路由表：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvzPH.png"></p>
+<ol start="6">
+<li>实现 R5 为多路访问网络的 DIS</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改R5的优先级</span></span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#isis priority 100</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNx9xI.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#验证和查看 IS-IS 的相关信息的命令</span></span><br><span class="line">Router<span class="comment">#show ip protocols</span></span><br><span class="line">Router<span class="comment">#show clns protocols</span></span><br><span class="line">Router<span class="comment">#show ip route</span></span><br><span class="line">Router<span class="comment">#show clns neighbor</span></span><br><span class="line">Router<span class="comment">#show clns interface</span></span><br><span class="line">Router<span class="comment">#show isis</span></span><br><span class="line">Router<span class="comment">#show clns route</span></span><br><span class="line">Router<span class="comment">#show isis topology</span></span><br><span class="line">Router<span class="comment">#show isis database</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
+        <tag>IS-IS</tag>
       </tags>
   </entry>
   <entry>
