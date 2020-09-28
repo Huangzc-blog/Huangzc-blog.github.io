@@ -180,72 +180,99 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNA实验六——单臂路由的运用</title>
-    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】 </p>
+    <title>CCNA实验七——STP 的运用</title>
+    <url>/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。</p>
+<p>【实验目的】</p>
 <ol>
-<li><p>掌握交换机上 VLAN 的创建和划分</p>
+<li><p>理解 STP 的作用</p>
 </li>
-<li><p>掌握 Trunk 的作用</p>
+<li><p>熟悉 STP 的工作原理</p>
 </li>
-<li><p>掌握 VTP 的作用与配置</p>
-</li>
-<li><p>掌握单臂路由原理与配置</p>
-</li>
-<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
+<li><p>掌握 STP 的查看命令</p>
 </li>
 </ol>
 <p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
-<center>单臂路由的实现拓扑</center>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
+<center>STP 的运用拓扑</center>
 
 <p>【实验需求】</p>
 <ol>
-<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
+<li>在相应的交换机上创建 VLAN10，并将连接 PC1 和 PC2 的交换端口都划分进该 VLAN 中</li>
 </ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在相应的交换机上创建VLAN10</span></span><br><span class="line">SW1(config)<span class="comment">#vlan 10</span></span><br><span class="line">SW2(config)<span class="comment">#vlan 10</span></span><br><span class="line">SW3(config)<span class="comment">#vlan 10</span></span><br><span class="line"><span class="comment">#将PC1的交换机端口划分进VLAN10中</span></span><br><span class="line">SW2(config)<span class="comment">#int e0/2</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line"><span class="comment">#将PC2的交换机端口划分进VLAN10中</span></span><br><span class="line">SW3(config)<span class="comment">#int e0/2</span></span><br><span class="line">SW3(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW3(config-if)<span class="comment">#switchport access vlan 10 </span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
 <ol start="2">
-<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
+<li>为主机设置合适的 IP 地址，IP 地址自定，完成必要的配置实现主机间的通信</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.1.2 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.2 255.255.255.0</span><br><span class="line"></span><br><span class="line">SW1(config)<span class="comment">#int range e0/0-1</span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0-1</span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line">SW3(config)<span class="comment">#int range e0/0-1 </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VrXFO.png" alt="image-20200928194704233"></p>
 <ol start="3">
-<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
+<li>找出每个交换机的桥 ID，根据原理算出根桥、根端口、指定端口和非指定端口</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
-
+<blockquote>
+<p>STP的选举规则：</p>
+<p>① 根桥（Root）——拥有最小的桥ID的交换机被选为根桥 </p>
+<ul>
+<li>桥ID：交换机的默认优先级 32768  + MAC地址（可通过 show version查看）</li>
+</ul>
+<p>② 根端口（RP）——非根交换机上去往根桥路径最优的端口，用于接收BPDU</p>
+<ul>
+<li>最小根桥开销</li>
+<li>最小发送者桥ID</li>
+<li>最小发送者端口ID  </li>
+</ul>
+<p>③ 指定端口（DP）——用来发送或转发配置BPDU</p>
+<ul>
+<li>最小根路径开销</li>
+<li>最小发送者桥ID</li>
+<li>最小发送者端口ID  </li>
+</ul>
+<p>④ 非指定端口（NDP）——既不转发数据帧，也不会将在该网段接收到的数据包源MAC地址填入MAC地址表中</p>
+<ul>
+<li>上述端口选举完后，剩下的既不是根端口也不是指定端口的端口成为非指定端口</li>
+</ul>
+</blockquote>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
+<p>&emsp;&emsp;根据选举规则，各交换机的桥ID，以及根桥、根端口、指定端口、非指定端口如上图所示。 </p>
 <ol start="4">
-<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
+<li>使用相关命令查看各交换机的 STP 信息，比较与根据理论算出来的结果是否一致</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsEtS.png" alt="image-20200928202002597"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsAk8.png" alt="image-20200928202035666"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsVfg.png" alt="image-20200928202108499"></p>
 <ol start="5">
-<li>测试各主机之间的连通性</li>
+<li>将 SW2 设置为 VLAN10 的根桥，使用相关命令验证和查看各交换机上根桥的变化</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
-<ol start="6">
-<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">SW2(config)#spanning-tree<span class="built_in"> vlan </span>10 root primary</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
-<p>&emsp;&emsp;PC2与PC3的连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vsn6s.png" alt="image-20200928202930067"></p>
+<p>&emsp;&emsp;将SW2设置为根桥后，SW2的e0/0、e0/1为指定端口；SW1的e0/1为根端口、e0/0为指定端口；SW3的e0/1为根端口、e0/0为非指定端口。SW1与SW3之间的链路被阻塞。</p>
+<ol start="6">
+<li>测试正常链路出现故障对主机通信的影响</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将SW2的e0/<span class="number">1</span>端口关闭，模拟正常链路出现故障</span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config-if)</span></span><span class="selector-id">#shutdown</span> </span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vs3kT.png" alt="image-20200928203642085"></p>
+<ol start="7">
+<li>先断开 PC1 与交换机的连接，然后恢复 PC1 与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW2(config)<span class="comment">#int e0/2</span></span><br><span class="line"><span class="comment">#通过关闭与PC1连接的端口来模拟PC1与交换机断开连接</span></span><br><span class="line">SW2(config-if)<span class="comment">#shutdown </span></span><br><span class="line"><span class="comment">#观察下面4条spanning-tree的events，可以知道PC1与交换机断开连接后，端口的状态迅速变为down</span></span><br><span class="line">*Sep 28 12:42:48.425: STP: VLAN0010 we are the spanning tree root</span><br><span class="line">*Sep 28 12:42:48.425: STP[10]: Generating TC <span class="built_in">trap</span> <span class="keyword">for</span> port Ethernet0/2</span><br><span class="line">*Sep 28 12:42:50.430: %LINK-5-CHANGED: Interface Ethernet0/2, changed state to administratively down</span><br><span class="line">*Sep 28 12:42:51.436: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to down</span><br><span class="line"><span class="comment">#通过开启与PC1连接的端口来模拟PC1与交换机恢复连接</span></span><br><span class="line">SW2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"><span class="comment">#通过观察下面几条spanning-tree的events,根据端口e0/2从12：43：01的listening状态</span></span><br><span class="line">到12：43：31的forwarding状态可以得出，主机重新接入交换机需要经历30s才可以进行数据转发</span><br><span class="line">*Sep 28 12:43:01.692: <span class="built_in">set</span> portid: VLAN0010 Et0/2: new port id 8003</span><br><span class="line">*Sep 28 12:43:01.692: STP: VLAN0010 Et0/2 -&gt; listening</span><br><span class="line">*Sep 28 12:43:03.695: %LINK-3-UPDOWN: Interface Ethernet0/2, changed state to up</span><br><span class="line">*Sep 28 12:43:04.701: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to up</span><br><span class="line">*Sep 28 12:43:16.695: STP: VLAN0010 Et0/2 -&gt; learning</span><br><span class="line">*Sep 28 12:43:31.704: STP[10]: Generating TC <span class="built_in">trap</span> <span class="keyword">for</span> port Ethernet0/2</span><br><span class="line">*Sep 28 12:43:31.704: STP: VLAN0010 Et0/2 -&gt; forwarding</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>使用合适的命令观察 STP 端口的变化过程</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">SW2#<span class="builtin-name">debug</span> spanning-tree events </span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vs8tU.png" alt="image-20200928205550232"></p>
 ]]></content>
       <categories>
         <category>CCNA实验</category>
       </categories>
       <tags>
         <tag>CCNA</tag>
-        <tag>单臂路由</tag>
+        <tag>STP</tag>
       </tags>
   </entry>
   <entry>
@@ -344,6 +371,75 @@
       <tags>
         <tag>CCNP</tag>
         <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNA实验六——单臂路由的运用</title>
+    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】 </p>
+<ol>
+<li><p>掌握交换机上 VLAN 的创建和划分</p>
+</li>
+<li><p>掌握 Trunk 的作用</p>
+</li>
+<li><p>掌握 VTP 的作用与配置</p>
+</li>
+<li><p>掌握单臂路由原理与配置</p>
+</li>
+<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
+</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
+<center>单臂路由的实现拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
+<ol start="2">
+<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
+<ol start="3">
+<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
+<ol start="5">
+<li>测试各主机之间的连通性</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
+<ol start="6">
+<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
+<p>&emsp;&emsp;PC2与PC3的连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>单臂路由</tag>
       </tags>
   </entry>
   <entry>
@@ -651,6 +747,92 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP路由综合实验三</title>
+    <url>/2019/04/12/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 IS-IS 的基本配置； IS-IS 路由器等级； IS-IS 的路由汇总； IS-IS 的基本查看和验证； IS-IS 的报文类型及报文的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>熟悉 IS-IS 的基本配置</p>
+</li>
+<li><p>理解 IS-IS 路由器等级</p>
+</li>
+<li><p>理解 IS-IS 的路由汇总</p>
+</li>
+<li><p>掌握 IS-IS 的基本查看和验证</p>
+</li>
+<li><p>理解 IS-IS 的报文类型及报文的作用</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p>​     <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wtxetH.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNSuOP.png"></p>
+<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R1上的11.1.1.1/24、11.1.2.1/24……。以R1、R2的端口配置情况为例。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNp7UU.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNpTET.png"></p>
+<ol start="2">
+<li>全网启用集成 IS-IS，区域划分参考图示，IS-IS 路由器的 System id 指定为各设备第一个以太网接口的 MAC 地址，实现全网的连通性</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网启用IS-IS协议</span></span><br><span class="line">R1(config)<span class="comment">#router isis</span></span><br><span class="line">R1(config-router)<span class="comment">#net 49.0123.aabb.cc00.1000.00</span></span><br><span class="line">R1(config-router)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int range loopback 1-8 </span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis  </span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#int s1/1       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#net 49.0123.aabb.cc00.2000.00</span></span><br><span class="line">R2(config-router)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R2(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int s1/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#net 49.0123.aabb.cc00.3000.00</span></span><br><span class="line">R3(config-router)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R3(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int s1/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router isis </span></span><br><span class="line">R4(config-router)<span class="comment">#net 49.0456.aabb.cc00.4000.00</span></span><br><span class="line">R4(config-router)<span class="comment">#exit </span></span><br><span class="line">R4(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R4(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R4(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R5(config-router)<span class="comment">#router isis                                     </span></span><br><span class="line">R5(config-router)<span class="comment">#net 49.0456.aabb.cc00.5000.00</span></span><br><span class="line">R5(config-router)<span class="comment">#exit </span></span><br><span class="line">R5(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R5(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R5(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router isis</span></span><br><span class="line">R6(config-router)<span class="comment">#net 49.0456.aabb.cc00.9000.00</span></span><br><span class="line">R6(config-router)<span class="comment">#exit </span></span><br><span class="line">R6(config)<span class="comment">#int range e0/1,lo1-2</span></span><br><span class="line">R6(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#int s1/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router isis</span></span><br><span class="line">R7(config-router)<span class="comment">#net 49.0007.aabb.cc00.7000.00</span></span><br><span class="line">R7(config-router)<span class="comment">#exit </span></span><br><span class="line">R7(config)<span class="comment">#int range lo1-2</span></span><br><span class="line">R7(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R7(config)<span class="comment">#int s1/0</span></span><br><span class="line">R7(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R8(config)<span class="comment">#router isis</span></span><br><span class="line">R8(config-router)<span class="comment">#net 49.0008.aabb.cc00.8000.00</span></span><br><span class="line">R8(config-router)<span class="comment">#exit</span></span><br><span class="line">R8(config)<span class="comment">#int range e0/0,lo1-2</span></span><br><span class="line">R8(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R8(config-if-range)<span class="comment">#exit </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNjB11.png"></p>
+<ol start="3">
+<li>查看 IS-IS 的邻居表、拓扑表、数据库和路由表，根据拓扑，修改合适的路由器类型，对比修改完路由器类型之后 IS-IS 各数据库的变化</li>
+</ol>
+<p>&emsp;&emsp;由于在拓扑中，只有R1的端口在同一区域中，故在此以R1为例。</p>
+<p>&emsp;&emsp;R1的邻居表：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNj2Ae.png"></p>
+<p>&emsp;&emsp;R1的拓扑表： </p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNjqAg.png"></p>
+<p>&emsp;&emsp;R1的数据库： </p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvejx.png"></p>
+<p>&emsp;&emsp;R1的路由表： </p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNv8Cd.png"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将R1的路由器类型改为level-<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> isis</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#is-type</span> level-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;修改之后R1的数据库：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvNKP.png"></p>
+<ol start="4">
+<li>实现 R1 优选 R2 对外部网络进行访问</li>
+</ol>
+<p>&emsp;&emsp;通过R1的路由表和路由跟踪可以发现R1对外部路由的访问是通过指向R2和R3的默认路由实现的，且两条路由的开销相等，负载均衡。我们可以通过更改开销来实现 R1 优选 R2 对外部网络进行访问。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvwVS.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvgK0.png"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过配置使R1与R2之间的开销变小，从而使R1优选 R2 对外部网络进行访问</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#int</span> s1/<span class="number">0</span>     </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#isis</span> metric <span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvqr6.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvjaD.png"></p>
+<ol start="5">
+<li>对 R1 上 loopback 接口网段进行合适的路由汇总</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R2、R3上进行汇总：</span></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br></pre></td></tr></table></figure>
+
+<p>R8的路由表：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvzPH.png"></p>
+<ol start="6">
+<li>实现 R5 为多路访问网络的 DIS</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改R5的优先级</span></span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#isis priority 100</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNx9xI.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#验证和查看 IS-IS 的相关信息的命令</span></span><br><span class="line">Router<span class="comment">#show ip protocols</span></span><br><span class="line">Router<span class="comment">#show clns protocols</span></span><br><span class="line">Router<span class="comment">#show ip route</span></span><br><span class="line">Router<span class="comment">#show clns neighbor</span></span><br><span class="line">Router<span class="comment">#show clns interface</span></span><br><span class="line">Router<span class="comment">#show isis</span></span><br><span class="line">Router<span class="comment">#show clns route</span></span><br><span class="line">Router<span class="comment">#show isis topology</span></span><br><span class="line">Router<span class="comment">#show isis database</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
+        <tag>IS-IS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP交换综合实验四</title>
     <url>/2019/03/21/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了掌握交换端口安全的应用与配置；DHCP SNOOPING 的应用与配置；DAI 的应用与配置；IP SG 的应用与配置；PVLAN 的应用与配置；802.1x 的应用与配置 。</p>
@@ -856,92 +1038,6 @@
         <tag>CCNP</tag>
         <tag>路由</tag>
         <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP路由综合实验三</title>
-    <url>/2019/04/12/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 IS-IS 的基本配置； IS-IS 路由器等级； IS-IS 的路由汇总； IS-IS 的基本查看和验证； IS-IS 的报文类型及报文的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>熟悉 IS-IS 的基本配置</p>
-</li>
-<li><p>理解 IS-IS 路由器等级</p>
-</li>
-<li><p>理解 IS-IS 的路由汇总</p>
-</li>
-<li><p>掌握 IS-IS 的基本查看和验证</p>
-</li>
-<li><p>理解 IS-IS 的报文类型及报文的作用</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p>​     <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wtxetH.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNSuOP.png"></p>
-<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R1上的11.1.1.1/24、11.1.2.1/24……。以R1、R2的端口配置情况为例。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNp7UU.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNpTET.png"></p>
-<ol start="2">
-<li>全网启用集成 IS-IS，区域划分参考图示，IS-IS 路由器的 System id 指定为各设备第一个以太网接口的 MAC 地址，实现全网的连通性</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网启用IS-IS协议</span></span><br><span class="line">R1(config)<span class="comment">#router isis</span></span><br><span class="line">R1(config-router)<span class="comment">#net 49.0123.aabb.cc00.1000.00</span></span><br><span class="line">R1(config-router)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int range loopback 1-8 </span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis  </span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#int s1/1       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#net 49.0123.aabb.cc00.2000.00</span></span><br><span class="line">R2(config-router)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R2(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int s1/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#net 49.0123.aabb.cc00.3000.00</span></span><br><span class="line">R3(config-router)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R3(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int s1/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router isis </span></span><br><span class="line">R4(config-router)<span class="comment">#net 49.0456.aabb.cc00.4000.00</span></span><br><span class="line">R4(config-router)<span class="comment">#exit </span></span><br><span class="line">R4(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R4(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R4(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R5(config-router)<span class="comment">#router isis                                     </span></span><br><span class="line">R5(config-router)<span class="comment">#net 49.0456.aabb.cc00.5000.00</span></span><br><span class="line">R5(config-router)<span class="comment">#exit </span></span><br><span class="line">R5(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R5(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R5(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router isis</span></span><br><span class="line">R6(config-router)<span class="comment">#net 49.0456.aabb.cc00.9000.00</span></span><br><span class="line">R6(config-router)<span class="comment">#exit </span></span><br><span class="line">R6(config)<span class="comment">#int range e0/1,lo1-2</span></span><br><span class="line">R6(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#int s1/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router isis</span></span><br><span class="line">R7(config-router)<span class="comment">#net 49.0007.aabb.cc00.7000.00</span></span><br><span class="line">R7(config-router)<span class="comment">#exit </span></span><br><span class="line">R7(config)<span class="comment">#int range lo1-2</span></span><br><span class="line">R7(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R7(config)<span class="comment">#int s1/0</span></span><br><span class="line">R7(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R8(config)<span class="comment">#router isis</span></span><br><span class="line">R8(config-router)<span class="comment">#net 49.0008.aabb.cc00.8000.00</span></span><br><span class="line">R8(config-router)<span class="comment">#exit</span></span><br><span class="line">R8(config)<span class="comment">#int range e0/0,lo1-2</span></span><br><span class="line">R8(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R8(config-if-range)<span class="comment">#exit </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNjB11.png"></p>
-<ol start="3">
-<li>查看 IS-IS 的邻居表、拓扑表、数据库和路由表，根据拓扑，修改合适的路由器类型，对比修改完路由器类型之后 IS-IS 各数据库的变化</li>
-</ol>
-<p>&emsp;&emsp;由于在拓扑中，只有R1的端口在同一区域中，故在此以R1为例。</p>
-<p>&emsp;&emsp;R1的邻居表：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNj2Ae.png"></p>
-<p>&emsp;&emsp;R1的拓扑表： </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNjqAg.png"></p>
-<p>&emsp;&emsp;R1的数据库： </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvejx.png"></p>
-<p>&emsp;&emsp;R1的路由表： </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNv8Cd.png"></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将R1的路由器类型改为level-<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> isis</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#is-type</span> level-<span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;修改之后R1的数据库：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvNKP.png"></p>
-<ol start="4">
-<li>实现 R1 优选 R2 对外部网络进行访问</li>
-</ol>
-<p>&emsp;&emsp;通过R1的路由表和路由跟踪可以发现R1对外部路由的访问是通过指向R2和R3的默认路由实现的，且两条路由的开销相等，负载均衡。我们可以通过更改开销来实现 R1 优选 R2 对外部网络进行访问。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvwVS.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvgK0.png"></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过配置使R1与R2之间的开销变小，从而使R1优选 R2 对外部网络进行访问</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#int</span> s1/<span class="number">0</span>     </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#isis</span> metric <span class="number">9</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvqr6.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvjaD.png"></p>
-<ol start="5">
-<li>对 R1 上 loopback 接口网段进行合适的路由汇总</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R2、R3上进行汇总：</span></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br></pre></td></tr></table></figure>
-
-<p>R8的路由表：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNvzPH.png"></p>
-<ol start="6">
-<li>实现 R5 为多路访问网络的 DIS</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改R5的优先级</span></span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#isis priority 100</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/11/wNx9xI.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#验证和查看 IS-IS 的相关信息的命令</span></span><br><span class="line">Router<span class="comment">#show ip protocols</span></span><br><span class="line">Router<span class="comment">#show clns protocols</span></span><br><span class="line">Router<span class="comment">#show ip route</span></span><br><span class="line">Router<span class="comment">#show clns neighbor</span></span><br><span class="line">Router<span class="comment">#show clns interface</span></span><br><span class="line">Router<span class="comment">#show isis</span></span><br><span class="line">Router<span class="comment">#show clns route</span></span><br><span class="line">Router<span class="comment">#show isis topology</span></span><br><span class="line">Router<span class="comment">#show isis database</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>路由</tag>
-        <tag>IS-IS</tag>
       </tags>
   </entry>
   <entry>
