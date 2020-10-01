@@ -237,6 +237,29 @@
   </entry>
   
   <entry>
+    <title>CCNA实验九——NAT 和 PPP 的应用</title>
+    <link href="https://huangzc.site/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/"/>
+    <id>https://huangzc.site/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/</id>
+    <published>2018-10-16T16:00:00.000Z</published>
+    <updated>2020-10-01T16:36:18.637Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 NAT 的作用；不同 NAT 的特点及配置；不同 NAT 的使用场合； PPP 的 PAP 和 CHAP 验证；辅助地址的作用； NAT 的验证和查看命令。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CCNA实验" scheme="https://huangzc.site/categories/CCNA%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
+    
+    <category term="NAT" scheme="https://huangzc.site/tags/NAT/"/>
+    
+    <category term="PPP" scheme="https://huangzc.site/tags/PPP/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CCNA实验八——ACL 的运用</title>
     <link href="https://huangzc.site/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/"/>
     <id>https://huangzc.site/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</id>
