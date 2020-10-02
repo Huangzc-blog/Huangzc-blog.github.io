@@ -505,6 +505,216 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验五——单区域 OSPF 的实现</title>
+    <url>/2018/10/09/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置； OSPF 的邻居表、拓扑表及路由表的含义； OSPF 的 DR 和 BDR 的作用； OSPF 的 DR 和 BDR 的选举； OSPF 路由协议的相关信息的查看和调试； OSPF 中 hello 报文的作用和格式。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li>掌握 OSPF 的基本配置</li>
+<li>掌握 OSPF 的邻居表、拓扑表及路由表的含义</li>
+<li>掌握 OSPF 的 DR 和 BDR 的作用</li>
+<li>掌握 OSPF 的 DR 和 BDR 的选举</li>
+<li>查看和调试 OSPF 路由协议的相关信息</li>
+<li>熟悉 OSPF 中 hello 报文的作用和格式</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lX01I.png" alt="图片4"></p>
+<center>单区域 OSPF 的实现拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.12.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 172.16.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.12.2 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.23.2 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 172.16.3.254 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.23.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>全网启用 OSPF，并划分入区域 0</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">R1(config-router)#network 172.16.1.0 0.0.0.255<span class="built_in"> area </span>0</span><br><span class="line">R1(config-router)#network 192.168.12.0 0.0.0.255<span class="built_in"> area </span>0</span><br><span class="line"></span><br><span class="line">R2(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">R2(config-router)#network 192.168.12.0 0.0.0.255<span class="built_in"> area </span>0</span><br><span class="line">R2(config-router)#network 192.168.23.0 0.0.0.255<span class="built_in"> area </span>0</span><br><span class="line"></span><br><span class="line">R3(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">R3(config-router)#network 172.16.3.0 0.0.0.255<span class="built_in"> area </span>0</span><br><span class="line">R3(config-router)#network 192.168.23.0 0.0.0.255<span class="built_in"> area </span>0</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>观察各路由器的邻居表、拓扑表及路由表，观察哪些链路上有进行DR/BDR 的选举，并测试主机之间的连通性</li>
+</ol>
+<p>&emsp;&emsp;R1、R2、R3的邻居表：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1#show<span class="built_in"> ip ospf neighbor </span></span><br><span class="line"></span><br><span class="line">Neighbor ID     Pri   State           Dead Time  <span class="built_in"> Address </span>        Interface</span><br><span class="line">192.168.23.2      1   FULL/DR         00:00:35    192.168.12.2    Ethernet0/0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2#show<span class="built_in"> ip ospf neighbor </span></span><br><span class="line"></span><br><span class="line">Neighbor ID     Pri   State           Dead Time  <span class="built_in"> Address </span>        Interface</span><br><span class="line">192.168.23.3      0   FULL/  -        00:00:37    192.168.23.3    Serial2/0</span><br><span class="line">192.168.12.1      1   FULL/BDR        00:00:30    192.168.12.1    Ethernet0/0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R3#show<span class="built_in"> ip ospf neighbor </span></span><br><span class="line"></span><br><span class="line">Neighbor ID     Pri   State           Dead Time  <span class="built_in"> Address </span>        Interface</span><br><span class="line">192.168.23.2      0   FULL/  -        00:00:36    192.168.23.2    Serial2/1</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;R1、R2、R3的拓扑表：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1#show<span class="built_in"> ip ospf </span>topology-<span class="builtin-name">info</span> </span><br><span class="line"></span><br><span class="line">            <span class="built_in"> OSPF </span>Router with ID (192.168.12.1) (Process ID 1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                 Base Topology (MTID 0)</span><br><span class="line"></span><br><span class="line"> Topology priority is 64</span><br><span class="line"> Router is <span class="keyword">not</span> originating router-LSAs with maximum metric</span><br><span class="line"> Number of areas transit capable is 0</span><br><span class="line"> Initial SPF schedule delay 5000 msecs</span><br><span class="line"> Minimum hold time between two consecutive SPFs 10000 msecs</span><br><span class="line"> Maximum wait time between two consecutive SPFs 10000 msecs</span><br><span class="line">   <span class="built_in"> Area </span>BACKBONE(0)</span><br><span class="line">        SPF algorithm last executed 00:01:17.233 ago</span><br><span class="line">        SPF algorithm executed 5 times</span><br><span class="line">       <span class="built_in"> Area </span>ranges are</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2#show<span class="built_in"> ip ospf </span>topology-<span class="builtin-name">info</span> </span><br><span class="line"></span><br><span class="line">            <span class="built_in"> OSPF </span>Router with ID (192.168.23.2) (Process ID 1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                 Base Topology (MTID 0)</span><br><span class="line"></span><br><span class="line"> Topology priority is 64</span><br><span class="line"> Router is <span class="keyword">not</span> originating router-LSAs with maximum metric</span><br><span class="line"> Number of areas transit capable is 0</span><br><span class="line"> Initial SPF schedule delay 5000 msecs</span><br><span class="line"> Minimum hold time between two consecutive SPFs 10000 msecs</span><br><span class="line"> Maximum wait time between two consecutive SPFs 10000 msecs</span><br><span class="line">   <span class="built_in"> Area </span>BACKBONE(0)</span><br><span class="line">        SPF algorithm last executed 00:04:16.717 ago</span><br><span class="line">        SPF algorithm executed 4 times</span><br><span class="line">       <span class="built_in"> Area </span>ranges are</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R3#show<span class="built_in"> ip ospf </span>topology-<span class="builtin-name">info</span> </span><br><span class="line"></span><br><span class="line">           <span class="built_in"> OSPF </span>Router with ID (192.168.23.3) (Process ID 1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                Base Topology (MTID 0)</span><br><span class="line"></span><br><span class="line"> Topology priority is 64</span><br><span class="line"> Router is <span class="keyword">not</span> originating router-LSAs with maximum metric</span><br><span class="line"> Number of areas transit capable is 0</span><br><span class="line"> Initial SPF schedule delay 5000 msecs</span><br><span class="line"> Minimum hold time between two consecutive SPFs 10000 msecs</span><br><span class="line"> Maximum wait time between two consecutive SPFs 10000 msecs</span><br><span class="line">   <span class="built_in"> Area </span>BACKBONE(0)</span><br><span class="line">        SPF algorithm last executed 00:06:14.147 ago</span><br><span class="line">        SPF algorithm executed 2 times</span><br><span class="line">       <span class="built_in"> Area </span>ranges are</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;R1、R2、R3的路由表：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1#show<span class="built_in"> ip route </span></span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        172.16.1.0/24 is directly connected, Ethernet0/1</span><br><span class="line">L        172.16.1.254/32 is directly connected, Ethernet0/1</span><br><span class="line">O        172.16.3.0/24 [110/84] via 192.168.12.2, 00:06:53, Ethernet0/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.1/32 is directly connected, Ethernet0/0</span><br><span class="line">O     192.168.23.0/24 [110/74] via 192.168.12.2, 00:07:20, Ethernet0/0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2#show<span class="built_in"> ip route </span></span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      172.16.0.0/24 is subnetted, 2 subnets</span><br><span class="line"></span><br><span class="line">O        172.16.1.0 [110/20] via 192.168.12.1, 00:07:42, Ethernet0/0</span><br><span class="line">O        172.16.3.0 [110/74] via 192.168.23.3, 00:07:25, Serial2/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial2/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial2/0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R3#show<span class="built_in"> ip route </span></span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">O        172.16.1.0/24 [110/84] via 192.168.23.2, 00:07:41, Serial2/1</span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">O     192.168.12.0/24 [110/74] via 192.168.23.2, 00:07:41, Serial2/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial2/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial2/1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>DR/BDR的选举规则：</p>
+<ul>
+<li>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级都为1，串行链路的接口优先级都为0（优先级为0不能参与DR/BDR的选举）</li>
+<li>如果优先级都一样，继续比较RID，RID大的优先</li>
+<li>DR的选举是非抢占的</li>
+</ul>
+</blockquote>
+<p>&emsp;&emsp;通过各路由器的路由表以及DR/BDR的选举可以得知，R1、R2之间进行了DR/BDR的选举，R2为DR（RID比R1大），R1为BDR；串行链路不进行DR/BDR的选举。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lXsnf.png" alt="image-20200926205702544"></p>
+<ol start="4">
+<li>指定 R2 的 RID 为 20.20.20.20，R3 的 RID 为 30.30.30.30，使用相关命令观察和验证各路由器 RID 的变化</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">R2(config-router)#router-id 20.20.20.20</span><br><span class="line">R2(config-router)#end</span><br><span class="line"><span class="comment">#重置OSPF协议进程</span></span><br><span class="line">R2#clear<span class="built_in"> ip ospf </span>process </span><br><span class="line">Reset ALL<span class="built_in"> OSPF </span>processes? [<span class="literal">no</span>]: y </span><br><span class="line"></span><br><span class="line">R3(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">R3(config-router)#router-id 30.30.30.30</span><br><span class="line">R3(config-router)#end</span><br><span class="line">R3#clear<span class="built_in"> ip ospf </span>process  </span><br><span class="line">Reset ALL<span class="built_in"> OSPF </span>processes? [<span class="literal">no</span>]: y</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>路由器RID的选举：当有手工指定的情况下最优先；在没有手工指定情况下，优先选择回环口中IP地址最大的；若没有回环口，选择物理接口（双UP）中IP地址最大。</p>
+</blockquote>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lX7HU.png" alt="image-20200926210605837"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lXouV.png" alt="image-20200926210638711"></p>
+<ol start="5">
+<li>实现 R2 为以太网链路网段上的 DR</li>
+</ol>
+<p>&emsp;&emsp;由于在默认情况下，各路由器的优先级都为1，并且R1的RID为192.168.12.1，R2的RID为20.20.20.20。所以根据DR/BDR的选举规则，可以修改R2中e0/0接口的优先级从而使R2成为DR。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf priority 2</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>由于DR、BDR的选举为非抢占，此时应重置OSPF进程</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2<span class="comment">#clear ip ospf process </span></span><br><span class="line">Reset ALL OSPF processes? [no]: y</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看R1和R2的邻居表，可得此时R2成为以太网链路上的DR</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lXXC9.png" alt="image-20200926212101815"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lXj3R.png" alt="image-20200926212311154"></p>
+<ol start="6">
+<li>分别在 R2 和 R3 的路由器上添加 172.16.2.0/24 和 172.16.3.0/24 的网段，添加必要配置实现该两个网络之间的连通性</li>
+</ol>
+<p>&emsp;&emsp;由于172.16.3.0/24网段已在R3上使用，故不在做特别配置。在R2上添加一个loopback，IP地址为172.16.2.1/24。</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2(config)#interface loopback 1</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>172.168.2.1 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R2(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">R2(config-router)#network 172.16.2.0 0.0.0.255<span class="built_in"> area </span>0</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0ljPED.png" alt="image-20200926213245812"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0ljpDK.png" alt="image-20200926213316790"></p>
+<ol start="7">
+<li>开启 debug 信息，观察 OSPF 在以太网链路之间信息交互的过程</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#debug ip ospf packet </span></span><br><span class="line">OSPF packet debugging is on</span><br><span class="line">*Mar  1 00:11:35.283: OSPF: rcv. v:2 t:1 l:48 rid:20.20.20.20 aid:0.0.0.0 chk:2B1D aut:0 auk: from FastEthernet0/0</span><br><span class="line">*Mar  1 00:11:35.323: OSPF: rcv. v:2 t:2 l:32 rid:20.20.20.20 aid:0.0.0.0 chk:7D3F aut:0 auk: from FastEthernet0/0</span><br><span class="line">*Mar  1 00:11:35.359: OSPF: rcv. v:2 t:2 l:72 rid:20.20.20.20 aid:0.0.0.0 chk:7F8F aut:0 auk: from FastEthernet0/0</span><br><span class="line">*Mar  1 00:11:35.375: OSPF: rcv. v:2 t:2 l:32 rid:20.20.20.20 aid:0.0.0.0 chk:6B03 aut:0 auk: from FastEthernet0/0</span><br><span class="line">*Mar  1 00:11:35.415: OSPF: rcv. v:2 t:4 l:148 rid:20.20.20.20 aid:0.0.0.0 chk:D361 aut:0 auk: from FastEthernet0/0</span><br><span class="line">*Mar  1 00:11:35.419: %OSPF-5-ADJCHG: Process 1, Nbr 20.20.20.20 on FastEthernet0/0 from LOADING to FULL, Loading Done</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>开启 debug 信息，观察 OSPF 在串行链路之间信息交互的过程，比较以太网链路和串行链路上 OSPF 的 debug 信息输出的区别</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3<span class="comment">#debug ip ospf packet </span></span><br><span class="line">OSPF packet debugging is on</span><br><span class="line">*Mar  1 00:16:42.503: OSPF: rcv. v:2 t:1 l:48 rid:20.20.20.20 aid:0.0.0.0 chk:8836 aut:0 auk: from Serial0/1</span><br><span class="line">*Mar  1 00:16:42.547: OSPF: rcv. v:2 t:2 l:32 rid:20.20.20.20 aid:0.0.0.0 chk:6728 aut:0 auk: from Serial0/1</span><br><span class="line">*Mar  1 00:16:42.547: OSPF: rcv. v:2 t:2 l:92 rid:20.20.20.20 aid:0.0.0.0 chk:18D9 aut:0 auk: from Serial0/1</span><br><span class="line">*Mar  1 00:16:42.583: OSPF: rcv. v:2 t:2 l:32 rid:20.20.20.20 aid:0.0.0.0 chk:7BB8 aut:0 auk: from Serial0/1</span><br><span class="line">*Mar  1 00:16:42.583: OSPF: rcv. v:2 t:4 l:168 rid:20.20.20.20 aid:0.0.0.0 chk:A9BE aut:0 auk: from Serial0/1</span><br><span class="line">*Mar  1 00:16:42.583: %OSPF-5-ADJCHG: Process 1, Nbr 20.20.20.20 on Serial0/1 from LOADING to FULL, Loading Done</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;以太网链路与串行链路上OSPF最主要的区别是，串行链路不进行DR/BDR的选举，而以太网链路进行DR/BDR的选举。</p>
+<p>&emsp;&emsp;以太网链路中，路由信息会先被发送到组播地址224.0.0.6，即被DR/BDR所接收，再由DR将此信息发送到组播地址224.0.0.5</p>
+<ol start="9">
+<li>使用 wireshark 抓取 OSPF 的 hello 报文，理解 hello 报文各字段的含义</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lj9HO.png" alt="image-20201002212804565"></p>
+<blockquote>
+<p>hello包：周期性发送，用来发现和维持OSPF邻居关系。</p>
+<p>hello报文中的相关信息包括：</p>
+<ul>
+<li>Network Mask：发送hello报文的接口所在网络的掩码</li>
+<li>Hello Interval（默认为10s）：发送hello报文的时间间隔</li>
+<li>Options：可选项<ul>
+<li>E：允许Flood AS-External-LSAs</li>
+<li>MC：转发IP组播报文</li>
+<li>N/P：处理Type-7 LSAs</li>
+<li>DC：处理按需链路</li>
+</ul>
+</li>
+<li>Router Priority：优先级，默认为1，如果设置为0，则不参与DR或BDR的选举</li>
+<li>Router Dead Interval（默认40s）：失效时间，如果在此时间内未收到邻居发送的hello报文，则认为邻居失效</li>
+<li>Designated Router：DR的接口地址</li>
+<li>Backup Designated Router：BDR的接口地址</li>
+<li>Active Neighbor：活跃的邻居，以RID标识</li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNA实验六——单臂路由的运用</title>
+    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】 </p>
+<ol>
+<li><p>掌握交换机上 VLAN 的创建和划分</p>
+</li>
+<li><p>掌握 Trunk 的作用</p>
+</li>
+<li><p>掌握 VTP 的作用与配置</p>
+</li>
+<li><p>掌握单臂路由原理与配置</p>
+</li>
+<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
+</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
+<center>单臂路由的实现拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
+<ol start="2">
+<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
+<ol start="3">
+<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
+<ol start="5">
+<li>测试各主机之间的连通性</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
+<ol start="6">
+<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
+<p>&emsp;&emsp;PC2与PC3的连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>单臂路由</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP交换综合实验一</title>
     <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
@@ -600,75 +810,6 @@
       <tags>
         <tag>CCNP</tag>
         <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验六——单臂路由的运用</title>
-    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】 </p>
-<ol>
-<li><p>掌握交换机上 VLAN 的创建和划分</p>
-</li>
-<li><p>掌握 Trunk 的作用</p>
-</li>
-<li><p>掌握 VTP 的作用与配置</p>
-</li>
-<li><p>掌握单臂路由原理与配置</p>
-</li>
-<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
-</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
-<center>单臂路由的实现拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
-<ol start="2">
-<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
-<ol start="3">
-<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
-<ol start="5">
-<li>测试各主机之间的连通性</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
-<ol start="6">
-<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
-<p>&emsp;&emsp;PC2与PC3的连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>单臂路由</tag>
       </tags>
   </entry>
   <entry>
@@ -1178,9 +1319,9 @@
         <category>CCNP实验</category>
       </categories>
       <tags>
+        <tag>OSPF</tag>
         <tag>CCNP</tag>
         <tag>路由</tag>
-        <tag>OSPF</tag>
       </tags>
   </entry>
   <entry>
@@ -1267,6 +1408,44 @@
         <tag>CCNP</tag>
         <tag>路由</tag>
         <tag>IS-IS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安恒杯四月月赛misc——Writeup</title>
+    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
+    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
+<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
+<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
+<p>​        将what_you_want.7z导出，发现需要密码。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
+<p>​        根据文件名的提示找到pin，解压获得flag。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
+<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
+<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
+<p>​        首先获取该内存的配置文件</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
+<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
+<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
+<p>​        将其导出</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
+<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
+<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
+<p>​        用winhex打开即可找到flag。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
+]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>ctf</tag>
+        <tag>网络安全</tag>
       </tags>
   </entry>
   <entry>
@@ -1383,47 +1562,9 @@
         <category>CCNP实验</category>
       </categories>
       <tags>
+        <tag>OSPF</tag>
         <tag>CCNP</tag>
         <tag>路由</tag>
-        <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安恒杯四月月赛misc——Writeup</title>
-    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
-    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
-<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
-<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
-<p>​        将what_you_want.7z导出，发现需要密码。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
-<p>​        根据文件名的提示找到pin，解压获得flag。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
-<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
-<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
-<p>​        首先获取该内存的配置文件</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
-<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
-<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
-<p>​        将其导出</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
-<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
-<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
-<p>​        用winhex打开即可找到flag。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
-]]></content>
-      <categories>
-        <category>Writeup</category>
-      </categories>
-      <tags>
-        <tag>ctf</tag>
-        <tag>网络安全</tag>
       </tags>
   </entry>
   <entry>
