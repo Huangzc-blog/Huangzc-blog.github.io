@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2020-08-30T11:52:28.430Z</updated>
+  <updated>2020-10-09T07:09:33.073Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>OSPF协议详解</title>
+    <link href="https://huangzc.site/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/"/>
+    <id>https://huangzc.site/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/</id>
+    <published>2020-09-30T16:00:00.000Z</published>
+    <updated>2020-10-09T07:09:33.073Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;OSPF(Open Shortest Path First开放式最短路径优先）是一个内部网关协议(Interior Gateway Protocol，简称IGP），用于在单一自治系统（autonomous system,AS）内决策路由。是对链路状态路由协议的一种实现，隶属内部网关协议（IGP），故运作于自治系统内部。著名的Dijkstra算法被用来计算最短路径树。OSPF支持负载均衡和基于服务类型的选路，也支持多种路由形式，如特定主机路由和子网路由等。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="OSPF" scheme="https://huangzc.site/tags/OSPF/"/>
+    
+    <category term="路由协议" scheme="https://huangzc.site/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>安恒杯四月月赛misc——Writeup</title>

@@ -35,60 +35,21 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。">
+  <meta name="description" content="&amp;emsp;&amp;emsp;OSPF(Open Shortest Path First开放式最短路径优先）是一个内部网关协议(Interior Gateway Protocol，简称IGP），用于在单一自治系统（autonomous system,AS）内决策路由。是对链路状态路由协议的一种实现，隶属内部网关协议（IGP），故运作于自治系统内部。著名的Dijkstra算法被用来计算最短路径树。OSPF">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CCNP交换综合实验二">
-<meta property="og:url" content="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/index.html">
+<meta property="og:title" content="OSPF协议详解">
+<meta property="og:url" content="https://huangzc.site/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;OSPF(Open Shortest Path First开放式最短路径优先）是一个内部网关协议(Interior Gateway Protocol，简称IGP），用于在单一自治系统（autonomous system,AS）内决策路由。是对链路状态路由协议的一种实现，隶属内部网关协议（IGP），故运作于自治系统内部。著名的Dijkstra算法被用来计算最短路径树。OSPF">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="article:published_time" content="2019-03-07T06:45:00.000Z">
-<meta property="article:modified_time" content="2020-08-31T12:14:06.367Z">
+<meta property="article:published_time" content="2020-09-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-10-09T07:09:33.073Z">
 <meta property="article:author" content="Huangzc">
-<meta property="article:tag" content="CCNP">
-<meta property="article:tag" content="交换">
+<meta property="article:tag" content="OSPF">
+<meta property="article:tag" content="路由协议">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
 
-<link rel="canonical" href="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/">
+<link rel="canonical" href="https://huangzc.site/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/">
 
 
 <script id="page-configurations">
@@ -101,7 +62,7 @@
   };
 </script>
 
-  <title>CCNP交换综合实验二 | Huangzc's blog</title>
+  <title>OSPF协议详解 | Huangzc's blog</title>
   
 
 
@@ -259,7 +220,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/">
+    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -272,7 +233,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CCNP交换综合实验二
+          OSPF协议详解
         </h1>
 
         <div class="post-meta">
@@ -282,14 +243,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-03-07 14:45:00" itemprop="dateCreated datePublished" datetime="2019-03-07T14:45:00+08:00">2019-03-07</time>
+              <time title="创建时间：2020-10-01 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-01T00:00:00+08:00">2020-10-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-31 20:14:06" itemprop="dateModified" datetime="2020-08-31T20:14:06+08:00">2020-08-31</time>
+                <time title="修改时间：2020-10-09 15:09:33" itemprop="dateModified" datetime="2020-10-09T15:09:33+08:00">2020-10-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +258,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CCNP%E5%AE%9E%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">CCNP实验</span></a>
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
                 </span>
             </span>
 
@@ -307,14 +268,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>4.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -326,164 +287,182 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>&emsp;&emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。</p>
+        <p>&emsp;&emsp;OSPF(Open Shortest Path First开放式最短路径优先）是一个内部网关协议(Interior Gateway Protocol，简称IGP），用于在单一自治系统（autonomous system,AS）内决策路由。是对链路状态路由协议的一种实现，隶属内部网关协议（IGP），故运作于自治系统内部。著名的Dijkstra算法被用来计算最短路径树。OSPF支持负载均衡和基于服务类型的选路，也支持多种路由形式，如特定主机路由和子网路由等。</p>
 <a id="more"></a>
 
-<p>【实验目的】</p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>&emsp;&emsp;OSPF路由协议是一种典型的链路状态（Link-state）的路由协议，一般用于同一个路由域内。在这里，路由域是指一个自治系统（Autonomous System），即AS，它是指一组通过统一的路由政策或路由协议互相交换路由信息的网络。在这个AS中，所有的OSPF路由器都维护一个相同的描述这个AS结构的数据库，该数据库中存放的是路由域中相应链路的状态信息，OSPF路由器正是通过这个数据库计算出其OSPF路由表的。</p>
+<p>&emsp;&emsp;作为一种链路状态的路由协议，OSPF将链路状态组播数据LSA（Link State Advertisement）传送给在某一区域内的所有路由器，这一点与距离矢量路由协议不同。运行距离矢量路由协议的路由器是将部分或全部的路由表传递给与其相邻的路由器。</p>
+<p>&emsp;&emsp;在信息交换的安全性上，OSPF规定了路由器之间的任何信息交换在必要时都可以经过认证或鉴别（Authentication），以保证只有可信的路由器之间才能传播选路信息。OSPF支持多种鉴别机制，并且允许各个区域间采用不同的鉴别机制。OSPF对链路状态算法在广播式网络（如以太网）中的应用进行了优化，以尽可能地利用硬件广播能力来传递链路状态报文。通常链路状态算法的拓扑图中一个结点代表一个路由器。若K个路由器都连接到以太网上，在广播链路状态时，关于这K个路由器的报文将达到K的平方个。为此，OSPF在拓扑结构图允许一个结点代表一个广播网络。每个广播网络上所有路由器发送链路状态报文，报告该网络中的路由器的链路状态。</p>
+<h3 id="OSPF常用术语"><a href="#OSPF常用术语" class="headerlink" title="OSPF常用术语"></a>OSPF常用术语</h3><ul>
+<li>ABR：ABR路由器至少有两个接口分别连接不同区域（包括骨干区域在内）。ABR中包含每个区域的LSDB信息，为每个区域进行路由计算，且在区域之间通告路由信息。 </li>
+<li>ASBR：ASBR路由器至少有一个接口连接到一个OSPF区域，且至少有一个接口连接到外部非OSPF区域。 </li>
+<li>内部路由器：内部路由器的所有接口都只连接到一个OSPF区域。此路由器完全在区域内部。 </li>
+<li>骨干路由器：骨干路由器至少有一个接口连接到骨干区域。</li>
+</ul>
+<h3 id="OSPF的三张表"><a href="#OSPF的三张表" class="headerlink" title="OSPF的三张表"></a>OSPF的三张表</h3><ol>
+<li><p>邻居表：当启用OSPF之后，就会往组播地址224.0.0.5发送hello包，也会收到邻居发送的hello包，那么会把hello包的RID添加进自己的邻居表中。</p>
+</li>
+<li><p>拓扑表（链路状态数据库）：存放的是每台设备对网路的认知（网络中的地址）。</p>
+</li>
+<li><p>路由表：OSPF的路由器由链路状态数据库进行SPF的算法得到最优路径。</p>
+</li>
+</ol>
+<h3 id="OSPF的五个包"><a href="#OSPF的五个包" class="headerlink" title="OSPF的五个包"></a>OSPF的五个包</h3><ol>
+<li><p>Hello：周期性发送，用来发现和维持OSPF邻居关系。内容包括一些定时器的数值、DR（DesignatedRouter，指定路由器）、BDR(Backup DesignatedRouter，备份指定路由器）以及自己己知的邻居（默认情况下，Hello 时间为10s，死亡时间为40s。可在接口下修改hello时间与死亡时间）。</p>
+</li>
+<li><p>DBD（数据库描述包）：描述了本地LSDB中每一条LSA的摘要信息，用于两台路由器进行数据库的同步。</p>
+</li>
+<li><p>LSR（链路状态请求包）：向对方请求所需的LSA。两台路由器互相交换DBD报文之后，得知对端的路由器有哪些LSA是本地的LSDB所缺少的，这时需要发送LSR报文向对方请求所需的LSA。内容包括所需要的LSA的摘要。</p>
+</li>
+<li><p>LSU（链路状态更新包）：向对方发送其所需要的LSA。</p>
+</li>
+<li><p>LSACK（链路状态确认包）：用来对收到的LSA进行确认。内容是需要确认的LSA的Header(一个报文可对多个LSA进行确认）。</p>
+</li>
+</ol>
+<h3 id="OSPF的状态机"><a href="#OSPF的状态机" class="headerlink" title="OSPF的状态机"></a>OSPF的状态机</h3><ol>
+<li>Down：未启用OSPF的状态。建立成功后，以下情况三种情况会使OSPF状态从full到down：①接口松动；②重启进程；③到达规定的死亡时间。</li>
+<li>Init：初始化状态。收到了来自邻居的Hello包（包含对方的route-id），并将对方的状态设置为init。</li>
+<li>2-way：邻居状态，双方彼此都收到了的hello包，并周期性的发送Hello包（双方建立会话）。</li>
+<li>Exstart：预启动状态。进入双向通信之后，双方进行数据库摘要交换，在数据库摘要交换之前，要进行主从关系的选举（比较RID与优先级，如果RID一样会卡在该状态）</li>
+<li>Exchange：交换状态。进行数据库的摘要（DBD）的交换，告知对端本地所有的LSA的目录。在收到对方的数据库摘要后，对比自己的数据库摘要，如果没有，就会发送链路请求包（LSR）要求对方把对应的详细LSA信息发送过来（要求对方发送对应LSA的LSU），收到LSU后向对方发送LSACK。</li>
+<li>Loading：加载状态。发送LSR、LSU、LSACK，学习对端的LSA的详细信息。</li>
+<li>Full：完全邻接。双方的数据库一致。</li>
+<li>Attempt：该状态仅在NBMA环境，例如帧中继、X.25或ATM环境中有效，表示在一定时间内没有接收到某一相邻路由器的信息，但是OSPF路由器仍必须通过以一个较低的频率向该相邻路由器发送Hello数据包来保持联系。</li>
+</ol>
+<h3 id="OSPF的分层"><a href="#OSPF的分层" class="headerlink" title="OSPF的分层"></a>OSPF的分层</h3><p> &emsp;&emsp;OSPF使用两层的区域分级。</p>
+<ul>
+<li>骨干区域（区域0）：骨干区域的两个主要要求是，骨干区域必须连接其他所有非骨干区域，且此骨干区域必须总是连续的；不允许分割骨干区域。一般来说，骨干区域中没有终端用户。</li>
+<li>非骨干区域（非0区域）：此区域的主要功能是连接终端用户和资源。非骨干区域通常根据功能性或地理性进行划分。不同非骨干区域之间的流量必须经过骨干区域。</li>
+</ul>
+<h3 id="OSPF-的LSA类型"><a href="#OSPF-的LSA类型" class="headerlink" title="OSPF 的LSA类型"></a>OSPF 的LSA类型</h3><p>&emsp;&emsp;路由器必须知道OSPF区域的详细拓扑才能计算最优路径。LSA描述了拓扑的详细信息，它是构成OSPF LDSB的基石。每个LSA都是独立的数据库记录，它们组合起来描述了OSPF网络区域的整体拓扑。下面介绍OSPF最常见的一些LSA类型。</p>
+<ul>
+<li><strong>类型1，路由器LSA：</strong>每台路由器为所属的每个区域生成路由器链路通告。路由器链路通告描述了区域中的路由器链路状态，只在特定区域中泛洪。对于所有类型的LSA，都有20字节的LSA头部。LSA头部中的一个字段是链路状态ID。类型1 LSA的链路状态ID是源路由器ID。   </li>
+<li><strong>类型2，网络LSA：</strong> DR为多路访问网络生成网络链路通告。网络链路通告在包含该网络的区域中泛洪。类型2 LSA的链路状态ID是DR的接口的IP地址。  </li>
+<li><strong>类型3，汇总LSA：</strong>ABR将从一个区域中学习到的信息汇总成汇总链路通告，并发给另一个区域。汇总并不是默认开启的。类型3 LSA的链路状态ID是目的网络地址。  </li>
+<li><strong>类型4，ASBR汇总LSA：</strong>ASBR汇总链路通告负责通知OSPF域的其余部分，如何到达ASBR。链路状态ID包含所描述ASBR的路由器ID。 </li>
+<li><strong>类型5，自制系统LSA：</strong>自治系统外部链路通告由ASBR生成，描述了到达自治系统外部目的网络的路由。在除了特殊区域外的其他区域中泛洪。类型5 LSA的链路状态ID是外部网络地址。 </li>
+<li><strong>类型6：</strong>组播OSPF应用中使用的专用LSA 。</li>
+<li><strong>类型7：</strong>在特殊区域类型NSSA中对外部录用使用。</li>
+<li><strong>类型8、9：</strong>在OSPFv3中对链路本地地址和区域内前缀使用。</li>
+<li><strong>类型10、11：</strong>通用LSA，也成为透明（Opaque）,允许OSPF未来的拓展。</li>
+</ul>
+<h3 id="RID的选择"><a href="#RID的选择" class="headerlink" title="RID的选择"></a>RID的选择</h3><p>&emsp;&emsp;在OSPF进程初始化时，路由器使用以下条件选择OSPF路由器的RID。</p>
 <ol>
-<li><p>掌握 RSTP 的配置与检验</p>
+<li>使用<strong>router-id</strong>&ensp; <em>ip-address</em>命令指定路由器的RID。可为路由器配置一个IPv4格式的随机值，但该值必须唯一。如果router-id命令指定的IPv4地址与另一个已经活跃的OSPF进程重叠，router-id命令则执行失败。</li>
+<li>使用路由器上所有活跃的 loopback 接口中最高IPv4地址。</li>
+<li>使用所有活跃的非 loopback 接口中最高IPv4地址。</li>
+</ol>
+<h3 id="DR-BDR的选举规则"><a href="#DR-BDR的选举规则" class="headerlink" title="DR/BDR的选举规则"></a>DR/BDR的选举规则</h3><ol>
+<li>先比较优先级，优先级大的优先；默认情况下以太网接口的优先级都为1，串行链路的接口优先级都为0（优先级为0不能参与DR/BDR的选举）</li>
+<li>如果优先级都一样，继续比较RID，RID大的优先</li>
+<li>DR的选举是非抢占的</li>
+</ol>
+<h3 id="OSPF的网络类型"><a href="#OSPF的网络类型" class="headerlink" title="OSPF的网络类型"></a>OSPF的网络类型</h3><ol>
+<li>点到点（Point-to-point）：路由器使用组播动态地发现邻居。没有DR/BDR的选举，因为在一个点到点网段上只能连接两台路由器。这是串行链路和点到点帧中继子接口的默认OSPF网络类型。</li>
+<li>点到多点（Point-to-multipoint）：OSPF将此网络作为一个点到点链路的结合来对待，即使所有接口都属于同一个IP子网。每个接口的IP地址都将作为主机/32路由出现在邻居的路由表中。路由器使用组播动态发现邻居，不进行DR/BDR选举。</li>
+<li>广播型多路访问网络（Broadcast）：路由器使用广播来动态发现邻居。选举DR和BDR，用来优化信息交换的交换过程。这是以太网链路的默认OSPF网络类型。</li>
+<li>非广播型多路访问网络（NBMA）：用在互联超过两台路由器，但没有广播能力的网络上。帧中继和ATM都属于NBMA网络。在此网络下，需要静态配置邻居，接着进行DR/BDR选举。此网络类型是使用帧中继封装的所有物理接口和多点子接口的默认网络类型。 </li>
+</ol>
+<p>特点总结：</p>
+<ul>
+<li><p>点家族都不用选举DR和BDR</p>
 </li>
-<li><p>掌握 MST 的配置与检验</p>
+<li><p>多路访问都需要选举DR和BDR</p>
 </li>
-<li><p>掌握生成树特性的应用</p>
+<li><p>非广播都要手动指定邻居，非广播都是单播更新</p>
 </li>
-<li><p>实现 VLAN 间的通信</p>
+<li><p>neighbor命令后指定的cost只有在非广播下才有效</p>
 </li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOdkOP.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOdQln.png"></p>
-<ol start="2">
-<li>在该园区网络中有 4 个 VLAN，VLAN10、VLAN20、VLAN30 和 VLAN40，要求在 DSW1 上创建这些 VLAN，其他交换机同步 DSW1 上的 VLAN 信息，并且设置 VTP 域名为 huang.com，VTP 密码为 huang，所有 TRUNK 链路全部采用标准的封装模式。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOdtkF.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOdwlR.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOdckD.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOwSBV.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOwk9J.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOwKAO.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOwovR.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOwrgs.png"></p>
-<ol start="3">
-<li>DSW1 与 DSW2 之间的链路不足以传递园区内部流量，使用合适的方式建立DSW1 与 DSW2 之间的以太通道链路。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOBmFO.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOBnYD.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOBZTK.png"></p>
-<ol start="4">
-<li>要求全网启用基于 802.1w 标准的生成树，并且实现 DSW1 为 VLAN 10 和 20 的主根，为 VLAN 30 和 40 的次根，实现 DSW2 为 VLAN 10 和 20 的次根， 为 VLAN 30 和 40 的主根,并且哪怕将来在接入层中有新的交换机添加进园区网络，也要确保这两台交换机的地位。</li>
-</ol>
-<p>&emsp;&emsp;全网启用基于 802.1w 标准的生成树：</p>
-<p> <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dODsvd.png"></p>
-<p>&emsp;&emsp;实现 DSW1 为 VLAN 10 和 20 的主根，为 VLAN 30 和 40 的次根，实现 DSW2 为 VLAN 10 和 20 的次根， 为 VLAN 30 和 40 的主根：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOrFVx.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOrPq1.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOrCrR.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOrAIK.png"></p>
-<p>&emsp;&emsp;确保两台交换机的地位：</p>
-<p> <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOrka6.png"></p>
-<ol start="5">
-<li>各 PC 和 VLAN 的 IP 编址如下表：</li>
-</ol>
+<li><p>0SPF只用接口的第一IP地址建立邻居和形成邻接</p>
+</li>
+</ul>
 <table>
 <thead>
 <tr>
-<th><strong>设备</strong></th>
-<th><strong>VLAN</strong></th>
-<th><strong>IP 地址</strong></th>
-<th><strong>默认网关</strong></th>
+<th>网络类型</th>
+<th>Hello</th>
+<th>DBD</th>
+<th>LSR</th>
+<th>LSU</th>
+<th>LSAck</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>PC1</td>
-<td>10</td>
-<td>192.168.10.100</td>
-<td>192.168.10.254</td>
+<td>点对点</td>
+<td>224.0.0.5</td>
+<td>224.0.0.5</td>
+<td>224.0.0.5</td>
+<td>224.0.0.5</td>
+<td>224.0.0.5</td>
 </tr>
 <tr>
-<td>PC2</td>
-<td>20</td>
-<td>192.168.20.100</td>
-<td>192.168.20.254</td>
+<td>Broadcast</td>
+<td>224.0.0.5</td>
+<td>单播</td>
+<td>单播</td>
+<td>224.0.0.5或224.0.0.6</td>
+<td>224.0.0.5或224.0.0.6</td>
 </tr>
 <tr>
-<td>PC3</td>
-<td>30</td>
-<td>192.168.30.100</td>
-<td>192.168.30.254</td>
+<td>NBMA</td>
+<td>单播</td>
+<td>单播</td>
+<td>单播</td>
+<td>单播</td>
+<td>单播</td>
 </tr>
 <tr>
-<td>PC4</td>
-<td>40</td>
-<td>192.168.40.100</td>
-<td>192.168.40.254</td>
+<td>点对多点</td>
+<td>224.0.0.5</td>
+<td>单播</td>
+<td>单播</td>
+<td>224.0.0.5或单播</td>
+<td>224.0.0.5</td>
+</tr>
+<tr>
+<td>Virual Link</td>
+<td>单播</td>
+<td>单播</td>
+<td>单播</td>
+<td>单播</td>
+<td>单播</td>
 </tr>
 </tbody></table>
-<ol start="6">
-<li>要求连接这些主机的交换端口忽视生成树过程，能够直接进入到转发状态， 并且这些端口在接收到配置 BPDU 时就进入 err-disrable 状态。</li>
-</ol>
-<p>&emsp;&emsp;忽视生成树过程，直接进入到转发状态：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOcQ1S.png"></p>
-<p>&emsp;&emsp;端口在接收到配置 BPDU 时就进入 err-disrable 状态：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOcMp8.png"></p>
-<ol start="7">
-<li>在 R1 上完成必要的配置，实现各 PC 间可以互相访问。</li>
-</ol>
-<p>&emsp;&emsp;配置单臂路由，实现各PC间可以互相访问：</p>
-<p>&emsp;&emsp;①  将子接口划分进各个VLAN中</p>
-<p>&emsp;&emsp;②  在子接口中配置各网段的网关地址 </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOc1XQ.png"></p>
-<p>&emsp;&emsp;③  PC间实现互相访问</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOcl6g.png"></p>
-<ol start="8">
-<li>随着网络规模的扩大，该园区网将来可能需要配置更多的 VLAN，大量的VLAN 实例会影响交换机的性能，要求将该客户网络迁移到 MST 中，具体MST 需求如下：</li>
-</ol>
-<ul>
-<li><p>创建两个 MST 实例，MST1 和 MST2，其中 MST1 用于 VLAN 10 到 25, MST2 用于 VLAN 26 到 50，其它 VLAN 属于 CIST。</p>
-</li>
-<li><p>使用 MST 区域名“SWITCH”，修订号“1”。</p>
-</li>
-</ul>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dO2MLQ.png"></p>
-<ul>
-<li>将 DSW1 配置为 MST1 及 CIST 的主根，为 MST2 的次根。</li>
-</ul>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dO2lZj.png"></p>
-<ul>
-<li>将 DSW2 配置为 MST2 的主根，为 MST1 及 CIST 的次根。</li>
-</ul>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dO2JJ0.png"></p>
-<p>&emsp;&emsp;实验结果：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOTVFe.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOTJYQ.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOTUln.png"></p>
-<ol start="9">
-<li><p>该客户网络进行了升级，购买了两台新的多层交换机，升级之后的网络拓扑如下，其中客户所属的 VLAN 角色及地址段信息保持不变</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOTBwT.png"></p>
-</li>
-<li><p>现要求你完成如下网络配置：</p>
-</li>
-</ol>
-<ul>
-<li><p>配置DSW1 和DSW2 以执行 VLAN 间路由。将 DSW1 用作与交换机ASW1 连接的 PC1 和 PC2 的默认网关。连接 DSW2 的客户端使用 DSW2 作为默认网关，所有 PC 都保留网络升级改造之前的 IP 地址和默认网关。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOTv0f.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dO7SAS.png"></p>
-</li>
-<li><p>R1 与两多层交换机链路的 IP 地址，以及园区外部的 ISP 和 Web SRV 地址自行规划。</p>
-</li>
-</ul>
-<p>&emsp;&emsp;各接口的具体地址如下图所示。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOTx78.png"></p>
-<ul>
-<li><p>在园区网络内启用 OSPF，并且将园区网络划分到区域 0 中。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dOTjnP.png"></p>
-</li>
-<li><p>将 ASW1 和 DSW1 之间的链路捆绑到一个基于标准的 EtherChannel 中。</p>
-</li>
-</ul>
-<p>&emsp;&emsp;具体实现方法已在3中详细列出，在此不在列出。</p>
-<ul>
-<li>完成其他必要配置，实现各 VLAN 间的用户可以互相通信，并且实现园区网络内的用户可以访问 ISP 上的 Web SRV。</li>
-</ul>
-<p>&emsp;&emsp;由于前面以实现内网全网可达，外网也实现了可达性。故只需在R1上配置NAT。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dXJ3bF.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dXJGE4.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dXJ1DU.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/31/dXJBDO.png"></p>
+<h3 id="OSPF最优路径计算"><a href="#OSPF最优路径计算" class="headerlink" title="OSPF最优路径计算"></a>OSPF最优路径计算</h3><p>&emsp;&emsp;一旦LDSB在OSPF邻居间实现了同步，每台路由器就需要确定其在网络拓扑中的最优路径。</p>
+<p>&emsp;&emsp;当SPF尝试判断去往某个已知目的的最优路径时，它会比较各个路径的总开销值。开销值最低的路径会被选为最优路径。OSPF开销是通过一个接口发送数据包的开销的指标。OSPF开销是自动为每个分配到OSPF进程中的接口计算的，计算的公式为：<br>$$<br>开销=参考带宽/接口带宽<br>$$<br>&emsp;&emsp;开销值是一个在1~65535之间的数，开销值越低路径越优先。参考带宽默认设置为100Mbit/s。</p>
+<p>&emsp;&emsp;在高于默认带宽（100Mbit/s）的链路上，自动的开销分配不再起作用（它会让所有开销都等于1）。在这些链路上，OSPF开销必须手动在每个接口进行设置。</p>
+<center>OSPF的默认开销表</center>
+
+<table>
+<thead>
+<tr>
+<th>链路类型</th>
+<th>默认开销</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T1（1.544Mbit/s 串行链路）</td>
+<td>64</td>
+</tr>
+<tr>
+<td>以太网</td>
+<td>10</td>
+</tr>
+<tr>
+<td>快速以太网</td>
+<td>1</td>
+</tr>
+<tr>
+<td>吉比特以太网</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10吉比特以太网</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p>&emsp;&emsp;由于在OSPF协议中，默认的参考带宽为100Mbit/s不适用与计算比快速以太网更快的链路的OSPF开销。所有这样的链路被分配的开销都是1，这样会造成OSPF无法选择出理想的最短路径，因为它将会多有高速链路视为等价。</p>
+<p>&emsp;&emsp;要是想改善OSPF的这种方式，管理员可以使用OSPF配置命令 <strong>auto-cost reference-bandwith</strong> 将参考带宽调整为更高值 。需要注意的是只有在OSPF域中使用一致的参考带宽才能确保所有的路由器都正确地计算出最优路径。</p>
 
     </div>
 
@@ -519,7 +498,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://huangzc.site/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/" title="CCNP交换综合实验二">https://huangzc.site/2019/03/07/CCNP交换综合实验二/</a>
+    <a href="https://huangzc.site/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/" title="OSPF协议详解">https://huangzc.site/2020/10/01/OSPF协议详解/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -541,8 +520,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/CCNP/" rel="tag"><i class="fa fa-tag"></i> CCNP</a>
-              <a href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag"><i class="fa fa-tag"></i> 交换</a>
+              <a href="/tags/OSPF/" rel="tag"><i class="fa fa-tag"></i> OSPF</a>
+              <a href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag"><i class="fa fa-tag"></i> 路由协议</a>
           </div>
 
         
@@ -551,13 +530,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/" rel="prev" title="CCNP交换综合实验一">
-      <i class="fa fa-chevron-left"></i> CCNP交换综合实验一
+    <a href="/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/" rel="prev" title="安恒杯四月月赛misc——Writeup">
+      <i class="fa fa-chevron-left"></i> 安恒杯四月月赛misc——Writeup
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/03/14/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/" rel="next" title="CCNP交换综合实验三">
-      CCNP交换综合实验三 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -621,6 +597,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF%E5%B8%B8%E7%94%A8%E6%9C%AF%E8%AF%AD"><span class="nav-text">OSPF常用术语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF%E7%9A%84%E4%B8%89%E5%BC%A0%E8%A1%A8"><span class="nav-text">OSPF的三张表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF%E7%9A%84%E4%BA%94%E4%B8%AA%E5%8C%85"><span class="nav-text">OSPF的五个包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF%E7%9A%84%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="nav-text">OSPF的状态机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF%E7%9A%84%E5%88%86%E5%B1%82"><span class="nav-text">OSPF的分层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF-%E7%9A%84LSA%E7%B1%BB%E5%9E%8B"><span class="nav-text">OSPF 的LSA类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RID%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-text">RID的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DR-BDR%E7%9A%84%E9%80%89%E4%B8%BE%E8%A7%84%E5%88%99"><span class="nav-text">DR&#x2F;BDR的选举规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF%E7%9A%84%E7%BD%91%E7%BB%9C%E7%B1%BB%E5%9E%8B"><span class="nav-text">OSPF的网络类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF%E6%9C%80%E4%BC%98%E8%B7%AF%E5%BE%84%E8%AE%A1%E7%AE%97"><span class="nav-text">OSPF最优路径计算</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
