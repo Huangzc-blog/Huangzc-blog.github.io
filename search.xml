@@ -6,7 +6,8 @@
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍BGP的13种选路原则。</p>
 <a id="more"></a>
 
-<h3 id="扩展团体属性（拥有最高选路优先级）"><a href="#扩展团体属性（拥有最高选路优先级）" class="headerlink" title="扩展团体属性（拥有最高选路优先级）"></a>扩展团体属性（拥有最高选路优先级）</h3><figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">R5(config)#ip prefix-list <span class="number">9</span> permit <span class="number">9.9</span><span class="number">.9</span><span class="number">.0</span>/<span class="number">24</span></span><br><span class="line">R5(config)#route-map ecomm</span><br><span class="line">R5(config-route-map)#match ip address prefix-list <span class="number">9</span></span><br><span class="line">R5(config-route-map)#<span class="keyword">set</span> extcommunity cost pre-bestpath <span class="number">100</span> <span class="number">20190923</span></span><br><span class="line">R5(config-route-map)#exit                           </span><br><span class="line">R5(config)#route-map ecomm permit <span class="number">20</span></span><br><span class="line">R5(config-route-map)#end</span><br><span class="line">R5(config)#router bgp <span class="number">567</span></span><br><span class="line">R5(config-router)#neighbor <span class="number">192.168</span><span class="number">.15</span><span class="number">.1</span> route-map ecomm <span class="keyword">in</span></span><br><span class="line">R5(config-router)#neighbor <span class="number">7.7</span><span class="number">.7</span><span class="number">.7</span> send-community both </span><br><span class="line">R5(config-router)#end</span><br><span class="line">R7#show ip bgp <span class="number">9.9</span><span class="number">.9</span><span class="number">.0</span>  </span><br><span class="line">BGP routing table entry <span class="keyword">for</span> <span class="number">9.9</span><span class="number">.9</span><span class="number">.0</span>/<span class="number">24</span>, version <span class="number">62</span></span><br><span class="line">Paths: (<span class="number">2</span> available, best #<span class="number">1</span>, table <span class="keyword">default</span>)</span><br><span class="line">  Not advertised to any peer</span><br><span class="line">  Refresh Epoch <span class="number">3</span></span><br><span class="line">  <span class="number">1234</span> <span class="number">900</span></span><br><span class="line">    <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span> (metric <span class="number">409600</span>) <span class="keyword">from</span> <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span> (<span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>)</span><br><span class="line">      Origin IGP, metric <span class="number">0</span>, localpref <span class="number">100</span>, valid, <span class="built_in">int</span>ernal, best</span><br><span class="line">      Extended Community: Cost:pre-bestpath:<span class="number">100</span>:<span class="number">20190923</span> (<span class="keyword">default</span><span class="number">-2127292724</span>)</span><br><span class="line">      rx pathid: <span class="number">0</span>, tx pathid: <span class="number">0x0</span></span><br><span class="line">  Refresh Epoch <span class="number">5</span></span><br><span class="line">  <span class="number">1234</span> <span class="number">900</span></span><br><span class="line">    <span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span> (metric <span class="number">409600</span>) <span class="keyword">from</span> <span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span> (<span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span>)</span><br><span class="line">      Origin IGP, metric <span class="number">0</span>, localpref <span class="number">200</span>, valid, <span class="built_in">int</span>ernal</span><br><span class="line">      rx pathid: <span class="number">0</span>, tx pathid: <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="扩展团体属性"><a href="#扩展团体属性" class="headerlink" title="扩展团体属性"></a>扩展团体属性</h3><p>&emsp;&emsp;扩展团体属性拥有最高选路优先级。</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">R5(config)#ip prefix-list <span class="number">9</span> permit <span class="number">9.9</span><span class="number">.9</span><span class="number">.0</span>/<span class="number">24</span></span><br><span class="line">R5(config)#route-map ecomm</span><br><span class="line">R5(config-route-map)#match ip address prefix-list <span class="number">9</span></span><br><span class="line">R5(config-route-map)#<span class="keyword">set</span> extcommunity cost pre-bestpath <span class="number">100</span> <span class="number">20190923</span></span><br><span class="line">R5(config-route-map)#exit                           </span><br><span class="line">R5(config)#route-map ecomm permit <span class="number">20</span></span><br><span class="line">R5(config-route-map)#end</span><br><span class="line">R5(config)#router bgp <span class="number">567</span></span><br><span class="line">R5(config-router)#neighbor <span class="number">192.168</span><span class="number">.15</span><span class="number">.1</span> route-map ecomm <span class="keyword">in</span></span><br><span class="line">R5(config-router)#neighbor <span class="number">7.7</span><span class="number">.7</span><span class="number">.7</span> send-community both </span><br><span class="line">R5(config-router)#end</span><br><span class="line">R7#show ip bgp <span class="number">9.9</span><span class="number">.9</span><span class="number">.0</span>  </span><br><span class="line">BGP routing table entry <span class="keyword">for</span> <span class="number">9.9</span><span class="number">.9</span><span class="number">.0</span>/<span class="number">24</span>, version <span class="number">62</span></span><br><span class="line">Paths: (<span class="number">2</span> available, best #<span class="number">1</span>, table <span class="keyword">default</span>)</span><br><span class="line">  Not advertised to any peer</span><br><span class="line">  Refresh Epoch <span class="number">3</span></span><br><span class="line">  <span class="number">1234</span> <span class="number">900</span></span><br><span class="line">    <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span> (metric <span class="number">409600</span>) <span class="keyword">from</span> <span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span> (<span class="number">5.5</span><span class="number">.5</span><span class="number">.5</span>)</span><br><span class="line">      Origin IGP, metric <span class="number">0</span>, localpref <span class="number">100</span>, valid, <span class="built_in">int</span>ernal, best</span><br><span class="line">      Extended Community: Cost:pre-bestpath:<span class="number">100</span>:<span class="number">20190923</span> (<span class="keyword">default</span><span class="number">-2127292724</span>)</span><br><span class="line">      rx pathid: <span class="number">0</span>, tx pathid: <span class="number">0x0</span></span><br><span class="line">  Refresh Epoch <span class="number">5</span></span><br><span class="line">  <span class="number">1234</span> <span class="number">900</span></span><br><span class="line">    <span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span> (metric <span class="number">409600</span>) <span class="keyword">from</span> <span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span> (<span class="number">6.6</span><span class="number">.6</span><span class="number">.6</span>)</span><br><span class="line">      Origin IGP, metric <span class="number">0</span>, localpref <span class="number">200</span>, valid, <span class="built_in">int</span>ernal</span><br><span class="line">      rx pathid: <span class="number">0</span>, tx pathid: <span class="number">0</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="1-权重"><a href="#1-权重" class="headerlink" title="1 权重"></a>1 权重</h3><ul>
 <li><p>比较原则及配置注意事项：</p>
@@ -34,26 +35,26 @@
 
 <h4 id="2-2-对特定条目设置"><a href="#2-2-对特定条目设置" class="headerlink" title="2.2 对特定条目设置"></a>2.2 对特定条目设置</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R6(config)#ip prefix-list 9 permit 9.9.9.0/24</span><br><span class="line">route-map LP permit 10</span><br><span class="line"> match<span class="built_in"> ip address </span>prefix-list 9</span><br><span class="line"> <span class="builtin-name">set</span> local-preference 200</span><br><span class="line">route-map LP permit 20</span><br><span class="line">R6(config)#router<span class="built_in"> bgp </span>567</span><br><span class="line">R6(config-router)#neighbor 7.7.7.7 route-map LP out</span><br></pre></td></tr></table></figure>
 
-<h3 id="3-本地路由始发方式"><a href="#3-本地路由始发方式" class="headerlink" title="3.本地路由始发方式"></a>3.本地路由始发方式</h3><ul>
+<h3 id="3-本地路由始发方式"><a href="#3-本地路由始发方式" class="headerlink" title="3 本地路由始发方式"></a>3 本地路由始发方式</h3><ul>
 <li><p>比较原则及配置注意事项：</p>
 <p>—&ensp;该比较原则主要是指本地在进入一条IGP路由进去BGP表时，使用不同的方式比如network或redistribute等，那么这些方式之间是存在优先顺序的：network&gt;redistribute&gt;aggregate</p>
 </li>
 <li><p>注意，该原则是不会作为BP路由选路策略的</p>
 </li>
 </ul>
-<h3 id="4-AS-Path长度"><a href="#4-AS-Path长度" class="headerlink" title="4.AS-Path长度"></a>4.AS-Path长度</h3><ul>
+<h3 id="4-AS-Path长度"><a href="#4-AS-Path长度" class="headerlink" title="4 AS-Path长度"></a>4 AS-Path长度</h3><ul>
 <li><p>比较原则及配置注意事项：</p>
 <p>—&ensp;优选长度小的AS-Path列表</p>
 <p>—&ensp;可以使用set as-path prepend命令来添加AS号，该操作只能对EBGP Peer生效，对IBGP Peer无法生效</p>
 <p>—&ensp;在做聚合路由时，使用as-set后产生的AS-Path列表中的里的AS号长度只算一个AS号的长度</p>
 <p>—&ensp;在联盟内的AS-Path列表中的()的AS号长度不做计算依据</p>
 <p>—&ensp;bgp bestpath as-path ignore忽略这条选路原则（隐藏命令)</p>
-<p>—&ensp;last-as参数:表示离这个AS最近的AS，重复的次数</p>
+<p>—&ensp;last-as参数：表示离这个AS最近的AS，重复的次数</p>
 </li>
 </ul>
 <figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">#可能导致追加的<span class="keyword">AS</span>号与其他<span class="keyword">AS</span>冲突，导致其<span class="keyword">AS</span>无法顺利接受路由</span><br><span class="line">R8(config)#route-map aspath</span><br><span class="line">R8(config-route-map)#<span class="keyword">set</span> <span class="keyword">as</span>-<span class="type">path</span> prepend  <span class="number">888</span> <span class="number">999</span></span><br><span class="line">#将最后一个<span class="keyword">AS</span>重复累加<span class="number">8</span>次</span><br><span class="line">route-map aspath permit <span class="number">10</span></span><br><span class="line"> <span class="keyword">set</span> <span class="keyword">as</span>-<span class="type">path</span> prepend last-<span class="keyword">as</span> <span class="number">8</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="5-Origin属性（起源代码）"><a href="#5-Origin属性（起源代码）" class="headerlink" title="5.Origin属性（起源代码）"></a>5.Origin属性（起源代码）</h3><ul>
+<h3 id="5-Origin属性（起源代码）"><a href="#5-Origin属性（起源代码）" class="headerlink" title="5 Origin属性（起源代码）"></a>5 Origin属性（起源代码）</h3><ul>
 <li><p>比较原则及配置注意事项：</p>
 <p>—&ensp;三种不同的Origin属性的优先顺序：IGP&gt;EGP&gt;incomplete</p>
 <p>—&ensp;Origin属性会一直在BGP路由中携带</p>
@@ -66,22 +67,22 @@
 <li><p>很少使用设置Origin属性作为BGP路由选路策略</p>
 </li>
 </ul>
-<h3 id="6-MED"><a href="#6-MED" class="headerlink" title="6.MED"></a>6.MED</h3><ul>
-<li><p>本地在将一条BGP路由通告给EBGP Peer时,是否携带MED值.需要根据以下条件进行判断(不对EBGP Peer使用Route-map)：</p>
-<p>—&ensp;如果该BGP路由是本地始发(network或redistribute)的,则携带MED值发送给EBGP Peer(如果MED为空,则设置为O)</p>
+<h3 id="6-MED"><a href="#6-MED" class="headerlink" title="6 MED"></a>6 MED</h3><ul>
+<li><p>本地在将一条BGP路由通告给EBGP Peer时，是否携带MED值.需要根据以下条件进行判断(不对EBGP Peer使用Route-map)：</p>
+<p>—&ensp;如果该BGP路由是本地始发(network或redistribute)的，则携带MED值发送给EBGP Peer(如果MED为空，则设置为O)</p>
 <p>—&ensp;如果该BGP路由是从其他BGP Peer学习过来的，那么将该路由通告给EBGP Peer时不携带MED</p>
 </li>
 <li><p>本地在将一条BGP路由通告给IBGP Peer时，一定会携带MED值</p>
-<p>—&ensp;如果接收或产生的路由的MED为空,那么在向IBGP Peer通告时，将MED设置为0</p>
+<p>—&ensp;如果接收或产生的路由的MED为空，那么在向IBGP Peer通告时，将MED设置为0</p>
 </li>
 </ul>
-<h3 id="7-EBGP优先于IBGP"><a href="#7-EBGP优先于IBGP" class="headerlink" title="7.EBGP优先于IBGP"></a>7.EBGP优先于IBGP</h3><ul>
-<li>比较原则：<br>—&ensp;当使用前面六条原则仍无法决定出路由的优先顺序时,会根据EBGP路由优于IBGP路由这条原则进行优选<br>—&ensp;该原则不会做为BGP路由选路策略</li>
+<h3 id="7-EBGP优先于IBGP"><a href="#7-EBGP优先于IBGP" class="headerlink" title="7 EBGP优先于IBGP"></a>7 EBGP优先于IBGP</h3><ul>
+<li>比较原则：<br>—&ensp;当使用前面六条原则仍无法决定出路由的优先顺序时，会根据EBGP路由优于IBGP路由这条原则进行优选<br>—&ensp;该原则不会做为BGP路由选路策略</li>
 </ul>
-<h3 id="8-到达Next-hop的代价"><a href="#8-到达Next-hop的代价" class="headerlink" title="8.到达Next-hop的代价"></a>8.到达Next-hop的代价</h3><ul>
+<h3 id="8-到达Next-hop的代价"><a href="#8-到达Next-hop的代价" class="headerlink" title="8 到达Next-hop的代价"></a>8 到达Next-hop的代价</h3><ul>
 <li>比较原则：<br>—&ensp;比较到达BGP路由路径属性中的Next-hop地址的IGP Metric值，越小越优先<br>—&ensp;注，该值与MED没有任何关系<br>—&ensp;几乎很少使用该原则作为BGP路由选路策略</li>
 </ul>
-<h3 id="9-BGP负载均衡"><a href="#9-BGP负载均衡" class="headerlink" title="9.BGP负载均衡"></a>9.BGP负载均衡</h3><p>&emsp;&emsp;负载均衡，BGP默认不支持负载均衡，若配置负载均衡，则不比较后面的参数(maximum-paths)</p>
+<h3 id="9-BGP负载均衡"><a href="#9-BGP负载均衡" class="headerlink" title="9 BGP负载均衡"></a>9 BGP负载均衡</h3><p>&emsp;&emsp;负载均衡，BGP默认不支持负载均衡，若配置负载均衡，则不比较后面的参数(maximum-paths)</p>
 <ul>
 <li><p>等价负载均衡说明：</p>
 <p>—&ensp;当前面的8条选路原则都无法优选出最优路由时，并且在BGP进程下面配置了maximum-paths n，n的取值为2-6，那么将执行等价负载均衡</p>
@@ -97,10 +98,10 @@
 </ul>
 <figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R7(config-router)#maximum-paths ?</span><br><span class="line">  &lt;1-32&gt;  Number of paths</span><br><span class="line">  eibgp   Both eBGP <span class="keyword">and</span> iBGP paths as multipath</span><br><span class="line">  ibgp    iBGP-multipath</span><br><span class="line">router<span class="built_in"> bgp </span>800</span><br><span class="line"><span class="built_in"> bgp </span>log-neighbor-changes</span><br><span class="line"><span class="built_in"> bgp </span>dmzlink-bw</span><br><span class="line"><span class="built_in"> network </span>8.8.8.0 mask 255.255.255.0</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.28.2 remote-as 1234</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.28.2 dmzlink-bw</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.48.4 remote-as 1234</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.48.4 dmzlink-bw</span><br><span class="line"> maximum-paths 2</span><br></pre></td></tr></table></figure>
 
-<h3 id="10-最老的EBGP路径"><a href="#10-最老的EBGP路径" class="headerlink" title="10.最老的EBGP路径"></a>10.最老的EBGP路径</h3><p>&emsp;&emsp;优先选择最老的路由（即最稳定的路由)，针对EBGP</p>
-<h3 id="11-最小BGP-RID路径"><a href="#11-最小BGP-RID路径" class="headerlink" title="11.最小BGP RID路径"></a>11.最小BGP RID路径</h3><p>&emsp;&emsp;选择BGP Router ID小的BGP对等体通告的路由</p>
-<h3 id="12-最小cluster-list长度"><a href="#12-最小cluster-list长度" class="headerlink" title="12.最小cluster-list长度"></a>12.最小cluster-list长度</h3><p>&emsp;&emsp;优先选择cluster_list长度短的路由</p>
-<h3 id="13-最小邻居IP地址"><a href="#13-最小邻居IP地址" class="headerlink" title="13.最小邻居IP地址"></a>13.最小邻居IP地址</h3><p>&emsp;&emsp;优先选择邻居IP地址最小的路由(neighbor指定的地址)</p>
+<h3 id="10-最老的EBGP路径"><a href="#10-最老的EBGP路径" class="headerlink" title="10 最老的EBGP路径"></a>10 最老的EBGP路径</h3><p>&emsp;&emsp;优先选择最老的路由（即最稳定的路由)，针对EBGP</p>
+<h3 id="11-最小BGP-RID路径"><a href="#11-最小BGP-RID路径" class="headerlink" title="11 最小BGP RID路径"></a>11 最小BGP RID路径</h3><p>&emsp;&emsp;选择BGP Router ID小的BGP对等体通告的路由</p>
+<h3 id="12-最小cluster-list长度"><a href="#12-最小cluster-list长度" class="headerlink" title="12 最小cluster-list长度"></a>12 最小cluster-list长度</h3><p>&emsp;&emsp;优先选择cluster_list长度短的路由</p>
+<h3 id="13-最小邻居IP地址"><a href="#13-最小邻居IP地址" class="headerlink" title="13 最小邻居IP地址"></a>13 最小邻居IP地址</h3><p>&emsp;&emsp;优先选择邻居IP地址最小的路由(neighbor指定的地址)</p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -486,6 +487,135 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验八——ACL 的运用</title>
+    <url>/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 ACL 作用；标准和扩展 ACL 的区别；标准和扩展 ACL 的配置； ALC 的验证和查看命令；命名的 ACL 的作用与配置。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li>掌握 ACL 作用</li>
+<li>理解标准和扩展 ACL 的区别</li>
+<li>熟悉标准和扩展 ACL 的配置</li>
+<li>掌握 ALC 的验证和查看命令</li>
+<li>理解命名的 ACL 的作用与配置</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0Kuhp6.png" alt="图片2"></p>
+<center>ACL 的运用拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/1</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>192.168.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line">R1(config-if)#int e0/0</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>172.16.1.254 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.12.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R2(config-if)#int s2/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.23.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R3(config)#int e0/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>172.16.3.254 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R3(config-if)#int s2/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>192.168.23.3 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">PC1&gt;<span class="built_in"> ip </span>172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt;<span class="built_in"> ip </span>172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 R2 上添加两个 loopback 接口，loopback1 和 loopback2，其中loopback1 地址为 2.2.2.2/24，loopback2 地址为 22.22.22.22/24</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> loopback <span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">2.2</span>.<span class="number">2.2</span> <span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> loopback <span class="number">2</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">22.22</span>.<span class="number">22.22</span> <span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>完成必要的配置实现全网可达</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网开启OSPF协议</span></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 area 0</span></span><br><span class="line">R1(config-router)<span class="comment">#network 172.16.1.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 2.2.2.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 22.22.22.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 172.16.3.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM7FA.png" alt="image-20200929173916930"></p>
+<ol start="4">
+<li>使用标准 ACL 实现 PC1 不能访问 PC2，并使用 ping 命令验证结果</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#access-list 1 deny 172.16.1.1</span></span><br><span class="line">R3(config)<span class="comment">#access-list 1 permit any </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group 1 out</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KuqAA.png" alt="image-20200929201524316"></p>
+<ol start="5">
+<li>使用标准 ACL 实现只允许 PC2 远程登录到路由器 R2，并使用 telnet 命令验证结果</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">1</span> permit host <span class="number">172.16</span>.<span class="number">3.1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#line</span> vty <span class="number">0</span> <span class="number">4</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="number">#acc</span>ess-class <span class="number">1</span> <span class="keyword">in</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="selector-id">#password</span> <span class="number">123456</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="selector-id">#transport</span> <span class="selector-tag">input</span> telnet </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1无法Telnet登入到路由器R2，PC1可以Telnet登入到路由器R2。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KKja9.png" alt="image-20200929213833311"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KKzP1.png" alt="image-20200929213943549"></p>
+<ol start="6">
+<li>使用标准 ACL 实现禁止 loopback2 所在网段的所有主机访问 PC1，对loopback1 所在网段主机的访问不做限制</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#access-list 1 permit 2.2.2.0     </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 deny 22.22.22.0</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit any</span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip access-group 1 out</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMS8x.png" alt="image-20200929213725215"></p>
+<ol start="7">
+<li>使用命名 ACL 完成上述标准 ACL 的需求</li>
+</ol>
+<ul>
+<li>实现 PC1 不能访问 PC2，并使用 ping 命令验证结果</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#ip</span> access-list standard huangzc</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#deny</span> host <span class="number">172.16</span>.<span class="number">1.1</span> </span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> any </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group huangzc out</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM9xK.png" alt="image-20200929235321690"></p>
+<ul>
+<li>实现只允许 PC2 远程登录到路由器 R2，并使用 telnet 命令验证结果</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip access-list standard huangzc</span></span><br><span class="line">R2(config-std-nacl)<span class="comment">#permit host 172.16.3.1</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">R2(config-line)<span class="comment">#access-class huangzc in</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KKja9.png" alt="image-20200929213833311"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KKzP1.png" alt="image-20200929213943549"></p>
+<ul>
+<li>实现禁止 loopback2 所在网段的所有主机访问 PC1，对loopback1 所在网段主机的访问不做限制</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#ip</span> access-list standard huangzc</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#deny</span> <span class="number">22.22</span>.<span class="number">22.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> <span class="number">2.2</span>.<span class="number">2.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> any</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group huangzc <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMS8x.png" alt="image-20200929213725215"></p>
+<ol start="8">
+<li>使用扩展 ACL 实现禁止 PC1 远程登入到 R2，对其他访问不做限制</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 192.168.12.2 eq telnet</span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 192.168.23.1 eq telnet </span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 22.22.22.22 eq telnet  </span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 2.2.2.2 eq telnet</span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 permit ip any any</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip access-group 101 in</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1无法远程登入到R2，但是却可以ping通（其他访问不做限制）</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMVIA.png" alt="image-20200930155954315"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMePI.png" alt="image-20200930160209188"></p>
+<ol start="9">
+<li>使用扩展 ACL 实现 PC2 可以 telnet 到路由器 R1，但不能 ping 路由器 R1，分别使用 ping 和 telnet 验证结果</li>
+</ol>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> deny icmp host <span class="number">172.16</span><span class="number">.3</span><span class="number">.1</span> host <span class="number">192.168</span><span class="number">.12</span><span class="number">.1</span></span><br><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> deny icmp host <span class="number">172.16</span><span class="number">.3</span><span class="number">.1</span> host <span class="number">172.16</span><span class="number">.1</span><span class="number">.254</span></span><br><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> permit ip any any</span><br><span class="line"></span><br><span class="line">R3(config)#int e0/<span class="number">0</span></span><br><span class="line">R3(config-if)#ip access-group <span class="number">101</span> in</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMdMT.png" alt="20200930171354898"></p>
+<ol start="10">
+<li>使用扩展 ACL 实现 PC1 可以 ping PC2，但禁止 PC2 ping PC1，其他的访问不受限制，使用 ping 验证结果</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过过滤PC2发送给PC1的ICMP echo包来达到禁止PC2 ping PC1</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">102</span> deny icmp host <span class="number">172.16</span>.<span class="number">3.1</span> host <span class="number">172.16</span>.<span class="number">1.1</span> echo</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">102</span> permit ip any any</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group <span class="number">102</span> <span class="keyword">in</span> </span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM8aj.png" alt="image-20200930194642453"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMGIs.png" alt="image-20200930194656765"></p>
+<ol start="11">
+<li>使用命名 ACL 完成上述扩展 ACL 的需求</li>
+</ol>
+<ul>
+<li>实现禁止 PC1 远程登录到 R2，对其他访问不做限制</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 192.168.12.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 192.168.23.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 2.2.2.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 22.22.22.22 eq telnet </span></span><br><span class="line"></span><br><span class="line">R2(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip access-group huangzc in </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM2z6.png" alt="image-20200930233004808"></p>
+<ul>
+<li>实现 PC2 可以 telnet 到路由器 R1，但不能 ping 路由器 R1，分别使用 ping 和 telnet 验证结果</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 192.168.12.1</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 172.16.1.254</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#permit ip any any</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group huangzc in    </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMdMT.png" alt="20200930171354898"></p>
+<ul>
+<li>实现 PC1 可以 ping PC2，但禁止 PC2 ping PC1，其他的访问不受限制，使用 ping 验证结果</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 172.16.1.1</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#permit ip any any</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group huangzc in  </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM8aj.png" alt="image-20200930194642453"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMGIs.png" alt="image-20200930194656765"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>ACL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验五——单区域 OSPF 的实现</title>
     <url>/2018/10/09/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置； OSPF 的邻居表、拓扑表及路由表的含义； OSPF 的 DR 和 BDR 的作用； OSPF 的 DR 和 BDR 的选举； OSPF 路由协议的相关信息的查看和调试； OSPF 中 hello 报文的作用和格式。</p>
@@ -624,135 +754,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>OSPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验八——ACL 的运用</title>
-    <url>/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 ACL 作用；标准和扩展 ACL 的区别；标准和扩展 ACL 的配置； ALC 的验证和查看命令；命名的 ACL 的作用与配置。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li>掌握 ACL 作用</li>
-<li>理解标准和扩展 ACL 的区别</li>
-<li>熟悉标准和扩展 ACL 的配置</li>
-<li>掌握 ALC 的验证和查看命令</li>
-<li>理解命名的 ACL 的作用与配置</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0Kuhp6.png" alt="图片2"></p>
-<center>ACL 的运用拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/1</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>192.168.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line">R1(config-if)#int e0/0</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>172.16.1.254 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.12.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R2(config-if)#int s2/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.23.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R3(config)#int e0/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>172.16.3.254 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R3(config-if)#int s2/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>192.168.23.3 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">PC1&gt;<span class="built_in"> ip </span>172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt;<span class="built_in"> ip </span>172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>在 R2 上添加两个 loopback 接口，loopback1 和 loopback2，其中loopback1 地址为 2.2.2.2/24，loopback2 地址为 22.22.22.22/24</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> loopback <span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">2.2</span>.<span class="number">2.2</span> <span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> loopback <span class="number">2</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">22.22</span>.<span class="number">22.22</span> <span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>完成必要的配置实现全网可达</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网开启OSPF协议</span></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 area 0</span></span><br><span class="line">R1(config-router)<span class="comment">#network 172.16.1.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 2.2.2.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 22.22.22.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 172.16.3.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM7FA.png" alt="image-20200929173916930"></p>
-<ol start="4">
-<li>使用标准 ACL 实现 PC1 不能访问 PC2，并使用 ping 命令验证结果</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#access-list 1 deny 172.16.1.1</span></span><br><span class="line">R3(config)<span class="comment">#access-list 1 permit any </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group 1 out</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KuqAA.png" alt="image-20200929201524316"></p>
-<ol start="5">
-<li>使用标准 ACL 实现只允许 PC2 远程登录到路由器 R2，并使用 telnet 命令验证结果</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">1</span> permit host <span class="number">172.16</span>.<span class="number">3.1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#line</span> vty <span class="number">0</span> <span class="number">4</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="number">#acc</span>ess-class <span class="number">1</span> <span class="keyword">in</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="selector-id">#password</span> <span class="number">123456</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="selector-id">#transport</span> <span class="selector-tag">input</span> telnet </span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;PC1无法Telnet登入到路由器R2，PC1可以Telnet登入到路由器R2。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KKja9.png" alt="image-20200929213833311"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KKzP1.png" alt="image-20200929213943549"></p>
-<ol start="6">
-<li>使用标准 ACL 实现禁止 loopback2 所在网段的所有主机访问 PC1，对loopback1 所在网段主机的访问不做限制</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#access-list 1 permit 2.2.2.0     </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 deny 22.22.22.0</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit any</span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip access-group 1 out</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMS8x.png" alt="image-20200929213725215"></p>
-<ol start="7">
-<li>使用命名 ACL 完成上述标准 ACL 的需求</li>
-</ol>
-<ul>
-<li>实现 PC1 不能访问 PC2，并使用 ping 命令验证结果</li>
-</ul>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#ip</span> access-list standard huangzc</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#deny</span> host <span class="number">172.16</span>.<span class="number">1.1</span> </span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> any </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group huangzc out</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM9xK.png" alt="image-20200929235321690"></p>
-<ul>
-<li>实现只允许 PC2 远程登录到路由器 R2，并使用 telnet 命令验证结果</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip access-list standard huangzc</span></span><br><span class="line">R2(config-std-nacl)<span class="comment">#permit host 172.16.3.1</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">R2(config-line)<span class="comment">#access-class huangzc in</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KKja9.png" alt="image-20200929213833311"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/30/0KKzP1.png" alt="image-20200929213943549"></p>
-<ul>
-<li>实现禁止 loopback2 所在网段的所有主机访问 PC1，对loopback1 所在网段主机的访问不做限制</li>
-</ul>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#ip</span> access-list standard huangzc</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#deny</span> <span class="number">22.22</span>.<span class="number">22.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> <span class="number">2.2</span>.<span class="number">2.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> any</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group huangzc <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMS8x.png" alt="image-20200929213725215"></p>
-<ol start="8">
-<li>使用扩展 ACL 实现禁止 PC1 远程登入到 R2，对其他访问不做限制</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 192.168.12.2 eq telnet</span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 192.168.23.1 eq telnet </span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 22.22.22.22 eq telnet  </span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 2.2.2.2 eq telnet</span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 permit ip any any</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip access-group 101 in</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;PC1无法远程登入到R2，但是却可以ping通（其他访问不做限制）</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMVIA.png" alt="image-20200930155954315"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMePI.png" alt="image-20200930160209188"></p>
-<ol start="9">
-<li>使用扩展 ACL 实现 PC2 可以 telnet 到路由器 R1，但不能 ping 路由器 R1，分别使用 ping 和 telnet 验证结果</li>
-</ol>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> deny icmp host <span class="number">172.16</span><span class="number">.3</span><span class="number">.1</span> host <span class="number">192.168</span><span class="number">.12</span><span class="number">.1</span></span><br><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> deny icmp host <span class="number">172.16</span><span class="number">.3</span><span class="number">.1</span> host <span class="number">172.16</span><span class="number">.1</span><span class="number">.254</span></span><br><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> permit ip any any</span><br><span class="line"></span><br><span class="line">R3(config)#int e0/<span class="number">0</span></span><br><span class="line">R3(config-if)#ip access-group <span class="number">101</span> in</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMdMT.png" alt="20200930171354898"></p>
-<ol start="10">
-<li>使用扩展 ACL 实现 PC1 可以 ping PC2，但禁止 PC2 ping PC1，其他的访问不受限制，使用 ping 验证结果</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过过滤PC2发送给PC1的ICMP echo包来达到禁止PC2 ping PC1</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">102</span> deny icmp host <span class="number">172.16</span>.<span class="number">3.1</span> host <span class="number">172.16</span>.<span class="number">1.1</span> echo</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">102</span> permit ip any any</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group <span class="number">102</span> <span class="keyword">in</span> </span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM8aj.png" alt="image-20200930194642453"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMGIs.png" alt="image-20200930194656765"></p>
-<ol start="11">
-<li>使用命名 ACL 完成上述扩展 ACL 的需求</li>
-</ol>
-<ul>
-<li>实现禁止 PC1 远程登录到 R2，对其他访问不做限制</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 192.168.12.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 192.168.23.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 2.2.2.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 22.22.22.22 eq telnet </span></span><br><span class="line"></span><br><span class="line">R2(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip access-group huangzc in </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM2z6.png" alt="image-20200930233004808"></p>
-<ul>
-<li>实现 PC2 可以 telnet 到路由器 R1，但不能 ping 路由器 R1，分别使用 ping 和 telnet 验证结果</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 192.168.12.1</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 172.16.1.254</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#permit ip any any</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group huangzc in    </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMdMT.png" alt="20200930171354898"></p>
-<ul>
-<li>实现 PC1 可以 ping PC2，但禁止 PC2 ping PC1，其他的访问不受限制，使用 ping 验证结果</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 172.16.1.1</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#permit ip any any</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group huangzc in  </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KM8aj.png" alt="image-20200930194642453"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/01/0KMGIs.png" alt="image-20200930194656765"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>ACL</tag>
       </tags>
   </entry>
   <entry>
