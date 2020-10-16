@@ -35,12 +35,12 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="&amp;emsp;&amp;emsp;内存取证还是蛮有意思的呀！ 1.6G还远吗？​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。">
+  <meta name="description" content="&amp;emsp;&amp;emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安恒杯四月月赛misc——Writeup">
-<meta property="og:url" content="https://huangzc.site/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/index.html">
+<meta property="og:title" content="CCNP路由综合实验五——BGP">
+<meta property="og:url" content="https://huangzc.site/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;内存取证还是蛮有意思的呀！ 1.6G还远吗？​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
@@ -48,21 +48,16 @@
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="article:published_time" content="2020-04-27T07:46:02.000Z">
-<meta property="article:modified_time" content="2020-08-30T11:52:28.430Z">
+<meta property="article:published_time" content="2019-04-26T06:58:23.000Z">
+<meta property="article:modified_time" content="2020-10-16T14:24:48.955Z">
 <meta property="article:author" content="Huangzc">
-<meta property="article:tag" content="ctf">
-<meta property="article:tag" content="网络安全">
+<meta property="article:tag" content="BGP">
+<meta property="article:tag" content="CCNP">
+<meta property="article:tag" content="路由">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
 
-<link rel="canonical" href="https://huangzc.site/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/">
+<link rel="canonical" href="https://huangzc.site/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/">
 
 
 <script id="page-configurations">
@@ -75,7 +70,7 @@
   };
 </script>
 
-  <title>安恒杯四月月赛misc——Writeup | Huangzc's blog</title>
+  <title>CCNP路由综合实验五——BGP | Huangzc's blog</title>
   
 
 
@@ -233,7 +228,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/">
+    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -246,7 +241,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          安恒杯四月月赛misc——Writeup
+          CCNP路由综合实验五——BGP
         </h1>
 
         <div class="post-meta">
@@ -256,14 +251,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-04-27 15:46:02" itemprop="dateCreated datePublished" datetime="2020-04-27T15:46:02+08:00">2020-04-27</time>
+              <time title="创建时间：2019-04-26 14:58:23" itemprop="dateCreated datePublished" datetime="2019-04-26T14:58:23+08:00">2019-04-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-30 19:52:28" itemprop="dateModified" datetime="2020-08-30T19:52:28+08:00">2020-08-30</time>
+                <time title="修改时间：2020-10-16 22:24:48" itemprop="dateModified" datetime="2020-10-16T22:24:48+08:00">2020-10-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,7 +266,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a>
+                  <a href="/categories/CCNP%E5%AE%9E%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">CCNP实验</span></a>
                 </span>
             </span>
 
@@ -281,14 +276,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>534</span>
+              <span>4.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -300,32 +295,60 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
-<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
-<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
-<p>​        将what_you_want.7z导出，发现需要密码。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
-<p>​        根据文件名的提示找到pin，解压获得flag。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
-<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
-<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
-<p>​        首先获取该内存的配置文件</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
-<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
-<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
-<p>​        将其导出</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
-<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
-<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
-<p>​        用winhex打开即可找到flag。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
+        <p>&emsp;&emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。</p>
+<a id="more"></a>
+
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qSzf1.png" alt="image-20201016220418903"></p>
+<center>BGP综合实验拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>大型企业需要承担起因特网互连任务，其AS号为2。内网使用OSPF协议来保证内部通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在大型企业内部启用OSPF协议，并通告内部网段</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.35.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.45.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>大型企业和ISP1及ISP2之间运行EBGP协议，在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#建立大型企业与ISP1之间的EBGP邻居关系</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#neighbor 202.101.12.2 remote-as 2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 202.101.12.1 remote-as 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#建立大型企业与ISP2之间的EBGP邻居关系</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.45.4 remote-as 2</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.35.3 remote-as 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</span></span><br><span class="line">R1(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R6(config-if)<span class="comment"># ip address 6.6.6.6 255.255.255.0</span></span><br><span class="line">R6(config-if)<span class="comment">#no shutdown  </span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>IP地址自行规划，内部使用私有地址，连着ISP的接口使用公有地址</li>
+</ol>
+<p>&emsp;&emsp;该拓扑中各设备的IP地址如拓扑图所示，此处不再做过多的赘述。</p>
+<ol start="4">
+<li>大型企业内部运行全互联的IBGP，要求避免物理接口故障引起的 BGP 邻居关系DOWN</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#由于需要避免物理接口故障引起的 BGP 邻居关系DOWN，所以我们建立基于回环端口的BGP邻居关系</span></span><br><span class="line"><span class="comment">#在大型企业中的各路由配置回环口</span></span><br><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 2.2.2.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 3.3.3.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R4(config-if)<span class="comment">#ip address 4.4.4.4 255.255.255.0</span></span><br><span class="line">R4(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在大型企业内部建立全互联的IBGP</span></span><br><span class="line">R2(config)<span class="comment">#router bgp 2                         </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#R5与R6也建立IBGP邻居关系</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 update-source Loopback1</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 update-source Loopback1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#在R1、R6上通告路由</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R6(config-router)<span class="comment">#network 6.6.6.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R5上对特定邻居（6.6.6.6）下发默认路由</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/2</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/1</span></span><br><span class="line"><span class="comment">#ps：由于大型企业的内部的IP地址为私有地址，故不能在互联网上通告。可在边界网关处配置NAT。但此处为了方便使用了默认路由</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 default-originate </span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>要求大型企业访问ISP2上的服务器是通过R3前往的（只允许在大型企业设备上配置）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#更改本地优先级，使R3的本地优先级大于R4。从而让大型企业访问ISP2时是通过R3前往的</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#bgp default local-preference 200</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpFmD.png" alt="image-20201016214158132"></p>
+<p>&emsp;&emsp;当然，也可以针对ISP2特定的路由条目设置本地优先级，或者使用别的BGP选路原则。此处过多赘述，详细的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>，可以点击查看我的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">另一篇博客</a>。</p>
+<ol start="6">
+<li>要求ISP3访问ISP1上的服务器是通过R4访问的（只允许在大型企业设备上配置）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将R3的metric值更改为20</span></span><br><span class="line">R3(config)<span class="comment">#route-map MED</span></span><br><span class="line">R3(config-route-map)<span class="comment">#set metric 20 </span></span><br><span class="line">R3(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2 </span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 route-map MED out </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将R4的metric值更改为10</span></span><br><span class="line">R4(config)<span class="comment">#route-map MED </span></span><br><span class="line">R4(config-route-map)<span class="comment">#set metric 10 </span></span><br><span class="line">R4(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 route-map MED out </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;更改MED前：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpPOO.png" alt="image-20201016214115339"></p>
+<p>&emsp;&emsp;更改MED后：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpVkd.png" alt="image-20201016215215388"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpMX8.png" alt="image-20201016215845533"></p>
+<p>&emsp;&emsp;此处是通过更改MED值来选择路由，其他<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>请点击查看。</p>
+<ol start="7">
+<li>要求IBGP邻居关系安全建立</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>测试下ISP1与ISP3上的服务器能正常通信</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qplnS.png" alt="image-20201016193315698"></p>
 
     </div>
 
@@ -361,7 +384,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://huangzc.site/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/" title="安恒杯四月月赛misc——Writeup">https://huangzc.site/2020/04/27/安恒杯四月月赛——Writeup/</a>
+    <a href="https://huangzc.site/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/" title="CCNP路由综合实验五——BGP">https://huangzc.site/2019/04/26/CCNP路由综合实验五/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -383,8 +406,9 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/ctf/" rel="tag"><i class="fa fa-tag"></i> ctf</a>
-              <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag"><i class="fa fa-tag"></i> 网络安全</a>
+              <a href="/tags/BGP/" rel="tag"><i class="fa fa-tag"></i> BGP</a>
+              <a href="/tags/CCNP/" rel="tag"><i class="fa fa-tag"></i> CCNP</a>
+              <a href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag"><i class="fa fa-tag"></i> 路由</a>
           </div>
 
         
@@ -393,12 +417,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/" rel="prev" title="CCNP路由综合实验五——BGP">
-      <i class="fa fa-chevron-left"></i> CCNP路由综合实验五——BGP
+    <a href="/2019/04/19/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/" rel="prev" title="CCNP路由综合实验四">
+      <i class="fa fa-chevron-left"></i> CCNP路由综合实验四
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/" rel="next" title="OSPF协议详解">
-      OSPF协议详解 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/" rel="next" title="安恒杯四月月赛misc——Writeup">
+      安恒杯四月月赛misc——Writeup <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -463,7 +487,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6G%E8%BF%98%E8%BF%9C%E5%90%97%EF%BC%9F"><span class="nav-text">1.6G还远吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-blueshark"><span class="nav-text">2.blueshark</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-keyboard"><span class="nav-text">3.keyboard</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

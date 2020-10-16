@@ -16,9 +16,9 @@
 <li><p>虽然Weight属性是Cisco私有的，但是很多厂商也是内置该属性</p>
 </li>
 </ul>
-<h4 id="1-1-对特定邻居的所有条目设置"><a href="#1-1-对特定邻居的所有条目设置" class="headerlink" title="1.1 对特定邻居的所有条目设置"></a>1.1 对特定邻居的所有条目设置</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">router<span class="built_in"> bgp </span>567</span><br><span class="line">neighbor 6.6.6.6 weight 1</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-对特定邻居的所有条目设置"><a href="#1-1-对特定邻居的所有条目设置" class="headerlink" title="1.1 对特定邻居的所有条目设置"></a>1.1 对特定邻居的所有条目设置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R7(config)<span class="comment">#router bgp 567</span></span><br><span class="line">R7(config-router)<span class="comment">#neighbor 6.6.6.6 weight 1</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="1-2-对特定邻居的特定条目设置"><a href="#1-2-对特定邻居的特定条目设置" class="headerlink" title="1.2 对特定邻居的特定条目设置"></a>1.2 对特定邻居的特定条目设置</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R7(config)#access-list 1 permit 9.9.9.0 /24</span><br><span class="line">route-map wei permit 10</span><br><span class="line"> match<span class="built_in"> ip address </span>1</span><br><span class="line"> <span class="builtin-name">set</span> weight 1</span><br><span class="line">route-map wei permit 20</span><br><span class="line">R7(config)#router<span class="built_in"> bgp </span>567</span><br><span class="line">R7(config-router)#neighbor 6.6.6.6 route-map wei <span class="keyword">in</span></span><br><span class="line">R7(config-router)#exit</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-对特定邻居的特定条目设置"><a href="#1-2-对特定邻居的特定条目设置" class="headerlink" title="1.2 对特定邻居的特定条目设置"></a>1.2 对特定邻居的特定条目设置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R7(config)<span class="comment">#access-list 1 permit 9.9.9.0 /24</span></span><br><span class="line">R7(config)<span class="comment">#route-map wei permit 10</span></span><br><span class="line">R7(config-route-map)<span class="comment">#match ip address 1</span></span><br><span class="line">R7(config-route-map)<span class="comment">#set weight 1</span></span><br><span class="line">R7(config-route-map)<span class="comment">#route-map wei permit 20</span></span><br><span class="line">R7(config)<span class="comment">#router bgp 567</span></span><br><span class="line">R7(config-router)<span class="comment">#neighbor 6.6.6.6 route-map wei in</span></span><br><span class="line">R7(config-router)<span class="comment">#exit</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="2-Local-Preference（本地优先级）"><a href="#2-Local-Preference（本地优先级）" class="headerlink" title="2 Local Preference（本地优先级）"></a>2 Local Preference（本地优先级）</h3><ul>
 <li><p>比较原则及配置注意事项：<br>—&ensp;值越大，越优先</p>
@@ -33,7 +33,7 @@
 </ul>
 <h4 id="2-1-全局设置"><a href="#2-1-全局设置" class="headerlink" title="2.1 全局设置"></a>2.1 全局设置</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R6(config)#router<span class="built_in"> bgp </span>567</span><br><span class="line">R6(config-router)#bgp<span class="built_in"> default </span>local-preference 200</span><br><span class="line">R6(config-router)#end</span><br></pre></td></tr></table></figure>
 
-<h4 id="2-2-对特定条目设置"><a href="#2-2-对特定条目设置" class="headerlink" title="2.2 对特定条目设置"></a>2.2 对特定条目设置</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R6(config)#ip prefix-list 9 permit 9.9.9.0/24</span><br><span class="line">route-map LP permit 10</span><br><span class="line"> match<span class="built_in"> ip address </span>prefix-list 9</span><br><span class="line"> <span class="builtin-name">set</span> local-preference 200</span><br><span class="line">route-map LP permit 20</span><br><span class="line">R6(config)#router<span class="built_in"> bgp </span>567</span><br><span class="line">R6(config-router)#neighbor 7.7.7.7 route-map LP out</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-对特定条目设置"><a href="#2-2-对特定条目设置" class="headerlink" title="2.2 对特定条目设置"></a>2.2 对特定条目设置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R6(config)<span class="comment">#ip prefix-list 9 permit 9.9.9.0/24</span></span><br><span class="line">R6(config)<span class="comment">#route-map LP permit 10</span></span><br><span class="line">R6(config-route-map)<span class="comment">#match ip address prefix-list 9</span></span><br><span class="line">R6(config-route-map)<span class="comment">#set local-preference 200</span></span><br><span class="line">R6(config)<span class="comment">#route-map LP permit 20</span></span><br><span class="line">R6(config)<span class="comment">#router bgp 567</span></span><br><span class="line">R6(config-router)<span class="comment">#neighbor 7.7.7.7 route-map LP out</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="3-本地路由始发方式"><a href="#3-本地路由始发方式" class="headerlink" title="3 本地路由始发方式"></a>3 本地路由始发方式</h3><ul>
 <li><p>比较原则及配置注意事项：</p>
@@ -52,7 +52,7 @@
 <p>—&ensp;last-as参数：表示离这个AS最近的AS，重复的次数</p>
 </li>
 </ul>
-<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line">#可能导致追加的<span class="keyword">AS</span>号与其他<span class="keyword">AS</span>冲突，导致其<span class="keyword">AS</span>无法顺利接受路由</span><br><span class="line">R8(config)#route-map aspath</span><br><span class="line">R8(config-route-map)#<span class="keyword">set</span> <span class="keyword">as</span>-<span class="type">path</span> prepend  <span class="number">888</span> <span class="number">999</span></span><br><span class="line">#将最后一个<span class="keyword">AS</span>重复累加<span class="number">8</span>次</span><br><span class="line">route-map aspath permit <span class="number">10</span></span><br><span class="line"> <span class="keyword">set</span> <span class="keyword">as</span>-<span class="type">path</span> prepend last-<span class="keyword">as</span> <span class="number">8</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#可能导致追加的AS号与其他AS冲突，导致其AS无法顺利接受路由</span></span><br><span class="line">R8(config)<span class="comment">#route-map aspath</span></span><br><span class="line">R8(config-route-map)<span class="comment">#set as-path prepend  888 999</span></span><br><span class="line"><span class="comment">#将最后一个AS重复累加8次</span></span><br><span class="line">R8(config)<span class="comment">#route-map aspath permit 10</span></span><br><span class="line">R8(config-route-map)<span class="comment">#set as-path prepend last-as 8</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="5-Origin属性（起源代码）"><a href="#5-Origin属性（起源代码）" class="headerlink" title="5 Origin属性（起源代码）"></a>5 Origin属性（起源代码）</h3><ul>
 <li><p>比较原则及配置注意事项：</p>
@@ -68,7 +68,23 @@
 </li>
 </ul>
 <h3 id="6-MED"><a href="#6-MED" class="headerlink" title="6 MED"></a>6 MED</h3><ul>
-<li><p>本地在将一条BGP路由通告给EBGP Peer时，是否携带MED值.需要根据以下条件进行判断(不对EBGP Peer使用Route-map)：</p>
+<li><p>比较原则及配置注意事项：</p>
+<p>—&ensp;MED值越小，越优先</p>
+<p>—&ensp;默认情况下，只比较来自同一邻居AS的BGP路由的MED值</p>
+<p>—&ensp;告诉EBGP邻居怎么进入本AS</p>
+<p>—&ensp;第一个AS号相同，才会比较MED</p>
+</li>
+<li><p>MED设置方法：</p>
+<p>—&ensp;将IGP路由引入BGP时关联Route-map进行设置</p>
+<p>—&ensp;对BGP Peer应用IN/OUT方向的Route-map进行设置</p>
+</li>
+<li><p>非Route-map(自动)方式：</p>
+<p>—&ensp;使用network或redistribute方式将IGP路由引入BGP时，MED将继承IGP路由的Metric(直联路由的Metric为0)</p>
+<p>一使用aggregate-address方式引入路由，则MED为空</p>
+</li>
+<li><p>MED为BGP选路策略中经常使用的一个路径属性</p>
+</li>
+<li><p>本地在将一条BGP路由通告给EBGP Peer时，是否携带MED值，需要根据以下条件进行判断(不对EBGP Peer使用Route-map)：</p>
 <p>—&ensp;如果该BGP路由是本地始发(network或redistribute)的，则携带MED值发送给EBGP Peer(如果MED为空，则设置为O)</p>
 <p>—&ensp;如果该BGP路由是从其他BGP Peer学习过来的，那么将该路由通告给EBGP Peer时不携带MED</p>
 </li>
@@ -96,7 +112,7 @@
 <p>—&ensp;ip load-sharing per-packet(接口模式)</p>
 </li>
 </ul>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R7(config-router)#maximum-paths ?</span><br><span class="line">  &lt;1-32&gt;  Number of paths</span><br><span class="line">  eibgp   Both eBGP <span class="keyword">and</span> iBGP paths as multipath</span><br><span class="line">  ibgp    iBGP-multipath</span><br><span class="line">router<span class="built_in"> bgp </span>800</span><br><span class="line"><span class="built_in"> bgp </span>log-neighbor-changes</span><br><span class="line"><span class="built_in"> bgp </span>dmzlink-bw</span><br><span class="line"><span class="built_in"> network </span>8.8.8.0 mask 255.255.255.0</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.28.2 remote-as 1234</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.28.2 dmzlink-bw</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.48.4 remote-as 1234</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.48.4 dmzlink-bw</span><br><span class="line"> maximum-paths 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R7(config-router)<span class="comment">#maximum-paths ?</span></span><br><span class="line">  &lt;1-32&gt;  Number of paths</span><br><span class="line">  eibgp   Both eBGP and iBGP paths as multipath</span><br><span class="line">  ibgp    iBGP-multipath</span><br><span class="line">router bgp 800</span><br><span class="line"> bgp <span class="built_in">log</span>-neighbor-changes</span><br><span class="line"> bgp dmzlink-bw</span><br><span class="line"> network 8.8.8.0 mask 255.255.255.0</span><br><span class="line"> neighbor 192.168.28.2 remote-as 1234</span><br><span class="line"> neighbor 192.168.28.2 dmzlink-bw</span><br><span class="line"> neighbor 192.168.48.4 remote-as 1234</span><br><span class="line"> neighbor 192.168.48.4 dmzlink-bw</span><br><span class="line"> maximum-paths 2</span><br></pre></td></tr></table></figure>
 
 <h3 id="10-最老的EBGP路径"><a href="#10-最老的EBGP路径" class="headerlink" title="10 最老的EBGP路径"></a>10 最老的EBGP路径</h3><p>&emsp;&emsp;优先选择最老的路由（即最稳定的路由)，针对EBGP</p>
 <h3 id="11-最小BGP-RID路径"><a href="#11-最小BGP-RID路径" class="headerlink" title="11 最小BGP RID路径"></a>11 最小BGP RID路径</h3><p>&emsp;&emsp;选择BGP Router ID小的BGP对等体通告的路由</p>
@@ -826,6 +842,104 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP交换综合实验一</title>
+    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
+</li>
+<li><p>掌握 DTP 的作用和配置</p>
+</li>
+<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
+</li>
+<li><p>掌握以太通道技术的作用和配置</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建。</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
+<ol start="2">
+<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
+</ol>
+<p>&emsp;①网关地址：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
+<p>&emsp;②各主机通过DHCP获取IP地址：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
+<ol start="3">
+<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
+<ol start="4">
+<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
+</ol>
+<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
+<p>&emsp;&emsp;SW2的VLAN信息：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
+<ol start="5">
+<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
+</ol>
+<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
+<ol start="6">
+<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
+</ol>
+<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
+<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
+<p>FTP_Srv用DHCP获取IP地址：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
+<ol start="7">
+<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
+</ol>
+<p>&emsp;①启用OSPF实现内网全网可达：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
+<p>&emsp;②实现外网可达：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
+<p>③  配置NAT：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
+<p>④  用R1给邻居下发默认路由：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
+<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
+<p>【实验中用到的代码】</p>
+<p><strong>VTP：</strong></p>
+<p>vtp mode server———————————————将VTP的模式该为server模式</p>
+<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
+<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
+<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
+<p>当域名与密码相同时才能进行同步</p>
+<p>NAT：</p>
+<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
+<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
+<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
+<p>捆绑链路：</p>
+<p>int range e0/1-2</p>
+<p>switchport truck encapsulation do1q</p>
+<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
+<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
+<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
+<p>下发默认路由：</p>
+<p>router ospf 1</p>
+<p>default-information originate—————————–给邻居下发默认路由</p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP交换综合实验三</title>
     <url>/2019/03/14/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
@@ -950,104 +1064,6 @@
 
 
 
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP交换综合实验一</title>
-    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
-</li>
-<li><p>掌握 DTP 的作用和配置</p>
-</li>
-<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
-</li>
-<li><p>掌握以太通道技术的作用和配置</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
-<ol start="2">
-<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
-</ol>
-<p>&emsp;①网关地址：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
-<p>&emsp;②各主机通过DHCP获取IP地址：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
-<ol start="3">
-<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
-<ol start="4">
-<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
-</ol>
-<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
-<p>&emsp;&emsp;SW2的VLAN信息：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
-<ol start="5">
-<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
-</ol>
-<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
-<ol start="6">
-<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
-</ol>
-<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
-<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
-<p>FTP_Srv用DHCP获取IP地址：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
-<ol start="7">
-<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
-</ol>
-<p>&emsp;①启用OSPF实现内网全网可达：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
-<p>&emsp;②实现外网可达：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
-<p>③  配置NAT：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
-<p>④  用R1给邻居下发默认路由：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
-<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
-<p>【实验中用到的代码】</p>
-<p><strong>VTP：</strong></p>
-<p>vtp mode server———————————————将VTP的模式该为server模式</p>
-<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
-<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
-<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
-<p>当域名与密码相同时才能进行同步</p>
-<p>NAT：</p>
-<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
-<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
-<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
-<p>捆绑链路：</p>
-<p>int range e0/1-2</p>
-<p>switchport truck encapsulation do1q</p>
-<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
-<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
-<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
-<p>下发默认路由：</p>
-<p>router ospf 1</p>
-<p>default-information originate—————————–给邻居下发默认路由</p>
 ]]></content>
       <categories>
         <category>CCNP实验</category>
@@ -1228,6 +1244,214 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP交换综合实验四</title>
+    <url>/2019/03/21/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了掌握交换端口安全的应用与配置；DHCP SNOOPING 的应用与配置；DAI 的应用与配置；IP SG 的应用与配置；PVLAN 的应用与配置；802.1x 的应用与配置 。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握交换端口安全的应用与配置</p>
+</li>
+<li><p>掌握 DHCP SNOOPING 的应用与配置</p>
+</li>
+<li><p>掌握 DAI 的应用与配置</p>
+</li>
+<li><p>掌握 IP SG 的应用与配置</p>
+</li>
+<li><p>熟悉 PVLAN 的应用与配置</p>
+</li>
+<li><p>熟悉 802.1x 的应用与配置 </p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p> <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/wpEfUI.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/wpEWVA.png"></p>
+<ol start="2">
+<li>根据图示，将各主机、DHCP 服务器以及 ACS 服务器划分进相应的 VLAN 中， 各 VLAN 地址段信息，以及路由器与多层交换间链路的地址自己规划，其中VLAN10 和 VLAN20 的主机通过 DHCP 方式获取 IP 地址。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10,20,30,40 </span></span><br><span class="line"><span class="comment">#将ACS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/3</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e1/0-1</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line"><span class="comment">#由于各PC机与DHCP服务器不在同一Vlan中，所以需要配置DHCP中继来确保PC能够通过DHCP获取IP地址</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w98NgH.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w98s58.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w93s1J.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91tIO.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91Eq0.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91KG4.png"></p>
+<ol start="3">
+<li>在该园区网络内部署合适的第一跳冗余技术以及合适的路由协议，并且要求在正常情况下，DSW1 作为 VLAN10 主网关，DSW2 作为 VLAN20 的主网关， DSW1 和 DSW2 中的任何一台设备出现故障都不能影响用户的网络访问。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上启用HRSP协议，使DSW1作为Vlan 10的主网关</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config)<span class="comment">#intterface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为Vlan 10的主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line">DSW1(config-if)<span class="comment">#intterface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上启用HRSP协议，使DSW2作为Vlan 20的主网关</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt  </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit </span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangnzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW2的优先级减少6小于DSW2的105，DSW1成为Vlan 20的主网关 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9J9wq.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JFYT.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Y6PK.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Y8U0.png"></p>
+<ol start="4">
+<li>要求连接所有 PC 机和 SRV 的端口忽视生成树过程，直接跳转到转发状态。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#spanning-tree mode rapid-pvst  </span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">DSW2(config)<span class="comment">#spanning-tree mode rapid-pvst </span></span><br><span class="line">DSW2(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW2(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#spanning-tree mode rapid-pvst   </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#spanning-tree mode rapid-pvst      </span></span><br><span class="line">ASW2(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>完成必要配置，实现 VLAN10 和 VLAN20 的主机可以通过 DHCP 获取 IP 地址，并且各主机可以访问因特网。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置DHCP服务器,使得vlan 10，vlan 20的主机通过DHCP的方式获取IP地址</span></span><br><span class="line">DHCP(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DHCP(config-if)<span class="comment">#ip address 192.168.40.100 255.255.255.0</span></span><br><span class="line">DHCP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DHCP(config-if)<span class="comment">#exit </span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 10 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.10.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.10.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 20</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.20.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.20.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Ja7t.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JwAP.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JU0I.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JNnA.png"></p>
+<p>&emsp;&emsp;在R1上配置NAT，使各主机能够访问Internet</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#设置ACL，匹配感兴趣流量</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.10.0 0.0.0.255 </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.20.0 0.0.0.255 </span></span><br><span class="line"><span class="comment">#指定内外接口</span></span><br><span class="line">R1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">R1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip nat inside</span></span><br><span class="line"><span class="comment">#配置NAT，将内网IP地址转换为外网IP地址</span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 1 interface e0/0 overload </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用PC 1访问Internet：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JQk6.png"></p>
+<ol start="6">
+<li>在 ASW1 和 ASW2 上，采用合适的方式实现连着 PC 的接口避免 MAC 地址洪泛攻击，并且一个接口只允许接入一台 PC，当有非法 PC 接入时，能够产生告警消息。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br><span class="line">ASW2(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>将连接 PC1 的端口设置成该端口只允许 PC1 接入，实现任何情况下，其他主机都不允许通过该端口接入园区网络。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将PC机与交换机对应的端口绑定起来，防止其他主机通过该端口接入园区网络</span></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:09</span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/2</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0a</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0b</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/2                                                    </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky                 </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0c</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>为了确保该园区网内的用户可以正常获取 IP 地址，避免未授权的 DHCP 服务器接入，在该园区网合适的交换机上部署 DHCP Snooping 技术，并且为了提高园区网的安全，最大限度的降低 ARP 攻击和 IP 地址欺骗等攻击对网络造成的影响，在合适的交换机上部署动态 ARP 检测和 IP 源防护技术。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW2上部署DHCP Snooping 技术</span></span><br><span class="line">DSW2(config)<span class="comment">#ip dhcp snooping </span></span><br><span class="line"><span class="comment">#在ASW1部署动态ARP检测</span></span><br><span class="line">ASW1(config)<span class="comment">#ip arp inspection vlan 10 </span></span><br><span class="line"><span class="comment">#将e0/1设置为信任端口</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line"><span class="comment">#将非信任端口设置限制速率（此处的非信任端口为所有闲置端口）</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection trust </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/0,e0/3,e0/2-3</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection limit rate 10</span></span><br><span class="line"><span class="comment">#在e0/1、e0/2上部署IP源防护技术</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip verify source port-security</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>实现其他 PC 通过 ASW1 接入园区网络的时候，需要通过 802.1x 认证才能正常连入网络，如果PC 不支持802.1X 认证，那么就将该PC 划分到来宾VLAN60 里面，要求认证方式使用 AAA。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#aaa new-model </span></span><br><span class="line">ASW1(config)<span class="comment">#aaa authentication login default group radius local enable none </span></span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li><p>在 ACS 上添加一个账户，用户名和密码自定，实现该用户通过 802.1x 验证后，就被自动划分到 VLAN50。</p>
+</li>
+<li><p>要求对所有设备的vty 登录都采用AAA 认证，并且当 AAA 服务器不可达时， 采用本地数据库进行认证。</p>
+</li>
+</ol>
+<p>&emsp;&emsp;<strong>由于受到实验条件的限制，第10、11条要求暂时无法实现。</strong></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNP路由综合实验一</title>
+    <url>/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>熟悉 OSPF 的基本配置</p>
+</li>
+<li><p>熟悉OSPF 网络类型的应用</p>
+</li>
+<li><p>理解不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响</p>
+</li>
+<li><p>掌握 OSPF 不连续区域的几种解决方案</p>
+</li>
+<li><p>掌握 OSPF 区域间和外部路由的汇总</p>
+</li>
+<li><p>掌握 OSPF 默认路由的配置及控制</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipiIP.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划，并分别在路由器 R1、R2、R3、R5 和R6 上各起一个loopback 接口，地址为各路由器的编号，如 R1 的 loopback 地址就为 1.1.1.1，其他以此类推；</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipPat.png"></p>
+<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R9上的172.16.1.1/24、172.16.2.1/24……。以R1、R4的端口配置情况为例。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we58CF.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5NuR.png"></p>
+<ol start="2">
+<li>除ISP 区域外，全网启用 OSPF，并设置各路由器的 RID 为各路由器的编号，根据图示将各网段划分进相应的 OSPF 区域中，要求在 R5 上采用接口级命令将R5 相应的接口加入到 OSPF 区域中，在其他路由器上采用合适的方式启用 OSPF，并在 R2 上进行EIGRP 和 OSPF 的双向重分布；</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上启用OSPF协议</span></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0 0.0.0.255 area 0</span></span><br><span class="line">R1(config-router)<span class="comment">#network 12.12.12.0 0.0.0.255 area 0 </span></span><br><span class="line">R1(config-router)<span class="comment">#network 16.16.16.0 0.0.0.255 area 0 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R2上启用OSPF协议</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 2.2.2.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 12.12.12.0 0.0.0.255 area 0  </span></span><br><span class="line">R2(config-router)<span class="comment">#network 23.23.23.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R2上启用EIGRP协议</span></span><br><span class="line">R2(config)<span class="comment">#router eigrp 110 </span></span><br><span class="line">R2(config-router)<span class="comment">#network 29.0.0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在 R2 上进行EIGRP 和 OSPF 的双向重分布</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#redistribute eigrp 110 subnets</span></span><br><span class="line">R2(config)<span class="comment">#router eigrp 110 </span></span><br><span class="line">R2(config-router)<span class="comment">#redistribute ospf 1 metric 1 1 1 1 1 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R3上启用OSPF协议</span></span><br><span class="line">R3(config-router)<span class="comment">#router ospf 1   </span></span><br><span class="line">R3(config-router)<span class="comment">#network 3.3.3.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 23.23.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 34.34.34.0 0.0.0.255 area 345</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R4上启用OSPF协议</span></span><br><span class="line">R4(config-router)<span class="comment">#router ospf 1    </span></span><br><span class="line">R4(config-router)<span class="comment">#network 45.45.45.0 0.0.0.255 area 345</span></span><br><span class="line">R4(config-router)<span class="comment">#network 34.34.34.0 0.0.0.255 area 345</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.0.0 0.0.255.255 area 345 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R5上启用OSPF协议</span></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#network 45.45.45.0 0.0.0.255 area 345</span></span><br><span class="line">R5(config-router)<span class="comment">#network 56.56.56.0 0.0.0.255 area 0</span></span><br><span class="line">R5(config-router)<span class="comment">#network 57.57.57.0 0.0.0.255 area 578</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R6上启用OSPF协议</span></span><br><span class="line">R6(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R6(config-router)<span class="comment">#network 6.6.6.0 0.0.0.255 area 0</span></span><br><span class="line">R6(config-router)<span class="comment">#network 16.16.16.0 0.0.0.255 area 0</span></span><br><span class="line">R6(config-router)<span class="comment">#network 56.56.56.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R7上启用OSPF协议</span></span><br><span class="line">R7(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R7(config-router)<span class="comment">#network 57.57.57.0 0.0.0.255 area 578</span></span><br><span class="line">R7(config-router)<span class="comment">#network 10.7.0.0 0.0.255.255 area 578</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R8上启用OSPF协议（注意：此处R8的e0/0端口IP地址为57.57.57.8）</span></span><br><span class="line">R8(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R8(config-router)<span class="comment">#network 57.57.57.0 0.0.0.255 area 578</span></span><br><span class="line">R8(config-router)<span class="comment">#network 10.8.0.0 0.0.255.255 area 578</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R9上启用EIGRP协议</span></span><br><span class="line">R9(config)<span class="comment">#router eigrp 110 </span></span><br><span class="line">R9(config-router)<span class="comment">#network 29.0.0.0</span></span><br><span class="line">R9(config-router)<span class="comment">#network 172.16.0.0</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>采用合适的命令观察 OSPF 的邻居表、拓扑表和路由表，仔细观察路由表的各路由类型，并测试图示标注loopback 接口网段间的连通性；</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看OSPF邻居表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip ospf neighbor </span></span><br><span class="line"></span><br><span class="line">Neighbor ID     Pri   State           Dead Time   Address         Interface</span><br><span class="line">6.6.6.6           1   FULL/BDR        00:00:36    16.16.16.6      Ethernet0/0</span><br><span class="line">2.2.2.2           1   FULL/BDR        00:00:39    12.12.12.2      Ethernet0/1</span><br><span class="line"><span class="comment">#查看OSPF拓扑表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip ospf database  </span></span><br><span class="line"></span><br><span class="line">            OSPF Router with ID (1.1.1.1) (Process ID 1)</span><br><span class="line"></span><br><span class="line">                Router Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum Link count</span></span><br><span class="line">1.1.1.1         1.1.1.1         793         0x8000000C 0x00AE8B 3</span><br><span class="line">2.2.2.2         2.2.2.2         1739        0x8000000B 0x007C85 3</span><br><span class="line">3.3.3.3         3.3.3.3         1514        0x80000009 0x005309 2</span><br><span class="line">5.5.5.5         5.5.5.5         807         0x80000007 0x00ADF1 1</span><br><span class="line">6.6.6.6         6.6.6.6         780         0x80000009 0x005D8E 3</span><br><span class="line"></span><br><span class="line">                Net Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum</span></span><br><span class="line">12.12.12.1      1.1.1.1         793         0x80000007 0x0040BE</span><br><span class="line">16.16.16.1      1.1.1.1         1055        0x80000006 0x007A69</span><br><span class="line">23.23.23.2      2.2.2.2         1739        0x80000006 0x00E0F0</span><br><span class="line">56.56.56.5      5.5.5.5         807         0x80000006 0x00BC8A</span><br><span class="line"></span><br><span class="line">                Summary Net Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum</span></span><br><span class="line">10.7.1.1        5.5.5.5         806         0x80000006 0x006B9A</span><br><span class="line">10.7.2.1        5.5.5.5         806         0x80000006 0x0060A4</span><br><span class="line">10.7.3.1        5.5.5.5         806         0x80000006 0x0055AE</span><br><span class="line">10.7.4.1        5.5.5.5         806         0x80000006 0x004AB8</span><br><span class="line">10.8.1.1        5.5.5.5         563         0x80000006 0x005FA5</span><br><span class="line">10.8.2.1        5.5.5.5         563         0x80000006 0x0054AF</span><br><span class="line">10.8.3.1        5.5.5.5         563         0x80000006 0x0049B9</span><br><span class="line">10.8.4.1        5.5.5.5         563         0x80000006 0x003EC3</span><br><span class="line">34.34.34.0      3.3.3.3         1514        0x80000006 0x00DAAA</span><br><span class="line">34.34.34.0      5.5.5.5         1068        0x80000007 0x000171</span><br><span class="line">45.45.45.0      3.3.3.3         1252        0x80000006 0x00B1A8</span><br><span class="line">45.45.45.0      5.5.5.5         1068        0x80000007 0x00F0A0</span><br><span class="line">57.57.57.0      5.5.5.5         1068        0x80000006 0x00412D</span><br><span class="line">192.168.1.1     3.3.3.3         1252        0x80000006 0x00EA94</span><br><span class="line">192.168.1.1     5.5.5.5         1068        0x80000007 0x008E1E</span><br><span class="line">192.168.2.1     3.3.3.3         1252        0x80000006 0x00DF9E</span><br><span class="line">192.168.2.1     5.5.5.5         1068        0x80000007 0x008328</span><br><span class="line">192.168.3.1     3.3.3.3         1252        0x80000006 0x00D4A8</span><br><span class="line">192.168.3.1     5.5.5.5         1068        0x80000007 0x007832</span><br><span class="line">192.168.4.1     3.3.3.3         1252        0x80000006 0x00C9B2</span><br><span class="line">192.168.4.1     5.5.5.5         1068        0x80000007 0x006D3C</span><br><span class="line"></span><br><span class="line">                Type-5 AS External Link States</span><br><span class="line">          </span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum Tag</span></span><br><span class="line">29.29.29.0      2.2.2.2         221         0x80000007 0x0087B3 0</span><br><span class="line">172.16.1.0      2.2.2.2         221         0x80000006 0x0011C4 0</span><br><span class="line">172.16.2.0      2.2.2.2         221         0x80000006 0x0006CE 0</span><br><span class="line">172.16.3.0      2.2.2.2         221         0x80000006 0x00FAD8 0</span><br><span class="line">172.16.4.0      2.2.2.2         221         0x80000006 0x00EFE2 0</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看OSPF路由表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      1.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">C        1.1.1.1 is directly connected, Loopback0</span><br><span class="line">      2.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        2.2.2.2 [110/11] via 12.12.12.2, 03:33:05, Ethernet0/1</span><br><span class="line">      3.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        3.3.3.3 [110/21] via 12.12.12.2, 03:13:48, Ethernet0/1</span><br><span class="line">      6.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        6.6.6.6 [110/11] via 16.16.16.6, 03:03:08, Ethernet0/0</span><br><span class="line">      10.0.0.0/32 is subnetted, 8 subnets</span><br><span class="line">O IA     10.7.1.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.2.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.3.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.4.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.8.1.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.2.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.3.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.4.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">      12.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        12.12.12.0/24 is directly connected, Ethernet0/1</span><br><span class="line">L        12.12.12.1/32 is directly connected, Ethernet0/1</span><br><span class="line">      16.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        16.16.16.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        16.16.16.1/32 is directly connected, Ethernet0/0</span><br><span class="line">      23.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O        23.23.23.0 [110/20] via 12.12.12.2, 03:32:46, Ethernet0/1</span><br><span class="line">      29.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O E2     29.29.29.0 [110/20] via 12.12.12.2, 03:28:26, Ethernet0/1</span><br><span class="line">      34.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     34.34.34.0 [110/84] via 12.12.12.2, 03:12:45, Ethernet0/1</span><br><span class="line">      45.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     45.45.45.0 [110/30] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      56.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O        56.56.56.0 [110/20] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      57.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     57.57.57.0 [110/30] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      172.16.0.0/24 is subnetted, 4 subnets</span><br><span class="line">O E2     172.16.1.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.2.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.3.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.4.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">      192.168.1.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.1.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.2.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.2.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.3.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.3.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.4.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.4.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br></pre></td></tr></table></figure>
+
+<p>R9中的loopback接口与R7中的loopback接口：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5fVP.png"></p>
+<p>R9中的loopback接口与R8中的loopback接口：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5hUf.png"></p>
+<p>R9中的loopback接口与R4中的loopback接口：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5v5T.png"></p>
+<p>R4中的loopback接口与R7中的loopback接口：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/weISGF.png"></p>
+<p>R4中的loopback接口与R8中的loopback接口：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/weI9xJ.png"></p>
+<p>R7中的loopback接口与R8中的loopback接口：      </p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wev4IJ.png"></p>
+<ol start="4">
+<li>要求骨干区域能够快速收敛，并让R5 成为区域 578 中的 DR；</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在骨干区域的路由器中配置点对点的OSPF，以实现骨干区域的快速收敛</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/1                       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R2(config-if)<span class="comment">#int e0/2</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf network point-to-point</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#int e0/2</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int e0/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R6(config-if)<span class="comment">#int e0/1</span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">更改R5的优先级，让R5成为578区域的DR（OSPF的优先级默认为1，数值越大，优先级越高。当优先级为0时，路由器不参与选举）</span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf priority 10</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wev7xx.png"></p>
+<ol start="5">
+<li>采用合适的方案确保当骨干网络的任意链路中断的时候不会影响骨干网的连通性；</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R3与R5中配置虚链路</span></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#area 345 virtual-link 5.5.5.5</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 345 virtual-link 3.3.3.3</span></span><br></pre></td></tr></table></figure>
+
+<p>将R1的e0/0端口关闭，验证其连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wevXZD.png"></p>
+<ol start="6">
+<li>观察各路由器上的路由表信息，然后在合适的路由器上进行必要的路由汇总，对比汇总之后各路由器路由表的变化，并观察和测试明细路由与汇总路由之间的关系；</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各边界路由器上汇总路由</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 172.16.0.0 255.255.0.0 </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#area 345 range 192.168.0.0 255.255.0.0</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 345 range 192.168.0.0 255.255.0.0</span></span><br><span class="line">R5(config-router)<span class="comment">#area 578 range 10.0.0.0 255.0.0.0</span></span><br></pre></td></tr></table></figure>
+
+<p>R1的路由表：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wevzid.png"></p>
+<ol start="7">
+<li>采用合适的方案，实现图示标注的 loopback 网段可以访问 ISP 上的主机100.100.100.100；</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1和R6上配置NAT转换</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.0.0 0.0.255.255</span></span><br><span class="line">R1(config)<span class="comment">#access-list 2 permit 172.16.0.0 0.0.255.255</span></span><br><span class="line">R1(config)<span class="comment">#access-list 3 permit 10.0.0.0 0.255.255.255</span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#int range e0/0-1</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip nat inside </span></span><br><span class="line">R1(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 1 interface serial 1/0 overload </span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 2 interface serial 1/0 overload </span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 3 interface serial 1/0 overload </span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#default-information originate</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#access-list 1 permit 192.168.0.0 0.0.255.255</span></span><br><span class="line">R6(config)<span class="comment">#access-list 2 permit 172.16.0.0 0.0.255.255</span></span><br><span class="line">R6(config)<span class="comment">#access-list 3 permit 10.0.0.0 0.255.255.255</span></span><br><span class="line">R6(config)<span class="comment">#int s1/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip nat outside</span></span><br><span class="line">R6(config-if)<span class="comment">#exit</span></span><br><span class="line">R6(config-if)<span class="comment">#int range e0/0-1</span></span><br><span class="line">R6(config-if-range)<span class="comment">#ip nat inside </span></span><br><span class="line">R6(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#ip nat inside source list 1 interface serial 1/0 overload</span></span><br><span class="line">R6(config)<span class="comment">#ip nat inside source list 2 interface serial 1/0 overload</span></span><br><span class="line">R6(config)<span class="comment">#ip nat inside source list 3 interface serial 1/0 overload</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;验证其连通性：</p>
+<p>&emsp;&emsp;&emsp;&emsp;（注：200.200.200.2为ISP1中s1/0的IP地址，50.50.50.2为ISP2中s1/0的IP地址）</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexEdg.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexuzq.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexYFJ.png"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexQyV.png"></p>
+<ol start="8">
+<li>要求各链路正常情况下，内网优选 ISP1 的链路对外部网络进行访问，当与 ISP1 的链路出现故障的时候，自动切换到 ISP2 的链路对外部网络进行访问，使用tracert 观察验证该现象。</li>
+</ol>
+<p>&emsp;&emsp;为使内网优先选择ISP1对外部网络进行访问，故更改链路的cost值，使内网从ISP1访问外网的cost比从ISP2访问外网的cost小，以R8为例，更改链路①的cost值，使得链路①的总cost值比链路②的总cost值小。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexNWR.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各路由器的端口下配置ospf的开销</span></span><br><span class="line">R5(config)<span class="comment">#int e0/0</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf cost 1</span></span><br><span class="line">R4(config)<span class="comment">#int s1/0</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf cost 1</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf cost  1</span></span><br><span class="line">R2(config)<span class="comment">#int e0/2 </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf cost 1</span></span><br></pre></td></tr></table></figure>
+
+<p>验证结果如下：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexwy6.png"></p>
+<p>当ISP1出现故障时（关闭R1中的S1/0端口）：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wex0OK.png"></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP路由综合实验三</title>
     <url>/2019/04/12/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 IS-IS 的基本配置； IS-IS 路由器等级； IS-IS 的路由汇总； IS-IS 的基本查看和验证； IS-IS 的报文类型及报文的作用。</p>
@@ -1311,6 +1535,73 @@
         <tag>CCNP</tag>
         <tag>路由</tag>
         <tag>IS-IS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNP路由综合实验五——BGP</title>
+    <url>/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。</p>
+<a id="more"></a>
+
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qSzf1.png" alt="image-20201016220418903"></p>
+<center>BGP综合实验拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>大型企业需要承担起因特网互连任务，其AS号为2。内网使用OSPF协议来保证内部通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在大型企业内部启用OSPF协议，并通告内部网段</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.35.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.45.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>大型企业和ISP1及ISP2之间运行EBGP协议，在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#建立大型企业与ISP1之间的EBGP邻居关系</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#neighbor 202.101.12.2 remote-as 2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 202.101.12.1 remote-as 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#建立大型企业与ISP2之间的EBGP邻居关系</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.45.4 remote-as 2</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.35.3 remote-as 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</span></span><br><span class="line">R1(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R6(config-if)<span class="comment"># ip address 6.6.6.6 255.255.255.0</span></span><br><span class="line">R6(config-if)<span class="comment">#no shutdown  </span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>IP地址自行规划，内部使用私有地址，连着ISP的接口使用公有地址</li>
+</ol>
+<p>&emsp;&emsp;该拓扑中各设备的IP地址如拓扑图所示，此处不再做过多的赘述。</p>
+<ol start="4">
+<li>大型企业内部运行全互联的IBGP，要求避免物理接口故障引起的 BGP 邻居关系DOWN</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#由于需要避免物理接口故障引起的 BGP 邻居关系DOWN，所以我们建立基于回环端口的BGP邻居关系</span></span><br><span class="line"><span class="comment">#在大型企业中的各路由配置回环口</span></span><br><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 2.2.2.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 3.3.3.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R4(config-if)<span class="comment">#ip address 4.4.4.4 255.255.255.0</span></span><br><span class="line">R4(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在大型企业内部建立全互联的IBGP</span></span><br><span class="line">R2(config)<span class="comment">#router bgp 2                         </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#R5与R6也建立IBGP邻居关系</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 update-source Loopback1</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 update-source Loopback1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#在R1、R6上通告路由</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R6(config-router)<span class="comment">#network 6.6.6.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R5上对特定邻居（6.6.6.6）下发默认路由</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/2</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/1</span></span><br><span class="line"><span class="comment">#ps：由于大型企业的内部的IP地址为私有地址，故不能在互联网上通告。可在边界网关处配置NAT。但此处为了方便使用了默认路由</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 default-originate </span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>要求大型企业访问ISP2上的服务器是通过R3前往的（只允许在大型企业设备上配置）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改本地优先级，使R3的本地优先级大于R4。从而让大型企业访问ISP2时是通过R3前往的</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#bgp default local-preference 200</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpFmD.png" alt="image-20201016214158132"></p>
+<p>&emsp;&emsp;当然，也可以针对ISP2特定的路由条目设置本地优先级，或者使用别的BGP选路原则。此处过多赘述，详细的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>，可以点击查看我的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">另一篇博客</a>。</p>
+<ol start="6">
+<li>要求ISP3访问ISP1上的服务器是通过R4访问的（只允许在大型企业设备上配置）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将R3的metric值更改为20</span></span><br><span class="line">R3(config)<span class="comment">#route-map MED</span></span><br><span class="line">R3(config-route-map)<span class="comment">#set metric 20 </span></span><br><span class="line">R3(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2 </span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 route-map MED out </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将R4的metric值更改为10</span></span><br><span class="line">R4(config)<span class="comment">#route-map MED </span></span><br><span class="line">R4(config-route-map)<span class="comment">#set metric 10 </span></span><br><span class="line">R4(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 route-map MED out </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;更改MED前：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpPOO.png" alt="image-20201016214115339"></p>
+<p>&emsp;&emsp;更改MED后：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpVkd.png" alt="image-20201016215215388"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpMX8.png" alt="image-20201016215845533"></p>
+<p>&emsp;&emsp;此处是通过更改MED值来选择路由，其他<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>请点击查看。</p>
+<ol start="7">
+<li>要求IBGP邻居关系安全建立</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>测试下ISP1与ISP3上的服务器能正常通信</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qplnS.png" alt="image-20201016193315698"></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>BGP</tag>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
       </tags>
   </entry>
   <entry>
@@ -1712,214 +2003,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>网络与数据通信</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP交换综合实验四</title>
-    <url>/2019/03/21/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了掌握交换端口安全的应用与配置；DHCP SNOOPING 的应用与配置；DAI 的应用与配置；IP SG 的应用与配置；PVLAN 的应用与配置；802.1x 的应用与配置 。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握交换端口安全的应用与配置</p>
-</li>
-<li><p>掌握 DHCP SNOOPING 的应用与配置</p>
-</li>
-<li><p>掌握 DAI 的应用与配置</p>
-</li>
-<li><p>掌握 IP SG 的应用与配置</p>
-</li>
-<li><p>熟悉 PVLAN 的应用与配置</p>
-</li>
-<li><p>熟悉 802.1x 的应用与配置 </p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p> <img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/wpEfUI.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/wpEWVA.png"></p>
-<ol start="2">
-<li>根据图示，将各主机、DHCP 服务器以及 ACS 服务器划分进相应的 VLAN 中， 各 VLAN 地址段信息，以及路由器与多层交换间链路的地址自己规划，其中VLAN10 和 VLAN20 的主机通过 DHCP 方式获取 IP 地址。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10,20,30,40 </span></span><br><span class="line"><span class="comment">#将ACS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/3</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e1/0-1</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line"><span class="comment">#由于各PC机与DHCP服务器不在同一Vlan中，所以需要配置DHCP中继来确保PC能够通过DHCP获取IP地址</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w98NgH.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w98s58.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w93s1J.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91tIO.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91Eq0.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w91KG4.png"></p>
-<ol start="3">
-<li>在该园区网络内部署合适的第一跳冗余技术以及合适的路由协议，并且要求在正常情况下，DSW1 作为 VLAN10 主网关，DSW2 作为 VLAN20 的主网关， DSW1 和 DSW2 中的任何一台设备出现故障都不能影响用户的网络访问。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上启用HRSP协议，使DSW1作为Vlan 10的主网关</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config)<span class="comment">#intterface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为Vlan 10的主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line">DSW1(config-if)<span class="comment">#intterface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上启用HRSP协议，使DSW2作为Vlan 20的主网关</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt  </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit </span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangnzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW2的优先级减少6小于DSW2的105，DSW1成为Vlan 20的主网关 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9J9wq.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JFYT.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Y6PK.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Y8U0.png"></p>
-<ol start="4">
-<li>要求连接所有 PC 机和 SRV 的端口忽视生成树过程，直接跳转到转发状态。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#spanning-tree mode rapid-pvst  </span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">DSW2(config)<span class="comment">#spanning-tree mode rapid-pvst </span></span><br><span class="line">DSW2(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW2(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#spanning-tree mode rapid-pvst   </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#spanning-tree mode rapid-pvst      </span></span><br><span class="line">ASW2(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>完成必要配置，实现 VLAN10 和 VLAN20 的主机可以通过 DHCP 获取 IP 地址，并且各主机可以访问因特网。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置DHCP服务器,使得vlan 10，vlan 20的主机通过DHCP的方式获取IP地址</span></span><br><span class="line">DHCP(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DHCP(config-if)<span class="comment">#ip address 192.168.40.100 255.255.255.0</span></span><br><span class="line">DHCP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DHCP(config-if)<span class="comment">#exit </span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 10 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.10.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.10.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 20</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.20.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.20.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9Ja7t.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JwAP.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JU0I.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JNnA.png"></p>
-<p>&emsp;&emsp;在R1上配置NAT，使各主机能够访问Internet</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#设置ACL，匹配感兴趣流量</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.10.0 0.0.0.255 </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.20.0 0.0.0.255 </span></span><br><span class="line"><span class="comment">#指定内外接口</span></span><br><span class="line">R1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">R1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip nat inside</span></span><br><span class="line"><span class="comment">#配置NAT，将内网IP地址转换为外网IP地址</span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 1 interface e0/0 overload </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用PC 1访问Internet：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/02/w9JQk6.png"></p>
-<ol start="6">
-<li>在 ASW1 和 ASW2 上，采用合适的方式实现连着 PC 的接口避免 MAC 地址洪泛攻击，并且一个接口只允许接入一台 PC，当有非法 PC 接入时，能够产生告警消息。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br><span class="line">ASW2(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>将连接 PC1 的端口设置成该端口只允许 PC1 接入，实现任何情况下，其他主机都不允许通过该端口接入园区网络。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将PC机与交换机对应的端口绑定起来，防止其他主机通过该端口接入园区网络</span></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:09</span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/2</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0a</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0b</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/2                                                    </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky                 </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0c</span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>为了确保该园区网内的用户可以正常获取 IP 地址，避免未授权的 DHCP 服务器接入，在该园区网合适的交换机上部署 DHCP Snooping 技术，并且为了提高园区网的安全，最大限度的降低 ARP 攻击和 IP 地址欺骗等攻击对网络造成的影响，在合适的交换机上部署动态 ARP 检测和 IP 源防护技术。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW2上部署DHCP Snooping 技术</span></span><br><span class="line">DSW2(config)<span class="comment">#ip dhcp snooping </span></span><br><span class="line"><span class="comment">#在ASW1部署动态ARP检测</span></span><br><span class="line">ASW1(config)<span class="comment">#ip arp inspection vlan 10 </span></span><br><span class="line"><span class="comment">#将e0/1设置为信任端口</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line"><span class="comment">#将非信任端口设置限制速率（此处的非信任端口为所有闲置端口）</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection trust </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/0,e0/3,e0/2-3</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection limit rate 10</span></span><br><span class="line"><span class="comment">#在e0/1、e0/2上部署IP源防护技术</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip verify source port-security</span></span><br></pre></td></tr></table></figure>
-
-<ol start="9">
-<li>实现其他 PC 通过 ASW1 接入园区网络的时候，需要通过 802.1x 认证才能正常连入网络，如果PC 不支持802.1X 认证，那么就将该PC 划分到来宾VLAN60 里面，要求认证方式使用 AAA。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#aaa new-model </span></span><br><span class="line">ASW1(config)<span class="comment">#aaa authentication login default group radius local enable none </span></span><br></pre></td></tr></table></figure>
-
-<ol start="10">
-<li><p>在 ACS 上添加一个账户，用户名和密码自定，实现该用户通过 802.1x 验证后，就被自动划分到 VLAN50。</p>
-</li>
-<li><p>要求对所有设备的vty 登录都采用AAA 认证，并且当 AAA 服务器不可达时， 采用本地数据库进行认证。</p>
-</li>
-</ol>
-<p>&emsp;&emsp;<strong>由于受到实验条件的限制，第10、11条要求暂时无法实现。</strong></p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP路由综合实验一</title>
-    <url>/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>熟悉 OSPF 的基本配置</p>
-</li>
-<li><p>熟悉OSPF 网络类型的应用</p>
-</li>
-<li><p>理解不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响</p>
-</li>
-<li><p>掌握 OSPF 不连续区域的几种解决方案</p>
-</li>
-<li><p>掌握 OSPF 区域间和外部路由的汇总</p>
-</li>
-<li><p>掌握 OSPF 默认路由的配置及控制</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipiIP.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划，并分别在路由器 R1、R2、R3、R5 和R6 上各起一个loopback 接口，地址为各路由器的编号，如 R1 的 loopback 地址就为 1.1.1.1，其他以此类推；</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipPat.png"></p>
-<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R9上的172.16.1.1/24、172.16.2.1/24……。以R1、R4的端口配置情况为例。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we58CF.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5NuR.png"></p>
-<ol start="2">
-<li>除ISP 区域外，全网启用 OSPF，并设置各路由器的 RID 为各路由器的编号，根据图示将各网段划分进相应的 OSPF 区域中，要求在 R5 上采用接口级命令将R5 相应的接口加入到 OSPF 区域中，在其他路由器上采用合适的方式启用 OSPF，并在 R2 上进行EIGRP 和 OSPF 的双向重分布；</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上启用OSPF协议</span></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0 0.0.0.255 area 0</span></span><br><span class="line">R1(config-router)<span class="comment">#network 12.12.12.0 0.0.0.255 area 0 </span></span><br><span class="line">R1(config-router)<span class="comment">#network 16.16.16.0 0.0.0.255 area 0 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R2上启用OSPF协议</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 2.2.2.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 12.12.12.0 0.0.0.255 area 0  </span></span><br><span class="line">R2(config-router)<span class="comment">#network 23.23.23.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R2上启用EIGRP协议</span></span><br><span class="line">R2(config)<span class="comment">#router eigrp 110 </span></span><br><span class="line">R2(config-router)<span class="comment">#network 29.0.0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在 R2 上进行EIGRP 和 OSPF 的双向重分布</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#redistribute eigrp 110 subnets</span></span><br><span class="line">R2(config)<span class="comment">#router eigrp 110 </span></span><br><span class="line">R2(config-router)<span class="comment">#redistribute ospf 1 metric 1 1 1 1 1 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R3上启用OSPF协议</span></span><br><span class="line">R3(config-router)<span class="comment">#router ospf 1   </span></span><br><span class="line">R3(config-router)<span class="comment">#network 3.3.3.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 23.23.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 34.34.34.0 0.0.0.255 area 345</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R4上启用OSPF协议</span></span><br><span class="line">R4(config-router)<span class="comment">#router ospf 1    </span></span><br><span class="line">R4(config-router)<span class="comment">#network 45.45.45.0 0.0.0.255 area 345</span></span><br><span class="line">R4(config-router)<span class="comment">#network 34.34.34.0 0.0.0.255 area 345</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.0.0 0.0.255.255 area 345 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R5上启用OSPF协议</span></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#network 45.45.45.0 0.0.0.255 area 345</span></span><br><span class="line">R5(config-router)<span class="comment">#network 56.56.56.0 0.0.0.255 area 0</span></span><br><span class="line">R5(config-router)<span class="comment">#network 57.57.57.0 0.0.0.255 area 578</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R6上启用OSPF协议</span></span><br><span class="line">R6(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R6(config-router)<span class="comment">#network 6.6.6.0 0.0.0.255 area 0</span></span><br><span class="line">R6(config-router)<span class="comment">#network 16.16.16.0 0.0.0.255 area 0</span></span><br><span class="line">R6(config-router)<span class="comment">#network 56.56.56.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R7上启用OSPF协议</span></span><br><span class="line">R7(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R7(config-router)<span class="comment">#network 57.57.57.0 0.0.0.255 area 578</span></span><br><span class="line">R7(config-router)<span class="comment">#network 10.7.0.0 0.0.255.255 area 578</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R8上启用OSPF协议（注意：此处R8的e0/0端口IP地址为57.57.57.8）</span></span><br><span class="line">R8(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R8(config-router)<span class="comment">#network 57.57.57.0 0.0.0.255 area 578</span></span><br><span class="line">R8(config-router)<span class="comment">#network 10.8.0.0 0.0.255.255 area 578</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R9上启用EIGRP协议</span></span><br><span class="line">R9(config)<span class="comment">#router eigrp 110 </span></span><br><span class="line">R9(config-router)<span class="comment">#network 29.0.0.0</span></span><br><span class="line">R9(config-router)<span class="comment">#network 172.16.0.0</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>采用合适的命令观察 OSPF 的邻居表、拓扑表和路由表，仔细观察路由表的各路由类型，并测试图示标注loopback 接口网段间的连通性；</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看OSPF邻居表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip ospf neighbor </span></span><br><span class="line"></span><br><span class="line">Neighbor ID     Pri   State           Dead Time   Address         Interface</span><br><span class="line">6.6.6.6           1   FULL/BDR        00:00:36    16.16.16.6      Ethernet0/0</span><br><span class="line">2.2.2.2           1   FULL/BDR        00:00:39    12.12.12.2      Ethernet0/1</span><br><span class="line"><span class="comment">#查看OSPF拓扑表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip ospf database  </span></span><br><span class="line"></span><br><span class="line">            OSPF Router with ID (1.1.1.1) (Process ID 1)</span><br><span class="line"></span><br><span class="line">                Router Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum Link count</span></span><br><span class="line">1.1.1.1         1.1.1.1         793         0x8000000C 0x00AE8B 3</span><br><span class="line">2.2.2.2         2.2.2.2         1739        0x8000000B 0x007C85 3</span><br><span class="line">3.3.3.3         3.3.3.3         1514        0x80000009 0x005309 2</span><br><span class="line">5.5.5.5         5.5.5.5         807         0x80000007 0x00ADF1 1</span><br><span class="line">6.6.6.6         6.6.6.6         780         0x80000009 0x005D8E 3</span><br><span class="line"></span><br><span class="line">                Net Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum</span></span><br><span class="line">12.12.12.1      1.1.1.1         793         0x80000007 0x0040BE</span><br><span class="line">16.16.16.1      1.1.1.1         1055        0x80000006 0x007A69</span><br><span class="line">23.23.23.2      2.2.2.2         1739        0x80000006 0x00E0F0</span><br><span class="line">56.56.56.5      5.5.5.5         807         0x80000006 0x00BC8A</span><br><span class="line"></span><br><span class="line">                Summary Net Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum</span></span><br><span class="line">10.7.1.1        5.5.5.5         806         0x80000006 0x006B9A</span><br><span class="line">10.7.2.1        5.5.5.5         806         0x80000006 0x0060A4</span><br><span class="line">10.7.3.1        5.5.5.5         806         0x80000006 0x0055AE</span><br><span class="line">10.7.4.1        5.5.5.5         806         0x80000006 0x004AB8</span><br><span class="line">10.8.1.1        5.5.5.5         563         0x80000006 0x005FA5</span><br><span class="line">10.8.2.1        5.5.5.5         563         0x80000006 0x0054AF</span><br><span class="line">10.8.3.1        5.5.5.5         563         0x80000006 0x0049B9</span><br><span class="line">10.8.4.1        5.5.5.5         563         0x80000006 0x003EC3</span><br><span class="line">34.34.34.0      3.3.3.3         1514        0x80000006 0x00DAAA</span><br><span class="line">34.34.34.0      5.5.5.5         1068        0x80000007 0x000171</span><br><span class="line">45.45.45.0      3.3.3.3         1252        0x80000006 0x00B1A8</span><br><span class="line">45.45.45.0      5.5.5.5         1068        0x80000007 0x00F0A0</span><br><span class="line">57.57.57.0      5.5.5.5         1068        0x80000006 0x00412D</span><br><span class="line">192.168.1.1     3.3.3.3         1252        0x80000006 0x00EA94</span><br><span class="line">192.168.1.1     5.5.5.5         1068        0x80000007 0x008E1E</span><br><span class="line">192.168.2.1     3.3.3.3         1252        0x80000006 0x00DF9E</span><br><span class="line">192.168.2.1     5.5.5.5         1068        0x80000007 0x008328</span><br><span class="line">192.168.3.1     3.3.3.3         1252        0x80000006 0x00D4A8</span><br><span class="line">192.168.3.1     5.5.5.5         1068        0x80000007 0x007832</span><br><span class="line">192.168.4.1     3.3.3.3         1252        0x80000006 0x00C9B2</span><br><span class="line">192.168.4.1     5.5.5.5         1068        0x80000007 0x006D3C</span><br><span class="line"></span><br><span class="line">                Type-5 AS External Link States</span><br><span class="line">          </span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum Tag</span></span><br><span class="line">29.29.29.0      2.2.2.2         221         0x80000007 0x0087B3 0</span><br><span class="line">172.16.1.0      2.2.2.2         221         0x80000006 0x0011C4 0</span><br><span class="line">172.16.2.0      2.2.2.2         221         0x80000006 0x0006CE 0</span><br><span class="line">172.16.3.0      2.2.2.2         221         0x80000006 0x00FAD8 0</span><br><span class="line">172.16.4.0      2.2.2.2         221         0x80000006 0x00EFE2 0</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看OSPF路由表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      1.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">C        1.1.1.1 is directly connected, Loopback0</span><br><span class="line">      2.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        2.2.2.2 [110/11] via 12.12.12.2, 03:33:05, Ethernet0/1</span><br><span class="line">      3.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        3.3.3.3 [110/21] via 12.12.12.2, 03:13:48, Ethernet0/1</span><br><span class="line">      6.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        6.6.6.6 [110/11] via 16.16.16.6, 03:03:08, Ethernet0/0</span><br><span class="line">      10.0.0.0/32 is subnetted, 8 subnets</span><br><span class="line">O IA     10.7.1.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.2.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.3.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.4.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.8.1.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.2.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.3.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.4.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">      12.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        12.12.12.0/24 is directly connected, Ethernet0/1</span><br><span class="line">L        12.12.12.1/32 is directly connected, Ethernet0/1</span><br><span class="line">      16.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        16.16.16.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        16.16.16.1/32 is directly connected, Ethernet0/0</span><br><span class="line">      23.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O        23.23.23.0 [110/20] via 12.12.12.2, 03:32:46, Ethernet0/1</span><br><span class="line">      29.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O E2     29.29.29.0 [110/20] via 12.12.12.2, 03:28:26, Ethernet0/1</span><br><span class="line">      34.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     34.34.34.0 [110/84] via 12.12.12.2, 03:12:45, Ethernet0/1</span><br><span class="line">      45.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     45.45.45.0 [110/30] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      56.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O        56.56.56.0 [110/20] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      57.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     57.57.57.0 [110/30] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      172.16.0.0/24 is subnetted, 4 subnets</span><br><span class="line">O E2     172.16.1.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.2.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.3.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.4.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">      192.168.1.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.1.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.2.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.2.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.3.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.3.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.4.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.4.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br></pre></td></tr></table></figure>
-
-<p>R9中的loopback接口与R7中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5fVP.png"></p>
-<p>R9中的loopback接口与R8中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5hUf.png"></p>
-<p>R9中的loopback接口与R4中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5v5T.png"></p>
-<p>R4中的loopback接口与R7中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/weISGF.png"></p>
-<p>R4中的loopback接口与R8中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/weI9xJ.png"></p>
-<p>R7中的loopback接口与R8中的loopback接口：      </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wev4IJ.png"></p>
-<ol start="4">
-<li>要求骨干区域能够快速收敛，并让R5 成为区域 578 中的 DR；</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在骨干区域的路由器中配置点对点的OSPF，以实现骨干区域的快速收敛</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/1                       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R2(config-if)<span class="comment">#int e0/2</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf network point-to-point</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#int e0/2</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int e0/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R6(config-if)<span class="comment">#int e0/1</span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">更改R5的优先级，让R5成为578区域的DR（OSPF的优先级默认为1，数值越大，优先级越高。当优先级为0时，路由器不参与选举）</span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf priority 10</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wev7xx.png"></p>
-<ol start="5">
-<li>采用合适的方案确保当骨干网络的任意链路中断的时候不会影响骨干网的连通性；</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R3与R5中配置虚链路</span></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#area 345 virtual-link 5.5.5.5</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 345 virtual-link 3.3.3.3</span></span><br></pre></td></tr></table></figure>
-
-<p>将R1的e0/0端口关闭，验证其连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wevXZD.png"></p>
-<ol start="6">
-<li>观察各路由器上的路由表信息，然后在合适的路由器上进行必要的路由汇总，对比汇总之后各路由器路由表的变化，并观察和测试明细路由与汇总路由之间的关系；</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各边界路由器上汇总路由</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 172.16.0.0 255.255.0.0 </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#area 345 range 192.168.0.0 255.255.0.0</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 345 range 192.168.0.0 255.255.0.0</span></span><br><span class="line">R5(config-router)<span class="comment">#area 578 range 10.0.0.0 255.0.0.0</span></span><br></pre></td></tr></table></figure>
-
-<p>R1的路由表：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wevzid.png"></p>
-<ol start="7">
-<li>采用合适的方案，实现图示标注的 loopback 网段可以访问 ISP 上的主机100.100.100.100；</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1和R6上配置NAT转换</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.0.0 0.0.255.255</span></span><br><span class="line">R1(config)<span class="comment">#access-list 2 permit 172.16.0.0 0.0.255.255</span></span><br><span class="line">R1(config)<span class="comment">#access-list 3 permit 10.0.0.0 0.255.255.255</span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#int range e0/0-1</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip nat inside </span></span><br><span class="line">R1(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 1 interface serial 1/0 overload </span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 2 interface serial 1/0 overload </span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 3 interface serial 1/0 overload </span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#default-information originate</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#access-list 1 permit 192.168.0.0 0.0.255.255</span></span><br><span class="line">R6(config)<span class="comment">#access-list 2 permit 172.16.0.0 0.0.255.255</span></span><br><span class="line">R6(config)<span class="comment">#access-list 3 permit 10.0.0.0 0.255.255.255</span></span><br><span class="line">R6(config)<span class="comment">#int s1/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip nat outside</span></span><br><span class="line">R6(config-if)<span class="comment">#exit</span></span><br><span class="line">R6(config-if)<span class="comment">#int range e0/0-1</span></span><br><span class="line">R6(config-if-range)<span class="comment">#ip nat inside </span></span><br><span class="line">R6(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#ip nat inside source list 1 interface serial 1/0 overload</span></span><br><span class="line">R6(config)<span class="comment">#ip nat inside source list 2 interface serial 1/0 overload</span></span><br><span class="line">R6(config)<span class="comment">#ip nat inside source list 3 interface serial 1/0 overload</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;验证其连通性：</p>
-<p>&emsp;&emsp;&emsp;&emsp;（注：200.200.200.2为ISP1中s1/0的IP地址，50.50.50.2为ISP2中s1/0的IP地址）</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexEdg.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexuzq.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexYFJ.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexQyV.png"></p>
-<ol start="8">
-<li>要求各链路正常情况下，内网优选 ISP1 的链路对外部网络进行访问，当与 ISP1 的链路出现故障的时候，自动切换到 ISP2 的链路对外部网络进行访问，使用tracert 观察验证该现象。</li>
-</ol>
-<p>&emsp;&emsp;为使内网优先选择ISP1对外部网络进行访问，故更改链路的cost值，使内网从ISP1访问外网的cost比从ISP2访问外网的cost小，以R8为例，更改链路①的cost值，使得链路①的总cost值比链路②的总cost值小。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexNWR.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各路由器的端口下配置ospf的开销</span></span><br><span class="line">R5(config)<span class="comment">#int e0/0</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf cost 1</span></span><br><span class="line">R4(config)<span class="comment">#int s1/0</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf cost 1</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf cost  1</span></span><br><span class="line">R2(config)<span class="comment">#int e0/2 </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf cost 1</span></span><br></pre></td></tr></table></figure>
-
-<p>验证结果如下：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexwy6.png"></p>
-<p>当ISP1出现故障时（关闭R1中的S1/0端口）：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wex0OK.png"></p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>OSPF</tag>
-        <tag>CCNP</tag>
-        <tag>路由</tag>
       </tags>
   </entry>
   <entry>

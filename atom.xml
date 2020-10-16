@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2020-10-15T12:29:11.820Z</updated>
+  <updated>2020-10-16T14:35:39.111Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/"/>
     <id>https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/</id>
     <published>2020-10-14T16:00:00.000Z</published>
-    <updated>2020-10-15T12:29:11.820Z</updated>
+    <updated>2020-10-16T14:35:39.111Z</updated>
     
     
     <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍BGP的13种选路原则。&lt;/p&gt;</summary>
@@ -77,6 +77,29 @@
     <category term="ctf" scheme="https://huangzc.site/tags/ctf/"/>
     
     <category term="网络安全" scheme="https://huangzc.site/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CCNP路由综合实验五——BGP</title>
+    <link href="https://huangzc.site/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/"/>
+    <id>https://huangzc.site/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/</id>
+    <published>2019-04-26T06:58:23.000Z</published>
+    <updated>2020-10-16T14:24:48.955Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CCNP实验" scheme="https://huangzc.site/categories/CCNP%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+    <category term="BGP" scheme="https://huangzc.site/tags/BGP/"/>
+    
+    <category term="CCNP" scheme="https://huangzc.site/tags/CCNP/"/>
+    
+    <category term="路由" scheme="https://huangzc.site/tags/%E8%B7%AF%E7%94%B1/"/>
     
   </entry>
   
@@ -424,27 +447,6 @@
     <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
     
     <category term="RIP" scheme="https://huangzc.site/tags/RIP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CCNA实验二——静态路由的应用</title>
-    <link href="https://huangzc.site/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/"/>
-    <id>https://huangzc.site/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</id>
-    <published>2018-10-02T16:00:00.000Z</published>
-    <updated>2020-09-24T02:52:12.163Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CCNA实验" scheme="https://huangzc.site/categories/CCNA%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
-    
-    <category term="静态路由" scheme="https://huangzc.site/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/"/>
     
   </entry>
   

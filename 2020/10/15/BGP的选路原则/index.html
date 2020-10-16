@@ -43,7 +43,7 @@
 <meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍BGP的13种选路原则。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-10-15T12:29:11.820Z">
+<meta property="article:modified_time" content="2020-10-16T14:35:39.111Z">
 <meta property="article:author" content="Huangzc">
 <meta property="article:tag" content="BGP">
 <meta property="article:tag" content="选路原则">
@@ -242,10 +242,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-15 00:00:00 / 修改时间：20:29:11" itemprop="dateCreated datePublished" datetime="2020-10-15T00:00:00+08:00">2020-10-15</time>
+              <time title="创建时间：2020-10-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-15T00:00:00+08:00">2020-10-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-16 22:35:39" itemprop="dateModified" datetime="2020-10-16T22:35:39+08:00">2020-10-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -262,14 +268,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.5k</span>
+              <span>5.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -294,9 +300,9 @@
 <li><p>虽然Weight属性是Cisco私有的，但是很多厂商也是内置该属性</p>
 </li>
 </ul>
-<h4 id="1-1-对特定邻居的所有条目设置"><a href="#1-1-对特定邻居的所有条目设置" class="headerlink" title="1.1 对特定邻居的所有条目设置"></a>1.1 对特定邻居的所有条目设置</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">router<span class="built_in"> bgp </span>567</span><br><span class="line">neighbor 6.6.6.6 weight 1</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-对特定邻居的所有条目设置"><a href="#1-1-对特定邻居的所有条目设置" class="headerlink" title="1.1 对特定邻居的所有条目设置"></a>1.1 对特定邻居的所有条目设置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R7(config)<span class="comment">#router bgp 567</span></span><br><span class="line">R7(config-router)<span class="comment">#neighbor 6.6.6.6 weight 1</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="1-2-对特定邻居的特定条目设置"><a href="#1-2-对特定邻居的特定条目设置" class="headerlink" title="1.2 对特定邻居的特定条目设置"></a>1.2 对特定邻居的特定条目设置</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">R7(config)#access-list 1 permit 9.9.9.0 /24</span><br><span class="line">route-map wei permit 10</span><br><span class="line"> match<span class="built_in"> ip address </span>1</span><br><span class="line"> <span class="builtin-name">set</span> weight 1</span><br><span class="line">route-map wei permit 20</span><br><span class="line">R7(config)#router<span class="built_in"> bgp </span>567</span><br><span class="line">R7(config-router)#neighbor 6.6.6.6 route-map wei <span class="keyword">in</span></span><br><span class="line">R7(config-router)#exit</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-对特定邻居的特定条目设置"><a href="#1-2-对特定邻居的特定条目设置" class="headerlink" title="1.2 对特定邻居的特定条目设置"></a>1.2 对特定邻居的特定条目设置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">R7(config)<span class="comment">#access-list 1 permit 9.9.9.0 /24</span></span><br><span class="line">R7(config)<span class="comment">#route-map wei permit 10</span></span><br><span class="line">R7(config-route-map)<span class="comment">#match ip address 1</span></span><br><span class="line">R7(config-route-map)<span class="comment">#set weight 1</span></span><br><span class="line">R7(config-route-map)<span class="comment">#route-map wei permit 20</span></span><br><span class="line">R7(config)<span class="comment">#router bgp 567</span></span><br><span class="line">R7(config-router)<span class="comment">#neighbor 6.6.6.6 route-map wei in</span></span><br><span class="line">R7(config-router)<span class="comment">#exit</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="2-Local-Preference（本地优先级）"><a href="#2-Local-Preference（本地优先级）" class="headerlink" title="2 Local Preference（本地优先级）"></a>2 Local Preference（本地优先级）</h3><ul>
 <li><p>比较原则及配置注意事项：<br>—&ensp;值越大，越优先</p>
@@ -311,7 +317,7 @@
 </ul>
 <h4 id="2-1-全局设置"><a href="#2-1-全局设置" class="headerlink" title="2.1 全局设置"></a>2.1 全局设置</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R6(config)#router<span class="built_in"> bgp </span>567</span><br><span class="line">R6(config-router)#bgp<span class="built_in"> default </span>local-preference 200</span><br><span class="line">R6(config-router)#end</span><br></pre></td></tr></table></figure>
 
-<h4 id="2-2-对特定条目设置"><a href="#2-2-对特定条目设置" class="headerlink" title="2.2 对特定条目设置"></a>2.2 对特定条目设置</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">R6(config)#ip prefix-list 9 permit 9.9.9.0/24</span><br><span class="line">route-map LP permit 10</span><br><span class="line"> match<span class="built_in"> ip address </span>prefix-list 9</span><br><span class="line"> <span class="builtin-name">set</span> local-preference 200</span><br><span class="line">route-map LP permit 20</span><br><span class="line">R6(config)#router<span class="built_in"> bgp </span>567</span><br><span class="line">R6(config-router)#neighbor 7.7.7.7 route-map LP out</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-对特定条目设置"><a href="#2-2-对特定条目设置" class="headerlink" title="2.2 对特定条目设置"></a>2.2 对特定条目设置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">R6(config)<span class="comment">#ip prefix-list 9 permit 9.9.9.0/24</span></span><br><span class="line">R6(config)<span class="comment">#route-map LP permit 10</span></span><br><span class="line">R6(config-route-map)<span class="comment">#match ip address prefix-list 9</span></span><br><span class="line">R6(config-route-map)<span class="comment">#set local-preference 200</span></span><br><span class="line">R6(config)<span class="comment">#route-map LP permit 20</span></span><br><span class="line">R6(config)<span class="comment">#router bgp 567</span></span><br><span class="line">R6(config-router)<span class="comment">#neighbor 7.7.7.7 route-map LP out</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="3-本地路由始发方式"><a href="#3-本地路由始发方式" class="headerlink" title="3 本地路由始发方式"></a>3 本地路由始发方式</h3><ul>
 <li><p>比较原则及配置注意事项：</p>
@@ -330,7 +336,7 @@
 <p>—&ensp;last-as参数：表示离这个AS最近的AS，重复的次数</p>
 </li>
 </ul>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#可能导致追加的<span class="keyword">AS</span>号与其他<span class="keyword">AS</span>冲突，导致其<span class="keyword">AS</span>无法顺利接受路由</span><br><span class="line">R8(config)#route-map aspath</span><br><span class="line">R8(config-route-map)#<span class="keyword">set</span> <span class="keyword">as</span>-<span class="type">path</span> prepend  <span class="number">888</span> <span class="number">999</span></span><br><span class="line">#将最后一个<span class="keyword">AS</span>重复累加<span class="number">8</span>次</span><br><span class="line">route-map aspath permit <span class="number">10</span></span><br><span class="line"> <span class="keyword">set</span> <span class="keyword">as</span>-<span class="type">path</span> prepend last-<span class="keyword">as</span> <span class="number">8</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#可能导致追加的AS号与其他AS冲突，导致其AS无法顺利接受路由</span></span><br><span class="line">R8(config)<span class="comment">#route-map aspath</span></span><br><span class="line">R8(config-route-map)<span class="comment">#set as-path prepend  888 999</span></span><br><span class="line"><span class="comment">#将最后一个AS重复累加8次</span></span><br><span class="line">R8(config)<span class="comment">#route-map aspath permit 10</span></span><br><span class="line">R8(config-route-map)<span class="comment">#set as-path prepend last-as 8</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="5-Origin属性（起源代码）"><a href="#5-Origin属性（起源代码）" class="headerlink" title="5 Origin属性（起源代码）"></a>5 Origin属性（起源代码）</h3><ul>
 <li><p>比较原则及配置注意事项：</p>
@@ -346,7 +352,23 @@
 </li>
 </ul>
 <h3 id="6-MED"><a href="#6-MED" class="headerlink" title="6 MED"></a>6 MED</h3><ul>
-<li><p>本地在将一条BGP路由通告给EBGP Peer时，是否携带MED值.需要根据以下条件进行判断(不对EBGP Peer使用Route-map)：</p>
+<li><p>比较原则及配置注意事项：</p>
+<p>—&ensp;MED值越小，越优先</p>
+<p>—&ensp;默认情况下，只比较来自同一邻居AS的BGP路由的MED值</p>
+<p>—&ensp;告诉EBGP邻居怎么进入本AS</p>
+<p>—&ensp;第一个AS号相同，才会比较MED</p>
+</li>
+<li><p>MED设置方法：</p>
+<p>—&ensp;将IGP路由引入BGP时关联Route-map进行设置</p>
+<p>—&ensp;对BGP Peer应用IN/OUT方向的Route-map进行设置</p>
+</li>
+<li><p>非Route-map(自动)方式：</p>
+<p>—&ensp;使用network或redistribute方式将IGP路由引入BGP时，MED将继承IGP路由的Metric(直联路由的Metric为0)</p>
+<p>一使用aggregate-address方式引入路由，则MED为空</p>
+</li>
+<li><p>MED为BGP选路策略中经常使用的一个路径属性</p>
+</li>
+<li><p>本地在将一条BGP路由通告给EBGP Peer时，是否携带MED值，需要根据以下条件进行判断(不对EBGP Peer使用Route-map)：</p>
 <p>—&ensp;如果该BGP路由是本地始发(network或redistribute)的，则携带MED值发送给EBGP Peer(如果MED为空，则设置为O)</p>
 <p>—&ensp;如果该BGP路由是从其他BGP Peer学习过来的，那么将该路由通告给EBGP Peer时不携带MED</p>
 </li>
@@ -374,7 +396,7 @@
 <p>—&ensp;ip load-sharing per-packet(接口模式)</p>
 </li>
 </ul>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">R7(config-router)#maximum-paths ?</span><br><span class="line">  &lt;1-32&gt;  Number of paths</span><br><span class="line">  eibgp   Both eBGP <span class="keyword">and</span> iBGP paths as multipath</span><br><span class="line">  ibgp    iBGP-multipath</span><br><span class="line">router<span class="built_in"> bgp </span>800</span><br><span class="line"><span class="built_in"> bgp </span>log-neighbor-changes</span><br><span class="line"><span class="built_in"> bgp </span>dmzlink-bw</span><br><span class="line"><span class="built_in"> network </span>8.8.8.0 mask 255.255.255.0</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.28.2 remote-as 1234</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.28.2 dmzlink-bw</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.48.4 remote-as 1234</span><br><span class="line"><span class="built_in"> neighbor </span>192.168.48.4 dmzlink-bw</span><br><span class="line"> maximum-paths 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">R7(config-router)<span class="comment">#maximum-paths ?</span></span><br><span class="line">  &lt;1-32&gt;  Number of paths</span><br><span class="line">  eibgp   Both eBGP and iBGP paths as multipath</span><br><span class="line">  ibgp    iBGP-multipath</span><br><span class="line">router bgp 800</span><br><span class="line"> bgp <span class="built_in">log</span>-neighbor-changes</span><br><span class="line"> bgp dmzlink-bw</span><br><span class="line"> network 8.8.8.0 mask 255.255.255.0</span><br><span class="line"> neighbor 192.168.28.2 remote-as 1234</span><br><span class="line"> neighbor 192.168.28.2 dmzlink-bw</span><br><span class="line"> neighbor 192.168.48.4 remote-as 1234</span><br><span class="line"> neighbor 192.168.48.4 dmzlink-bw</span><br><span class="line"> maximum-paths 2</span><br></pre></td></tr></table></figure>
 
 <h3 id="10-最老的EBGP路径"><a href="#10-最老的EBGP路径" class="headerlink" title="10 最老的EBGP路径"></a>10 最老的EBGP路径</h3><p>&emsp;&emsp;优先选择最老的路由（即最稳定的路由)，针对EBGP</p>
 <h3 id="11-最小BGP-RID路径"><a href="#11-最小BGP-RID路径" class="headerlink" title="11 最小BGP RID路径"></a>11 最小BGP RID路径</h3><p>&emsp;&emsp;选择BGP Router ID小的BGP对等体通告的路由</p>
@@ -530,7 +552,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -577,7 +599,7 @@
     <h3 class="widget-title">Tag Cloud</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -611,12 +633,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">134k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:02</span>
 </div>
 <!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
