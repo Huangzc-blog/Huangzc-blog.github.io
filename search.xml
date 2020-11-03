@@ -842,104 +842,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNP交换综合实验一</title>
-    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
-</li>
-<li><p>掌握 DTP 的作用和配置</p>
-</li>
-<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
-</li>
-<li><p>掌握以太通道技术的作用和配置</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
-<ol start="2">
-<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
-</ol>
-<p>&emsp;①网关地址：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
-<p>&emsp;②各主机通过DHCP获取IP地址：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
-<ol start="3">
-<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
-<ol start="4">
-<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
-</ol>
-<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
-<p>&emsp;&emsp;SW2的VLAN信息：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
-<ol start="5">
-<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
-</ol>
-<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
-<ol start="6">
-<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
-</ol>
-<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
-<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
-<p>FTP_Srv用DHCP获取IP地址：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
-<ol start="7">
-<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
-</ol>
-<p>&emsp;①启用OSPF实现内网全网可达：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
-<p>&emsp;②实现外网可达：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
-<p>③  配置NAT：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
-<p>④  用R1给邻居下发默认路由：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
-<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
-<p>【实验中用到的代码】</p>
-<p><strong>VTP：</strong></p>
-<p>vtp mode server———————————————将VTP的模式该为server模式</p>
-<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
-<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
-<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
-<p>当域名与密码相同时才能进行同步</p>
-<p>NAT：</p>
-<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
-<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
-<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
-<p>捆绑链路：</p>
-<p>int range e0/1-2</p>
-<p>switchport truck encapsulation do1q</p>
-<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
-<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
-<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
-<p>下发默认路由：</p>
-<p>router ospf 1</p>
-<p>default-information originate—————————–给邻居下发默认路由</p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNP交换综合实验三</title>
     <url>/2019/03/14/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
@@ -1064,6 +966,104 @@
 
 
 
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNP交换综合实验一</title>
+    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
+</li>
+<li><p>掌握 DTP 的作用和配置</p>
+</li>
+<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
+</li>
+<li><p>掌握以太通道技术的作用和配置</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建。</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
+<ol start="2">
+<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
+</ol>
+<p>&emsp;①网关地址：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
+<p>&emsp;②各主机通过DHCP获取IP地址：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
+<ol start="3">
+<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
+<ol start="4">
+<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
+</ol>
+<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
+<p>&emsp;&emsp;SW2的VLAN信息：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
+<ol start="5">
+<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
+</ol>
+<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
+<ol start="6">
+<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
+</ol>
+<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
+<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
+<p>FTP_Srv用DHCP获取IP地址：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
+<ol start="7">
+<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
+</ol>
+<p>&emsp;①启用OSPF实现内网全网可达：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
+<p>&emsp;②实现外网可达：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
+<p>③  配置NAT：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
+<p>④  用R1给邻居下发默认路由：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
+<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
+<p>【实验中用到的代码】</p>
+<p><strong>VTP：</strong></p>
+<p>vtp mode server———————————————将VTP的模式该为server模式</p>
+<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
+<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
+<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
+<p>当域名与密码相同时才能进行同步</p>
+<p>NAT：</p>
+<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
+<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
+<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
+<p>捆绑链路：</p>
+<p>int range e0/1-2</p>
+<p>switchport truck encapsulation do1q</p>
+<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
+<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
+<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
+<p>下发默认路由：</p>
+<p>router ospf 1</p>
+<p>default-information originate—————————–给邻居下发默认路由</p>
 ]]></content>
       <categories>
         <category>CCNP实验</category>
@@ -1538,73 +1538,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNP路由综合实验五——BGP</title>
-    <url>/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。</p>
-<a id="more"></a>
-
-<p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qSzf1.png" alt="image-20201016220418903"></p>
-<center>BGP综合实验拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>大型企业需要承担起因特网互连任务，其AS号为2。内网使用OSPF协议来保证内部通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在大型企业内部启用OSPF协议，并通告内部网段</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.35.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.45.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>大型企业和ISP1及ISP2之间运行EBGP协议，在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#建立大型企业与ISP1之间的EBGP邻居关系</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#neighbor 202.101.12.2 remote-as 2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 202.101.12.1 remote-as 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#建立大型企业与ISP2之间的EBGP邻居关系</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.45.4 remote-as 2</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.35.3 remote-as 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</span></span><br><span class="line">R1(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R6(config-if)<span class="comment"># ip address 6.6.6.6 255.255.255.0</span></span><br><span class="line">R6(config-if)<span class="comment">#no shutdown  </span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>IP地址自行规划，内部使用私有地址，连着ISP的接口使用公有地址</li>
-</ol>
-<p>&emsp;&emsp;该拓扑中各设备的IP地址如拓扑图所示，此处不再做过多的赘述。</p>
-<ol start="4">
-<li>大型企业内部运行全互联的IBGP，要求避免物理接口故障引起的 BGP 邻居关系DOWN</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#由于需要避免物理接口故障引起的 BGP 邻居关系DOWN，所以我们建立基于回环端口的BGP邻居关系</span></span><br><span class="line"><span class="comment">#在大型企业中的各路由配置回环口</span></span><br><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 2.2.2.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 3.3.3.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R4(config-if)<span class="comment">#ip address 4.4.4.4 255.255.255.0</span></span><br><span class="line">R4(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在大型企业内部建立全互联的IBGP</span></span><br><span class="line">R2(config)<span class="comment">#router bgp 2                         </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#R5与R6也建立IBGP邻居关系</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 update-source Loopback1</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 update-source Loopback1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#在R1、R6上通告路由</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R6(config-router)<span class="comment">#network 6.6.6.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R5上对特定邻居（6.6.6.6）下发默认路由</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/2</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/1</span></span><br><span class="line"><span class="comment">#ps：由于大型企业的内部的IP地址为私有地址，故不能在互联网上通告。可在边界网关处配置NAT。但此处为了方便使用了默认路由</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 default-originate </span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>要求大型企业访问ISP2上的服务器是通过R3前往的（只允许在大型企业设备上配置）</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改本地优先级，使R3的本地优先级大于R4。从而让大型企业访问ISP2时是通过R3前往的</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#bgp default local-preference 200</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpFmD.png" alt="image-20201016214158132"></p>
-<p>&emsp;&emsp;当然，也可以针对ISP2特定的路由条目设置本地优先级，或者使用别的BGP选路原则。此处过多赘述，详细的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>，可以点击查看我的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">另一篇博客</a>。</p>
-<ol start="6">
-<li>要求ISP3访问ISP1上的服务器是通过R4访问的（只允许在大型企业设备上配置）</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将R3的metric值更改为20</span></span><br><span class="line">R3(config)<span class="comment">#route-map MED</span></span><br><span class="line">R3(config-route-map)<span class="comment">#set metric 20 </span></span><br><span class="line">R3(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2 </span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 route-map MED out </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将R4的metric值更改为10</span></span><br><span class="line">R4(config)<span class="comment">#route-map MED </span></span><br><span class="line">R4(config-route-map)<span class="comment">#set metric 10 </span></span><br><span class="line">R4(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 route-map MED out </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;更改MED前：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpPOO.png" alt="image-20201016214115339"></p>
-<p>&emsp;&emsp;更改MED后：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpVkd.png" alt="image-20201016215215388"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpMX8.png" alt="image-20201016215845533"></p>
-<p>&emsp;&emsp;此处是通过更改MED值来选择路由，其他<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>请点击查看。</p>
-<ol start="7">
-<li>要求IBGP邻居关系安全建立</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>测试下ISP1与ISP3上的服务器能正常通信</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qplnS.png" alt="image-20201016193315698"></p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>BGP</tag>
-        <tag>CCNP</tag>
-        <tag>路由</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNP路由综合实验二</title>
     <url>/2019/04/05/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF stub 区域的特点和配置； OSPF totally stub 区域的特点和配置； OSPF NSSA 区域的特点和配置； OSPF totally NSSA 区域的特点和配置；被动接口的作用掌握 OSPF LSA7 的作用； OSPF 邻居间的验证。</p>
@@ -1719,6 +1652,73 @@
       </categories>
       <tags>
         <tag>OSPF</tag>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNP路由综合实验五——BGP</title>
+    <url>/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。</p>
+<a id="more"></a>
+
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qSzf1.png" alt="image-20201016220418903"></p>
+<center>BGP综合实验拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>大型企业需要承担起因特网互连任务，其AS号为2。内网使用OSPF协议来保证内部通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在大型企业内部启用OSPF协议，并通告内部网段</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.35.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.45.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>大型企业和ISP1及ISP2之间运行EBGP协议，在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#建立大型企业与ISP1之间的EBGP邻居关系</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#neighbor 202.101.12.2 remote-as 2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 202.101.12.1 remote-as 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#建立大型企业与ISP2之间的EBGP邻居关系</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.45.4 remote-as 2</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.35.3 remote-as 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</span></span><br><span class="line">R1(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R6(config-if)<span class="comment"># ip address 6.6.6.6 255.255.255.0</span></span><br><span class="line">R6(config-if)<span class="comment">#no shutdown  </span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>IP地址自行规划，内部使用私有地址，连着ISP的接口使用公有地址</li>
+</ol>
+<p>&emsp;&emsp;该拓扑中各设备的IP地址如拓扑图所示，此处不再做过多的赘述。</p>
+<ol start="4">
+<li>大型企业内部运行全互联的IBGP，要求避免物理接口故障引起的 BGP 邻居关系DOWN</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#由于需要避免物理接口故障引起的 BGP 邻居关系DOWN，所以我们建立基于回环端口的BGP邻居关系</span></span><br><span class="line"><span class="comment">#在大型企业中的各路由配置回环口</span></span><br><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 2.2.2.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 3.3.3.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R4(config-if)<span class="comment">#ip address 4.4.4.4 255.255.255.0</span></span><br><span class="line">R4(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在大型企业内部建立全互联的IBGP</span></span><br><span class="line">R2(config)<span class="comment">#router bgp 2                         </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#R5与R6也建立IBGP邻居关系</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 update-source Loopback1</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 update-source Loopback1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#在R1、R6上通告路由</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R6(config-router)<span class="comment">#network 6.6.6.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R5上对特定邻居（6.6.6.6）下发默认路由</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/2</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/1</span></span><br><span class="line"><span class="comment">#ps：由于大型企业的内部的IP地址为私有地址，故不能在互联网上通告。可在边界网关处配置NAT。但此处为了方便使用了默认路由</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 default-originate </span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>要求大型企业访问ISP2上的服务器是通过R3前往的（只允许在大型企业设备上配置）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改本地优先级，使R3的本地优先级大于R4。从而让大型企业访问ISP2时是通过R3前往的</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#bgp default local-preference 200</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpFmD.png" alt="image-20201016214158132"></p>
+<p>&emsp;&emsp;当然，也可以针对ISP2特定的路由条目设置本地优先级，或者使用别的BGP选路原则。此处过多赘述，详细的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>，可以点击查看我的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">另一篇博客</a>。</p>
+<ol start="6">
+<li>要求ISP3访问ISP1上的服务器是通过R4访问的（只允许在大型企业设备上配置）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将R3的metric值更改为20</span></span><br><span class="line">R3(config)<span class="comment">#route-map MED</span></span><br><span class="line">R3(config-route-map)<span class="comment">#set metric 20 </span></span><br><span class="line">R3(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2 </span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 route-map MED out </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将R4的metric值更改为10</span></span><br><span class="line">R4(config)<span class="comment">#route-map MED </span></span><br><span class="line">R4(config-route-map)<span class="comment">#set metric 10 </span></span><br><span class="line">R4(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 route-map MED out </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;更改MED前：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpPOO.png" alt="image-20201016214115339"></p>
+<p>&emsp;&emsp;更改MED后：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpVkd.png" alt="image-20201016215215388"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qpMX8.png" alt="image-20201016215845533"></p>
+<p>&emsp;&emsp;此处是通过更改MED值来选择路由，其他<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>请点击查看。</p>
+<ol start="7">
+<li>要求IBGP邻居关系安全建立</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>测试下ISP1与ISP3上的服务器能正常通信</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/16/0qplnS.png" alt="image-20201016193315698"></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>BGP</tag>
         <tag>CCNP</tag>
         <tag>路由</tag>
       </tags>
