@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2020-10-16T14:35:39.111Z</updated>
+  <updated>2020-11-03T16:16:46.738Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MPLS基础知识</title>
+    <link href="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <id>https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
+    <published>2020-11-02T16:00:00.000Z</published>
+    <updated>2020-11-03T16:16:46.738Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="MPLS" scheme="https://huangzc.site/tags/MPLS/"/>
+    
+  </entry>
   
   <entry>
     <title>BGP的选路原则</title>
@@ -426,27 +445,6 @@
     <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
     
     <category term="EIGRP" scheme="https://huangzc.site/tags/EIGRP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CCNA实验三——RIP 的应用</title>
-    <link href="https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/"/>
-    <id>https://huangzc.site/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/</id>
-    <published>2018-10-04T16:00:00.000Z</published>
-    <updated>2020-09-24T15:40:32.684Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CCNA实验" scheme="https://huangzc.site/categories/CCNA%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
-    
-    <category term="RIP" scheme="https://huangzc.site/tags/RIP/"/>
     
   </entry>
   
