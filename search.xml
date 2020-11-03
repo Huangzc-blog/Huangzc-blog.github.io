@@ -644,6 +644,75 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验六——单臂路由的运用</title>
+    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】 </p>
+<ol>
+<li><p>掌握交换机上 VLAN 的创建和划分</p>
+</li>
+<li><p>掌握 Trunk 的作用</p>
+</li>
+<li><p>掌握 VTP 的作用与配置</p>
+</li>
+<li><p>掌握单臂路由原理与配置</p>
+</li>
+<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
+</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
+<center>单臂路由的实现拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
+<ol start="2">
+<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
+<ol start="3">
+<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
+<ol start="5">
+<li>测试各主机之间的连通性</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
+<ol start="6">
+<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
+<p>&emsp;&emsp;PC2与PC3的连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>单臂路由</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验八——ACL 的运用</title>
     <url>/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 ACL 作用；标准和扩展 ACL 的区别；标准和扩展 ACL 的配置； ALC 的验证和查看命令；命名的 ACL 的作用与配置。</p>
@@ -770,75 +839,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>ACL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验六——单臂路由的运用</title>
-    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】 </p>
-<ol>
-<li><p>掌握交换机上 VLAN 的创建和划分</p>
-</li>
-<li><p>掌握 Trunk 的作用</p>
-</li>
-<li><p>掌握 VTP 的作用与配置</p>
-</li>
-<li><p>掌握单臂路由原理与配置</p>
-</li>
-<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
-</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
-<center>单臂路由的实现拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
-<ol start="2">
-<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
-<ol start="3">
-<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
-<ol start="5">
-<li>测试各主机之间的连通性</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
-<ol start="6">
-<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
-<p>&emsp;&emsp;PC2与PC3的连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>单臂路由</tag>
       </tags>
   </entry>
   <entry>
