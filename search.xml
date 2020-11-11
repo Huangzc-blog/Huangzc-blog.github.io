@@ -219,104 +219,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNA实验七——STP 的运用</title>
-    <url>/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>理解 STP 的作用</p>
-</li>
-<li><p>熟悉 STP 的工作原理</p>
-</li>
-<li><p>掌握 STP 的查看命令</p>
-</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
-<center>STP 的运用拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>在相应的交换机上创建 VLAN10，并将连接 PC1 和 PC2 的交换端口都划分进该 VLAN 中</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在相应的交换机上创建VLAN10</span></span><br><span class="line">SW1(config)<span class="comment">#vlan 10</span></span><br><span class="line">SW2(config)<span class="comment">#vlan 10</span></span><br><span class="line">SW3(config)<span class="comment">#vlan 10</span></span><br><span class="line"><span class="comment">#将PC1的交换机端口划分进VLAN10中</span></span><br><span class="line">SW2(config)<span class="comment">#int e0/2</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line"><span class="comment">#将PC2的交换机端口划分进VLAN10中</span></span><br><span class="line">SW3(config)<span class="comment">#int e0/2</span></span><br><span class="line">SW3(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW3(config-if)<span class="comment">#switchport access vlan 10 </span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>为主机设置合适的 IP 地址，IP 地址自定，完成必要的配置实现主机间的通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.1.2 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.2 255.255.255.0</span><br><span class="line"></span><br><span class="line">SW1(config)<span class="comment">#int range e0/0-1</span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0-1</span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line">SW3(config)<span class="comment">#int range e0/0-1 </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VrXFO.png" alt="image-20200928194704233"></p>
-<ol start="3">
-<li>找出每个交换机的桥 ID，根据原理算出根桥、根端口、指定端口和非指定端口</li>
-</ol>
-<blockquote>
-<p>STP的选举规则：</p>
-<p>① 根桥（Root）——拥有最小的桥ID的交换机被选为根桥 </p>
-<ul>
-<li>桥ID：交换机的默认优先级 32768  + MAC地址（可通过 show version查看）</li>
-</ul>
-<p>② 根端口（RP）——非根交换机上去往根桥路径最优的端口，用于接收BPDU</p>
-<ul>
-<li>最小根桥开销</li>
-<li>最小发送者桥ID</li>
-<li>最小发送者端口ID  </li>
-</ul>
-<p>③ 指定端口（DP）——用来发送或转发配置BPDU</p>
-<ul>
-<li>最小根路径开销</li>
-<li>最小发送者桥ID</li>
-<li>最小发送者端口ID  </li>
-</ul>
-<p>④ 非指定端口（NDP）——既不转发数据帧，也不会将在该网段接收到的数据包源MAC地址填入MAC地址表中</p>
-<ul>
-<li>上述端口选举完后，剩下的既不是根端口也不是指定端口的端口成为非指定端口</li>
-</ul>
-</blockquote>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
-<p>&emsp;&emsp;根据选举规则，各交换机的桥ID，以及根桥、根端口、指定端口、非指定端口如上图所示。 </p>
-<ol start="4">
-<li>使用相关命令查看各交换机的 STP 信息，比较与根据理论算出来的结果是否一致</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsEtS.png" alt="image-20200928202002597"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsAk8.png" alt="image-20200928202035666"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsVfg.png" alt="image-20200928202108499"></p>
-<ol start="5">
-<li>将 SW2 设置为 VLAN10 的根桥，使用相关命令验证和查看各交换机上根桥的变化</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">SW2(config)#spanning-tree<span class="built_in"> vlan </span>10 root primary</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vsn6s.png" alt="image-20200928202930067"></p>
-<p>&emsp;&emsp;将SW2设置为根桥后，SW2的e0/0、e0/1为指定端口；SW1的e0/1为根端口、e0/0为指定端口；SW3的e0/1为根端口、e0/0为非指定端口。SW1与SW3之间的链路被阻塞。</p>
-<ol start="6">
-<li>测试正常链路出现故障对主机通信的影响</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将SW2的e0/<span class="number">1</span>端口关闭，模拟正常链路出现故障</span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config-if)</span></span><span class="selector-id">#shutdown</span> </span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vs3kT.png" alt="image-20200928203642085"></p>
-<ol start="7">
-<li>先断开 PC1 与交换机的连接，然后恢复 PC1 与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW2(config)<span class="comment">#int e0/2</span></span><br><span class="line"><span class="comment">#通过关闭与PC1连接的端口来模拟PC1与交换机断开连接</span></span><br><span class="line">SW2(config-if)<span class="comment">#shutdown </span></span><br><span class="line"><span class="comment">#观察下面4条spanning-tree的events，可以知道PC1与交换机断开连接后，端口的状态迅速变为down</span></span><br><span class="line">*Sep 28 12:42:48.425: STP: VLAN0010 we are the spanning tree root</span><br><span class="line">*Sep 28 12:42:48.425: STP[10]: Generating TC <span class="built_in">trap</span> <span class="keyword">for</span> port Ethernet0/2</span><br><span class="line">*Sep 28 12:42:50.430: %LINK-5-CHANGED: Interface Ethernet0/2, changed state to administratively down</span><br><span class="line">*Sep 28 12:42:51.436: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to down</span><br><span class="line"><span class="comment">#通过开启与PC1连接的端口来模拟PC1与交换机恢复连接</span></span><br><span class="line">SW2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"><span class="comment">#通过观察下面几条spanning-tree的events,根据端口e0/2从12：43：01的listening状态</span></span><br><span class="line">到12：43：31的forwarding状态可以得出，主机重新接入交换机需要经历30s才可以进行数据转发</span><br><span class="line">*Sep 28 12:43:01.692: <span class="built_in">set</span> portid: VLAN0010 Et0/2: new port id 8003</span><br><span class="line">*Sep 28 12:43:01.692: STP: VLAN0010 Et0/2 -&gt; listening</span><br><span class="line">*Sep 28 12:43:03.695: %LINK-3-UPDOWN: Interface Ethernet0/2, changed state to up</span><br><span class="line">*Sep 28 12:43:04.701: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to up</span><br><span class="line">*Sep 28 12:43:16.695: STP: VLAN0010 Et0/2 -&gt; learning</span><br><span class="line">*Sep 28 12:43:31.704: STP[10]: Generating TC <span class="built_in">trap</span> <span class="keyword">for</span> port Ethernet0/2</span><br><span class="line">*Sep 28 12:43:31.704: STP: VLAN0010 Et0/2 -&gt; forwarding</span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>使用合适的命令观察 STP 端口的变化过程</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">SW2#<span class="builtin-name">debug</span> spanning-tree events </span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vs8tU.png" alt="image-20200928205550232"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>STP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNA实验九——NAT 和 PPP 的应用</title>
     <url>/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 NAT 的作用；不同 NAT 的特点及配置；不同 NAT 的使用场合； PPP 的 PAP 和 CHAP 验证；辅助地址的作用； NAT 的验证和查看命令。</p>
@@ -412,6 +314,104 @@
         <tag>CCNA</tag>
         <tag>NAT</tag>
         <tag>PPP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNA实验七——STP 的运用</title>
+    <url>/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>理解 STP 的作用</p>
+</li>
+<li><p>熟悉 STP 的工作原理</p>
+</li>
+<li><p>掌握 STP 的查看命令</p>
+</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
+<center>STP 的运用拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>在相应的交换机上创建 VLAN10，并将连接 PC1 和 PC2 的交换端口都划分进该 VLAN 中</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在相应的交换机上创建VLAN10</span></span><br><span class="line">SW1(config)<span class="comment">#vlan 10</span></span><br><span class="line">SW2(config)<span class="comment">#vlan 10</span></span><br><span class="line">SW3(config)<span class="comment">#vlan 10</span></span><br><span class="line"><span class="comment">#将PC1的交换机端口划分进VLAN10中</span></span><br><span class="line">SW2(config)<span class="comment">#int e0/2</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line"><span class="comment">#将PC2的交换机端口划分进VLAN10中</span></span><br><span class="line">SW3(config)<span class="comment">#int e0/2</span></span><br><span class="line">SW3(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW3(config-if)<span class="comment">#switchport access vlan 10 </span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>为主机设置合适的 IP 地址，IP 地址自定，完成必要的配置实现主机间的通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.1.2 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.2 255.255.255.0</span><br><span class="line"></span><br><span class="line">SW1(config)<span class="comment">#int range e0/0-1</span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0-1</span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line">SW3(config)<span class="comment">#int range e0/0-1 </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VrXFO.png" alt="image-20200928194704233"></p>
+<ol start="3">
+<li>找出每个交换机的桥 ID，根据原理算出根桥、根端口、指定端口和非指定端口</li>
+</ol>
+<blockquote>
+<p>STP的选举规则：</p>
+<p>① 根桥（Root）——拥有最小的桥ID的交换机被选为根桥 </p>
+<ul>
+<li>桥ID：交换机的默认优先级 32768  + MAC地址（可通过 show version查看）</li>
+</ul>
+<p>② 根端口（RP）——非根交换机上去往根桥路径最优的端口，用于接收BPDU</p>
+<ul>
+<li>最小根桥开销</li>
+<li>最小发送者桥ID</li>
+<li>最小发送者端口ID  </li>
+</ul>
+<p>③ 指定端口（DP）——用来发送或转发配置BPDU</p>
+<ul>
+<li>最小根路径开销</li>
+<li>最小发送者桥ID</li>
+<li>最小发送者端口ID  </li>
+</ul>
+<p>④ 非指定端口（NDP）——既不转发数据帧，也不会将在该网段接收到的数据包源MAC地址填入MAC地址表中</p>
+<ul>
+<li>上述端口选举完后，剩下的既不是根端口也不是指定端口的端口成为非指定端口</li>
+</ul>
+</blockquote>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
+<p>&emsp;&emsp;根据选举规则，各交换机的桥ID，以及根桥、根端口、指定端口、非指定端口如上图所示。 </p>
+<ol start="4">
+<li>使用相关命令查看各交换机的 STP 信息，比较与根据理论算出来的结果是否一致</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsEtS.png" alt="image-20200928202002597"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsAk8.png" alt="image-20200928202035666"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsVfg.png" alt="image-20200928202108499"></p>
+<ol start="5">
+<li>将 SW2 设置为 VLAN10 的根桥，使用相关命令验证和查看各交换机上根桥的变化</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">SW2(config)#spanning-tree<span class="built_in"> vlan </span>10 root primary</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vsn6s.png" alt="image-20200928202930067"></p>
+<p>&emsp;&emsp;将SW2设置为根桥后，SW2的e0/0、e0/1为指定端口；SW1的e0/1为根端口、e0/0为指定端口；SW3的e0/1为根端口、e0/0为非指定端口。SW1与SW3之间的链路被阻塞。</p>
+<ol start="6">
+<li>测试正常链路出现故障对主机通信的影响</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将SW2的e0/<span class="number">1</span>端口关闭，模拟正常链路出现故障</span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config-if)</span></span><span class="selector-id">#shutdown</span> </span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vs3kT.png" alt="image-20200928203642085"></p>
+<ol start="7">
+<li>先断开 PC1 与交换机的连接，然后恢复 PC1 与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW2(config)<span class="comment">#int e0/2</span></span><br><span class="line"><span class="comment">#通过关闭与PC1连接的端口来模拟PC1与交换机断开连接</span></span><br><span class="line">SW2(config-if)<span class="comment">#shutdown </span></span><br><span class="line"><span class="comment">#观察下面4条spanning-tree的events，可以知道PC1与交换机断开连接后，端口的状态迅速变为down</span></span><br><span class="line">*Sep 28 12:42:48.425: STP: VLAN0010 we are the spanning tree root</span><br><span class="line">*Sep 28 12:42:48.425: STP[10]: Generating TC <span class="built_in">trap</span> <span class="keyword">for</span> port Ethernet0/2</span><br><span class="line">*Sep 28 12:42:50.430: %LINK-5-CHANGED: Interface Ethernet0/2, changed state to administratively down</span><br><span class="line">*Sep 28 12:42:51.436: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to down</span><br><span class="line"><span class="comment">#通过开启与PC1连接的端口来模拟PC1与交换机恢复连接</span></span><br><span class="line">SW2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"><span class="comment">#通过观察下面几条spanning-tree的events,根据端口e0/2从12：43：01的listening状态</span></span><br><span class="line">到12：43：31的forwarding状态可以得出，主机重新接入交换机需要经历30s才可以进行数据转发</span><br><span class="line">*Sep 28 12:43:01.692: <span class="built_in">set</span> portid: VLAN0010 Et0/2: new port id 8003</span><br><span class="line">*Sep 28 12:43:01.692: STP: VLAN0010 Et0/2 -&gt; listening</span><br><span class="line">*Sep 28 12:43:03.695: %LINK-3-UPDOWN: Interface Ethernet0/2, changed state to up</span><br><span class="line">*Sep 28 12:43:04.701: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to up</span><br><span class="line">*Sep 28 12:43:16.695: STP: VLAN0010 Et0/2 -&gt; learning</span><br><span class="line">*Sep 28 12:43:31.704: STP[10]: Generating TC <span class="built_in">trap</span> <span class="keyword">for</span> port Ethernet0/2</span><br><span class="line">*Sep 28 12:43:31.704: STP: VLAN0010 Et0/2 -&gt; forwarding</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>使用合适的命令观察 STP 端口的变化过程</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">SW2#<span class="builtin-name">debug</span> spanning-tree events </span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vs8tU.png" alt="image-20200928205550232"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>STP</tag>
       </tags>
   </entry>
   <entry>
@@ -644,6 +644,75 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验六——单臂路由的运用</title>
+    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】 </p>
+<ol>
+<li><p>掌握交换机上 VLAN 的创建和划分</p>
+</li>
+<li><p>掌握 Trunk 的作用</p>
+</li>
+<li><p>掌握 VTP 的作用与配置</p>
+</li>
+<li><p>掌握单臂路由原理与配置</p>
+</li>
+<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
+</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
+<center>单臂路由的实现拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
+<ol start="2">
+<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
+<ol start="3">
+<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
+<ol start="5">
+<li>测试各主机之间的连通性</li>
+</ol>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
+<ol start="6">
+<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
+<p>&emsp;&emsp;PC2与PC3的连通性：</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>单臂路由</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验八——ACL 的运用</title>
     <url>/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 ACL 作用；标准和扩展 ACL 的区别；标准和扩展 ACL 的配置； ALC 的验证和查看命令；命名的 ACL 的作用与配置。</p>
@@ -770,75 +839,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>ACL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验六——单臂路由的运用</title>
-    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】 </p>
-<ol>
-<li><p>掌握交换机上 VLAN 的创建和划分</p>
-</li>
-<li><p>掌握 Trunk 的作用</p>
-</li>
-<li><p>掌握 VTP 的作用与配置</p>
-</li>
-<li><p>掌握单臂路由原理与配置</p>
-</li>
-<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
-</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
-<center>单臂路由的实现拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
-<ol start="2">
-<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
-<ol start="3">
-<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
-<ol start="5">
-<li>测试各主机之间的连通性</li>
-</ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
-<ol start="6">
-<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
-<p>&emsp;&emsp;PC2与PC3的连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>单臂路由</tag>
       </tags>
   </entry>
   <entry>
@@ -1724,110 +1724,6 @@
       </tags>
   </entry>
   <entry>
-    <title>MPLS基础知识</title>
-    <url>/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<p>&emsp;&emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。</p>
-<a id="more"></a>
-
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>&emsp;&emsp;多协议标签交换（Multi-Protocol Label Switching，MPLS）是新一代的IP高速骨干网络交换标准，由因特网工程任务组（Internet Engineering Task Force，IETF）提出。</p>
-<p>&emsp;&emsp;MPLS是利用标记（label）进行数据转发的。当分组进入网络时，要为其分配固定长度的短的标记，并将标记与分组封装在一起，在整个转发过程中，交换节点仅根据标记进行转发。</p>
-<p>&emsp;&emsp;MPLS 独立于第二和第三层协议，诸如ATM 和IP。它提供了一种方式，将IP地址映射为简单的具有固定长度的标签，用于不同的包转发和包交换技术。它是现有路由和交换协议的接口，如IP、ATM、帧中继、资源预留协议（RSVP）、开放最短路径优先（OSPF）等等。</p>
-<p>&emsp;&emsp;在MPLS 中，数据传输发生在标签交换路径（LSP）上。LSP 是每一个沿着从源端到终端的路径上的结点的标签序列。</p>
-<p>&emsp;&emsp;MPLS 主要设计来解决网路问题，如网路速度、可扩展性、服务质量（QoS）管理以及流量工程，同时也为下一代IP 中枢网络解决宽带管理及服务请求等问题。</p>
-<p>&emsp;&emsp;在这部分，我们主要关注通用MPLS 框架。有关LDP、CR-LDP 和RSVP-TE 的具体内容可以参考个别文件。</p>
-<p>&emsp;&emsp;多协议标签交换MPLS最初是为了提高转发速度而提出的。与传统IP路由方式相比，它在数据转发时，只在网络边缘分析IP报文头，而不用在每一跳都分析IP报文头，从而节约了处理时间。</p>
-<p>&emsp;&emsp;MPLS起源于IPv4（Internet Protocol version 4），其核心技术可扩展到多种网络协议，包括IPX（Internet Packet Exchange）、Appletalk、DECnet、CLNP（Connectionless Network Protocol）等。“MPLS”中的“Multiprotocol”指的就是支持多种网络协议。</p>
-<h1 id="2-基础知识"><a href="#2-基础知识" class="headerlink" title="2 基础知识"></a>2 基础知识</h1><h2 id="2-1-MPLS的特性"><a href="#2-1-MPLS的特性" class="headerlink" title="2.1 MPLS的特性"></a>2.1 MPLS的特性</h2><ul>
-<li>MPLS依赖IP路由和CEF交换</li>
-<li>MPLS是一种依据数据包标签的转发技术</li>
-<li>MPLS支持多种三层协议</li>
-<li>MPLS涉及的目标网段与传统的IP转发是一样的</li>
-</ul>
-<h2 id="2-2-MPLS标签"><a href="#2-2-MPLS标签" class="headerlink" title="2.2 MPLS标签"></a>2.2 MPLS标签</h2><p><strong>1. 标签描述</strong></p>
-<p>&emsp;&emsp;两种模式：frame mode；ATM mode（cell mode），我们主要研究的是 frame mode。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6nywD.png" alt="image-20201103125606257"></p>
-<p>&emsp;&emsp;标签头一共32位，包含的字段如下：</p>
-<table>
-<thead>
-<tr>
-<th>LABEL</th>
-<th>20bits</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>BoS</td>
-<td>1bit为栈底位（这一位置 1 ，则为最后一个标签。可以给一个数据压多层标签，最后一个标签的BoS位置1，当处理到这层，上层数据包为普通数据包。）</td>
-</tr>
-<tr>
-<td>TTL</td>
-<td>8bit 最大 255 ，通常在加标签的时候，把普通的IP报文中的TTL字段直接复制进来使用，在弹出标签是，再将标签中的TTL字段复制进IP报文中。</td>
-</tr>
-<tr>
-<td>EXP</td>
-<td>3bit 实验位用于QoS</td>
-</tr>
-</tbody></table>
-<p><strong>2. 标签的位置</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uUHS.png" alt="image-20201103130842541"></p>
-<p>&emsp;&emsp;路由器如何知道一个报文是普通报文还是一个标签包呢？MPLS报文会在二层头和三层包间插入一个MPLS标签头。同时二层数据链路层帧头会做相应的指示，例如以太网数据帧，MAC 层的 TYPE 字段会指示上层数据是否为MPLS标签帧（如果是IPv4报文的话值为0x0800，如果是标签包则为8847-单播或8848-组播）</p>
-<p>&emsp;&emsp;上图是封装了三层标签包，对于一个LSR来说，只处理第一个标签。每一层标签都有个BoS栈底位，用来表示是否已经是标签栈的栈底，最后一个标签的BoS=1。</p>
-<p><strong>3. MPLS编码</strong></p>
-<p>&emsp;&emsp;标签栈放置在第三层包头之前，也就是说，被传输的协议头部之前，同时在第二层包头之后。对于第2层链路层封装可以是CISCO IOS所支持的所有封装类型，PPP、HDLC、Ethenet等等。那么在这些第2层的帧头，就需要有相应的协议字段来指示上层是一个标签头。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uHu6.png" alt="无标题"></p>
-<p><strong>4. 标签的处理方式</strong></p>
-<ul>
-<li><p>Insert (impose or push)</p>
-</li>
-<li><p>swap</p>
-</li>
-<li><p>Remove (PoP)</p>
-<p>关于标签处理方式的更详细内容，见下文。</p>
-</li>
-</ul>
-<h1 id="3-标签报文的查找与转发"><a href="#3-标签报文的查找与转发" class="headerlink" title="3 标签报文的查找与转发"></a>3 标签报文的查找与转发</h1><h2 id="3-1-MPLS的三张表"><a href="#3-1-MPLS的三张表" class="headerlink" title="3.1 MPLS的三张表"></a>3.1 MPLS的三张表</h2><p><strong>1. FIB表</strong></p>
-<p>&emsp;&emsp;FIB表其实就是CEF表</p>
-<p><strong>2. LIB标签信息库</strong></p>
-<p>&emsp;&emsp;路由器为每一个IGP前缀在本地生成一个标签并分发给LDP邻居，同时也从其他LDP邻居收到为特定前缀分发的标签。路由器将本地标签和远程标签（LDP邻居发给我的）存储在LIB中。</p>
-<p><strong>3. LFIB标签转发信息库</strong></p>
-<p>&emsp;&emsp;LSR路由可能收到某个特定前缀的多个标签（多个LDP邻居分发的），但他只需要使用其中一个，IP路由表用来确定这个IPv4前缀的下一跳（LFIB的构造需要一来IGP路由表，因为LFIB的下一跳就是IGP表算来的）LSR用这样的信息来创建它的LFIB。在 LFIB中本地捆绑的标签作为入站标签，LDP 邻居通告的标签作为出站标签。</p>
-<p>&emsp;&emsp;构成LFIB的标签可以不是LDP分发的，在MPLS流量工程中使用RSVP分配标签，在MPLS VPN中，VPN标签由BGP分发。在任何情况下，LFIB总是用来转发入站的带标签的报文。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">17         17         5.5.5.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">18         18         4.4.4.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">19         19         3.3.3.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">20         Pop Label  2.2.2.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">21         20         192.168.34.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">22         21         192.168.35.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">23         Pop Label  192.168.23.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">24         Pop Label  192.168.25.0/24  0             Et0/1      192.168.12.2</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table 172.16.2.0 detail </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">        MAC/Encaps=14/18, MRU=1500, Label Stack&#123;16&#125;</span><br><span class="line">        AABBCC002010AABBCC0010108847 00010000</span><br><span class="line">        No output feature configured</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用detail关键字能查看到LFIB转发条目的详细信息，包括二层的信息，以及所有的标签内容，如果不加则只能看到顶层标签。</p>
-<h2 id="3-2-IP查找和标签查找"><a href="#3-2-IP查找和标签查找" class="headerlink" title="3.2 IP查找和标签查找"></a>3.2 IP查找和标签查找</h2><p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6ubDK.png" alt="无标题"></p>
-<p>&emsp;&emsp;如果LSR收到一个IP报文，则查看FIB表（CEF表），假设FIB（CEF表）相关表项输出如下： </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip cef 172.16.2.0 detail </span></span><br><span class="line">172.16.2.0/24, epoch 0</span><br><span class="line">  <span class="built_in">local</span> label info: global/16</span><br><span class="line">  nexthop 192.168.12.2 Ethernet0/1 label 16</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;那么LSR将这个IP包压入一个标签头，打上标签16，再从 E0/1接口转发出去。在CISCO lOS中，CEF交换是唯一的一种可用于标记报文的IP转发模式，因此在启用MPLS的时候必须在路由器上开启CEF。</p>
-<p>&emsp;&emsp;而当一台路由器收到一个带标签的报文的时候，则在LFIB表中进行查找，LFIB表中相关的匹配条目会有针对该入站标签的出站动作或标签，以及下一跳信息。</p>
-<p>【注意】如果路由器收到一个带标签的数据包，并且顶部标签不能在本地LFIB中找到，那么CISCO IOS将丢弃这个数据包。</p>
-<h2 id="3-3-标签分配过程概述"><a href="#3-3-标签分配过程概述" class="headerlink" title="3.3 标签分配过程概述"></a>3.3 标签分配过程概述</h2><p><strong>1. 构建IP路由表</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uOED.png" alt="无标题"></p>
-<p>&emsp;&emsp;首先呢，所有的路由器都运行路由协议，全网路由互通。接下去在路由器的接口上激活LDP，那么路由器两两之间就会形成LDP邻接关系。</p>
-<p><strong>2. 分配并分发标签</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6KSgI.png" alt="无标题"></p>
-<p>&emsp;&emsp;激活LDP后，每台路由器会为自己本地路由表中的路由前缀分配并捆绑标签，例如本图中的 X 路由，所有路由器都会自己为 X 路由分配一个标签，然后将为 X 路由捆绑的标签保存在本地的 LIB 表里。随后，所有的LDP路由器，将自己为各个路由前缀捆绑的标签发给它的LDP邻居，如图所示，B将捆绑的标签发给了A、E和C。这里有个小细节，注意，标签的分发没有水平分割的概念，也就是说虽然B可能是从C学习到路由 X，但是 B 仍然会将为前缀 X 捆绑的标签传递给C。C也会将传递自B的标签放在LIB中，不过不用担心会有环路，因为 LDP 可以借助IGP路由协议来防止环路。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6Kib8.png" alt="无标题"></p>
-<p>&emsp;&emsp;当 LDP 路由器从他的 LDP 邻居收到邻居的标签捆绑，它会将捆绑的结果存储在自己的 LIB 表中，LIB 表中有 local label ，这是自己为特定路由前缀分发的标签，remote label 这是邻居为该路由前缀分发的标签。LDP 路由器会将邻居分配的 remote label 都放在 LIB，但是只会从 LIB 中所有可能的标签中选择出一个可能的出站标签放入 LFIB 中。LDP 路由器根据 LIB 表，结合路由表，构成 LFIB 表，如上图中 A 的 LFIB 表。<br>&emsp;&emsp;这里有一点要注意，我们看E路由器，实际上，它是会收到自己 LDP 邻居 B 和 C 的标签捆绑，其中都有关于路由 X 捆绑的标签，那么 E 在自己的 LFIB 表里，存的是哪位邻居的 remote label 呢？答案是 C，因为 C 是E路由器去往 X 的下一跳，E会借助路由表，来判断谁的标签捆绑“更优”。</p>
-<p><strong>3. LIB and LFIB表的建立</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6KrIe.png" alt="无标题"></p>
-<p>&emsp;&emsp;在所有的LDP路由器都互相发送标签捆绑后，大家逐步构建自己的LFIB。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6Kbzn.png" alt="无标题"></p>
-<p>&emsp;&emsp;大家的 LFIB 构建完成后，我们就能看到，当 A 收到一个 IP 数据包，要访问X，那么 A 查看自己的 CEF 表（为什么是查看CEF还记得么？)，发现要给数据包压标签，于是它压上标签头，标签值为201，然后下一跳是 B，也就是发送给 B。那么 B 收到这个标签包，发现标签头里的 label 字段为 201，于是查看自己的LFIB，发现 201 标签的 outgoing label 是 301 并且下一跳是 C，于是它将 201 标签替换成 301，然后交给 C。到了 C 它也去查 FIB 表，发现 301 标签对应的outgoing label 是 PoP 并且下一跳是 D，于是它将标签头弹出，这就露出了原始的 IPv4 数据，C 将这个数据包交给 D。</p>
-<blockquote>
-<p>本篇博客大部分内容节选自红茶三杯 CCIE学习文档之MPLS，目前只摘取的部分内容。感兴趣的话可以去<a href="http://ccietea.com/%E6%9F%A5%E7%9C%8B%E3%80%82">http://ccietea.com/查看。</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>MPLS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OSPF协议详解</title>
     <url>/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>&emsp;&emsp;OSPF(Open Shortest Path First开放式最短路径优先）是一个内部网关协议(Interior Gateway Protocol，简称IGP），用于在单一自治系统（autonomous system,AS）内决策路由。是对链路状态路由协议的一种实现，隶属内部网关协议（IGP），故运作于自治系统内部。著名的Dijkstra算法被用来计算最短路径树。OSPF支持负载均衡和基于服务类型的选路，也支持多种路由形式，如特定主机路由和子网路由等。</p>
@@ -2019,6 +1915,110 @@
       </tags>
   </entry>
   <entry>
+    <title>MPLS基础知识</title>
+    <url>/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<p>&emsp;&emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。</p>
+<a id="more"></a>
+
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>&emsp;&emsp;多协议标签交换（Multi-Protocol Label Switching，MPLS）是新一代的IP高速骨干网络交换标准，由因特网工程任务组（Internet Engineering Task Force，IETF）提出。</p>
+<p>&emsp;&emsp;MPLS是利用标记（label）进行数据转发的。当分组进入网络时，要为其分配固定长度的短的标记，并将标记与分组封装在一起，在整个转发过程中，交换节点仅根据标记进行转发。</p>
+<p>&emsp;&emsp;MPLS 独立于第二和第三层协议，诸如ATM 和IP。它提供了一种方式，将IP地址映射为简单的具有固定长度的标签，用于不同的包转发和包交换技术。它是现有路由和交换协议的接口，如IP、ATM、帧中继、资源预留协议（RSVP）、开放最短路径优先（OSPF）等等。</p>
+<p>&emsp;&emsp;在MPLS 中，数据传输发生在标签交换路径（LSP）上。LSP 是每一个沿着从源端到终端的路径上的结点的标签序列。</p>
+<p>&emsp;&emsp;MPLS 主要设计来解决网路问题，如网路速度、可扩展性、服务质量（QoS）管理以及流量工程，同时也为下一代IP 中枢网络解决宽带管理及服务请求等问题。</p>
+<p>&emsp;&emsp;在这部分，我们主要关注通用MPLS 框架。有关LDP、CR-LDP 和RSVP-TE 的具体内容可以参考个别文件。</p>
+<p>&emsp;&emsp;多协议标签交换MPLS最初是为了提高转发速度而提出的。与传统IP路由方式相比，它在数据转发时，只在网络边缘分析IP报文头，而不用在每一跳都分析IP报文头，从而节约了处理时间。</p>
+<p>&emsp;&emsp;MPLS起源于IPv4（Internet Protocol version 4），其核心技术可扩展到多种网络协议，包括IPX（Internet Packet Exchange）、Appletalk、DECnet、CLNP（Connectionless Network Protocol）等。“MPLS”中的“Multiprotocol”指的就是支持多种网络协议。</p>
+<h1 id="2-基础知识"><a href="#2-基础知识" class="headerlink" title="2 基础知识"></a>2 基础知识</h1><h2 id="2-1-MPLS的特性"><a href="#2-1-MPLS的特性" class="headerlink" title="2.1 MPLS的特性"></a>2.1 MPLS的特性</h2><ul>
+<li>MPLS依赖IP路由和CEF交换</li>
+<li>MPLS是一种依据数据包标签的转发技术</li>
+<li>MPLS支持多种三层协议</li>
+<li>MPLS涉及的目标网段与传统的IP转发是一样的</li>
+</ul>
+<h2 id="2-2-MPLS标签"><a href="#2-2-MPLS标签" class="headerlink" title="2.2 MPLS标签"></a>2.2 MPLS标签</h2><p><strong>1. 标签描述</strong></p>
+<p>&emsp;&emsp;两种模式：frame mode；ATM mode（cell mode），我们主要研究的是 frame mode。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6nywD.png" alt="image-20201103125606257"></p>
+<p>&emsp;&emsp;标签头一共32位，包含的字段如下：</p>
+<table>
+<thead>
+<tr>
+<th>LABEL</th>
+<th>20bits</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BoS</td>
+<td>1bit为栈底位（这一位置 1 ，则为最后一个标签。可以给一个数据压多层标签，最后一个标签的BoS位置1，当处理到这层，上层数据包为普通数据包。）</td>
+</tr>
+<tr>
+<td>TTL</td>
+<td>8bit 最大 255 ，通常在加标签的时候，把普通的IP报文中的TTL字段直接复制进来使用，在弹出标签是，再将标签中的TTL字段复制进IP报文中。</td>
+</tr>
+<tr>
+<td>EXP</td>
+<td>3bit 实验位用于QoS</td>
+</tr>
+</tbody></table>
+<p><strong>2. 标签的位置</strong></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uUHS.png" alt="image-20201103130842541"></p>
+<p>&emsp;&emsp;路由器如何知道一个报文是普通报文还是一个标签包呢？MPLS报文会在二层头和三层包间插入一个MPLS标签头。同时二层数据链路层帧头会做相应的指示，例如以太网数据帧，MAC 层的 TYPE 字段会指示上层数据是否为MPLS标签帧（如果是IPv4报文的话值为0x0800，如果是标签包则为8847-单播或8848-组播）</p>
+<p>&emsp;&emsp;上图是封装了三层标签包，对于一个LSR来说，只处理第一个标签。每一层标签都有个BoS栈底位，用来表示是否已经是标签栈的栈底，最后一个标签的BoS=1。</p>
+<p><strong>3. MPLS编码</strong></p>
+<p>&emsp;&emsp;标签栈放置在第三层包头之前，也就是说，被传输的协议头部之前，同时在第二层包头之后。对于第2层链路层封装可以是CISCO IOS所支持的所有封装类型，PPP、HDLC、Ethenet等等。那么在这些第2层的帧头，就需要有相应的协议字段来指示上层是一个标签头。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uHu6.png" alt="无标题"></p>
+<p><strong>4. 标签的处理方式</strong></p>
+<ul>
+<li><p>Insert (impose or push)</p>
+</li>
+<li><p>swap</p>
+</li>
+<li><p>Remove (PoP)</p>
+<p>关于标签处理方式的更详细内容，见下文。</p>
+</li>
+</ul>
+<h1 id="3-标签报文的查找与转发"><a href="#3-标签报文的查找与转发" class="headerlink" title="3 标签报文的查找与转发"></a>3 标签报文的查找与转发</h1><h2 id="3-1-MPLS的三张表"><a href="#3-1-MPLS的三张表" class="headerlink" title="3.1 MPLS的三张表"></a>3.1 MPLS的三张表</h2><p><strong>1. FIB表</strong></p>
+<p>&emsp;&emsp;FIB表其实就是CEF表</p>
+<p><strong>2. LIB标签信息库</strong></p>
+<p>&emsp;&emsp;路由器为每一个IGP前缀在本地生成一个标签并分发给LDP邻居，同时也从其他LDP邻居收到为特定前缀分发的标签。路由器将本地标签和远程标签（LDP邻居发给我的）存储在LIB中。</p>
+<p><strong>3. LFIB标签转发信息库</strong></p>
+<p>&emsp;&emsp;LSR路由可能收到某个特定前缀的多个标签（多个LDP邻居分发的），但他只需要使用其中一个，IP路由表用来确定这个IPv4前缀的下一跳（LFIB的构造需要一来IGP路由表，因为LFIB的下一跳就是IGP表算来的）LSR用这样的信息来创建它的LFIB。在 LFIB中本地捆绑的标签作为入站标签，LDP 邻居通告的标签作为出站标签。</p>
+<p>&emsp;&emsp;构成LFIB的标签可以不是LDP分发的，在MPLS流量工程中使用RSVP分配标签，在MPLS VPN中，VPN标签由BGP分发。在任何情况下，LFIB总是用来转发入站的带标签的报文。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">17         17         5.5.5.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">18         18         4.4.4.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">19         19         3.3.3.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">20         Pop Label  2.2.2.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">21         20         192.168.34.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">22         21         192.168.35.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">23         Pop Label  192.168.23.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">24         Pop Label  192.168.25.0/24  0             Et0/1      192.168.12.2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table 172.16.2.0 detail </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">        MAC/Encaps=14/18, MRU=1500, Label Stack&#123;16&#125;</span><br><span class="line">        AABBCC002010AABBCC0010108847 00010000</span><br><span class="line">        No output feature configured</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用detail关键字能查看到LFIB转发条目的详细信息，包括二层的信息，以及所有的标签内容，如果不加则只能看到顶层标签。</p>
+<h2 id="3-2-IP查找和标签查找"><a href="#3-2-IP查找和标签查找" class="headerlink" title="3.2 IP查找和标签查找"></a>3.2 IP查找和标签查找</h2><p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6ubDK.png" alt="无标题"></p>
+<p>&emsp;&emsp;如果LSR收到一个IP报文，则查看FIB表（CEF表），假设FIB（CEF表）相关表项输出如下： </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip cef 172.16.2.0 detail </span></span><br><span class="line">172.16.2.0/24, epoch 0</span><br><span class="line">  <span class="built_in">local</span> label info: global/16</span><br><span class="line">  nexthop 192.168.12.2 Ethernet0/1 label 16</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;那么LSR将这个IP包压入一个标签头，打上标签16，再从 E0/1接口转发出去。在CISCO lOS中，CEF交换是唯一的一种可用于标记报文的IP转发模式，因此在启用MPLS的时候必须在路由器上开启CEF。</p>
+<p>&emsp;&emsp;而当一台路由器收到一个带标签的报文的时候，则在LFIB表中进行查找，LFIB表中相关的匹配条目会有针对该入站标签的出站动作或标签，以及下一跳信息。</p>
+<p>【注意】如果路由器收到一个带标签的数据包，并且顶部标签不能在本地LFIB中找到，那么CISCO IOS将丢弃这个数据包。</p>
+<h2 id="3-3-标签分配过程概述"><a href="#3-3-标签分配过程概述" class="headerlink" title="3.3 标签分配过程概述"></a>3.3 标签分配过程概述</h2><p><strong>1. 构建IP路由表</strong></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uOED.png" alt="无标题"></p>
+<p>&emsp;&emsp;首先呢，所有的路由器都运行路由协议，全网路由互通。接下去在路由器的接口上激活LDP，那么路由器两两之间就会形成LDP邻接关系。</p>
+<p><strong>2. 分配并分发标签</strong></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6KSgI.png" alt="无标题"></p>
+<p>&emsp;&emsp;激活LDP后，每台路由器会为自己本地路由表中的路由前缀分配并捆绑标签，例如本图中的 X 路由，所有路由器都会自己为 X 路由分配一个标签，然后将为 X 路由捆绑的标签保存在本地的 LIB 表里。随后，所有的LDP路由器，将自己为各个路由前缀捆绑的标签发给它的LDP邻居，如图所示，B将捆绑的标签发给了A、E和C。这里有个小细节，注意，标签的分发没有水平分割的概念，也就是说虽然B可能是从C学习到路由 X，但是 B 仍然会将为前缀 X 捆绑的标签传递给C。C也会将传递自B的标签放在LIB中，不过不用担心会有环路，因为 LDP 可以借助IGP路由协议来防止环路。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6Kib8.png" alt="无标题"></p>
+<p>&emsp;&emsp;当 LDP 路由器从他的 LDP 邻居收到邻居的标签捆绑，它会将捆绑的结果存储在自己的 LIB 表中，LIB 表中有 local label ，这是自己为特定路由前缀分发的标签，remote label 这是邻居为该路由前缀分发的标签。LDP 路由器会将邻居分配的 remote label 都放在 LIB，但是只会从 LIB 中所有可能的标签中选择出一个可能的出站标签放入 LFIB 中。LDP 路由器根据 LIB 表，结合路由表，构成 LFIB 表，如上图中 A 的 LFIB 表。<br>&emsp;&emsp;这里有一点要注意，我们看E路由器，实际上，它是会收到自己 LDP 邻居 B 和 C 的标签捆绑，其中都有关于路由 X 捆绑的标签，那么 E 在自己的 LFIB 表里，存的是哪位邻居的 remote label 呢？答案是 C，因为 C 是E路由器去往 X 的下一跳，E会借助路由表，来判断谁的标签捆绑“更优”。</p>
+<p><strong>3. LIB and LFIB表的建立</strong></p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6KrIe.png" alt="无标题"></p>
+<p>&emsp;&emsp;在所有的LDP路由器都互相发送标签捆绑后，大家逐步构建自己的LFIB。</p>
+<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6Kbzn.png" alt="无标题"></p>
+<p>&emsp;&emsp;大家的 LFIB 构建完成后，我们就能看到，当 A 收到一个 IP 数据包，要访问X，那么 A 查看自己的 CEF 表（为什么是查看CEF还记得么？)，发现要给数据包压标签，于是它压上标签头，标签值为201，然后下一跳是 B，也就是发送给 B。那么 B 收到这个标签包，发现标签头里的 label 字段为 201，于是查看自己的LFIB，发现 201 标签的 outgoing label 是 301 并且下一跳是 C，于是它将 201 标签替换成 301，然后交给 C。到了 C 它也去查 FIB 表，发现 301 标签对应的outgoing label 是 PoP 并且下一跳是 D，于是它将标签头弹出，这就露出了原始的 IPv4 数据，C 将这个数据包交给 D。</p>
+<blockquote>
+<p>本篇博客大部分内容节选自红茶三杯 CCIE学习文档之MPLS，目前只摘取的部分内容。感兴趣的话可以去<a href="http://ccietea.com/%E6%9F%A5%E7%9C%8B%E3%80%82">http://ccietea.com/查看。</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>MPLS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>安恒杯四月月赛misc——Writeup</title>
     <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
     <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
@@ -2054,6 +2054,66 @@
       <tags>
         <tag>ctf</tag>
         <tag>网络安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OSPF邻居关系建立及维护</title>
+    <url>/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/</url>
+    <content><![CDATA[<p>&emsp;&emsp;OSPF邻居关系的建立是经历了七个不同的状态逐步建立起来的，状态之间的转换以及邻居关系建立后的维护主要通过OSPF的五个报文进行数据的传输。 本篇文章详细介绍了OSPF邻居关系的建立与维护。</p>
+<a id="more"></a>
+
+<h2 id="1-邻居建立过程"><a href="#1-邻居建立过程" class="headerlink" title="1 邻居建立过程"></a>1 邻居建立过程</h2><p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/11/BvWneO.png" alt="image-20201111201619205"></p>
+<p>&emsp;&emsp;在初始情况下，A、B 在某个接口激活了OSPF后，都会开始在这个接口上去发组播的Hello包，目的是发现OSPF邻居。Hello包里，有个active neighbor字段，用来存储路由器在某个OSPF接口上发现的邻居。当然，初始情况下，这个Hello包里是不包含任何活跃的邻居的(也就没有active neighbor字段)，因为它谁也没发现。<br>&emsp;&emsp;当OSPF路由器（B）在某个OSPF 接口上收到邻居发来的Hello包（里面没有装active neighbor ），它会记录下A（在自己的OSPF接口数据结构中）并且将 A 的状态视为Init ，然后将A的Router lD存储在自己将要发送的Hello包的active neighbor字段里发送出去，这样 A 就会收到这个Hello包，并且在这个Hello包当中找到自己的Router lD，那么 A 会认为，与 B 已经完成了双边关系的建立，因此 A 会将 B 的邻居状态置为two-way。<br>&emsp;&emsp;与此同时，A 也会继续发送Hello包，并且将B的Router lD放置于Hello包中，而B收到这个Hello包并看见了自己的Router lD后，B 也会将 A 的状态置为Two-way，至此OSPF的第一个稳态就达到了。</p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/11/BvWKTe.png" alt="image-20201111202300693"></p>
+<p>&emsp;&emsp;接下去A、B会进入Ex-start 状态并开始进行master、slave的协商，协商MIS的目的是为了决定在后续的LSA交互中，谁来决定DD的序列号，而Router lD 大的那个OSPF路由器的接口将会成为master，由它来决定DD seq，对端成为slave。这里要注意master不是DR，要注意与DR的概念进行区分。这个协商过程，是由交互DBD包实现的，注意这里使用的是空的DBD包，也就是不包含任何LSA头部的DBD包，这个包当中，有三个位非常关键：I、M、MS。用于Ex-start阶段协商master、slave的DBD包，I 位（或叫做 Init 位）都是置0的；另外MS位如果置1，表示DBD报文始发路由器认为自己的master，当然起初大家都这么认为，在一系列DBD交换后，就会得到选举结果，被选举为slave的OSPF接口，会将发送的DBD包MS位置为0；另外M位表示more，如果一个OSPF接口发送的DBD包M位置1，在表示这不是最后一个DBD，后续还有DBD包待发送。<br>&emsp;&emsp;当OSPF接口收到一个DBD包且其中 I 位置0的时候，它就知道与该邻居的Ex-start阶段已经过去了，于是将邻居的状态置为Exchange，并存储对端发来的DBD包所包含的LSA头部，当然，他自己也发送关于自己OSPF DB的摘要给邻居。如此一来，双方都能通过DBD的交互，了解到对方OSPF DB中的摘要情况。在这个过程中，可能交互数个DBD报文，并要注意，这些报文的 I 位都置0，且M位一般也置0，除非这是某个OSPF接口发送的最后一个DBD包。</p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/11/BvWlYd.png" alt="image-20201111203911471"></p>
+<p>&emsp;&emsp;当Router A收到一个M位置0的DBD包的时候，它就知道，这是邻居发来的最后一个DBD包了，如果它搜集完这个邻居（假设是B）发来的DBD并且发现，这些DBD里有它感兴趣的LSA，它期望更详细的LSA信息时，它将B置为 Loading 状态，并且开始发送LSR报文去请求特定LSA的详细信息。B收到这个LSR后，会以LSU进行回应，其中就包含了对方请求的LSA详细信息，因此，只有在LSU报文中，才能看到LSA的完整信息。收到LSU后，A将LSU中所包含的LSA放进自己的LSDB，并且给B发一个LSACK进行确认。当OSPF接口上所有的待请求的LSA全部收到更新后，它会将邻居置为FULL。至此，OSPF邻接关系的建立达到全毗邻。<br>&emsp;&emsp;在这里我们有个地方需要留意，我们通常说，OSPF 路由器A与B进入了xx状态，其实这句话并不严谨，原因之一，是因为OSPF 是接口敏感型协议，许多的操作都是以OSPF 接口作为立足点去考虑的，譬如邻居关系的建立，再如DR和BDR，我们不能说一台路由器是DR，准确的说，应该是某路由器的某个接口是DR；再者，说两台路由器之间是xx状态，这个也不严谨，所谓的邻居状态，必须是以某台路由器为观察点，在其某个接口上观察到的某个邻居的状态，因此可能出现的一个情况是，在A上，看到的B的状态为Loading，但是在B上，A的状态已经是FULL了。</p>
+<h2 id="2-状态机"><a href="#2-状态机" class="headerlink" title="2 状态机"></a>2 状态机</h2><p><strong>1. Down</strong></p>
+<p>&emsp;&emsp;在DOWN状态下，OSPF 接口仍然有尝试发现邻居的意愿，因此会不断的发送组播hello包。</p>
+<p><strong>2. Init</strong></p>
+<p>&emsp;&emsp;当OSPF 接口收到链路上某个邻居发来的第一个Hello包的时候，它会在接口上将该邻居置为 Init 状态，注意这个Hello包中可能并未包含任何的邻居信息。但是这至少证明，我这个OSPF接口在这个链路上，至少有个活跃的邻居。</p>
+<p>&emsp;&emsp;下面是一个没有发现任何active neighbor的Hello包：</p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/11/BvW1fA.png" alt="image-20201111205235674"></p>
+<p><strong>3. Two-way</strong></p>
+<p>&emsp;&emsp;当OSPF路由器在某个链路上发现了邻居后，它自己发送的Hello包里就会增加active neighbor字段，用于存储在该链路上发现的OSPF邻居。当一台OSPF Router看到自己（的Router lD）出现在邻居发过来的的Hello 分组中，它就会将该邻居置为Two-way。该状态是OSPF 邻居之间可以具有的最基本的关系，也是第一个稳态，但是此时两者还不能共享路由信息。</p>
+<p>&emsp;&emsp;下面是一个已经在链路上发现了邻居1.1.1.1的Hello：</p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/11/BvWJ6P.png" alt="image-20201111205414612"></p>
+<p><strong>4. Ex-Start</strong></p>
+<p>&emsp;&emsp;一台OSPF路由器在将某个邻居置为Two-way状态后，就开始发送空的DBD包，用于协商master/slave。这个就是 Ex-start 状态。两台Router 间用空的BDB分组确定master和slave关系（注意不是DR和BDR），在DBD包中有3个标记位用来管理邻接关系的建立过程：</p>
+<ul>
+<li>l位         或称为初始位（Initial bit ）用于Ex-start协商主从关系的初始化协商的DBD包，该位置1</li>
+<li>M位       或称为后继位（More bit）如果这不是OSPF Router 发送的最后一个DBD，该位置1</li>
+<li>MS位     或称为主/从位（Master / slave bit）如果始发路由器是Master，则该位置1</li>
+</ul>
+<p>&emsp;&emsp;如果某台OSPF Router收到邻居发来的DBD I 位也就是Init位置0则意味着Ex-start状态结束并且master/slave已经选出来了那么该路由器会将邻居置为Exchange状态开始用包含LSA头部的DBD交换各自的LSBD。下面是一个用于初始化协商的DBD消息：</p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/11/BvWYOf.png" alt="image-20201111205948163"></p>
+<p><strong>5. Exchange</strong></p>
+<p>&emsp;&emsp;这个过程，双方使用包含自己LSA头部的DBD报文进行交互，并且将对方发过来的LSA头部、并且自己感兴趣的LSA（或自己没有的LSA）存储在一个本地OSPF 接口的队列里，以便在下一个阶段进行LSA详细信息的请求。当某个OSPF接口收到邻居发来的DBD，M位置0 ，则表示对方已经发完DBD了，与此同时如果该路由器的这个OSPF接口上存在待请求的LSA，那么它会将这个邻居置为Loading状态。</p>
+<p>&emsp;&emsp;下面是一个装载了LSA头部的DBD消息：</p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/11/BvWNm8.png" alt="image-20201111210116338"></p>
+<p><strong>6. Loading</strong></p>
+<p>&emsp;&emsp;OSPF Router使用LSR去请求LSA的详细信息，对方使用LSU发来更新，因此只有LSU里才有LSA的完整信息。在收到LSU后，一方面本地使用LSACK进行确认，另一方面将LSU 中包含的LSA装载进自己的LSDB。</p>
+<p>&emsp;&emsp;以下是一个LSR消息，非常的简单：</p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/11/BvW0Yj.png" alt="image-20201111210243739"></p>
+<p><strong>7. FULL</strong></p>
+<p>&emsp;&emsp;Loading 状态结束后，也就是本地OSPF接口上再没有待更新的LSA队列后，将邻居置为FULL。</p>
+<p><strong>8. Attempt</strong></p>
+<p>&emsp;&emsp;如果一个路由器，它邻居处于这种状态，则表示它从邻居没有收到任何信息，但是做了努力来与邻居联系。仅在NBMA网络上存在，当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效（Active）时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器将会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用Hello interval时间代替Poll interval的时间来作为向邻居发送Hello数据包的时间间隔。</p>
+<h2 id="3-OSPF邻居关系建立中的问题"><a href="#3-OSPF邻居关系建立中的问题" class="headerlink" title="3 OSPF邻居关系建立中的问题"></a>3 OSPF邻居关系建立中的问题</h2><p><strong>1. MTU问题</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#ip ospf mtu-ignore</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;在接口模式下配置可以忽略MTU，注意是在MTU小的那一个OSPF 路由器接口上（如果两端MTU不一样）</p>
+<p><strong>2. 接口掩码问题</strong></p>
+<p>&emsp;&emsp;<strong>a)在一个MA网络中，如果邻居两端接口掩码不一致，则邻居建立不起来。</strong></p>
+<p><strong>&emsp;&emsp;b)在p2p的网络中，如果邻居两端接口掩码不一致，邻居能建立，并且路由也能学习到。</strong></p>
+<p><strong>3. 网络类型问题</strong><br>&emsp;&emsp;两端如果OSPF网络类型不同,那么邻居关系能建立起来，路由器甚至能收到对方的LSA ,但是路由学不到。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+        <tag>路由协议</tag>
       </tags>
   </entry>
   <entry>
