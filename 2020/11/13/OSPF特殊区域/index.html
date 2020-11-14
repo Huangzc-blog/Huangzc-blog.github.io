@@ -35,12 +35,12 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="&amp;emsp;&amp;emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。">
+  <meta name="description" content="&amp;emsp;&amp;emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MPLS基础知识">
-<meta property="og:url" content="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:title" content="OSPF特殊区域">
+<meta property="og:url" content="https://huangzc.site/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
@@ -48,17 +48,15 @@
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
 <meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-11-03T16:16:46.738Z">
+<meta property="article:published_time" content="2020-11-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-14T08:20:16.821Z">
 <meta property="article:author" content="Huangzc">
-<meta property="article:tag" content="MPLS">
+<meta property="article:tag" content="OSPF">
+<meta property="article:tag" content="路由协议">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
 
-<link rel="canonical" href="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<link rel="canonical" href="https://huangzc.site/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/">
 
 
 <script id="page-configurations">
@@ -71,7 +69,7 @@
   };
 </script>
 
-  <title>MPLS基础知识 | Huangzc's blog</title>
+  <title>OSPF特殊区域 | Huangzc's blog</title>
   
 
 
@@ -229,7 +227,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -242,7 +240,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          MPLS基础知识
+          OSPF特殊区域
         </h1>
 
         <div class="post-meta">
@@ -252,14 +250,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00+08:00">2020-11-03</time>
+              <time title="创建时间：2020-11-13 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-13T00:00:00+08:00">2020-11-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-04 00:16:46" itemprop="dateModified" datetime="2020-11-04T00:16:46+08:00">2020-11-04</time>
+                <time title="修改时间：2020-11-14 16:20:16" itemprop="dateModified" datetime="2020-11-14T16:20:16+08:00">2020-11-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,7 +275,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.7k</span>
+              <span>4.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -296,99 +294,94 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>&emsp;&emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。</p>
+        <p>&emsp;&emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。</p>
 <a id="more"></a>
 
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>&emsp;&emsp;多协议标签交换（Multi-Protocol Label Switching，MPLS）是新一代的IP高速骨干网络交换标准，由因特网工程任务组（Internet Engineering Task Force，IETF）提出。</p>
-<p>&emsp;&emsp;MPLS是利用标记（label）进行数据转发的。当分组进入网络时，要为其分配固定长度的短的标记，并将标记与分组封装在一起，在整个转发过程中，交换节点仅根据标记进行转发。</p>
-<p>&emsp;&emsp;MPLS 独立于第二和第三层协议，诸如ATM 和IP。它提供了一种方式，将IP地址映射为简单的具有固定长度的标签，用于不同的包转发和包交换技术。它是现有路由和交换协议的接口，如IP、ATM、帧中继、资源预留协议（RSVP）、开放最短路径优先（OSPF）等等。</p>
-<p>&emsp;&emsp;在MPLS 中，数据传输发生在标签交换路径（LSP）上。LSP 是每一个沿着从源端到终端的路径上的结点的标签序列。</p>
-<p>&emsp;&emsp;MPLS 主要设计来解决网路问题，如网路速度、可扩展性、服务质量（QoS）管理以及流量工程，同时也为下一代IP 中枢网络解决宽带管理及服务请求等问题。</p>
-<p>&emsp;&emsp;在这部分，我们主要关注通用MPLS 框架。有关LDP、CR-LDP 和RSVP-TE 的具体内容可以参考个别文件。</p>
-<p>&emsp;&emsp;多协议标签交换MPLS最初是为了提高转发速度而提出的。与传统IP路由方式相比，它在数据转发时，只在网络边缘分析IP报文头，而不用在每一跳都分析IP报文头，从而节约了处理时间。</p>
-<p>&emsp;&emsp;MPLS起源于IPv4（Internet Protocol version 4），其核心技术可扩展到多种网络协议，包括IPX（Internet Packet Exchange）、Appletalk、DECnet、CLNP（Connectionless Network Protocol）等。“MPLS”中的“Multiprotocol”指的就是支持多种网络协议。</p>
-<h1 id="2-基础知识"><a href="#2-基础知识" class="headerlink" title="2 基础知识"></a>2 基础知识</h1><h2 id="2-1-MPLS的特性"><a href="#2-1-MPLS的特性" class="headerlink" title="2.1 MPLS的特性"></a>2.1 MPLS的特性</h2><ul>
-<li>MPLS依赖IP路由和CEF交换</li>
-<li>MPLS是一种依据数据包标签的转发技术</li>
-<li>MPLS支持多种三层协议</li>
-<li>MPLS涉及的目标网段与传统的IP转发是一样的</li>
-</ul>
-<h2 id="2-2-MPLS标签"><a href="#2-2-MPLS标签" class="headerlink" title="2.2 MPLS标签"></a>2.2 MPLS标签</h2><p><strong>1. 标签描述</strong></p>
-<p>&emsp;&emsp;两种模式：frame mode；ATM mode（cell mode），我们主要研究的是 frame mode。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6nywD.png" alt="image-20201103125606257"></p>
-<p>&emsp;&emsp;标签头一共32位，包含的字段如下：</p>
-<table>
-<thead>
-<tr>
-<th>LABEL</th>
-<th>20bits</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>BoS</td>
-<td>1bit为栈底位（这一位置 1 ，则为最后一个标签。可以给一个数据压多层标签，最后一个标签的BoS位置1，当处理到这层，上层数据包为普通数据包。）</td>
-</tr>
-<tr>
-<td>TTL</td>
-<td>8bit 最大 255 ，通常在加标签的时候，把普通的IP报文中的TTL字段直接复制进来使用，在弹出标签是，再将标签中的TTL字段复制进IP报文中。</td>
-</tr>
-<tr>
-<td>EXP</td>
-<td>3bit 实验位用于QoS</td>
-</tr>
-</tbody></table>
-<p><strong>2. 标签的位置</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uUHS.png" alt="image-20201103130842541"></p>
-<p>&emsp;&emsp;路由器如何知道一个报文是普通报文还是一个标签包呢？MPLS报文会在二层头和三层包间插入一个MPLS标签头。同时二层数据链路层帧头会做相应的指示，例如以太网数据帧，MAC 层的 TYPE 字段会指示上层数据是否为MPLS标签帧（如果是IPv4报文的话值为0x0800，如果是标签包则为8847-单播或8848-组播）</p>
-<p>&emsp;&emsp;上图是封装了三层标签包，对于一个LSR来说，只处理第一个标签。每一层标签都有个BoS栈底位，用来表示是否已经是标签栈的栈底，最后一个标签的BoS=1。</p>
-<p><strong>3. MPLS编码</strong></p>
-<p>&emsp;&emsp;标签栈放置在第三层包头之前，也就是说，被传输的协议头部之前，同时在第二层包头之后。对于第2层链路层封装可以是CISCO IOS所支持的所有封装类型，PPP、HDLC、Ethenet等等。那么在这些第2层的帧头，就需要有相应的协议字段来指示上层是一个标签头。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uHu6.png" alt="无标题"></p>
-<p><strong>4. 标签的处理方式</strong></p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/14/DCcRLq.png" alt="无标题"></p>
+<p>&emsp;&emsp;我将以上面这个拓扑图介绍OSPF的特殊区域。拓扑中共有三个区域，骨干区域 area 0为一级行及二级行所运行，三级行运行的是OSPF的常规区域，为了保证网络的畅通，我们将网络中的各个角落都宣告进了OSPF，这感觉没有什么问题。但是随着设备越老越多、网络前缀越来越多，路由条目势必逐渐增多，那么路由器就有些承担不住了，毕竟庞大的路由表及LSA在极大地消耗着路由器的资源。所以我们需要对网络进行优化，在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，除了路由汇总外，我们也可以使用OSPF的特殊区域来减少LSA的泛洪。</p>
+<p>&emsp;&emsp;在这里我们拿area 1举例，当area 1为常规区域时，区域中会有多少种LSA在泛洪呢？1类是必然有的，由于area 1中存在MA网络，因此2类LSA也有。其他区域的3类LSA被ABR也都注入进了本区域。另外，由于area 2的ASBR引入的外部路由（5类LSA）也会被泛洪进area 1，当然4类LSA也跟着来了。那么如此一来，area 1中就有1、2、3、4、5，共计5种类型的LSA。但是仔细一想我们就发现，其实area 1作为“叶”区域，没必要知道外部路由的详细情况，我只需要知道有那么一条路，让我到达域外即可，因此，第一种特殊区域：末梢区域stub area。</p>
+<h2 id="1-末梢区域（stub-area）"><a href="#1-末梢区域（stub-area）" class="headerlink" title="1 末梢区域（stub area）"></a>1 末梢区域（stub area）</h2><p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/14/DCcqyR.png" alt="image-20201114133720565"></p>
+<p>&emsp;&emsp;我们可以通过配置，将一个常规区域设置为stub 区域。</p>
+<p>&emsp;&emsp;Stub区域将禁止4、5类LSA进入该区域，同时该区域的ABR将会自动下发一条默认路由（3类LSA）进该区域，以确保数据通路没有问题。这可以形象的理解为：“外面的世界再怎么精彩，你不用告诉我细节，只要让我出去就行了”。这就是stub area的设计思路。当引入大量的外部路由进OSPF，适当的规划某些区域为stub，可以起到不错的网络优化作用。</p>
+<p>&emsp;&emsp;值得注意的是，不能将骨干区域area 0配置为stub区域，同时，让一个区域被指定为stub，区域内将不允许注入外部路由，也就是不能做重发布。</p>
+<p>配置命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 1 stub </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;需要注意的是，该命令要配置在stub区域中的所有路由器上，如果某台路由器没有配置，那么它将无法去其他stub area router建立邻接关系。</p>
+<p>实现效果：</p>
+<p>&emsp;&emsp;Area1中将不会在有4、5类LSA，也就是area 2重发布进来的路由，被ABR过滤掉了，同时area 1中的路由器将获取到一条3类LSA 的默认路由，该默认路由是由area1的ABR自动下发。</p>
+<h2 id="2-完全末梢区域（totally-stub）"><a href="#2-完全末梢区域（totally-stub）" class="headerlink" title="2 完全末梢区域（totally stub）"></a>2 完全末梢区域（totally stub）</h2><p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/14/DCcXex.png" alt="image-20201114140049631"></p>
+<p>&emsp;&emsp;通过将区域规划为stub area，可以起到一定的网络优化作用，但是感觉上还不够彻底，除了外部路由，其他区域的路由其实我也没必要知道太多细节，完全用一条默认路由替代也行嘛，那么你可以将area 1配置为完全末梢区域（totally stub area），当一个区域被配置为完全末梢区域，这个区域将：</p>
 <ul>
-<li><p>Insert (impose or push)</p>
+<li>阻挡3、4、5类LSA进入本区域</li>
+<li>区域的ABR自动下发一条3类LSA的默认路由进入本区域</li>
+</ul>
+<p>&emsp;&emsp;这么一来，area 1内路由器收到的LSA将进一步减少，在存储LSA及进行SPF算法运算的时候，耗费的资源自然也就减少了，另外当区域外拓扑出现变更的时候，对本区域的影响也将变为最小。<br>&emsp;&emsp;与stub区域类似，你无法将骨干区域area 0配置为totally stub area，当然如果一个区域被指定为totally stub area，你将不能在区域中的路由器上做路由重发布动作。</p>
+<p>配置命令：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;在完全末梢区域内的所有路由器，都配置上述命令，与stub区域的区别在于ABR的配置，下面是配置在完全末梢区域的ABR上的。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub no-summary </span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p>&emsp;&emsp;完成上述配置后，area1内的路由器将只有本区域内的路由（ABR除外），同时都能获取到ABR下发的3类的默认路由。也就是说其他区域的路由以及外部注入的路由都被ABR阻挡在外，取而代之的是一条默认路由。</p>
+<h2 id="4-非完全末梢区域（NSSA）"><a href="#4-非完全末梢区域（NSSA）" class="headerlink" title="4 非完全末梢区域（NSSA）"></a>4 非完全末梢区域（NSSA）</h2><p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/14/DCWG7t.png" alt="image-20201114142231423"></p>
+<p>&emsp;&emsp;在前面的知识基础上，我们已经了解到，在保证网络连通性的情况下，减少LSA的泛洪以及精简路由表，我们可以将特定区域配置为末梢区域或完全末梢区域。看上面的拓扑，我们将area 2配置为stub，那么，这个区域一来将阻挡来自其他区域的4、5类LSA，同时区域内的路由器禁止重发布外部路由，那么如果此时我期望这个区域保持“阻挡其他区域过来的4、5类LSA”这个特性，同时允许我在区域本地重发布路由呢？<br>&emsp;&emsp;例如，假设area 2原先是作为一个末梢区域运行的，但突然有一个外部网络，需要接入到我们这个OSPF网络中，并且连接在area 2中，那么这个时候，为了保证路由的可达，就必须向area 2中注入外部路由了，而这又违法了stub area的规则。</p>
+<p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/14/DCWCpF.png" alt="image-20201114142308257"></p>
+<p>&emsp;&emsp;这里就引入NSSA（not-so-stubby-area）的概念，中文翻译过来，可以理解为非完全末梢区域，当你将一个区域配置为NSSA，那么这个区域一来将阻挡骨干区域过来的4、5类LSA，同时允许区域本地注入外部路由，这些外部路由以一种特殊的LSA类型——7类LSA在NSSA中泛洪并且7类LSA不允许进入骨干区域或常规区域，NSSA的ABR会负责将7类LSA“转换”成5类LSA，从而在常规区域中进一步泛洪。上面的“允许区域本地注入”的意思是，NSSA这个区域的路由器配置重发布。</p>
+<p>&emsp;&emsp;值得注意的是与stub area及totally stub area不同的是如果你将一个区域配置为NSSA、默认情况下NSSA的ABR不会自动下发默认路由进NSSA，因此在NSSA环境下，需留意网络连通性问题。</p>
+<p>配置命令∶</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 2 nssa </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;上述命令需配置在NSSA内的所有路由器上。</p>
+<p>实现效果：</p>
+<p>&emsp;&emsp;将area 2配置为NSSA后，从骨干区域过来的4、5类LSA将无法进入NSSA，也就是说如果area 1做了重发布，那么这些重发布的外部路由将无法进入NSSA（这是因为NSSA中不允许出现5类LSA），与此同时，area 2允许本地的路由器做重发布动作，重发布进来的路由，以LSA7在NSSA中泛洪，大家在路由表中看到的这些外部路由，标记为“O N”，而这些7类LSA在“穿越”NSSA的ABR进入骨干区域之前，由ABR负责将7类LSA“转换”成5类LSA。最终area 0及area 1也都能学习到这些外部路由，只不过，他们路由表中呈现的是“O E”标记。</p>
+<h2 id="5-Totally-NSSA"><a href="#5-Totally-NSSA" class="headerlink" title="5 Totally NSSA"></a>5 Totally NSSA</h2><p><img src="/images/loading.gif" data-original="https://s3.ax1x.com/2020/11/14/DChzkt.png" alt="image-20201114142500409"></p>
+<p>&emsp;&emsp;Totally NSSA，这是一个不太好用中文翻译的词汇，完全非完全末梢区域？显得有点尴尬，不过这个概念的理解并不像其名字那么唬人，Totally NSSA是在NSSA区域的基础之上，进一步阻挡NSSA区域外的其他区域过来的3类LSA，同时ABR自动下发一条3类的默认路由进 NSSA 区域。<br>配置命令∶</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;上述命令需配置在NSSA中的所有路由器上，ABR的配置有所不同，如下∶</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa no-summary</span></span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p>&emsp;&emsp;Area2之外的其他OSPF area过来的3、4、5类LSA，都会被阻挡在NSSA之外，同时ABR会自动下发默认路由进NSSA，另外，NSSA内的路由器做重发布动作，区域内的其他路由器将会学习到7类的外部LSA，这些外部LSA会被ABR转成5类LSA并注入进骨干区域。</p>
+<h2 id="6-特殊区域总结"><a href="#6-特殊区域总结" class="headerlink" title="6 特殊区域总结"></a>6 特殊区域总结</h2><ul>
+<li><p><strong>骨干区域 Backbone Area 0</strong></p>
+<p>本身是一个标准区域，负责连接非骨干区域，其它区域(非骨干区域）必须保证和骨干区域有直接的物理连接，因为区域之间的LSA必须经过骨干区域中转</p>
 </li>
-<li><p>swap</p>
+<li><p><strong>常规（标准）区域 Standard Area</strong></p>
+<p>一个区域缺省是常规区域</p>
 </li>
-<li><p>Remove (PoP)</p>
-<p>关于标签处理方式的更详细内容，见下文。</p>
+<li><p><strong>末梢区域 Stub Area</strong></p>
+<p>把一个区域配成存根区域的好处是，阻挡LSA4、LSA5外部路由进入本地区域，从而精简路由表;同时ABR会自动产生3类的默认路由LSA注入进该区域。</p>
+</li>
+<li><p><strong>完全末梢区域 Totally Stubby Area</strong></p>
+<p>完全末梢区域是一种对末梢区域的改进，进一步精简路由表;阻挡LSA3、4、5进入该区域，同时ABR自动下发3类默认路由。</p>
+</li>
+<li><p><strong>非完全末梢区域 Not-so-stubby Area</strong></p>
+<p>即想阻挡LSA5，自身又想引入外部路由，stub的变种；</p>
+<p>NSSA既阻挡外部LSA5的进入，同时区域内的路由器又可以引入外部路由LSA7 ;LSA7在NSSA内洪泛，通过ABR时转换为LSA5并被注入进骨干区域。</p>
+<p>ABR不会缺省生成0/O默认路由进入本地区域，需手工配置</p>
+</li>
+<li><p><strong>完全NSSA totally Not-so-stubby Area</strong></p>
+<p>在NSSA的基础上进一步阻挡骨干区域过来的3,4,5类LSA 并且ABR自动下发3类的默认路由进NSSA。</p>
 </li>
 </ul>
-<h1 id="3-标签报文的查找与转发"><a href="#3-标签报文的查找与转发" class="headerlink" title="3 标签报文的查找与转发"></a>3 标签报文的查找与转发</h1><h2 id="3-1-MPLS的三张表"><a href="#3-1-MPLS的三张表" class="headerlink" title="3.1 MPLS的三张表"></a>3.1 MPLS的三张表</h2><p><strong>1. FIB表</strong></p>
-<p>&emsp;&emsp;FIB表其实就是CEF表</p>
-<p><strong>2. LIB标签信息库</strong></p>
-<p>&emsp;&emsp;路由器为每一个IGP前缀在本地生成一个标签并分发给LDP邻居，同时也从其他LDP邻居收到为特定前缀分发的标签。路由器将本地标签和远程标签（LDP邻居发给我的）存储在LIB中。</p>
-<p><strong>3. LFIB标签转发信息库</strong></p>
-<p>&emsp;&emsp;LSR路由可能收到某个特定前缀的多个标签（多个LDP邻居分发的），但他只需要使用其中一个，IP路由表用来确定这个IPv4前缀的下一跳（LFIB的构造需要一来IGP路由表，因为LFIB的下一跳就是IGP表算来的）LSR用这样的信息来创建它的LFIB。在 LFIB中本地捆绑的标签作为入站标签，LDP 邻居通告的标签作为出站标签。</p>
-<p>&emsp;&emsp;构成LFIB的标签可以不是LDP分发的，在MPLS流量工程中使用RSVP分配标签，在MPLS VPN中，VPN标签由BGP分发。在任何情况下，LFIB总是用来转发入站的带标签的报文。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">17         17         5.5.5.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">18         18         4.4.4.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">19         19         3.3.3.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">20         Pop Label  2.2.2.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">21         20         192.168.34.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">22         21         192.168.35.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">23         Pop Label  192.168.23.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">24         Pop Label  192.168.25.0/24  0             Et0/1      192.168.12.2</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table 172.16.2.0 detail </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">        MAC/Encaps=14/18, MRU=1500, Label Stack&#123;16&#125;</span><br><span class="line">        AABBCC002010AABBCC0010108847 00010000</span><br><span class="line">        No output feature configured</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用detail关键字能查看到LFIB转发条目的详细信息，包括二层的信息，以及所有的标签内容，如果不加则只能看到顶层标签。</p>
-<h2 id="3-2-IP查找和标签查找"><a href="#3-2-IP查找和标签查找" class="headerlink" title="3.2 IP查找和标签查找"></a>3.2 IP查找和标签查找</h2><p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6ubDK.png" alt="无标题"></p>
-<p>&emsp;&emsp;如果LSR收到一个IP报文，则查看FIB表（CEF表），假设FIB（CEF表）相关表项输出如下： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">R1<span class="comment">#show ip cef 172.16.2.0 detail </span></span><br><span class="line">172.16.2.0/24, epoch 0</span><br><span class="line">  <span class="built_in">local</span> label info: global/16</span><br><span class="line">  nexthop 192.168.12.2 Ethernet0/1 label 16</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;那么LSR将这个IP包压入一个标签头，打上标签16，再从 E0/1接口转发出去。在CISCO lOS中，CEF交换是唯一的一种可用于标记报文的IP转发模式，因此在启用MPLS的时候必须在路由器上开启CEF。</p>
-<p>&emsp;&emsp;而当一台路由器收到一个带标签的报文的时候，则在LFIB表中进行查找，LFIB表中相关的匹配条目会有针对该入站标签的出站动作或标签，以及下一跳信息。</p>
-<p>【注意】如果路由器收到一个带标签的数据包，并且顶部标签不能在本地LFIB中找到，那么CISCO IOS将丢弃这个数据包。</p>
-<h2 id="3-3-标签分配过程概述"><a href="#3-3-标签分配过程概述" class="headerlink" title="3.3 标签分配过程概述"></a>3.3 标签分配过程概述</h2><p><strong>1. 构建IP路由表</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uOED.png" alt="无标题"></p>
-<p>&emsp;&emsp;首先呢，所有的路由器都运行路由协议，全网路由互通。接下去在路由器的接口上激活LDP，那么路由器两两之间就会形成LDP邻接关系。</p>
-<p><strong>2. 分配并分发标签</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6KSgI.png" alt="无标题"></p>
-<p>&emsp;&emsp;激活LDP后，每台路由器会为自己本地路由表中的路由前缀分配并捆绑标签，例如本图中的 X 路由，所有路由器都会自己为 X 路由分配一个标签，然后将为 X 路由捆绑的标签保存在本地的 LIB 表里。随后，所有的LDP路由器，将自己为各个路由前缀捆绑的标签发给它的LDP邻居，如图所示，B将捆绑的标签发给了A、E和C。这里有个小细节，注意，标签的分发没有水平分割的概念，也就是说虽然B可能是从C学习到路由 X，但是 B 仍然会将为前缀 X 捆绑的标签传递给C。C也会将传递自B的标签放在LIB中，不过不用担心会有环路，因为 LDP 可以借助IGP路由协议来防止环路。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6Kib8.png" alt="无标题"></p>
-<p>&emsp;&emsp;当 LDP 路由器从他的 LDP 邻居收到邻居的标签捆绑，它会将捆绑的结果存储在自己的 LIB 表中，LIB 表中有 local label ，这是自己为特定路由前缀分发的标签，remote label 这是邻居为该路由前缀分发的标签。LDP 路由器会将邻居分配的 remote label 都放在 LIB，但是只会从 LIB 中所有可能的标签中选择出一个可能的出站标签放入 LFIB 中。LDP 路由器根据 LIB 表，结合路由表，构成 LFIB 表，如上图中 A 的 LFIB 表。<br>&emsp;&emsp;这里有一点要注意，我们看E路由器，实际上，它是会收到自己 LDP 邻居 B 和 C 的标签捆绑，其中都有关于路由 X 捆绑的标签，那么 E 在自己的 LFIB 表里，存的是哪位邻居的 remote label 呢？答案是 C，因为 C 是E路由器去往 X 的下一跳，E会借助路由表，来判断谁的标签捆绑“更优”。</p>
-<p><strong>3. LIB and LFIB表的建立</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6KrIe.png" alt="无标题"></p>
-<p>&emsp;&emsp;在所有的LDP路由器都互相发送标签捆绑后，大家逐步构建自己的LFIB。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6Kbzn.png" alt="无标题"></p>
-<p>&emsp;&emsp;大家的 LFIB 构建完成后，我们就能看到，当 A 收到一个 IP 数据包，要访问X，那么 A 查看自己的 CEF 表（为什么是查看CEF还记得么？)，发现要给数据包压标签，于是它压上标签头，标签值为201，然后下一跳是 B，也就是发送给 B。那么 B 收到这个标签包，发现标签头里的 label 字段为 201，于是查看自己的LFIB，发现 201 标签的 outgoing label 是 301 并且下一跳是 C，于是它将 201 标签替换成 301，然后交给 C。到了 C 它也去查 FIB 表，发现 301 标签对应的outgoing label 是 PoP 并且下一跳是 D，于是它将标签头弹出，这就露出了原始的 IPv4 数据，C 将这个数据包交给 D。</p>
-<blockquote>
-<p>本篇博客大部分内容节选自红茶三杯 CCIE学习文档之MPLS，目前只摘取的部分内容。感兴趣的话可以去<a target="_blank" rel="noopener" href="http://ccietea.com/%E6%9F%A5%E7%9C%8B%E3%80%82">http://ccietea.com/查看。</a></p>
-</blockquote>
+<p>&emsp;&emsp;<strong>各区域内所允许出现LSA总结如下：</strong></p>
+<ul>
+<li><p>骨干区域：1、2、3、4、5</p>
+</li>
+<li><p>标准区域：1、2、3、4、5</p>
+</li>
+<li><p>Stub区域：1、2、3、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
+</li>
+<li><p>完全Stub区域： 1、2、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
+</li>
+<li><p>NSSA 区域：1、2、3、7</p>
+</li>
+<li><p>完全NSSA区域:1、2、7、3类0.0.0.0/0 (ABR向区域内发起的一条3类缺省路由LSA )</p>
+</li>
+</ul>
 
     </div>
 
@@ -424,7 +417,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="MPLS基础知识">https://huangzc.site/2020/11/03/MPLS基础知识/</a>
+    <a href="https://huangzc.site/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/" title="OSPF特殊区域">https://huangzc.site/2020/11/13/OSPF特殊区域/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -446,7 +439,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/MPLS/" rel="tag"><i class="fa fa-tag"></i> MPLS</a>
+              <a href="/tags/OSPF/" rel="tag"><i class="fa fa-tag"></i> OSPF</a>
+              <a href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag"><i class="fa fa-tag"></i> 路由协议</a>
           </div>
 
         
@@ -455,13 +449,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="prev" title="BGP的选路原则">
-      <i class="fa fa-chevron-left"></i> BGP的选路原则
+    <a href="/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/" rel="prev" title="OSPF邻居关系建立及维护">
+      <i class="fa fa-chevron-left"></i> OSPF邻居关系建立及维护
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/" rel="next" title="OSPF邻居关系建立及维护">
-      OSPF邻居关系建立及维护 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -525,7 +516,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">2 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-MPLS%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-text">2.1 MPLS的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-MPLS%E6%A0%87%E7%AD%BE"><span class="nav-text">2.2 MPLS标签</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%A0%87%E7%AD%BE%E6%8A%A5%E6%96%87%E7%9A%84%E6%9F%A5%E6%89%BE%E4%B8%8E%E8%BD%AC%E5%8F%91"><span class="nav-text">3 标签报文的查找与转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-MPLS%E7%9A%84%E4%B8%89%E5%BC%A0%E8%A1%A8"><span class="nav-text">3.1 MPLS的三张表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-IP%E6%9F%A5%E6%89%BE%E5%92%8C%E6%A0%87%E7%AD%BE%E6%9F%A5%E6%89%BE"><span class="nav-text">3.2 IP查找和标签查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%A0%87%E7%AD%BE%E5%88%86%E9%85%8D%E8%BF%87%E7%A8%8B%E6%A6%82%E8%BF%B0"><span class="nav-text">3.3 标签分配过程概述</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9C%AB%E6%A2%A2%E5%8C%BA%E5%9F%9F%EF%BC%88stub-area%EF%BC%89"><span class="nav-text">1 末梢区域（stub area）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%8C%E5%85%A8%E6%9C%AB%E6%A2%A2%E5%8C%BA%E5%9F%9F%EF%BC%88totally-stub%EF%BC%89"><span class="nav-text">2 完全末梢区域（totally stub）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%9D%9E%E5%AE%8C%E5%85%A8%E6%9C%AB%E6%A2%A2%E5%8C%BA%E5%9F%9F%EF%BC%88NSSA%EF%BC%89"><span class="nav-text">4 非完全末梢区域（NSSA）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Totally-NSSA"><span class="nav-text">5 Totally NSSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F%E6%80%BB%E7%BB%93"><span class="nav-text">6 特殊区域总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
