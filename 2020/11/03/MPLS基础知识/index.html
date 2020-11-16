@@ -42,21 +42,21 @@
 <meta property="og:site_name" content="Huangzc&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6nywD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6uUHS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6uHu6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6ubDK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6uOED.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6KSgI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6Kib8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6KrIe.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6Kbzn.png">
 <meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-11-03T16:16:46.738Z">
 <meta property="article:author" content="Huangzc">
 <meta property="article:tag" content="MPLS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/11/03/B6nywD.png">
 
 <link rel="canonical" href="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
 
@@ -315,7 +315,7 @@
 </ul>
 <h2 id="2-2-MPLS标签"><a href="#2-2-MPLS标签" class="headerlink" title="2.2 MPLS标签"></a>2.2 MPLS标签</h2><p><strong>1. 标签描述</strong></p>
 <p>&emsp;&emsp;两种模式：frame mode；ATM mode（cell mode），我们主要研究的是 frame mode。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6nywD.png" alt="image-20201103125606257"></p>
+<p><img src="https://s1.ax1x.com/2020/11/03/B6nywD.png" alt="image-20201103125606257"></p>
 <p>&emsp;&emsp;标签头一共32位，包含的字段如下：</p>
 <table>
 <thead>
@@ -338,12 +338,12 @@
 </tr>
 </tbody></table>
 <p><strong>2. 标签的位置</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uUHS.png" alt="image-20201103130842541"></p>
+<p><img src="https://s1.ax1x.com/2020/11/03/B6uUHS.png" alt="image-20201103130842541"></p>
 <p>&emsp;&emsp;路由器如何知道一个报文是普通报文还是一个标签包呢？MPLS报文会在二层头和三层包间插入一个MPLS标签头。同时二层数据链路层帧头会做相应的指示，例如以太网数据帧，MAC 层的 TYPE 字段会指示上层数据是否为MPLS标签帧（如果是IPv4报文的话值为0x0800，如果是标签包则为8847-单播或8848-组播）</p>
 <p>&emsp;&emsp;上图是封装了三层标签包，对于一个LSR来说，只处理第一个标签。每一层标签都有个BoS栈底位，用来表示是否已经是标签栈的栈底，最后一个标签的BoS=1。</p>
 <p><strong>3. MPLS编码</strong></p>
 <p>&emsp;&emsp;标签栈放置在第三层包头之前，也就是说，被传输的协议头部之前，同时在第二层包头之后。对于第2层链路层封装可以是CISCO IOS所支持的所有封装类型，PPP、HDLC、Ethenet等等。那么在这些第2层的帧头，就需要有相应的协议字段来指示上层是一个标签头。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uHu6.png" alt="无标题"></p>
+<p><img src="https://s1.ax1x.com/2020/11/03/B6uHu6.png" alt="无标题"></p>
 <p><strong>4. 标签的处理方式</strong></p>
 <ul>
 <li><p>Insert (impose or push)</p>
@@ -366,7 +366,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table 172.16.2.0 detail </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">        MAC/Encaps=14/18, MRU=1500, Label Stack&#123;16&#125;</span><br><span class="line">        AABBCC002010AABBCC0010108847 00010000</span><br><span class="line">        No output feature configured</span><br></pre></td></tr></table></figure>
 
 <p>&emsp;&emsp;使用detail关键字能查看到LFIB转发条目的详细信息，包括二层的信息，以及所有的标签内容，如果不加则只能看到顶层标签。</p>
-<h2 id="3-2-IP查找和标签查找"><a href="#3-2-IP查找和标签查找" class="headerlink" title="3.2 IP查找和标签查找"></a>3.2 IP查找和标签查找</h2><p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6ubDK.png" alt="无标题"></p>
+<h2 id="3-2-IP查找和标签查找"><a href="#3-2-IP查找和标签查找" class="headerlink" title="3.2 IP查找和标签查找"></a>3.2 IP查找和标签查找</h2><p><img src="https://s1.ax1x.com/2020/11/03/B6ubDK.png" alt="无标题"></p>
 <p>&emsp;&emsp;如果LSR收到一个IP报文，则查看FIB表（CEF表），假设FIB（CEF表）相关表项输出如下： </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">R1<span class="comment">#show ip cef 172.16.2.0 detail </span></span><br><span class="line">172.16.2.0/24, epoch 0</span><br><span class="line">  <span class="built_in">local</span> label info: global/16</span><br><span class="line">  nexthop 192.168.12.2 Ethernet0/1 label 16</span><br></pre></td></tr></table></figure>
 
@@ -374,17 +374,17 @@
 <p>&emsp;&emsp;而当一台路由器收到一个带标签的报文的时候，则在LFIB表中进行查找，LFIB表中相关的匹配条目会有针对该入站标签的出站动作或标签，以及下一跳信息。</p>
 <p>【注意】如果路由器收到一个带标签的数据包，并且顶部标签不能在本地LFIB中找到，那么CISCO IOS将丢弃这个数据包。</p>
 <h2 id="3-3-标签分配过程概述"><a href="#3-3-标签分配过程概述" class="headerlink" title="3.3 标签分配过程概述"></a>3.3 标签分配过程概述</h2><p><strong>1. 构建IP路由表</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6uOED.png" alt="无标题"></p>
+<p><img src="https://s1.ax1x.com/2020/11/03/B6uOED.png" alt="无标题"></p>
 <p>&emsp;&emsp;首先呢，所有的路由器都运行路由协议，全网路由互通。接下去在路由器的接口上激活LDP，那么路由器两两之间就会形成LDP邻接关系。</p>
 <p><strong>2. 分配并分发标签</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6KSgI.png" alt="无标题"></p>
+<p><img src="https://s1.ax1x.com/2020/11/03/B6KSgI.png" alt="无标题"></p>
 <p>&emsp;&emsp;激活LDP后，每台路由器会为自己本地路由表中的路由前缀分配并捆绑标签，例如本图中的 X 路由，所有路由器都会自己为 X 路由分配一个标签，然后将为 X 路由捆绑的标签保存在本地的 LIB 表里。随后，所有的LDP路由器，将自己为各个路由前缀捆绑的标签发给它的LDP邻居，如图所示，B将捆绑的标签发给了A、E和C。这里有个小细节，注意，标签的分发没有水平分割的概念，也就是说虽然B可能是从C学习到路由 X，但是 B 仍然会将为前缀 X 捆绑的标签传递给C。C也会将传递自B的标签放在LIB中，不过不用担心会有环路，因为 LDP 可以借助IGP路由协议来防止环路。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6Kib8.png" alt="无标题"></p>
+<p><img src="https://s1.ax1x.com/2020/11/03/B6Kib8.png" alt="无标题"></p>
 <p>&emsp;&emsp;当 LDP 路由器从他的 LDP 邻居收到邻居的标签捆绑，它会将捆绑的结果存储在自己的 LIB 表中，LIB 表中有 local label ，这是自己为特定路由前缀分发的标签，remote label 这是邻居为该路由前缀分发的标签。LDP 路由器会将邻居分配的 remote label 都放在 LIB，但是只会从 LIB 中所有可能的标签中选择出一个可能的出站标签放入 LFIB 中。LDP 路由器根据 LIB 表，结合路由表，构成 LFIB 表，如上图中 A 的 LFIB 表。<br>&emsp;&emsp;这里有一点要注意，我们看E路由器，实际上，它是会收到自己 LDP 邻居 B 和 C 的标签捆绑，其中都有关于路由 X 捆绑的标签，那么 E 在自己的 LFIB 表里，存的是哪位邻居的 remote label 呢？答案是 C，因为 C 是E路由器去往 X 的下一跳，E会借助路由表，来判断谁的标签捆绑“更优”。</p>
 <p><strong>3. LIB and LFIB表的建立</strong></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6KrIe.png" alt="无标题"></p>
+<p><img src="https://s1.ax1x.com/2020/11/03/B6KrIe.png" alt="无标题"></p>
 <p>&emsp;&emsp;在所有的LDP路由器都互相发送标签捆绑后，大家逐步构建自己的LFIB。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/11/03/B6Kbzn.png" alt="无标题"></p>
+<p><img src="https://s1.ax1x.com/2020/11/03/B6Kbzn.png" alt="无标题"></p>
 <p>&emsp;&emsp;大家的 LFIB 构建完成后，我们就能看到，当 A 收到一个 IP 数据包，要访问X，那么 A 查看自己的 CEF 表（为什么是查看CEF还记得么？)，发现要给数据包压标签，于是它压上标签头，标签值为201，然后下一跳是 B，也就是发送给 B。那么 B 收到这个标签包，发现标签头里的 label 字段为 201，于是查看自己的LFIB，发现 201 标签的 outgoing label 是 301 并且下一跳是 C，于是它将 201 标签替换成 301，然后交给 C。到了 C 它也去查 FIB 表，发现 301 标签对应的outgoing label 是 PoP 并且下一跳是 D，于是它将标签头弹出，这就露出了原始的 IPv4 数据，C 将这个数据包交给 D。</p>
 <blockquote>
 <p>本篇博客大部分内容节选自红茶三杯 CCIE学习文档之MPLS，目前只摘取的部分内容。感兴趣的话可以去<a target="_blank" rel="noopener" href="http://ccietea.com/%E6%9F%A5%E7%9C%8B%E3%80%82">http://ccietea.com/查看。</a></p>
@@ -541,7 +541,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -588,7 +588,7 @@
     <h3 class="widget-title">Tag Cloud</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -622,12 +622,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">148k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:14</span>
+    <span title="站点阅读时长">2:15</span>
 </div>
 <!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
@@ -757,10 +757,5 @@ NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
   <script type="text/javascript"
   color="0,0,255" opacity='0.7' zIndex="-2" count="80" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
   
-<script>
-            window.imageLazyLoadSetting = {
-                isSPA: false,
-                processImages: null,
-            };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var i=n.imageLazyLoadSetting.isSPA,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){i&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,e,a=0;a<r.length;a++)t=r[a],e=void 0,0<=(e=t.getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(n.innerHeight||document.documentElement.clientHeight)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},n.src=i}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</body>
 </html>

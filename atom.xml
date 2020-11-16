@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2020-11-14T08:20:16.821Z</updated>
+  <updated>2020-11-16T15:42:36.658Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>OSPF路由优选规则</title>
+    <link href="https://huangzc.site/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/"/>
+    <id>https://huangzc.site/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/</id>
+    <published>2020-11-14T16:00:00.000Z</published>
+    <updated>2020-11-16T15:42:36.658Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;在路由表中我们可以看到通过OSPF路由协议学习到的路由是哪一种类型（如O、O IA、O E1、O E2、O N1、O N2）的。当路由器学习到不同类型的同一路由时是如何选择的呢？本篇文章主要介绍OSPF路由的优先选择原则。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="OSPF" scheme="https://huangzc.site/tags/OSPF/"/>
+    
+    <category term="路由协议" scheme="https://huangzc.site/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>OSPF特殊区域</title>
@@ -424,27 +445,6 @@
     <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
     
     <category term="STP" scheme="https://huangzc.site/tags/STP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CCNA实验六——单臂路由的运用</title>
-    <link href="https://huangzc.site/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/"/>
-    <id>https://huangzc.site/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</id>
-    <published>2018-10-10T16:00:00.000Z</published>
-    <updated>2020-09-27T13:33:47.797Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CCNA实验" scheme="https://huangzc.site/categories/CCNA%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
-    
-    <category term="单臂路由" scheme="https://huangzc.site/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/"/>
     
   </entry>
   

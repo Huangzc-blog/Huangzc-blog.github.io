@@ -42,31 +42,31 @@
 <meta property="og:site_name" content="Huangzc&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍 EIGRP 的基本配置； EIGRP 的邻居表、拓扑表以及路由表的含义；查看 EIGRP 路由协议的相关信息； FD、AD、S、FS 以及 FC 的含义； EIGRP 的 hello 报文作用；路由快速收敛的含义； EIGRP 的不等价负载均衡。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0Pj8Gn.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PjtMV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PjDi9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PjOeS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PvSWn.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PjHQP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0Pj5id.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PvAwF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PveY9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PvKQx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PvMy6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0Pv3wD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PvykQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PvRlq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0Pv4mT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PvTk4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0Px9tH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/26/0PxF1I.png">
 <meta property="article:published_time" content="2018-10-06T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-09-26T07:39:40.490Z">
 <meta property="article:author" content="Huangzc">
 <meta property="article:tag" content="CCNA">
 <meta property="article:tag" content="EIGRP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/26/0Pj8Gn.png">
 
 <link rel="canonical" href="https://huangzc.site/2018/10/07/CCNA%E5%AE%9E%E9%AA%8C%E5%9B%9B/">
 
@@ -320,14 +320,14 @@
 <li>理解 EIGRP 的不等价负载均衡</li>
 </ol>
 <p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0Pj8Gn.png" alt="图片1"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Pj8Gn.png" alt="图片1"></p>
 <center>EIGRP 的简单应用拓扑</center>
 
 <p>【实验需求】</p>
 <ol>
 <li>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PjtMV.png" alt="图片4"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PjtMV.png" alt="图片4"></p>
 <ol start="2">
 <li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，要求PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为 172.16.1.254，PC2 的IP 地址设置为 172.16.3.1/24，网关设置为 172.16.3.254，各路由器接口间的地址自己规划</li>
 </ol>
@@ -356,21 +356,21 @@
 <ol start="6">
 <li>测试 PC1 与 PC2 之间的连通性</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PjDi9.png" alt="image-20200924235948555"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PjDi9.png" alt="image-20200924235948555"></p>
 <ol start="7">
 <li>在 R2 上添加一个 loopback1 接口，地址为 200.200.200.200/24，然后在EIGRP 中通告，观察 R1 和 R3 是否能马上学习到 R2 上新增的 loopback1网段，并测试各主机与该 loopback1 之间的连通性</li>
 </ol>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#int</span> loopback <span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">200.200</span>.<span class="number">200.200</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">200.200</span>.<span class="number">200.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PjOeS.png" alt="image-20200925000531964"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PvSWn.png" alt="image-20200925000608975"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PjHQP.png" alt="image-20200925000444998"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0Pj5id.png" alt="image-20200925000502718"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PjOeS.png" alt="image-20200925000531964"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvSWn.png" alt="image-20200925000608975"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PjHQP.png" alt="image-20200925000444998"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Pj5id.png" alt="image-20200925000502718"></p>
 <p>&emsp;&emsp;R1和R3能马上学习到 R2 上新增的 loopback1 网段，且连通性良好。</p>
 <ol start="8">
 <li>使用 wireshark 抓取 EIGRP 的报文，理解 EIGRP 报文各字段的含义</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PvAwF.png" alt="dTKTh9"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvAwF.png" alt="dTKTh9"></p>
 <p>&emsp;&emsp;每隔5s发送一个hello包，保持时间为15s，即超过3个hello时间未收到hello则认为对端Down，断开连接。</p>
 <ol start="9">
 <li>在 R1 上添加一个 loopback1 接口，地址为 100.100.100.100/24，然后在EIGRP 中通告</li>
@@ -382,12 +382,12 @@
 <ol start="10">
 <li>断开 R1 和 R3 与各主机之间的连接，连接 R1 与 R3 之间的以太网接口，完成必要配置，实现 200.200.200.200 访问 100.100.100.100 的不等价负载均衡</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PveY9.png" alt="dTM0jx"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PveY9.png" alt="dTM0jx"></p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">192.168</span>.<span class="number">13.1</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">192.168</span>.<span class="number">13.3</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">192.168</span>.<span class="number">13.0</span> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">100.100</span>.<span class="number">100.0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span> </span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">192.168</span>.<span class="number">13.0</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PvKQx.png" alt="image-20200926124818738"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvKQx.png" alt="image-20200926124818738"></p>
 <p>&emsp;&emsp;由于此时R2的路由表中只存在一条路径到达100.100.100.100，所以不存在负载均衡。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PvMy6.png" alt="image-20200926125126158"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvMy6.png" alt="image-20200926125126158"></p>
 <p>&emsp;&emsp;EIGRP在默认情况下仅支持等价负载均衡，并且在默认情况下最多同时存在4条的等价负载均衡。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R2(config)<span class="comment">#router eigrp 90</span></span><br><span class="line"><span class="comment">#将等价负载均衡的条数改为8条</span></span><br><span class="line">R2(config-router)<span class="comment">#maximum-paths 8</span></span><br></pre></td></tr></table></figure>
 
@@ -400,24 +400,24 @@
 <p>②当存在FS之后，EIGRP拓扑表会存在两个下一跳，但是只会选择最优的添加进路由表。此时如果要保证路由表也有两条路径，必须手动修改V值(variance)，使得满足”最优路径的FD*V值&gt;次优路径的FD值”（默认情况下，v值为1）</p>
 <p>&emsp;&emsp;在本实验中，最优路径为R2→R1到达100.100.100.100，次优路径为经过R2→R3→R1到达100.100.100.100。</p>
 <p>&emsp;&emsp;由R2的路由表我们可以得到200.200.200.200→100.100.100.100路由条目的FD值为409600。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0Pv3wD.png" alt="image-20200926131633249"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Pv3wD.png" alt="image-20200926131633249"></p>
 <p>&emsp;&emsp;次优路径为R2→R3→R1，因此R3路由表中的200.200.200.200→100.100.100.100路由条目的FD值为R2→R1的AD值为409600。</p>
 <p>&emsp;&emsp;因此不满足FC条件，所以可以选择更改AD值（在R3上更改开销）或者FD值（在R2上更改开销）。此处选择将R2中e0/0接口的延迟更改为3000（默认为1000）。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PvykQ.png" alt="image-20200926134145060"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvykQ.png" alt="image-20200926134145060"></p>
 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="constructor">R2(<span class="params">config</span>)</span>#<span class="built_in">int</span> e0/<span class="number">0</span></span><br><span class="line">#此处的数值为<span class="number">10</span>倍的关系</span><br><span class="line"><span class="constructor">R2(<span class="params">config</span>-<span class="params">if</span>)</span>#delay ?  </span><br><span class="line">  &lt;<span class="number">1</span>-<span class="number">16777215</span>&gt;  Throughput delay (tens <span class="keyword">of</span> microseconds)</span><br><span class="line"><span class="constructor">R2(<span class="params">config</span>-<span class="params">if</span>)</span>#delay <span class="number">300</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PvRlq.png" alt="image-20200926134337682"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvRlq.png" alt="image-20200926134337682"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#重启e0/0端口</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0Pv4mT.png" alt="image-20200926134602566"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Pv4mT.png" alt="image-20200926134602566"></p>
 <p>&emsp;&emsp;查看R2的路由表可以得知，此时满足FC条件，次优路径的AD值小于最优路径的FD值，在拓扑表中存在两条路径。此时的FS为R3</p>
 <p>&emsp;&emsp;但是此时路由表中到达100.100.100.100仍然只存在一条最优路径；若想让次优路径加表，则需满足最优路径的FD*v值 &gt; 次优路径的FD才能加入到路由表；修改V值为6，此时满足条件，路由表中到达100.100.100.0网段存在两个下一跳。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R2(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R2(config-router)<span class="comment">#variance 6</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PvTk4.png" alt="image-20200926135326740"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0Px9tH.png" alt="image-20200926135524300"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvTk4.png" alt="image-20200926135326740"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Px9tH.png" alt="image-20200926135524300"></p>
 <p>&emsp;&emsp;查看该路由条目的详细信息，可以知道该不等价负载均衡满足1:5的关系。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/26/0PxF1I.png" alt="image-20200926135704965"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PxF1I.png" alt="image-20200926135704965"></p>
 <blockquote>
 <p>该实验效果不明显，当查看路由的详细信息时能得到1：5的关系即为实验成功。</p>
 </blockquote>
@@ -573,7 +573,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -620,7 +620,7 @@
     <h3 class="widget-title">Tag Cloud</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -654,12 +654,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">148k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:14</span>
+    <span title="站点阅读时长">2:15</span>
 </div>
 <!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
@@ -789,10 +789,5 @@ NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
   <script type="text/javascript"
   color="0,0,255" opacity='0.7' zIndex="-2" count="80" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
   
-<script>
-            window.imageLazyLoadSetting = {
-                isSPA: false,
-                processImages: null,
-            };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var i=n.imageLazyLoadSetting.isSPA,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){i&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,e,a=0;a<r.length;a++)t=r[a],e=void 0,0<=(e=t.getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(n.innerHeight||document.documentElement.clientHeight)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},n.src=i}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</body>
 </html>

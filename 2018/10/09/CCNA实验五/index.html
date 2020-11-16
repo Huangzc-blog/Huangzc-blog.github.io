@@ -42,22 +42,22 @@
 <meta property="og:site_name" content="Huangzc&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍 OSPF 的基本配置； OSPF 的邻居表、拓扑表及路由表的含义； OSPF 的 DR 和 BDR 的作用； OSPF 的 DR 和 BDR 的选举； OSPF 路由协议的相关信息的查看和调试； OSPF 中 hello 报文的作用和格式。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0lX01I.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0lXsnf.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0lX7HU.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0lXouV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0lXXC9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0lXj3R.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0ljPED.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0ljpDK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/10/02/0lj9HO.png">
 <meta property="article:published_time" content="2018-10-08T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-10-02T13:39:44.345Z">
 <meta property="article:author" content="Huangzc">
 <meta property="article:tag" content="CCNA">
 <meta property="article:tag" content="OSPF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/10/02/0lX01I.png">
 
 <link rel="canonical" href="https://huangzc.site/2018/10/09/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%94/">
 
@@ -310,7 +310,7 @@
 <li>熟悉 OSPF 中 hello 报文的作用和格式</li>
 </ol>
 <p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lX01I.png" alt="图片4"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0lX01I.png" alt="图片4"></p>
 <center>单区域 OSPF 的实现拓扑</center>
 
 <p>【实验需求】</p>
@@ -357,7 +357,7 @@
 </ul>
 </blockquote>
 <p>&emsp;&emsp;通过各路由器的路由表以及DR/BDR的选举可以得知，R1、R2之间进行了DR/BDR的选举，R2为DR（RID比R1大），R1为BDR；串行链路不进行DR/BDR的选举。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lXsnf.png" alt="image-20200926205702544"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0lXsnf.png" alt="image-20200926205702544"></p>
 <ol start="4">
 <li>指定 R2 的 RID 为 20.20.20.20，R3 的 RID 为 30.30.30.30，使用相关命令观察和验证各路由器 RID 的变化</li>
 </ol>
@@ -366,8 +366,8 @@
 <blockquote>
 <p>路由器RID的选举：当有手工指定的情况下最优先；在没有手工指定情况下，优先选择回环口中IP地址最大的；若没有回环口，选择物理接口（双UP）中IP地址最大。</p>
 </blockquote>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lX7HU.png" alt="image-20200926210605837"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lXouV.png" alt="image-20200926210638711"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0lX7HU.png" alt="image-20200926210605837"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0lXouV.png" alt="image-20200926210638711"></p>
 <ol start="5">
 <li>实现 R2 为以太网链路网段上的 DR</li>
 </ol>
@@ -380,16 +380,16 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">R2<span class="comment">#clear ip ospf process </span></span><br><span class="line">Reset ALL OSPF processes? [no]: y</span><br></pre></td></tr></table></figure>
 
 <p>&emsp;&emsp;查看R1和R2的邻居表，可得此时R2成为以太网链路上的DR</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lXXC9.png" alt="image-20200926212101815"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lXj3R.png" alt="image-20200926212311154"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0lXXC9.png" alt="image-20200926212101815"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0lXj3R.png" alt="image-20200926212311154"></p>
 <ol start="6">
 <li>分别在 R2 和 R3 的路由器上添加 172.16.2.0/24 和 172.16.3.0/24 的网段，添加必要配置实现该两个网络之间的连通性</li>
 </ol>
 <p>&emsp;&emsp;由于172.16.3.0/24网段已在R3上使用，故不在做特别配置。在R2上添加一个loopback，IP地址为172.16.2.1/24。</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">R2(config)#interface loopback 1</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>172.168.2.1 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R2(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">R2(config-router)#network 172.16.2.0 0.0.0.255<span class="built_in"> area </span>0</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0ljPED.png" alt="image-20200926213245812"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0ljpDK.png" alt="image-20200926213316790"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0ljPED.png" alt="image-20200926213245812"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0ljpDK.png" alt="image-20200926213316790"></p>
 <ol start="7">
 <li>开启 debug 信息，观察 OSPF 在以太网链路之间信息交互的过程</li>
 </ol>
@@ -405,7 +405,7 @@
 <ol start="9">
 <li>使用 wireshark 抓取 OSPF 的 hello 报文，理解 hello 报文各字段的含义</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/10/02/0lj9HO.png" alt="image-20201002212804565"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0lj9HO.png" alt="image-20201002212804565"></p>
 <blockquote>
 <p>hello包：周期性发送，用来发现和维持OSPF邻居关系。</p>
 <p>hello报文中的相关信息包括：</p>
@@ -578,7 +578,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -625,7 +625,7 @@
     <h3 class="widget-title">Tag Cloud</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -659,12 +659,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">148k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:14</span>
+    <span title="站点阅读时长">2:15</span>
 </div>
 <!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
@@ -794,10 +794,5 @@ NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
   <script type="text/javascript"
   color="0,0,255" opacity='0.7' zIndex="-2" count="80" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
   
-<script>
-            window.imageLazyLoadSetting = {
-                isSPA: false,
-                processImages: null,
-            };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var i=n.imageLazyLoadSetting.isSPA,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){i&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,e,a=0;a<r.length;a++)t=r[a],e=void 0,0<=(e=t.getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(n.innerHeight||document.documentElement.clientHeight)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},n.src=i}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</body>
 </html>

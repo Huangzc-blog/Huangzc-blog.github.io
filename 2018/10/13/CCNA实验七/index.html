@@ -42,22 +42,22 @@
 <meta property="og:site_name" content="Huangzc&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vrbex.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0VrXFO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vrbex.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0VsEtS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0VsAk8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0VsVfg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vsn6s.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vs3kT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vs8tU.png">
 <meta property="article:published_time" content="2018-10-12T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-09-29T12:23:05.560Z">
 <meta property="article:author" content="Huangzc">
 <meta property="article:tag" content="CCNA">
 <meta property="article:tag" content="STP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/28/0Vrbex.png">
 
 <link rel="canonical" href="https://huangzc.site/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/">
 
@@ -310,7 +310,7 @@
 </li>
 </ol>
 <p>【拓扑结构】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
 <center>STP 的运用拓扑</center>
 
 <p>【实验需求】</p>
@@ -324,7 +324,7 @@
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.1.2 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.2 255.255.255.0</span><br><span class="line"></span><br><span class="line">SW1(config)<span class="comment">#int range e0/0-1</span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0-1</span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line">SW3(config)<span class="comment">#int range e0/0-1 </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VrXFO.png" alt="image-20200928194704233"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0VrXFO.png" alt="image-20200928194704233"></p>
 <ol start="3">
 <li>找出每个交换机的桥 ID，根据原理算出根桥、根端口、指定端口和非指定端口</li>
 </ol>
@@ -351,27 +351,27 @@
 <li>上述端口选举完后，剩下的既不是根端口也不是指定端口的端口成为非指定端口</li>
 </ul>
 </blockquote>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
 <p>&emsp;&emsp;根据选举规则，各交换机的桥ID，以及根桥、根端口、指定端口、非指定端口如上图所示。 </p>
 <ol start="4">
 <li>使用相关命令查看各交换机的 STP 信息，比较与根据理论算出来的结果是否一致</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsEtS.png" alt="image-20200928202002597"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsAk8.png" alt="image-20200928202035666"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0VsVfg.png" alt="image-20200928202108499"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0VsEtS.png" alt="image-20200928202002597"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0VsAk8.png" alt="image-20200928202035666"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0VsVfg.png" alt="image-20200928202108499"></p>
 <ol start="5">
 <li>将 SW2 设置为 VLAN10 的根桥，使用相关命令验证和查看各交换机上根桥的变化</li>
 </ol>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SW2(config)#spanning-tree<span class="built_in"> vlan </span>10 root primary</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vsn6s.png" alt="image-20200928202930067"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0Vsn6s.png" alt="image-20200928202930067"></p>
 <p>&emsp;&emsp;将SW2设置为根桥后，SW2的e0/0、e0/1为指定端口；SW1的e0/1为根端口、e0/0为指定端口；SW3的e0/1为根端口、e0/0为非指定端口。SW1与SW3之间的链路被阻塞。</p>
 <ol start="6">
 <li>测试正常链路出现故障对主机通信的影响</li>
 </ol>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#将SW2的e0/<span class="number">1</span>端口关闭，模拟正常链路出现故障</span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config-if)</span></span><span class="selector-id">#shutdown</span> </span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vs3kT.png" alt="image-20200928203642085"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0Vs3kT.png" alt="image-20200928203642085"></p>
 <ol start="7">
 <li>先断开 PC1 与交换机的连接，然后恢复 PC1 与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</li>
 </ol>
@@ -382,7 +382,7 @@
 </ol>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SW2#<span class="builtin-name">debug</span> spanning-tree events </span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/28/0Vs8tU.png" alt="image-20200928205550232"></p>
+<p><img src="https://s1.ax1x.com/2020/09/28/0Vs8tU.png" alt="image-20200928205550232"></p>
 
     </div>
 
@@ -535,7 +535,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -582,7 +582,7 @@
     <h3 class="widget-title">Tag Cloud</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -616,12 +616,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">148k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:14</span>
+    <span title="站点阅读时长">2:15</span>
 </div>
 <!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
@@ -751,10 +751,5 @@ NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
   <script type="text/javascript"
   color="0,0,255" opacity='0.7' zIndex="-2" count="80" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
   
-<script>
-            window.imageLazyLoadSetting = {
-                isSPA: false,
-                processImages: null,
-            };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var i=n.imageLazyLoadSetting.isSPA,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){i&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,e,a=0;a<r.length;a++)t=r[a],e=void 0,0<=(e=t.getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(n.innerHeight||document.documentElement.clientHeight)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},n.src=i}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</body>
 </html>

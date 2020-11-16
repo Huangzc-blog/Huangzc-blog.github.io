@@ -42,26 +42,26 @@
 <meta property="og:site_name" content="Huangzc&#39;s blog">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
-<meta property="og:image" content="https://huangzc.site/images/loading.gif">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/wipiIP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/03/wipPat.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/we58CF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/we5NuR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/we5fVP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/we5hUf.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/we5v5T.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/weISGF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/weI9xJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wev4IJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wev7xx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wevXZD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wevzid.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wexEdg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wexuzq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wexYFJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wexQyV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wexNWR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wexwy6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/06/wex0OK.png">
 <meta property="article:published_time" content="2019-03-28T06:58:23.000Z">
 <meta property="article:modified_time" content="2020-09-08T10:32:58.517Z">
 <meta property="article:author" content="Huangzc">
@@ -69,7 +69,7 @@
 <meta property="article:tag" content="CCNP">
 <meta property="article:tag" content="路由">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://huangzc.site/images/loading.gif">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/03/wipiIP.png">
 
 <link rel="canonical" href="https://huangzc.site/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/">
 
@@ -328,15 +328,15 @@
 </li>
 </ol>
 <p>【实验拓扑】</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipiIP.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/wipiIP.png"></p>
 <p>【实验需求】</p>
 <ol>
 <li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划，并分别在路由器 R1、R2、R3、R5 和R6 上各起一个loopback 接口，地址为各路由器的编号，如 R1 的 loopback 地址就为 1.1.1.1，其他以此类推；</li>
 </ol>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/03/wipPat.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/03/wipPat.png"></p>
 <p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R9上的172.16.1.1/24、172.16.2.1/24……。以R1、R4的端口配置情况为例。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we58CF.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5NuR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/we58CF.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/we5NuR.png"></p>
 <ol start="2">
 <li>除ISP 区域外，全网启用 OSPF，并设置各路由器的 RID 为各路由器的编号，根据图示将各网段划分进相应的 OSPF 区域中，要求在 R5 上采用接口级命令将R5 相应的接口加入到 OSPF 区域中，在其他路由器上采用合适的方式启用 OSPF，并在 R2 上进行EIGRP 和 OSPF 的双向重分布；</li>
 </ol>
@@ -348,37 +348,37 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看OSPF邻居表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip ospf neighbor </span></span><br><span class="line"></span><br><span class="line">Neighbor ID     Pri   State           Dead Time   Address         Interface</span><br><span class="line">6.6.6.6           1   FULL/BDR        00:00:36    16.16.16.6      Ethernet0/0</span><br><span class="line">2.2.2.2           1   FULL/BDR        00:00:39    12.12.12.2      Ethernet0/1</span><br><span class="line"><span class="comment">#查看OSPF拓扑表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip ospf database  </span></span><br><span class="line"></span><br><span class="line">            OSPF Router with ID (1.1.1.1) (Process ID 1)</span><br><span class="line"></span><br><span class="line">                Router Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum Link count</span></span><br><span class="line">1.1.1.1         1.1.1.1         793         0x8000000C 0x00AE8B 3</span><br><span class="line">2.2.2.2         2.2.2.2         1739        0x8000000B 0x007C85 3</span><br><span class="line">3.3.3.3         3.3.3.3         1514        0x80000009 0x005309 2</span><br><span class="line">5.5.5.5         5.5.5.5         807         0x80000007 0x00ADF1 1</span><br><span class="line">6.6.6.6         6.6.6.6         780         0x80000009 0x005D8E 3</span><br><span class="line"></span><br><span class="line">                Net Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum</span></span><br><span class="line">12.12.12.1      1.1.1.1         793         0x80000007 0x0040BE</span><br><span class="line">16.16.16.1      1.1.1.1         1055        0x80000006 0x007A69</span><br><span class="line">23.23.23.2      2.2.2.2         1739        0x80000006 0x00E0F0</span><br><span class="line">56.56.56.5      5.5.5.5         807         0x80000006 0x00BC8A</span><br><span class="line"></span><br><span class="line">                Summary Net Link States (Area 0)</span><br><span class="line"></span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum</span></span><br><span class="line">10.7.1.1        5.5.5.5         806         0x80000006 0x006B9A</span><br><span class="line">10.7.2.1        5.5.5.5         806         0x80000006 0x0060A4</span><br><span class="line">10.7.3.1        5.5.5.5         806         0x80000006 0x0055AE</span><br><span class="line">10.7.4.1        5.5.5.5         806         0x80000006 0x004AB8</span><br><span class="line">10.8.1.1        5.5.5.5         563         0x80000006 0x005FA5</span><br><span class="line">10.8.2.1        5.5.5.5         563         0x80000006 0x0054AF</span><br><span class="line">10.8.3.1        5.5.5.5         563         0x80000006 0x0049B9</span><br><span class="line">10.8.4.1        5.5.5.5         563         0x80000006 0x003EC3</span><br><span class="line">34.34.34.0      3.3.3.3         1514        0x80000006 0x00DAAA</span><br><span class="line">34.34.34.0      5.5.5.5         1068        0x80000007 0x000171</span><br><span class="line">45.45.45.0      3.3.3.3         1252        0x80000006 0x00B1A8</span><br><span class="line">45.45.45.0      5.5.5.5         1068        0x80000007 0x00F0A0</span><br><span class="line">57.57.57.0      5.5.5.5         1068        0x80000006 0x00412D</span><br><span class="line">192.168.1.1     3.3.3.3         1252        0x80000006 0x00EA94</span><br><span class="line">192.168.1.1     5.5.5.5         1068        0x80000007 0x008E1E</span><br><span class="line">192.168.2.1     3.3.3.3         1252        0x80000006 0x00DF9E</span><br><span class="line">192.168.2.1     5.5.5.5         1068        0x80000007 0x008328</span><br><span class="line">192.168.3.1     3.3.3.3         1252        0x80000006 0x00D4A8</span><br><span class="line">192.168.3.1     5.5.5.5         1068        0x80000007 0x007832</span><br><span class="line">192.168.4.1     3.3.3.3         1252        0x80000006 0x00C9B2</span><br><span class="line">192.168.4.1     5.5.5.5         1068        0x80000007 0x006D3C</span><br><span class="line"></span><br><span class="line">                Type-5 AS External Link States</span><br><span class="line">          </span><br><span class="line">Link ID         ADV Router      Age         Seq<span class="comment">#       Checksum Tag</span></span><br><span class="line">29.29.29.0      2.2.2.2         221         0x80000007 0x0087B3 0</span><br><span class="line">172.16.1.0      2.2.2.2         221         0x80000006 0x0011C4 0</span><br><span class="line">172.16.2.0      2.2.2.2         221         0x80000006 0x0006CE 0</span><br><span class="line">172.16.3.0      2.2.2.2         221         0x80000006 0x00FAD8 0</span><br><span class="line">172.16.4.0      2.2.2.2         221         0x80000006 0x00EFE2 0</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看OSPF路由表（此处以R1为例）</span></span><br><span class="line">R1<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      1.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">C        1.1.1.1 is directly connected, Loopback0</span><br><span class="line">      2.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        2.2.2.2 [110/11] via 12.12.12.2, 03:33:05, Ethernet0/1</span><br><span class="line">      3.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        3.3.3.3 [110/21] via 12.12.12.2, 03:13:48, Ethernet0/1</span><br><span class="line">      6.0.0.0/32 is subnetted, 1 subnets</span><br><span class="line">O        6.6.6.6 [110/11] via 16.16.16.6, 03:03:08, Ethernet0/0</span><br><span class="line">      10.0.0.0/32 is subnetted, 8 subnets</span><br><span class="line">O IA     10.7.1.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.2.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.3.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.7.4.1 [110/31] via 16.16.16.6, 03:00:18, Ethernet0/0</span><br><span class="line">O IA     10.8.1.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.2.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.3.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">O IA     10.8.4.1 [110/31] via 16.16.16.6, 02:58:10, Ethernet0/0</span><br><span class="line">      12.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        12.12.12.0/24 is directly connected, Ethernet0/1</span><br><span class="line">L        12.12.12.1/32 is directly connected, Ethernet0/1</span><br><span class="line">      16.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        16.16.16.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        16.16.16.1/32 is directly connected, Ethernet0/0</span><br><span class="line">      23.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O        23.23.23.0 [110/20] via 12.12.12.2, 03:32:46, Ethernet0/1</span><br><span class="line">      29.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O E2     29.29.29.0 [110/20] via 12.12.12.2, 03:28:26, Ethernet0/1</span><br><span class="line">      34.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     34.34.34.0 [110/84] via 12.12.12.2, 03:12:45, Ethernet0/1</span><br><span class="line">      45.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     45.45.45.0 [110/30] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      56.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O        56.56.56.0 [110/20] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      57.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">O IA     57.57.57.0 [110/30] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      172.16.0.0/24 is subnetted, 4 subnets</span><br><span class="line">O E2     172.16.1.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.2.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.3.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">O E2     172.16.4.0 [110/20] via 12.12.12.2, 02:54:51, Ethernet0/1</span><br><span class="line">      192.168.1.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.1.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.2.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.2.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.3.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.3.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br><span class="line">      192.168.4.0/32 is subnetted, 1 subnets</span><br><span class="line">O IA     192.168.4.1 [110/31] via 16.16.16.6, 03:02:58, Ethernet0/0</span><br></pre></td></tr></table></figure>
 
 <p>R9中的loopback接口与R7中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5fVP.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/we5fVP.png"></p>
 <p>R9中的loopback接口与R8中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5hUf.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/we5hUf.png"></p>
 <p>R9中的loopback接口与R4中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/we5v5T.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/we5v5T.png"></p>
 <p>R4中的loopback接口与R7中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/weISGF.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/weISGF.png"></p>
 <p>R4中的loopback接口与R8中的loopback接口：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/weI9xJ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/weI9xJ.png"></p>
 <p>R7中的loopback接口与R8中的loopback接口：      </p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wev4IJ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wev4IJ.png"></p>
 <ol start="4">
 <li>要求骨干区域能够快速收敛，并让R5 成为区域 578 中的 DR；</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在骨干区域的路由器中配置点对点的OSPF，以实现骨干区域的快速收敛</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/1                       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R2(config-if)<span class="comment">#int e0/2</span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf network point-to-point</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#int e0/2</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int e0/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line">R6(config-if)<span class="comment">#int e0/1</span></span><br><span class="line">R6(config-if)<span class="comment">#ip ospf network point-to-point </span></span><br><span class="line"></span><br><span class="line">更改R5的优先级，让R5成为578区域的DR（OSPF的优先级默认为1，数值越大，优先级越高。当优先级为0时，路由器不参与选举）</span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf priority 10</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wev7xx.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wev7xx.png"></p>
 <ol start="5">
 <li>采用合适的方案确保当骨干网络的任意链路中断的时候不会影响骨干网的连通性；</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在R3与R5中配置虚链路</span></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#area 345 virtual-link 5.5.5.5</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 345 virtual-link 3.3.3.3</span></span><br></pre></td></tr></table></figure>
 
 <p>将R1的e0/0端口关闭，验证其连通性：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wevXZD.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wevXZD.png"></p>
 <ol start="6">
 <li>观察各路由器上的路由表信息，然后在合适的路由器上进行必要的路由汇总，对比汇总之后各路由器路由表的变化，并观察和测试明细路由与汇总路由之间的关系；</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在各边界路由器上汇总路由</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 172.16.0.0 255.255.0.0 </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#area 345 range 192.168.0.0 255.255.0.0</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R5(config-router)<span class="comment">#area 345 range 192.168.0.0 255.255.0.0</span></span><br><span class="line">R5(config-router)<span class="comment">#area 578 range 10.0.0.0 255.0.0.0</span></span><br></pre></td></tr></table></figure>
 
 <p>R1的路由表：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wevzid.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wevzid.png"></p>
 <ol start="7">
 <li>采用合适的方案，实现图示标注的 loopback 网段可以访问 ISP 上的主机100.100.100.100；</li>
 </ol>
@@ -386,21 +386,21 @@
 
 <p>&emsp;&emsp;验证其连通性：</p>
 <p>&emsp;&emsp;&emsp;&emsp;（注：200.200.200.2为ISP1中s1/0的IP地址，50.50.50.2为ISP2中s1/0的IP地址）</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexEdg.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexuzq.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexYFJ.png"></p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexQyV.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wexEdg.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wexuzq.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wexYFJ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wexQyV.png"></p>
 <ol start="8">
 <li>要求各链路正常情况下，内网优选 ISP1 的链路对外部网络进行访问，当与 ISP1 的链路出现故障的时候，自动切换到 ISP2 的链路对外部网络进行访问，使用tracert 观察验证该现象。</li>
 </ol>
 <p>&emsp;&emsp;为使内网优先选择ISP1对外部网络进行访问，故更改链路的cost值，使内网从ISP1访问外网的cost比从ISP2访问外网的cost小，以R8为例，更改链路①的cost值，使得链路①的总cost值比链路②的总cost值小。</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexNWR.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wexNWR.png"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在各路由器的端口下配置ospf的开销</span></span><br><span class="line">R5(config)<span class="comment">#int e0/0</span></span><br><span class="line">R5(config-if)<span class="comment">#ip ospf cost 1</span></span><br><span class="line">R4(config)<span class="comment">#int s1/0</span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf cost 1</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf cost  1</span></span><br><span class="line">R2(config)<span class="comment">#int e0/2 </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf cost 1</span></span><br></pre></td></tr></table></figure>
 
 <p>验证结果如下：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wexwy6.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wexwy6.png"></p>
 <p>当ISP1出现故障时（关闭R1中的S1/0端口）：</p>
-<p><img src="/images/loading.gif" data-original="https://s1.ax1x.com/2020/09/06/wex0OK.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/06/wex0OK.png"></p>
 
     </div>
 
@@ -554,7 +554,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -601,7 +601,7 @@
     <h3 class="widget-title">Tag Cloud</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -635,12 +635,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">148k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:14</span>
+    <span title="站点阅读时长">2:15</span>
 </div>
 <!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
@@ -770,10 +770,5 @@ NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
   <script type="text/javascript"
   color="0,0,255" opacity='0.7' zIndex="-2" count="80" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
   
-<script>
-            window.imageLazyLoadSetting = {
-                isSPA: false,
-                processImages: null,
-            };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var i=n.imageLazyLoadSetting.isSPA,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){i&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,e,a=0;a<r.length;a++)t=r[a],e=void 0,0<=(e=t.getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(n.innerHeight||document.documentElement.clientHeight)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},n.src=i}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</body>
 </html>
