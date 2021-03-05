@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2020-11-16T15:42:36.658Z</updated>
+  <updated>2021-03-05T06:25:15.189Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Nexus交换机vDC</title>
+    <link href="https://huangzc.site/2021/03/05/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvDC/"/>
+    <id>https://huangzc.site/2021/03/05/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvDC/</id>
+    <published>2021-03-04T16:00:00.000Z</published>
+    <updated>2021-03-05T06:25:15.189Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;Nexus系列交换机中的vDC的基本理论介绍。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
+    
+    <category term="vDC" scheme="https://huangzc.site/tags/vDC/"/>
+    
+  </entry>
   
   <entry>
     <title>OSPF路由优选规则</title>
@@ -424,27 +445,6 @@
     <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
     
     <category term="ACL" scheme="https://huangzc.site/tags/ACL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CCNA实验七——STP 的运用</title>
-    <link href="https://huangzc.site/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/"/>
-    <id>https://huangzc.site/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/</id>
-    <published>2018-10-12T16:00:00.000Z</published>
-    <updated>2020-09-29T12:23:05.560Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CCNA实验" scheme="https://huangzc.site/categories/CCNA%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
-    
-    <category term="STP" scheme="https://huangzc.site/tags/STP/"/>
     
   </entry>
   
