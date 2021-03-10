@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2021-03-05T06:25:15.189Z</updated>
+  <updated>2021-03-10T01:40:08.163Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Nexus交换机FEX</title>
+    <link href="https://huangzc.site/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/"/>
+    <id>https://huangzc.site/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/</id>
+    <published>2021-03-07T16:00:00.000Z</published>
+    <updated>2021-03-10T01:40:08.163Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;FEX技术介绍。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
+    
+    <category term="FEX" scheme="https://huangzc.site/tags/FEX/"/>
+    
+  </entry>
   
   <entry>
     <title>Nexus交换机vDC</title>
@@ -424,27 +445,6 @@
     <category term="NAT" scheme="https://huangzc.site/tags/NAT/"/>
     
     <category term="PPP" scheme="https://huangzc.site/tags/PPP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CCNA实验八——ACL 的运用</title>
-    <link href="https://huangzc.site/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/"/>
-    <id>https://huangzc.site/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</id>
-    <published>2018-10-14T16:00:00.000Z</published>
-    <updated>2020-09-30T16:11:13.650Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 ACL 作用；标准和扩展 ACL 的区别；标准和扩展 ACL 的配置； ALC 的验证和查看命令；命名的 ACL 的作用与配置。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CCNA实验" scheme="https://huangzc.site/categories/CCNA%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
-    
-    <category term="ACL" scheme="https://huangzc.site/tags/ACL/"/>
     
   </entry>
   
