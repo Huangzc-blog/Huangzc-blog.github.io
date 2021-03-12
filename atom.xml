@@ -38,6 +38,27 @@
   </entry>
   
   <entry>
+    <title>Nexus交换机vPC配置</title>
+    <link href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/"/>
+    <id>https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/</id>
+    <published>2021-03-11T16:00:00.000Z</published>
+    <updated>2021-03-12T05:16:51.405Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;在N7K上配置vPC。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Nexus实验" scheme="https://huangzc.site/categories/Nexus%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
+    
+    <category term="vPC" scheme="https://huangzc.site/tags/vPC/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Nexus交换机FEX</title>
     <link href="https://huangzc.site/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/"/>
     <id>https://huangzc.site/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/</id>
@@ -422,27 +443,6 @@
     <category term="CCNP" scheme="https://huangzc.site/tags/CCNP/"/>
     
     <category term="交换" scheme="https://huangzc.site/tags/%E4%BA%A4%E6%8D%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计算机网络参考模型</title>
-    <link href="https://huangzc.site/2019/01/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/"/>
-    <id>https://huangzc.site/2019/01/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</id>
-    <published>2019-01-29T05:56:38.000Z</published>
-    <updated>2020-08-29T07:36:09.456Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;在计算机的网络中，有两个十分重要的参考模型，所有网络通信设备都是以参考模型为标准来研发的。因此熟知参考模型在学习网络知识的过程中是十分重要的。下面就简单的介绍一下两个参考模型。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="网络基础" scheme="https://huangzc.site/categories/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/"/>
-    
-    
-    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
-    
-    <category term="网络与数据通信" scheme="https://huangzc.site/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/"/>
     
   </entry>
   
