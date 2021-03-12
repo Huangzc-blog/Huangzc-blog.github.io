@@ -35,31 +35,34 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。">
+  <meta name="description" content="&amp;emsp;&amp;emsp;Port Channel介绍；vPC基本概念。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CCNA实验七——STP 的运用">
-<meta property="og:url" content="https://huangzc.site/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/index.html">
+<meta property="og:title" content="Nexus交换机vPC">
+<meta property="og:url" content="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;Port Channel介绍；vPC基本概念。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vrbex.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0VrXFO.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vrbex.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0VsEtS.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0VsAk8.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0VsVfg.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vsn6s.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vs3kT.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/09/28/0Vs8tU.png">
-<meta property="article:published_time" content="2018-10-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-09-29T12:23:05.560Z">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UuT4P.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6Uub38.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UuLjg.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UuXuQ.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UujBj.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UuzEn.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UKSNq.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UKP3T.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UKEDJ.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UKmU1.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UKKC6.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/12/6UKM8K.png">
+<meta property="article:published_time" content="2021-03-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-12T05:07:07.961Z">
 <meta property="article:author" content="Huangzc">
-<meta property="article:tag" content="CCNA">
-<meta property="article:tag" content="STP">
+<meta property="article:tag" content="Nexus">
+<meta property="article:tag" content="vPC">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/28/0Vrbex.png">
+<meta name="twitter:image" content="https://s3.ax1x.com/2021/03/12/6UuT4P.png">
 
-<link rel="canonical" href="https://huangzc.site/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/">
+<link rel="canonical" href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/">
 
 
 <script id="page-configurations">
@@ -72,7 +75,7 @@
   };
 </script>
 
-  <title>CCNA实验七——STP 的运用 | Huangzc's blog</title>
+  <title>Nexus交换机vPC | Huangzc's blog</title>
   
 
 
@@ -230,7 +233,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/">
+    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -243,7 +246,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CCNA实验七——STP 的运用
+          Nexus交换机vPC
         </h1>
 
         <div class="post-meta">
@@ -252,23 +255,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2018-10-13 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-13T00:00:00+08:00">2018-10-13</time>
+              <time title="创建时间：2021-03-12 00:00:00 / 修改时间：13:07:07" itemprop="dateCreated datePublished" datetime="2021-03-12T00:00:00+08:00">2021-03-12</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-29 20:23:05" itemprop="dateModified" datetime="2020-09-29T20:23:05+08:00">2020-09-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CCNA%E5%AE%9E%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">CCNA实验</span></a>
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
                 </span>
             </span>
 
@@ -278,14 +275,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.9k</span>
+              <span>4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -297,92 +294,137 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>&emsp;&emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。</p>
+        <p>&emsp;&emsp;Port Channel介绍；vPC基本概念。</p>
 <a id="more"></a>
 
-<p>【实验目的】</p>
-<ol>
-<li><p>理解 STP 的作用</p>
+<h2 id="1-Port-Channel"><a href="#1-Port-Channel" class="headerlink" title="1 Port Channel"></a>1 Port Channel</h2><h3 id="1-1-基本概念"><a href="#1-1-基本概念" class="headerlink" title="1.1 基本概念"></a>1.1 基本概念</h3><ul>
+<li><p>绑定多个物理链路到一个单一的逻辑链路，在两个物理设备之间。</p>
 </li>
-<li><p>熟悉 STP 的工作原理</p>
+<li><p>每一个物理端口只能被放入一个port-channel中。</p>
 </li>
-<li><p>掌握 STP 的查看命令</p>
+<li><p>在一个port-channel中的所有的端口必须兼容，并且需要有相同的速率和双工模式。</p>
 </li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
-<center>STP 的运用拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>在相应的交换机上创建 VLAN10，并将连接 PC1 和 PC2 的交换端口都划分进该 VLAN 中</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在相应的交换机上创建VLAN10</span></span><br><span class="line">SW1(config)<span class="comment">#vlan 10</span></span><br><span class="line">SW2(config)<span class="comment">#vlan 10</span></span><br><span class="line">SW3(config)<span class="comment">#vlan 10</span></span><br><span class="line"><span class="comment">#将PC1的交换机端口划分进VLAN10中</span></span><br><span class="line">SW2(config)<span class="comment">#int e0/2</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line"><span class="comment">#将PC2的交换机端口划分进VLAN10中</span></span><br><span class="line">SW3(config)<span class="comment">#int e0/2</span></span><br><span class="line">SW3(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW3(config-if)<span class="comment">#switchport access vlan 10 </span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>为主机设置合适的 IP 地址，IP 地址自定，完成必要的配置实现主机间的通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.1.2 255.255.255.0</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.2 255.255.255.0</span><br><span class="line"></span><br><span class="line">SW1(config)<span class="comment">#int range e0/0-1</span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if-range)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0-1</span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line">SW3(config)<span class="comment">#int range e0/0-1 </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW3(config-if-range)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/28/0VrXFO.png" alt="image-20200928194704233"></p>
-<ol start="3">
-<li>找出每个交换机的桥 ID，根据原理算出根桥、根端口、指定端口和非指定端口</li>
-</ol>
-<blockquote>
-<p>STP的选举规则：</p>
-<p>① 根桥（Root）——拥有最小的桥ID的交换机被选为根桥 </p>
-<ul>
-<li>桥ID：交换机的默认优先级 32768  + MAC地址（可通过 show version查看）</li>
+<li><p>2 层和3层都可以配置port-channel 。</p>
+</li>
+<li><p>不能把2层和3层的接口放入相同的port-channel。</p>
+</li>
+<li><p>Port-Channel分为如下两种类型：</p>
+<p>‒Access port - Routed interface</p>
+<p>‒Trunk port - Routed with sub interfaces</p>
+</li>
 </ul>
-<p>② 根端口（RP）——非根交换机上去往根桥路径最优的端口，用于接收BPDU</p>
-<ul>
-<li>最小根桥开销</li>
-<li>最小发送者桥ID</li>
-<li>最小发送者端口ID  </li>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UuT4P.png" alt="image-20210310170612367"></p>
+<h3 id="1-2-Port-Channel模式"><a href="#1-2-Port-Channel模式" class="headerlink" title="1.2 Port Channel模式"></a>1.2 Port Channel模式</h3><ul>
+<li>如果希望创建没有聚合协议的静态的port channels ，配置channel 模式为“on ”</li>
+<li>如果希望使用LACP 作为聚合协议，需要全局激活LACP </li>
+<li>为每一个Channel 启用LACP ，通过为每一个接口设置channel“ 模式为“active ”或者“passive ”</li>
+<li>不支持PAgP 协议</li>
 </ul>
-<p>③ 指定端口（DP）——用来发送或转发配置BPDU</p>
-<ul>
-<li>最小根路径开销</li>
-<li>最小发送者桥ID</li>
-<li>最小发送者端口ID  </li>
+<h3 id="1-3-散列选项（Hash-Options）"><a href="#1-3-散列选项（Hash-Options）" class="headerlink" title="1.3 散列选项（Hash Options）"></a>1.3 散列选项（Hash Options）</h3><ul>
+<li>头部散列为了负载均衡，分布流量穿越多条链路</li>
+<li>如下的方式可以被用来做散列<ul>
+<li>source-destination-ip &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination IP address (Default)</li>
+<li>source-ip   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source IP address</li>
+<li>destination-ip   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination IP address</li>
+<li>source-destination-port &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination TCP/UDP port</li>
+<li>source-port   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source TCP/UDP port</li>
+<li>destination-port  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination TCP/UDP port</li>
+<li>source-destination-mac    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination MAC address</li>
+<li>source-mac  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source MAC address</li>
+<li>destination-mac  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination MAC address</li>
 </ul>
-<p>④ 非指定端口（NDP）——既不转发数据帧，也不会将在该网段接收到的数据包源MAC地址填入MAC地址表中</p>
-<ul>
-<li>上述端口选举完后，剩下的既不是根端口也不是指定端口的端口成为非指定端口</li>
+</li>
 </ul>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/09/28/0Vrbex.png" alt="图片1"></p>
-<p>&emsp;&emsp;根据选举规则，各交换机的桥ID，以及根桥、根端口、指定端口、非指定端口如上图所示。 </p>
-<ol start="4">
-<li>使用相关命令查看各交换机的 STP 信息，比较与根据理论算出来的结果是否一致</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/28/0VsEtS.png" alt="image-20200928202002597"></p>
-<p><img src="https://s1.ax1x.com/2020/09/28/0VsAk8.png" alt="image-20200928202035666"></p>
-<p><img src="https://s1.ax1x.com/2020/09/28/0VsVfg.png" alt="image-20200928202108499"></p>
-<ol start="5">
-<li>将 SW2 设置为 VLAN10 的根桥，使用相关命令验证和查看各交换机上根桥的变化</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SW2(config)#spanning-tree<span class="built_in"> vlan </span>10 root primary</span><br></pre></td></tr></table></figure>
+<h3 id="1-4-Port-Channel-配置简介"><a href="#1-4-Port-Channel-配置简介" class="headerlink" title="1.4 Port Channel 配置简介"></a>1.4 Port Channel 配置简介</h3><h4 id="1-4-1-Switchport-Access"><a href="#1-4-1-Switchport-Access" class="headerlink" title="1.4.1 Switchport Access"></a>1.4.1 Switchport Access</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line">  switchport</span><br><span class="line">  switchport access<span class="built_in"> vlan </span>200</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/09/28/0Vsn6s.png" alt="image-20200928202930067"></p>
-<p>&emsp;&emsp;将SW2设置为根桥后，SW2的e0/0、e0/1为指定端口；SW1的e0/1为根端口、e0/0为指定端口；SW3的e0/1为根端口、e0/0为非指定端口。SW1与SW3之间的链路被阻塞。</p>
-<ol start="6">
-<li>测试正常链路出现故障对主机通信的影响</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#将SW2的e0/<span class="number">1</span>端口关闭，模拟正常链路出现故障</span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">SW2</span><span class="params">(config-if)</span></span><span class="selector-id">#shutdown</span> </span><br></pre></td></tr></table></figure>
+<h4 id="1-4-2-Switchport-Trunk"><a href="#1-4-2-Switchport-Trunk" class="headerlink" title="1.4.2 Switchport Trunk"></a>1.4.2 Switchport Trunk</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line">  switchport</span><br><span class="line">  switchport mode trunk</span><br><span class="line">  switchport trunk allowed<span class="built_in"> vlan </span>10-20</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/09/28/0Vs3kT.png" alt="image-20200928203642085"></p>
-<ol start="7">
-<li>先断开 PC1 与交换机的连接，然后恢复 PC1 与交换机的连接，观察主机重新接入交换机要经历多久才能够进行数据转发</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">SW2(config)<span class="comment">#int e0/2</span></span><br><span class="line"><span class="comment">#通过关闭与PC1连接的端口来模拟PC1与交换机断开连接</span></span><br><span class="line">SW2(config-if)<span class="comment">#shutdown </span></span><br><span class="line"><span class="comment">#观察下面4条spanning-tree的events，可以知道PC1与交换机断开连接后，端口的状态迅速变为down</span></span><br><span class="line">*Sep 28 12:42:48.425: STP: VLAN0010 we are the spanning tree root</span><br><span class="line">*Sep 28 12:42:48.425: STP[10]: Generating TC <span class="built_in">trap</span> <span class="keyword">for</span> port Ethernet0/2</span><br><span class="line">*Sep 28 12:42:50.430: %LINK-5-CHANGED: Interface Ethernet0/2, changed state to administratively down</span><br><span class="line">*Sep 28 12:42:51.436: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to down</span><br><span class="line"><span class="comment">#通过开启与PC1连接的端口来模拟PC1与交换机恢复连接</span></span><br><span class="line">SW2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"><span class="comment">#通过观察下面几条spanning-tree的events,根据端口e0/2从12：43：01的listening状态</span></span><br><span class="line">到12：43：31的forwarding状态可以得出，主机重新接入交换机需要经历30s才可以进行数据转发</span><br><span class="line">*Sep 28 12:43:01.692: <span class="built_in">set</span> portid: VLAN0010 Et0/2: new port id 8003</span><br><span class="line">*Sep 28 12:43:01.692: STP: VLAN0010 Et0/2 -&gt; listening</span><br><span class="line">*Sep 28 12:43:03.695: %LINK-3-UPDOWN: Interface Ethernet0/2, changed state to up</span><br><span class="line">*Sep 28 12:43:04.701: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to up</span><br><span class="line">*Sep 28 12:43:16.695: STP: VLAN0010 Et0/2 -&gt; learning</span><br><span class="line">*Sep 28 12:43:31.704: STP[10]: Generating TC <span class="built_in">trap</span> <span class="keyword">for</span> port Ethernet0/2</span><br><span class="line">*Sep 28 12:43:31.704: STP: VLAN0010 Et0/2 -&gt; forwarding</span><br></pre></td></tr></table></figure>
+<h4 id="1-4-3-Routed-Interface"><a href="#1-4-3-Routed-Interface" class="headerlink" title="1.4.3 Routed Interface"></a>1.4.3 Routed Interface</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line"> <span class="built_in"> ip address </span>10.0.0.1/24</span><br></pre></td></tr></table></figure>
 
-<ol start="8">
-<li>使用合适的命令观察 STP 端口的变化过程</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SW2#<span class="builtin-name">debug</span> spanning-tree events </span><br></pre></td></tr></table></figure>
+<h4 id="1-4-4-Routed-Subinterfaces"><a href="#1-4-4-Routed-Subinterfaces" class="headerlink" title="1.4.4 Routed Subinterfaces"></a>1.4.4 Routed Subinterfaces</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">channel-group 1 mode active</span><br><span class="line"> <span class="built_in"> interface </span>port-channel 1.10</span><br><span class="line"> <span class="built_in"> ip address </span>10.0.10.1/24</span><br><span class="line">  encapsulation dot1q 10</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/09/28/0Vs8tU.png" alt="image-20200928205550232"></p>
+<h2 id="2-vPC"><a href="#2-vPC" class="headerlink" title="2 vPC"></a>2 vPC</h2><h3 id="2-1-vPC简介"><a href="#2-1-vPC简介" class="headerlink" title="2.1 vPC简介"></a>2.1 vPC简介</h3><ul>
+<li>允许一个设备使用有两个上游设备的port channel </li>
+<li>消除STP阻止端口</li>
+<li>提供一个无环的拓扑</li>
+<li>使用所有可用的上联带宽</li>
+<li>在链路或者设备出现故障时，提供最快的收敛</li>
+<li>提供链路级的冗余</li>
+<li>确保高可用性</li>
+<li>第三方设备可以是一个服务器，一个交换机或者任何网络持设备，只要这些设备支持channel Group技术</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6Uub38.png" alt="image-20210310172206731"></p>
+<h3 id="2-2-STP-vs-vPC"><a href="#2-2-STP-vs-vPC" class="headerlink" title="2.2 STP vs vPC"></a>2.2 STP vs vPC</h3><p><img src="https://s3.ax1x.com/2021/03/12/6UuLjg.png" alt="image-20210310173413831"></p>
+<h3 id="2-3-使用vPC创建无环的网络"><a href="#2-3-使用vPC创建无环的网络" class="headerlink" title="2.3 使用vPC创建无环的网络"></a>2.3 使用vPC创建无环的网络</h3><p>&emsp;&emsp;可以在现有的架构上使用vPC创建无环的网络</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UuXuQ.png" alt="image-20210310173524474"></p>
+<h3 id="2-4-最多32路Port-Channel（Double-Sided-vPC）"><a href="#2-4-最多32路Port-Channel（Double-Sided-vPC）" class="headerlink" title="2.4 最多32路Port-Channel（Double-Sided vPC）"></a>2.4 最多32路Port-Channel（Double-Sided vPC）</h3><ul>
+<li>多层vPC能够加入一个有8个active成员端口的port-channel到一个16路的port-channel中。</li>
+<li>vPC对等体的负载均衡方式是由这个对等体设备本地判断的。</li>
+<li>在M系列模块中，每一个vPC对等体只有8个active链路，两个vPC对等体加在一起一共提供16路active的负载均衡的链路。</li>
+<li>F系列模块，支持16路active的port-channel，因此提供一个32路的vPC。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UujBj.png" alt="image-20210310173657117"></p>
+<h3 id="2-5-配置流程"><a href="#2-5-配置流程" class="headerlink" title="2.5 配置流程"></a>2.5 配置流程</h3><ol>
+<li>在配置vPC 之前需要先激活vPC 特性</li>
+<li>先配置Peer-keepalive 链路，然后配置Peer-link 链路，最后设置vPC domain</li>
+<li>必须手动配置两个vPC 设备，配置不会从一个设备发送到另外一个设备上</li>
+<li>检查在vPC Peer 链路的两端，需要配置的参数是一致的</li>
+<li>当配置vPCs 时，可能会经历短暂的流量中断</li>
+<li>推荐所有vPC 的port channel 使用LACP </li>
+</ol>
+<h3 id="2-6-vPC-架构的组件"><a href="#2-6-vPC-架构的组件" class="headerlink" title="2.6 vPC 架构的组件"></a>2.6 vPC 架构的组件</h3><ul>
+<li>vPC Peers：一对vPC激活的交换机。</li>
+<li>vPC Domain：一对vPC对等体，和相关的vPC组件。</li>
+<li>vPC Peer Keepalive Link：路由链路，承载心跳数据包，进行双Active的检测。</li>
+<li>vPC Peer Link：在两个vPC对等体设备间，承载控制层面流量。</li>
+<li>vPC：在vPC对等体和有port-channel 能力的下的游设备之间的port channel 。</li>
+<li>vPC Member Port：形成vPC 的一系列端口中的一个。</li>
+<li>Orphan Device：一个设备使用非vPC 链路连接到一个vPC对等体。</li>
+<li>Orphan Port：一个vPC 对等体连接一个Orphan设备的端口。</li>
+<li>Cisco Fabric Services：在vPC 对等体设备间，用于状态同步和配置确认的协议。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UuzEn.png" alt="image-20210310174406528"></p>
+<h3 id="2-7-vPC与N7K模块设计图"><a href="#2-7-vPC与N7K模块设计图" class="headerlink" title="2.7 vPC与N7K模块设计图"></a>2.7 vPC与N7K模块设计图</h3><p><img src="https://s3.ax1x.com/2021/03/12/6UKSNq.png" alt="image-20210310175147498"></p>
+<h3 id="2-8-vPC控制层面操作"><a href="#2-8-vPC控制层面操作" class="headerlink" title="2.8 vPC控制层面操作"></a>2.8 vPC控制层面操作</h3><ul>
+<li><p>CFS用于同步vPC的控制层面信息</p>
+<ul>
+<li>MAC地址学习</li>
+<li>IGMP snooping</li>
+<li>配置一致性检查</li>
+<li>vPC成员端口状态</li>
+<li>ARP缓存</li>
+</ul>
+</li>
+<li><p>一个交换机被选举成为Primary，另外一端被选举为Secondary </p>
+<ul>
+<li>角色决定当Peer Link失效时的行为</li>
+<li>Primary交换机主导在vPC中的STP </li>
+<li>不支持抢占选举</li>
+</ul>
+</li>
+<li><p>vPC对等体对于连接到vPC对等体对于连接到vPC的邻居设备而言，表现为一个单一交换机</p>
+</li>
+<li><p>vPC Peer Link只承载如下流量</p>
+<ul>
+<li>vPC控制层流量</li>
+<li>泛洪流量</li>
+<li>Orphan端口的流量</li>
+</ul>
+</li>
+<li><p>普通交换机的MAC地址学习被替换为为vPC于设计的基于CFS的MAC地址学习</p>
+</li>
+<li><p>从Peer Link进入vPC对等体的帧不过会通过vPC成员端口转发</p>
+</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKP3T.png" alt="image-20210312121006088"></p>
+<h3 id="2-9-数据层防环"><a href="#2-9-数据层防环" class="headerlink" title="2.9 数据层防环"></a>2.9 数据层防环</h3><p>&emsp;&emsp;来至于Peer-Link 的流量将会被标记，并且不允许从vPC成员端口发出</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKEDJ.png" alt="image-20210312121040388"></p>
+<p>&emsp;&emsp;如果一端的vPC出现故障，Peer-Link可以作为备用链路来实现冗余</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKmU1.png" alt="image-20210312121059301"></p>
+<h3 id="2-10-vPC-Peer-Link-Device-Failure"><a href="#2-10-vPC-Peer-Link-Device-Failure" class="headerlink" title="2.10 vPC Peer Link Device Failure"></a>2.10 vPC Peer Link Device Failure</h3><p>&emsp;&emsp;交换机A的vPC Peer Link失效，交换机A则会通过Peer-Keepalive链路检查远端vPC Peer B的状态，如果vPC Peer B是Up的，Secondary vPC B将会禁用所有的vPC端口，从而阻止环路，黑洞和泛洪流量。数据依然在port channel中剩余的Active 链路上被发送。</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKKC6.png" alt="image-20210312121253248"></p>
+<h3 id="2-11-vPC-Peer-Failure-—-Peer-keepalive-Link"><a href="#2-11-vPC-Peer-Failure-—-Peer-keepalive-Link" class="headerlink" title="2.11 vPC Peer Failure — Peer-keepalive Link"></a>2.11 vPC Peer Failure — Peer-keepalive Link</h3><p>&emsp;&emsp;当没有通过对等keepalive Link返回keepalive消息时，软件将了解vPC对等设备故障。可以使用单独的链接（vPC Peerkeepalive Link）在vPC对等设备之间发送可配置的keepalive消息。vPC对等keepalive Link上的keepalive消息确定故障是仅在vPC对等链路上还是在vPC对等设备上。只有当对等链接中的所有链接都失败时，才使用keepalive消息。</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKM8K.png" alt="image-20210312125741363"></p>
 
     </div>
 
@@ -418,7 +460,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://huangzc.site/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/" title="CCNA实验七——STP 的运用">https://huangzc.site/2018/10/13/CCNA实验七/</a>
+    <a href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/" title="Nexus交换机vPC">https://huangzc.site/2021/03/12/Nexus交换机vPC/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -440,8 +482,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/CCNA/" rel="tag"><i class="fa fa-tag"></i> CCNA</a>
-              <a href="/tags/STP/" rel="tag"><i class="fa fa-tag"></i> STP</a>
+              <a href="/tags/Nexus/" rel="tag"><i class="fa fa-tag"></i> Nexus</a>
+              <a href="/tags/vPC/" rel="tag"><i class="fa fa-tag"></i> vPC</a>
           </div>
 
         
@@ -450,13 +492,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/" rel="prev" title="CCNA实验六——单臂路由的运用">
-      <i class="fa fa-chevron-left"></i> CCNA实验六——单臂路由的运用
+    <a href="/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/" rel="prev" title="Nexus交换机FEX">
+      <i class="fa fa-chevron-left"></i> Nexus交换机FEX
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/" rel="next" title="CCNA实验八——ACL 的运用">
-      CCNA实验八——ACL 的运用 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -520,6 +559,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Port-Channel"><span class="nav-text">1 Port Channel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">1.1 基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Port-Channel%E6%A8%A1%E5%BC%8F"><span class="nav-text">1.2 Port Channel模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E6%95%A3%E5%88%97%E9%80%89%E9%A1%B9%EF%BC%88Hash-Options%EF%BC%89"><span class="nav-text">1.3 散列选项（Hash Options）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Port-Channel-%E9%85%8D%E7%BD%AE%E7%AE%80%E4%BB%8B"><span class="nav-text">1.4 Port Channel 配置简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-Switchport-Access"><span class="nav-text">1.4.1 Switchport Access</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-Switchport-Trunk"><span class="nav-text">1.4.2 Switchport Trunk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-3-Routed-Interface"><span class="nav-text">1.4.3 Routed Interface</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-4-Routed-Subinterfaces"><span class="nav-text">1.4.4 Routed Subinterfaces</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-vPC"><span class="nav-text">2 vPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-vPC%E7%AE%80%E4%BB%8B"><span class="nav-text">2.1 vPC简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-STP-vs-vPC"><span class="nav-text">2.2 STP vs vPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E4%BD%BF%E7%94%A8vPC%E5%88%9B%E5%BB%BA%E6%97%A0%E7%8E%AF%E7%9A%84%E7%BD%91%E7%BB%9C"><span class="nav-text">2.3 使用vPC创建无环的网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%9C%80%E5%A4%9A32%E8%B7%AFPort-Channel%EF%BC%88Double-Sided-vPC%EF%BC%89"><span class="nav-text">2.4 最多32路Port-Channel（Double-Sided vPC）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E9%85%8D%E7%BD%AE%E6%B5%81%E7%A8%8B"><span class="nav-text">2.5 配置流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-vPC-%E6%9E%B6%E6%9E%84%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-text">2.6 vPC 架构的组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-vPC%E4%B8%8EN7K%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1%E5%9B%BE"><span class="nav-text">2.7 vPC与N7K模块设计图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-vPC%E6%8E%A7%E5%88%B6%E5%B1%82%E9%9D%A2%E6%93%8D%E4%BD%9C"><span class="nav-text">2.8 vPC控制层面操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-%E6%95%B0%E6%8D%AE%E5%B1%82%E9%98%B2%E7%8E%AF"><span class="nav-text">2.9 数据层防环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-vPC-Peer-Link-Device-Failure"><span class="nav-text">2.10 vPC Peer Link Device Failure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-11-vPC-Peer-Failure-%E2%80%94-Peer-keepalive-Link"><span class="nav-text">2.11 vPC Peer Failure — Peer-keepalive Link</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2021-03-10T01:40:08.163Z</updated>
+  <updated>2021-03-12T05:07:07.961Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Nexus交换机vPC</title>
+    <link href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/"/>
+    <id>https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/</id>
+    <published>2021-03-11T16:00:00.000Z</published>
+    <updated>2021-03-12T05:07:07.961Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;Port Channel介绍；vPC基本概念。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
+    
+    <category term="vPC" scheme="https://huangzc.site/tags/vPC/"/>
+    
+  </entry>
   
   <entry>
     <title>Nexus交换机FEX</title>
@@ -422,29 +443,6 @@
     <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
     
     <category term="网络与数据通信" scheme="https://huangzc.site/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CCNA实验九——NAT 和 PPP 的应用</title>
-    <link href="https://huangzc.site/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/"/>
-    <id>https://huangzc.site/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/</id>
-    <published>2018-10-16T16:00:00.000Z</published>
-    <updated>2020-10-01T16:36:18.637Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍 NAT 的作用；不同 NAT 的特点及配置；不同 NAT 的使用场合； PPP 的 PAP 和 CHAP 验证；辅助地址的作用； NAT 的验证和查看命令。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CCNA实验" scheme="https://huangzc.site/categories/CCNA%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-    <category term="CCNA" scheme="https://huangzc.site/tags/CCNA/"/>
-    
-    <category term="NAT" scheme="https://huangzc.site/tags/NAT/"/>
-    
-    <category term="PPP" scheme="https://huangzc.site/tags/PPP/"/>
     
   </entry>
   
