@@ -2628,6 +2628,136 @@
       </tags>
   </entry>
   <entry>
+    <title>vPC术语介绍</title>
+    <url>/2021/03/12/vPC%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文正主要介绍一些在vPC中常见的一些术语。</p>
+<a id="more"></a>
+
+<h3 id="vPC-Domian"><a href="#vPC-Domian" class="headerlink" title="vPC Domian"></a>vPC Domian</h3><ul>
+<li>vPC Domain定义参与vPC的一组交换机</li>
+<li>定义了全局vPC系统参数</li>
+<li>vPC对等体设备使用vPC Domain ID自动指派一个唯一的vPC系统MAC地址</li>
+<li>在比邻的二层区域的所有vPC对，必须使用唯一的Domain lD。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6Uwcd0.png" alt="image-20210301135251504"></p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6Uwbo6.png" alt="image-20210301135322300"></p>
+<h3 id="System-MAC"><a href="#System-MAC" class="headerlink" title="System MAC"></a>System MAC</h3><ul>
+<li>LACP邻居看到两个vPC对等体有相同的System ID</li>
+<li>vPC的“System MAC”被两个vPC对等体使用</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UBy5V.png" alt="image-20210301135716155"></p>
+<ul>
+<li>vPC对等体对于邻居而言呈现为一个独立的设备</li>
+<li>本地“System-MAC”用于所有的非vPC PDUs（LACP，STP，…）</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6U0eyj.png" alt="image-20210301140141170"></p>
+<h3 id="vPC-Role"><a href="#vPC-Role" class="headerlink" title="vPC Role"></a>vPC Role</h3><ul>
+<li>vPC根据Priority（优先级）选举Primary交换机。</li>
+<li>低优先级的交换机会胜出，如果优先级一样，低的system mac会胜出。</li>
+<li>Role（角色）是不能抢占的，因此应该关注Operational Role（操作角色）。</li>
+<li>操作角色可能与在Domain（域）下配置的优先级有所不同。</li>
+<li>vPC的角色决定了具体是那个vPC对等体来处理BPDUs。</li>
+<li>角色会影响当Peer Link失效后的行为。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6U0lkV.png" alt="image-20210301140610280"></p>
+<h3 id="vPC-Peer-Link"><a href="#vPC-Peer-Link" class="headerlink" title="vPC Peer Link"></a>vPC Peer Link</h3><ul>
+<li><p>基本特性介绍：</p>
+<ul>
+<li><p>标准的802.1Q Trunk</p>
+</li>
+<li><p>能够承载vPC和非vPC的VLAN</p>
+</li>
+<li><p>承载CFS信息（为了保障可靠的通讯，设置标签为CoS=4）</p>
+</li>
+<li><p>承载来自于vPC对等体的泛洪流量</p>
+</li>
+<li><p>承载 STP BPDUs，HSRP Hellos和IGMP updates等等流量</p>
+</li>
+</ul>
+</li>
+<li><p>需求：</p>
+<ul>
+<li><p>vPC Peer Link的成员端口必须是10GE接口</p>
+</li>
+<li><p>vPC Peer Link是点对点链路，在vPC对等体之间不能插入其它设备</p>
+</li>
+</ul>
+</li>
+<li><p>推荐：</p>
+<ul>
+<li>为了冗余，至少需要两个分布在不同接口卡上的10GE接口</li>
+<li>使用（Dedicated）专用10GE端口（不要使用共享端口）</li>
+</ul>
+</li>
+</ul>
+<p>PS：最好分离vPC和非vPC VLANs在不同的交换机之间的Port-Channel上。</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6U0GpF.png" alt="image-20210312140707877"></p>
+<h3 id="vPC-Peer-Link故障检测"><a href="#vPC-Peer-Link故障检测" class="headerlink" title="vPC Peer Link故障检测"></a>vPC Peer Link故障检测</h3><p>&emsp;&emsp;当vPC Peer-Link 故障（连接丢失），交换机通过vPC Peer-Keepalive Link的心跳信息，检查远端vPC对等体的状态。如果两个对等体都处于“Active”状态，Secondary（次要）vPC对等体会禁用所有的vPC来避免双Active的状况，数据依然能够通过剩余的Port-Channel的Active端口来转发数据。当CFS信息故障或者UDLD连接状态检查失效时，产生故障切换。</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6U0dTx.png" alt="image-20210312141854339"></p>
+<h3 id="vPC-Peer-Keepalive-Link"><a href="#vPC-Peer-Keepalive-Link" class="headerlink" title="vPC Peer Keepalive Link"></a>vPC Peer Keepalive Link</h3><ul>
+<li>基本特性介绍：<ul>
+<li>在vPC对等体间发送心跳信息</li>
+<li>在Peer-Link失效的情况下，检查vPC是否Active/Active</li>
+<li>信息发送间隔为1秒</li>
+<li>当Peer-Link失效后，有3秒的Hold超时时间，超时时间默认为5秒</li>
+</ul>
+</li>
+<li>包结构：<ul>
+<li>UDP/3200，长度为96字节（32字节负载长度），包括版本，时间戳，本地和远端IP地址，和domain ID。</li>
+<li>Keepalive信息可以通过板载的Wireshark工具进行捕获和显示。</li>
+</ul>
+</li>
+<li>推荐：<ul>
+<li>应该是一条专用链路（1Gb就足够了）</li>
+<li>千万不要通过Peer-Link进行转发</li>
+<li>可以使用mgmt0接口（和管理流量走在一起）</li>
+<li>作为最后的方案，可以通过三层架构进行路由</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6U0UmR.png" alt="image-20210312141313207"></p>
+<h3 id="vPC-Peer-Keepalive-Link注意事项"><a href="#vPC-Peer-Keepalive-Link注意事项" class="headerlink" title="vPC Peer Keepalive Link注意事项"></a>vPC Peer Keepalive Link注意事项</h3><p>&emsp;&emsp;当使用引擎的管理接口来承载vPC Peer Keepalive信息时，不要在两个交换机之间直接进行连接。因为同一时间只能有一个管理接口处于active状态，如果引擎出现故障切换，就会阻断Keep-alive连接。当存在带外网管网络时，才可以考虑管理接口作为Peer Keepalive Link（在vPC对等体之间存在管理交换机）</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6U0vNV.png" alt="image-20210312141617506"></p>
+<h3 id="vPC-Member-Port"><a href="#vPC-Member-Port" class="headerlink" title="vPC Member Port"></a>vPC Member Port</h3><ul>
+<li>基本特性介绍：<ul>
+<li>vPC对等体的Port-channel成员</li>
+</ul>
+</li>
+<li>需求：<ul>
+<li>两个vPC对等体的成员端口的配置需要匹配</li>
+<li>不一致的VLAN或者整个Port-Channel将会被挂起（例如不匹配的MTU）</li>
+<li>两个vPC对等体的成员端口的数量不需要一样</li>
+<li>在两个vPC对等体间最多能够有8个active的成员端口（如果使用多层的vPC最多可以支持16路的Port-Channel）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UBkH1.png" alt="image-20210312142047657"></p>
+<h3 id="vPC-与-VDC"><a href="#vPC-与-VDC" class="headerlink" title="vPC 与 VDC"></a>vPC 与 VDC</h3><ul>
+<li>vPC与VDC：<ul>
+<li>vPC可以工作在VDC环境</li>
+<li>每一个VDC只能够支持一个vPC Domain</li>
+<li>在每一个VDC部署中，依然需要使用分离的Peer-Link和Peer-Keepalive Link</li>
+</ul>
+</li>
+<li>vPC是否能够运行在一个交换机内的两个VDC之间？<ul>
+<li>在技术上是可以支持的，但是并不被官方支持</li>
+<li>可以作为实验和练习使用，但是强烈不推荐在工作环境使用，因为这样就人为造成了单点故障。</li>
+</ul>
+</li>
+</ul>
+<h3 id="vPC-Peer-Gateway"><a href="#vPC-Peer-Gateway" class="headerlink" title="vPC Peer-Gateway"></a>vPC Peer-Gateway</h3><p>&emsp;&emsp;允许一个vPC交换机，为那些去往对端路由器MAC的数据包扮演一个active网关。从而保持使用本地vPC节点，在本地转发流量。避免使用Peer-Link；不会影响流量和现有架构；允许和一些NAS和负载均衡器的特性进行互操作。</p>
+<p>&emsp;&emsp;推荐激活这个特性</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UBZ4K.png" alt="image-20210312143704824"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Nexus</tag>
+        <tag>vPC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>安恒杯四月月赛misc——Writeup</title>
     <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
     <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
