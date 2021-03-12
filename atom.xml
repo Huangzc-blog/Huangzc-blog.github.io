@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2021-03-12T05:07:07.961Z</updated>
+  <updated>2021-03-12T05:32:24.879Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/"/>
     <id>https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/</id>
     <published>2021-03-11T16:00:00.000Z</published>
-    <updated>2021-03-12T05:07:07.961Z</updated>
+    <updated>2021-03-12T05:32:24.879Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;Port Channel介绍；vPC基本概念。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;Port Channel是将多个端口，可以是同一块板卡，也可以使不同板卡上的端口，捆绑在一起，增大级联带宽和冗余性。同时，port-channel中的所有端口完全负载均衡。而vPC技术是一种虚拟捆绑的技术，相较于直接使用port-channel来讲，他可以实现将不同的线路进行捆绑。&lt;/p&gt;</summary>
     
     
     
@@ -63,10 +63,10 @@
     <link href="https://huangzc.site/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/"/>
     <id>https://huangzc.site/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/</id>
     <published>2021-03-07T16:00:00.000Z</published>
-    <updated>2021-03-10T01:40:08.163Z</updated>
+    <updated>2021-03-12T05:40:24.246Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;FEX技术介绍。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;FEX（Fabric Extenders），Cisco Nexus 2000 可以通过FEX技术成为N5K和N7K的一个远程线卡，被Cisco Nexus交换机管理和配置。&lt;/p&gt;</summary>
     
     
     
@@ -80,14 +80,14 @@
   </entry>
   
   <entry>
-    <title>Nexus交换机vDC</title>
+    <title>Nexus交换机VDC</title>
     <link href="https://huangzc.site/2021/03/05/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvDC/"/>
     <id>https://huangzc.site/2021/03/05/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvDC/</id>
     <published>2021-03-04T16:00:00.000Z</published>
-    <updated>2021-03-05T06:25:15.189Z</updated>
+    <updated>2021-03-12T05:37:22.587Z</updated>
     
     
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;Nexus系列交换机中的vDC的基本理论介绍。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;VDC技术提供了分离的资源和操作环境，并且VDC创建了一个分离的故障域。&lt;/p&gt;</summary>
     
     
     
@@ -96,7 +96,7 @@
     
     <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
     
-    <category term="vDC" scheme="https://huangzc.site/tags/vDC/"/>
+    <category term="VDC" scheme="https://huangzc.site/tags/VDC/"/>
     
   </entry>
   
