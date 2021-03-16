@@ -672,6 +672,255 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpg">
+      <meta itemprop="name" content="Huangzc">
+      <meta itemprop="description" content="emmmmmmmmmmmm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Huangzc's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/" class="post-title-link" itemprop="url">Nexus交换机FabricPath</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-01 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-01T00:00:00+08:00">2021-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-16 17:34:31" itemprop="dateModified" datetime="2021-03-16T17:34:31+08:00">2021-03-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+
+<h2 id="1-FabricPath简介"><a href="#1-FabricPath简介" class="headerlink" title="1 FabricPath简介"></a>1 FabricPath简介</h2><h3 id="1-1-智能二层网络的革命"><a href="#1-1-智能二层网络的革命" class="headerlink" title="1.1 智能二层网络的革命"></a>1.1 智能二层网络的革命</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOC8J.png" alt="image-20210315164725657"></p>
+<h3 id="1-2-当前数据中心设计"><a href="#1-2-当前数据中心设计" class="headerlink" title="1.2 当前数据中心设计"></a>1.2 当前数据中心设计</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOP29.png" alt="image-20210315164605993"></p>
+<h3 id="1-3-经典二层网络的限制"><a href="#1-3-经典二层网络的限制" class="headerlink" title="1.3 经典二层网络的限制"></a>1.3 经典二层网络的限制</h3><ol>
+<li>本地的STP问题将会影响整个网络，排错难度增大。</li>
+<li>STP技术提供了限制的带宽（不能实现负载均衡）。</li>
+<li>STP的收敛是混乱的。</li>
+<li>树状接口引入了不优化的路径。</li>
+<li>MAC地址表没有很好的扩展性。</li>
+<li>泛洪流量将会影响整个网络。</li>
+</ol>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOivR.png" alt="image-20210315165236704"></p>
+<h3 id="1-4-Cisco-FabricPath的目标"><a href="#1-4-Cisco-FabricPath的目标" class="headerlink" title="1.4 Cisco FabricPath的目标"></a>1.4 Cisco FabricPath的目标</h3><p>&emsp;&emsp;FabricPath技术融合了路由与交换的优势，实现一个端到端的大二层网络。</p>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOkK1.png" alt="image-20210315165321194"></p>
+<h3 id="1-5-FabricPath-A-Ethernet-Fabric"><a href="#1-5-FabricPath-A-Ethernet-Fabric" class="headerlink" title="1.5 FabricPath : A Ethernet Fabric"></a>1.5 FabricPath : A Ethernet Fabric</h3><ol>
+<li><p>使用任意的拓扑，连接一组的交换机</p>
+</li>
+<li><p>使用一个简单的CLI命令，汇聚交换机到一个Fabric</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">N7K(config)<span class="comment">#interface ethernet 1/1</span></span><br><span class="line">N7K(config-if)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>没有STP技术，是一个基于三层技术的开放协议，提供了Fabric范围的智能，并且把所有的组件捆绑到一起。</p>
+</li>
+</ol>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOADx.png" alt="image-20210315165621259"></p>
+<h3 id="1-6-Fabric的定义"><a href="#1-6-Fabric的定义" class="headerlink" title="1. 6 Fabric的定义"></a>1. 6 Fabric的定义</h3><p>&emsp;&emsp;从外部看，一个Fabric就像一个交换机。从内部看，一个协议提供了整个Fabric范围的智能，并且把所有组件绑定在一起。这个协议提供了即插即用的特性：</p>
+<ul>
+<li>优化的任意到任意的低延时连接</li>
+<li>高带宽，高弹性</li>
+<li>开放的管理和排错功能</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOeUO.png" alt="image-20210315164521167"></p>
+<h4 id="1-6-1-优化的低延时交换"><a href="#1-6-1-优化的低延时交换" class="headerlink" title="1.6.1 优化的低延时交换"></a>1.6.1 优化的低延时交换</h4><p>&emsp;&emsp;Shortest Path Any-to-Any（任意到任意最短路径）</p>
+<ul>
+<li>在包进入Fabric的边界设备执行简单的地址查询。</li>
+<li>流量使用可用的最短路劲来转发。</li>
+<li>可靠的二层和三层任意到任意的连接（就像在一个交换机内部一样，没有STP技术）</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOJVf.png" alt="image-20210315165750821"></p>
+<h4 id="1-6-2-高带宽，高弹性"><a href="#1-6-2-高带宽，高弹性" class="headerlink" title="1.6.2 高带宽，高弹性"></a>1.6.2 高带宽，高弹性</h4><p>&emsp;&emsp;Equal Cost Multi-pathing（等价多路径）</p>
+<ul>
+<li>多路径（Multi-pathing），在两个设备间，最多256个活动路径。</li>
+<li>如果出现故障，流量将会在剩余的链路中被分布，提供快速的收敛。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOtIS.png" alt="image-20210315165845703"></p>
+<h4 id="1-6-3-高扩展性"><a href="#1-6-3-高扩展性" class="headerlink" title="1.6.3 高扩展性"></a>1.6.3 高扩展性</h4><p>&emsp;&emsp;Conversational Learning（会话的MAC地址学习）</p>
+<ul>
+<li>每端口的MAC地址表，仅仅只学习那些可以通过Fabric抵达的对等体的MAC地址。</li>
+<li>一个虚拟的无限数量的主机，能够被加入这个Fabric。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOd2j.png" alt="image-20210315165858185"></p>
+<h3 id="1-7-二层的整合"><a href="#1-7-二层的整合" class="headerlink" title="1.7 二层的整合"></a>1.7 二层的整合</h3><p>&emsp;&emsp;vPC+</p>
+<ul>
+<li>允许无限制的延伸VLANs，不用担心出现环路。</li>
+<li>设备可以使用IEEE标准的Port Channel技术，通过Active/Active链路接入到Fabric，不需要使用STP技术。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sORG4.png" alt="image-20210315170429015"></p>
+<h3 id="1-8-边界设备的整合"><a href="#1-8-边界设备的整合" class="headerlink" title="1.8 边界设备的整合"></a>1.8 边界设备的整合</h3><p>&emsp;&emsp;主机可以利用多个三层默认网关</p>
+<ul>
+<li>主机只看到一个默认网关。</li>
+<li>Fabric提供了多个透明的同时Active的默认网关。</li>
+<li>允许从Fabric内部到外部三层网络的的多路径。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sO4MR.png" alt="image-20210315170527144"></p>
+<h3 id="1-9-三层的整合"><a href="#1-9-三层的整合" class="headerlink" title="1.9 三层的整合"></a>1.9 三层的整合</h3><p>&emsp;&emsp;XL Tables，SVIs Anywhere</p>
+<ul>
+<li>Fabric提供了无缝的三层整合。</li>
+<li>任意数量的路由接口，可以在边界或Fabric内部创建。</li>
+<li>连接的三层设备可以使用这些接口连建立连接。</li>
+<li>硬件有能力来处理这些百万级的路由。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOIqx.png" alt="image-20210315170641079"></p>
+<h2 id="2-FabricPath理论介绍"><a href="#2-FabricPath理论介绍" class="headerlink" title="2 FabricPath理论介绍"></a>2 FabricPath理论介绍</h2><h3 id="2-1-新的控制层面"><a href="#2-1-新的控制层面" class="headerlink" title="2.1 新的控制层面"></a>2.1 新的控制层面</h3><p>&emsp;&emsp;即插即用的由IS-IS管理的发送拓扑：</p>
+<ul>
+<li>IS-IS自动为所有的FabricPath交换机指派地址。</li>
+<li>计算最短路径。</li>
+<li>在任意的FabricPath交换机之间支持等价多路径。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9t3T.png" alt="image-20210315171114341"></p>
+<h3 id="2-2-新的数据层面"><a href="#2-2-新的数据层面" class="headerlink" title="2.2 新的数据层面"></a>2.2 新的数据层面</h3><ul>
+<li>在边界设备上维护MAC地址与Switch-ID之间的关联。</li>
+<li>流量被封装穿越整个Fabric</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9rU1.png" alt="image-20210315171137880"></p>
+<h3 id="2-2-FabricPath术语"><a href="#2-2-FabricPath术语" class="headerlink" title="2.2 FabricPath术语"></a>2.2 FabricPath术语</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9c8K.png" alt="image-20210315171241755"></p>
+<h4 id="2-2-1-FP-Core-Port"><a href="#2-2-1-FP-Core-Port" class="headerlink" title="2.2.1 FP Core Port"></a>2.2.1 FP Core Port</h4><ul>
+<li>接口被连接到其它FabricPath设备</li>
+<li>发送和接收有FabricPath头部的流量</li>
+<li>不运行STP</li>
+<li>不执行MAC地址学习</li>
+<li>通过二层的IS-IS邻居，交换拓扑信息</li>
+<li>基于Switch-ID表转发数据</li>
+</ul>
+<h4 id="2-2-2-CE-Edge-Port"><a href="#2-2-2-CE-Edge-Port" class="headerlink" title="2.2.2 CE Edge Port"></a>2.2.2 CE Edge Port</h4><ul>
+<li>接口被连接到传统网络设备</li>
+<li>发送和接收标准802.3以太网格式的帧</li>
+<li>参与到一个STP域</li>
+<li>基于MAC地址表转发流量</li>
+</ul>
+<h3 id="2-3-Unknown-Unicast"><a href="#2-3-Unknown-Unicast" class="headerlink" title="2.3 Unknown Unicast"></a>2.3 Unknown Unicast</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y92vD.png" alt="image-20210315172739563"></p>
+<h3 id="2-4-known-Unicast，Conversation-Learning"><a href="#2-4-known-Unicast，Conversation-Learning" class="headerlink" title="2.4 known Unicast，Conversation Learning"></a>2.4 known Unicast，Conversation Learning</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9H8f.png" alt="image-20210315172802054"></p>
+<h3 id="2-5-vPC"><a href="#2-5-vPC" class="headerlink" title="2.5 vPC+"></a>2.5 vPC+</h3><h4 id="2-5-1-vPC-简介"><a href="#2-5-1-vPC-简介" class="headerlink" title="2.5.1 vPC+简介"></a>2.5.1 vPC+简介</h4><ul>
+<li>允许边界端口到FabricPath域的“Dual-Homed”连接，实现Active/Active的转发。</li>
+<li>连接经典以太网交换机，三层路由器，负载均衡器，Dual-homed服务器，等等。</li>
+<li>仅仅只需要这些设备支持port-channel。</li>
+<li>可以提供Active/Active的HSRP。</li>
+<li>配置与标准的vPC几乎完全一样。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9XrQ.png" alt="image-20210315172908170"></p>
+<h4 id="2-5-2-vPC-详细介绍"><a href="#2-5-2-vPC-详细介绍" class="headerlink" title="2.5.2 vPC+详细介绍"></a>2.5.2 vPC+详细介绍</h4><ul>
+<li>vPC+对等体交换机，共享一个虚拟的FabricPath Switch-ID。</li>
+<li>在vPC+ Port-Channels身后的MAC地址，就好像被连接到这个虚拟的交换机上一样，而不是连接到这两个vPC对等体交换机上。</li>
+<li>允许在FabricPath域中，负载均衡的发送流量到这个vPC+虚拟交换机。</li>
+<li>vPC+技术需要配置F模块并且激活FabricPath技术的VDC。</li>
+<li>Peer-Link和所有的vPC+链路必须使用F端口。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9xVs.png" alt="image-20210315172946990"></p>
+<h4 id="2-5-3-vPC-vs-vPC"><a href="#2-5-3-vPC-vs-vPC" class="headerlink" title="2.5.3 vPC vs. vPC+"></a>2.5.3 vPC vs. vPC+</h4><ul>
+<li>一个特定的VDC，要么是一个vPC域的一部分，要么是一个vPC+域的一部分，不能同时属于两个域。</li>
+<li>vPC+只能工作在，配置F模块，并且激活FabricPath特性的VDC中。</li>
+<li>vPC与vPC+之间的转换，会造成流量的中断。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yC9P0.png" alt="image-20210315173022058"></p>
+<h3 id="2-6-TRILL技术"><a href="#2-6-TRILL技术" class="headerlink" title="2.6 TRILL技术"></a>2.6 TRILL技术</h3><p>&emsp;&emsp;TRILL（Transparent Interconnection of Lots of Links）技术简介：</p>
+<ul>
+<li>IETF标准的二层多路径技术。</li>
+<li>被Cisco在内的多个厂商所发起。</li>
+<li>TRILL技术已经从一个草案成为了一个被提议的标准。</li>
+<li>被提议的标准状态，意味着各个厂商可以开始开发与TRILL兼容的软件运用。</li>
+<li>Cisco支持FabricPath的硬件也同时支持TRILL技术。</li>
+</ul>
+<h3 id="2-7-FabricPath-vs-TRILL"><a href="#2-7-FabricPath-vs-TRILL" class="headerlink" title="2.7 FabricPath vs. TRILL"></a>2.7 FabricPath vs. TRILL</h3><ul>
+<li>FabricPath可以通过软件的升级，支持TRILL模式（硬件已经拥有TRILL能力）。</li>
+<li>Cisco将会推送FabricPath的特性到TRILL。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCCGV.png" alt="image-20210315173711478"></p>
+<h3 id="2-8-FabricPath-vs-TRILL-封装"><a href="#2-8-FabricPath-vs-TRILL-封装" class="headerlink" title="2.8 FabricPath vs. TRILL:封装"></a>2.8 FabricPath vs. TRILL:封装</h3><ul>
+<li>TRILL设备能够和在一个共享网络中的多个对等体进行通讯。</li>
+<li>FabricPath使用了一个更加紧凑的帧格式（简化硬件，低延时），只能使用点对点链路。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCAr4.png" alt="image-20210316161037508"></p>
+<h3 id="2-9-FabricPath-vs-TRILL-多路径"><a href="#2-9-FabricPath-vs-TRILL-多路径" class="headerlink" title="2.9 FabricPath vs. TRILL:多路径"></a>2.9 FabricPath vs. TRILL:多路径</h3><ul>
+<li>端到端的多路径（二层边界，Fabric，三层边界）提供弹性和快速的收敛。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCmI1.png" alt="image-20210316161119567"></p>
+<h3 id="2-10-FabricPath-vs-TRILL-多拓扑"><a href="#2-10-FabricPath-vs-TRILL-多拓扑" class="headerlink" title="2.10 FabricPath vs. TRILL:多拓扑"></a>2.10 FabricPath vs. TRILL:多拓扑</h3><ul>
+<li>Topology（拓扑）：在一个Fabric中的一组链路。</li>
+<li>默认所有的链路都属于Topology 0。</li>
+<li>其它的拓扑可以被创建，并且把一部分链路关联到这些拓扑中去。</li>
+<li>一个链路可以同时属于一系列拓扑。</li>
+<li>一个VLAN只能映射到一个唯一的Topology</li>
+<li>拓扑用于VLAN修剪，安全，流量工程，等等。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCYdA.png" alt="image-20210316161206963"></p>
+<h3 id="2-11-FabricPath-vs-TRILL-简化STP的交互"><a href="#2-11-FabricPath-vs-TRILL-简化STP的交互" class="headerlink" title="2.11 FabricPath vs. TRILL:简化STP的交互"></a>2.11 FabricPath vs. TRILL:简化STP的交互</h3><ul>
+<li>Fabric看上去就像一个单一的交换机。</li>
+<li>发送相同的STP信息到所有的边界端口。</li>
+<li>希望成为STP的Root（边界端口将会被阻止，如果收到更加优化的信息）</li>
+<li>没有BPDU信息在Fabric中被发送。</li>
+<li>一个可选的机制，如果需要允许传播TCN。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCtII.png" alt="image-20210316162730054"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1042,101 +1291,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">BGP的选路原则</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-15T00:00:00+08:00">2020-10-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-16 22:35:39" itemprop="dateModified" datetime="2020-10-16T22:35:39+08:00">2020-10-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;本篇文章主要介绍BGP的13种选路原则。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1208,7 +1362,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1221,7 +1375,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1255,7 +1409,7 @@
     <h3 class="widget-title">Tag Cloud</h3>
     <div id="myCanvasContainer" class="widget tagcloud">
         <canvas width="250" height="250" id="resCanvas" style="width=100%">
-            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FEX/" rel="tag">FEX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nexus/" rel="tag">Nexus</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VDC/" rel="tag">VDC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vPC/" rel="tag">vPC</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACL/" rel="tag">ACL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BGP/" rel="tag">BGP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNA/" rel="tag">CCNA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CCNP/" rel="tag">CCNP</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EIGRP/" rel="tag">EIGRP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FEX/" rel="tag">FEX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FabricPath/" rel="tag">FabricPath</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IGP/" rel="tag">IGP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IS-IS/" rel="tag">IS-IS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MPLS/" rel="tag">MPLS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAT/" rel="tag">NAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nexus/" rel="tag">Nexus</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSPF/" rel="tag">OSPF</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPP/" rel="tag">PPP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RIP/" rel="tag">RIP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STP/" rel="tag">STP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VDC/" rel="tag">VDC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vPC/" rel="tag">vPC</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A4%E6%8D%A2/" rel="tag">交换</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1/" rel="tag">单臂路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" rel="tag">基础配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1/" rel="tag">网络与数据通信</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag">网络安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE/" rel="tag">路由协议</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="tag">选路原则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" rel="tag">静态路由</a><span class="tag-list-count">1</span></li></ul>
         </canvas>
     </div>
 </div>
@@ -1289,12 +1443,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">165k</span>
+    <span title="站点总字数">168k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:30</span>
+    <span title="站点阅读时长">2:33</span>
 </div>
 <!--
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

@@ -35,30 +35,47 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="&amp;emsp;&amp;emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。">
+  <meta name="description" content="1 FabricPath简介1.1 智能二层网络的革命 1.2 当前数据中心设计 1.3 经典二层网络的限制 本地的STP问题将会影响整个网络，排错难度增大。 STP技术提供了限制的带宽（不能实现负载均衡）。 STP的收敛是混乱的。 树状接口引入了不优化的路径。 MAC地址表没有很好的扩展性。 泛洪流量将会影响整个网络。   1.4 Cisco FabricPath的目标&amp;emsp;&amp;emsp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MPLS基础知识">
-<meta property="og:url" content="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:title" content="Nexus交换机FabricPath">
+<meta property="og:url" content="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。">
+<meta property="og:description" content="1 FabricPath简介1.1 智能二层网络的革命 1.2 当前数据中心设计 1.3 经典二层网络的限制 本地的STP问题将会影响整个网络，排错难度增大。 STP技术提供了限制的带宽（不能实现负载均衡）。 STP的收敛是混乱的。 树状接口引入了不优化的路径。 MAC地址表没有很好的扩展性。 泛洪流量将会影响整个网络。   1.4 Cisco FabricPath的目标&amp;emsp;&amp;emsp">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6nywD.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6uUHS.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6uHu6.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6ubDK.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6uOED.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6KSgI.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6Kib8.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6KrIe.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/B6Kbzn.png">
-<meta property="article:published_time" content="2020-11-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-11-03T16:16:46.738Z">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOC8J.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOP29.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOivR.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOkK1.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOADx.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOeUO.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOJVf.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOtIS.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOd2j.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sORG4.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sO4MR.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6sOIqx.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6y9t3T.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6y9rU1.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6y9c8K.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6y92vD.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6y9H8f.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6y9XrQ.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6y9xVs.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6yC9P0.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6yCCGV.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6yCAr4.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6yCmI1.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6yCYdA.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/16/6yCtII.png">
+<meta property="article:published_time" content="2021-02-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-16T09:34:31.879Z">
 <meta property="article:author" content="Huangzc">
-<meta property="article:tag" content="MPLS">
+<meta property="article:tag" content="Nexus">
+<meta property="article:tag" content="FabricPath">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.ax1x.com/2020/11/03/B6nywD.png">
+<meta name="twitter:image" content="https://s3.ax1x.com/2021/03/16/6sOC8J.png">
 
-<link rel="canonical" href="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<link rel="canonical" href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/">
 
 
 <script id="page-configurations">
@@ -71,7 +88,7 @@
   };
 </script>
 
-  <title>MPLS基础知识 | Huangzc's blog</title>
+  <title>Nexus交换机FabricPath | Huangzc's blog</title>
   
 
 
@@ -229,7 +246,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -242,7 +259,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          MPLS基础知识
+          Nexus交换机FabricPath
         </h1>
 
         <div class="post-meta">
@@ -252,14 +269,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-03 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-03T00:00:00+08:00">2020-11-03</time>
+              <time title="创建时间：2021-03-01 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-01T00:00:00+08:00">2021-03-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-04 00:16:46" itemprop="dateModified" datetime="2020-11-04T00:16:46+08:00">2020-11-04</time>
+                <time title="修改时间：2021-03-16 17:34:31" itemprop="dateModified" datetime="2021-03-16T17:34:31+08:00">2021-03-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,14 +294,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.7k</span>
+              <span>3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -296,99 +313,168 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>&emsp;&emsp;多协议标签交换（英语：Multi-Protocol Label Switching，缩写为MPLS）是一种在开放的通信网上利用标签引导数据高速、高效传输的新技术。多协议的含义是指MPLS不但可以支持多种网络层层面上的协议，还可以兼容第二层的多种数据链路层技术。</p>
-<a id="more"></a>
+        <a id="more"></a>
 
-<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h1><p>&emsp;&emsp;多协议标签交换（Multi-Protocol Label Switching，MPLS）是新一代的IP高速骨干网络交换标准，由因特网工程任务组（Internet Engineering Task Force，IETF）提出。</p>
-<p>&emsp;&emsp;MPLS是利用标记（label）进行数据转发的。当分组进入网络时，要为其分配固定长度的短的标记，并将标记与分组封装在一起，在整个转发过程中，交换节点仅根据标记进行转发。</p>
-<p>&emsp;&emsp;MPLS 独立于第二和第三层协议，诸如ATM 和IP。它提供了一种方式，将IP地址映射为简单的具有固定长度的标签，用于不同的包转发和包交换技术。它是现有路由和交换协议的接口，如IP、ATM、帧中继、资源预留协议（RSVP）、开放最短路径优先（OSPF）等等。</p>
-<p>&emsp;&emsp;在MPLS 中，数据传输发生在标签交换路径（LSP）上。LSP 是每一个沿着从源端到终端的路径上的结点的标签序列。</p>
-<p>&emsp;&emsp;MPLS 主要设计来解决网路问题，如网路速度、可扩展性、服务质量（QoS）管理以及流量工程，同时也为下一代IP 中枢网络解决宽带管理及服务请求等问题。</p>
-<p>&emsp;&emsp;在这部分，我们主要关注通用MPLS 框架。有关LDP、CR-LDP 和RSVP-TE 的具体内容可以参考个别文件。</p>
-<p>&emsp;&emsp;多协议标签交换MPLS最初是为了提高转发速度而提出的。与传统IP路由方式相比，它在数据转发时，只在网络边缘分析IP报文头，而不用在每一跳都分析IP报文头，从而节约了处理时间。</p>
-<p>&emsp;&emsp;MPLS起源于IPv4（Internet Protocol version 4），其核心技术可扩展到多种网络协议，包括IPX（Internet Packet Exchange）、Appletalk、DECnet、CLNP（Connectionless Network Protocol）等。“MPLS”中的“Multiprotocol”指的就是支持多种网络协议。</p>
-<h1 id="2-基础知识"><a href="#2-基础知识" class="headerlink" title="2 基础知识"></a>2 基础知识</h1><h2 id="2-1-MPLS的特性"><a href="#2-1-MPLS的特性" class="headerlink" title="2.1 MPLS的特性"></a>2.1 MPLS的特性</h2><ul>
-<li>MPLS依赖IP路由和CEF交换</li>
-<li>MPLS是一种依据数据包标签的转发技术</li>
-<li>MPLS支持多种三层协议</li>
-<li>MPLS涉及的目标网段与传统的IP转发是一样的</li>
-</ul>
-<h2 id="2-2-MPLS标签"><a href="#2-2-MPLS标签" class="headerlink" title="2.2 MPLS标签"></a>2.2 MPLS标签</h2><p><strong>1. 标签描述</strong></p>
-<p>&emsp;&emsp;两种模式：frame mode；ATM mode（cell mode），我们主要研究的是 frame mode。</p>
-<p><img src="https://s1.ax1x.com/2020/11/03/B6nywD.png" alt="image-20201103125606257"></p>
-<p>&emsp;&emsp;标签头一共32位，包含的字段如下：</p>
-<table>
-<thead>
-<tr>
-<th>LABEL</th>
-<th>20bits</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>BoS</td>
-<td>1bit为栈底位（这一位置 1 ，则为最后一个标签。可以给一个数据压多层标签，最后一个标签的BoS位置1，当处理到这层，上层数据包为普通数据包。）</td>
-</tr>
-<tr>
-<td>TTL</td>
-<td>8bit 最大 255 ，通常在加标签的时候，把普通的IP报文中的TTL字段直接复制进来使用，在弹出标签是，再将标签中的TTL字段复制进IP报文中。</td>
-</tr>
-<tr>
-<td>EXP</td>
-<td>3bit 实验位用于QoS</td>
-</tr>
-</tbody></table>
-<p><strong>2. 标签的位置</strong></p>
-<p><img src="https://s1.ax1x.com/2020/11/03/B6uUHS.png" alt="image-20201103130842541"></p>
-<p>&emsp;&emsp;路由器如何知道一个报文是普通报文还是一个标签包呢？MPLS报文会在二层头和三层包间插入一个MPLS标签头。同时二层数据链路层帧头会做相应的指示，例如以太网数据帧，MAC 层的 TYPE 字段会指示上层数据是否为MPLS标签帧（如果是IPv4报文的话值为0x0800，如果是标签包则为8847-单播或8848-组播）</p>
-<p>&emsp;&emsp;上图是封装了三层标签包，对于一个LSR来说，只处理第一个标签。每一层标签都有个BoS栈底位，用来表示是否已经是标签栈的栈底，最后一个标签的BoS=1。</p>
-<p><strong>3. MPLS编码</strong></p>
-<p>&emsp;&emsp;标签栈放置在第三层包头之前，也就是说，被传输的协议头部之前，同时在第二层包头之后。对于第2层链路层封装可以是CISCO IOS所支持的所有封装类型，PPP、HDLC、Ethenet等等。那么在这些第2层的帧头，就需要有相应的协议字段来指示上层是一个标签头。</p>
-<p><img src="https://s1.ax1x.com/2020/11/03/B6uHu6.png" alt="无标题"></p>
-<p><strong>4. 标签的处理方式</strong></p>
+<h2 id="1-FabricPath简介"><a href="#1-FabricPath简介" class="headerlink" title="1 FabricPath简介"></a>1 FabricPath简介</h2><h3 id="1-1-智能二层网络的革命"><a href="#1-1-智能二层网络的革命" class="headerlink" title="1.1 智能二层网络的革命"></a>1.1 智能二层网络的革命</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOC8J.png" alt="image-20210315164725657"></p>
+<h3 id="1-2-当前数据中心设计"><a href="#1-2-当前数据中心设计" class="headerlink" title="1.2 当前数据中心设计"></a>1.2 当前数据中心设计</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOP29.png" alt="image-20210315164605993"></p>
+<h3 id="1-3-经典二层网络的限制"><a href="#1-3-经典二层网络的限制" class="headerlink" title="1.3 经典二层网络的限制"></a>1.3 经典二层网络的限制</h3><ol>
+<li>本地的STP问题将会影响整个网络，排错难度增大。</li>
+<li>STP技术提供了限制的带宽（不能实现负载均衡）。</li>
+<li>STP的收敛是混乱的。</li>
+<li>树状接口引入了不优化的路径。</li>
+<li>MAC地址表没有很好的扩展性。</li>
+<li>泛洪流量将会影响整个网络。</li>
+</ol>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOivR.png" alt="image-20210315165236704"></p>
+<h3 id="1-4-Cisco-FabricPath的目标"><a href="#1-4-Cisco-FabricPath的目标" class="headerlink" title="1.4 Cisco FabricPath的目标"></a>1.4 Cisco FabricPath的目标</h3><p>&emsp;&emsp;FabricPath技术融合了路由与交换的优势，实现一个端到端的大二层网络。</p>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOkK1.png" alt="image-20210315165321194"></p>
+<h3 id="1-5-FabricPath-A-Ethernet-Fabric"><a href="#1-5-FabricPath-A-Ethernet-Fabric" class="headerlink" title="1.5 FabricPath : A Ethernet Fabric"></a>1.5 FabricPath : A Ethernet Fabric</h3><ol>
+<li><p>使用任意的拓扑，连接一组的交换机</p>
+</li>
+<li><p>使用一个简单的CLI命令，汇聚交换机到一个Fabric</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">N7K(config)<span class="comment">#interface ethernet 1/1</span></span><br><span class="line">N7K(config-if)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>没有STP技术，是一个基于三层技术的开放协议，提供了Fabric范围的智能，并且把所有的组件捆绑到一起。</p>
+</li>
+</ol>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOADx.png" alt="image-20210315165621259"></p>
+<h3 id="1-6-Fabric的定义"><a href="#1-6-Fabric的定义" class="headerlink" title="1. 6 Fabric的定义"></a>1. 6 Fabric的定义</h3><p>&emsp;&emsp;从外部看，一个Fabric就像一个交换机。从内部看，一个协议提供了整个Fabric范围的智能，并且把所有组件绑定在一起。这个协议提供了即插即用的特性：</p>
 <ul>
-<li><p>Insert (impose or push)</p>
-</li>
-<li><p>swap</p>
-</li>
-<li><p>Remove (PoP)</p>
-<p>关于标签处理方式的更详细内容，见下文。</p>
-</li>
+<li>优化的任意到任意的低延时连接</li>
+<li>高带宽，高弹性</li>
+<li>开放的管理和排错功能</li>
 </ul>
-<h1 id="3-标签报文的查找与转发"><a href="#3-标签报文的查找与转发" class="headerlink" title="3 标签报文的查找与转发"></a>3 标签报文的查找与转发</h1><h2 id="3-1-MPLS的三张表"><a href="#3-1-MPLS的三张表" class="headerlink" title="3.1 MPLS的三张表"></a>3.1 MPLS的三张表</h2><p><strong>1. FIB表</strong></p>
-<p>&emsp;&emsp;FIB表其实就是CEF表</p>
-<p><strong>2. LIB标签信息库</strong></p>
-<p>&emsp;&emsp;路由器为每一个IGP前缀在本地生成一个标签并分发给LDP邻居，同时也从其他LDP邻居收到为特定前缀分发的标签。路由器将本地标签和远程标签（LDP邻居发给我的）存储在LIB中。</p>
-<p><strong>3. LFIB标签转发信息库</strong></p>
-<p>&emsp;&emsp;LSR路由可能收到某个特定前缀的多个标签（多个LDP邻居分发的），但他只需要使用其中一个，IP路由表用来确定这个IPv4前缀的下一跳（LFIB的构造需要一来IGP路由表，因为LFIB的下一跳就是IGP表算来的）LSR用这样的信息来创建它的LFIB。在 LFIB中本地捆绑的标签作为入站标签，LDP 邻居通告的标签作为出站标签。</p>
-<p>&emsp;&emsp;构成LFIB的标签可以不是LDP分发的，在MPLS流量工程中使用RSVP分配标签，在MPLS VPN中，VPN标签由BGP分发。在任何情况下，LFIB总是用来转发入站的带标签的报文。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">17         17         5.5.5.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">18         18         4.4.4.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">19         19         3.3.3.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">20         Pop Label  2.2.2.0/24       0             Et0/1      192.168.12.2</span><br><span class="line">21         20         192.168.34.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">22         21         192.168.35.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">23         Pop Label  192.168.23.0/24  0             Et0/1      192.168.12.2</span><br><span class="line">24         Pop Label  192.168.25.0/24  0             Et0/1      192.168.12.2</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">R1<span class="comment">#show mpls forwarding-table 172.16.2.0 detail </span></span><br><span class="line">Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    </span><br><span class="line">Label      Label      or Tunnel Id     Switched      interface              </span><br><span class="line">16         16         172.16.2.0/24    0             Et0/1      192.168.12.2</span><br><span class="line">        MAC/Encaps=14/18, MRU=1500, Label Stack&#123;16&#125;</span><br><span class="line">        AABBCC002010AABBCC0010108847 00010000</span><br><span class="line">        No output feature configured</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用detail关键字能查看到LFIB转发条目的详细信息，包括二层的信息，以及所有的标签内容，如果不加则只能看到顶层标签。</p>
-<h2 id="3-2-IP查找和标签查找"><a href="#3-2-IP查找和标签查找" class="headerlink" title="3.2 IP查找和标签查找"></a>3.2 IP查找和标签查找</h2><p><img src="https://s1.ax1x.com/2020/11/03/B6ubDK.png" alt="无标题"></p>
-<p>&emsp;&emsp;如果LSR收到一个IP报文，则查看FIB表（CEF表），假设FIB（CEF表）相关表项输出如下： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">R1<span class="comment">#show ip cef 172.16.2.0 detail </span></span><br><span class="line">172.16.2.0/24, epoch 0</span><br><span class="line">  <span class="built_in">local</span> label info: global/16</span><br><span class="line">  nexthop 192.168.12.2 Ethernet0/1 label 16</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;那么LSR将这个IP包压入一个标签头，打上标签16，再从 E0/1接口转发出去。在CISCO lOS中，CEF交换是唯一的一种可用于标记报文的IP转发模式，因此在启用MPLS的时候必须在路由器上开启CEF。</p>
-<p>&emsp;&emsp;而当一台路由器收到一个带标签的报文的时候，则在LFIB表中进行查找，LFIB表中相关的匹配条目会有针对该入站标签的出站动作或标签，以及下一跳信息。</p>
-<p>【注意】如果路由器收到一个带标签的数据包，并且顶部标签不能在本地LFIB中找到，那么CISCO IOS将丢弃这个数据包。</p>
-<h2 id="3-3-标签分配过程概述"><a href="#3-3-标签分配过程概述" class="headerlink" title="3.3 标签分配过程概述"></a>3.3 标签分配过程概述</h2><p><strong>1. 构建IP路由表</strong></p>
-<p><img src="https://s1.ax1x.com/2020/11/03/B6uOED.png" alt="无标题"></p>
-<p>&emsp;&emsp;首先呢，所有的路由器都运行路由协议，全网路由互通。接下去在路由器的接口上激活LDP，那么路由器两两之间就会形成LDP邻接关系。</p>
-<p><strong>2. 分配并分发标签</strong></p>
-<p><img src="https://s1.ax1x.com/2020/11/03/B6KSgI.png" alt="无标题"></p>
-<p>&emsp;&emsp;激活LDP后，每台路由器会为自己本地路由表中的路由前缀分配并捆绑标签，例如本图中的 X 路由，所有路由器都会自己为 X 路由分配一个标签，然后将为 X 路由捆绑的标签保存在本地的 LIB 表里。随后，所有的LDP路由器，将自己为各个路由前缀捆绑的标签发给它的LDP邻居，如图所示，B将捆绑的标签发给了A、E和C。这里有个小细节，注意，标签的分发没有水平分割的概念，也就是说虽然B可能是从C学习到路由 X，但是 B 仍然会将为前缀 X 捆绑的标签传递给C。C也会将传递自B的标签放在LIB中，不过不用担心会有环路，因为 LDP 可以借助IGP路由协议来防止环路。</p>
-<p><img src="https://s1.ax1x.com/2020/11/03/B6Kib8.png" alt="无标题"></p>
-<p>&emsp;&emsp;当 LDP 路由器从他的 LDP 邻居收到邻居的标签捆绑，它会将捆绑的结果存储在自己的 LIB 表中，LIB 表中有 local label ，这是自己为特定路由前缀分发的标签，remote label 这是邻居为该路由前缀分发的标签。LDP 路由器会将邻居分配的 remote label 都放在 LIB，但是只会从 LIB 中所有可能的标签中选择出一个可能的出站标签放入 LFIB 中。LDP 路由器根据 LIB 表，结合路由表，构成 LFIB 表，如上图中 A 的 LFIB 表。<br>&emsp;&emsp;这里有一点要注意，我们看E路由器，实际上，它是会收到自己 LDP 邻居 B 和 C 的标签捆绑，其中都有关于路由 X 捆绑的标签，那么 E 在自己的 LFIB 表里，存的是哪位邻居的 remote label 呢？答案是 C，因为 C 是E路由器去往 X 的下一跳，E会借助路由表，来判断谁的标签捆绑“更优”。</p>
-<p><strong>3. LIB and LFIB表的建立</strong></p>
-<p><img src="https://s1.ax1x.com/2020/11/03/B6KrIe.png" alt="无标题"></p>
-<p>&emsp;&emsp;在所有的LDP路由器都互相发送标签捆绑后，大家逐步构建自己的LFIB。</p>
-<p><img src="https://s1.ax1x.com/2020/11/03/B6Kbzn.png" alt="无标题"></p>
-<p>&emsp;&emsp;大家的 LFIB 构建完成后，我们就能看到，当 A 收到一个 IP 数据包，要访问X，那么 A 查看自己的 CEF 表（为什么是查看CEF还记得么？)，发现要给数据包压标签，于是它压上标签头，标签值为201，然后下一跳是 B，也就是发送给 B。那么 B 收到这个标签包，发现标签头里的 label 字段为 201，于是查看自己的LFIB，发现 201 标签的 outgoing label 是 301 并且下一跳是 C，于是它将 201 标签替换成 301，然后交给 C。到了 C 它也去查 FIB 表，发现 301 标签对应的outgoing label 是 PoP 并且下一跳是 D，于是它将标签头弹出，这就露出了原始的 IPv4 数据，C 将这个数据包交给 D。</p>
-<blockquote>
-<p>本篇博客大部分内容节选自红茶三杯 CCIE学习文档之MPLS，目前只摘取的部分内容。感兴趣的话可以去<a target="_blank" rel="noopener" href="http://ccietea.com/%E6%9F%A5%E7%9C%8B%E3%80%82">http://ccietea.com/查看。</a></p>
-</blockquote>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOeUO.png" alt="image-20210315164521167"></p>
+<h4 id="1-6-1-优化的低延时交换"><a href="#1-6-1-优化的低延时交换" class="headerlink" title="1.6.1 优化的低延时交换"></a>1.6.1 优化的低延时交换</h4><p>&emsp;&emsp;Shortest Path Any-to-Any（任意到任意最短路径）</p>
+<ul>
+<li>在包进入Fabric的边界设备执行简单的地址查询。</li>
+<li>流量使用可用的最短路劲来转发。</li>
+<li>可靠的二层和三层任意到任意的连接（就像在一个交换机内部一样，没有STP技术）</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOJVf.png" alt="image-20210315165750821"></p>
+<h4 id="1-6-2-高带宽，高弹性"><a href="#1-6-2-高带宽，高弹性" class="headerlink" title="1.6.2 高带宽，高弹性"></a>1.6.2 高带宽，高弹性</h4><p>&emsp;&emsp;Equal Cost Multi-pathing（等价多路径）</p>
+<ul>
+<li>多路径（Multi-pathing），在两个设备间，最多256个活动路径。</li>
+<li>如果出现故障，流量将会在剩余的链路中被分布，提供快速的收敛。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOtIS.png" alt="image-20210315165845703"></p>
+<h4 id="1-6-3-高扩展性"><a href="#1-6-3-高扩展性" class="headerlink" title="1.6.3 高扩展性"></a>1.6.3 高扩展性</h4><p>&emsp;&emsp;Conversational Learning（会话的MAC地址学习）</p>
+<ul>
+<li>每端口的MAC地址表，仅仅只学习那些可以通过Fabric抵达的对等体的MAC地址。</li>
+<li>一个虚拟的无限数量的主机，能够被加入这个Fabric。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOd2j.png" alt="image-20210315165858185"></p>
+<h3 id="1-7-二层的整合"><a href="#1-7-二层的整合" class="headerlink" title="1.7 二层的整合"></a>1.7 二层的整合</h3><p>&emsp;&emsp;vPC+</p>
+<ul>
+<li>允许无限制的延伸VLANs，不用担心出现环路。</li>
+<li>设备可以使用IEEE标准的Port Channel技术，通过Active/Active链路接入到Fabric，不需要使用STP技术。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sORG4.png" alt="image-20210315170429015"></p>
+<h3 id="1-8-边界设备的整合"><a href="#1-8-边界设备的整合" class="headerlink" title="1.8 边界设备的整合"></a>1.8 边界设备的整合</h3><p>&emsp;&emsp;主机可以利用多个三层默认网关</p>
+<ul>
+<li>主机只看到一个默认网关。</li>
+<li>Fabric提供了多个透明的同时Active的默认网关。</li>
+<li>允许从Fabric内部到外部三层网络的的多路径。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sO4MR.png" alt="image-20210315170527144"></p>
+<h3 id="1-9-三层的整合"><a href="#1-9-三层的整合" class="headerlink" title="1.9 三层的整合"></a>1.9 三层的整合</h3><p>&emsp;&emsp;XL Tables，SVIs Anywhere</p>
+<ul>
+<li>Fabric提供了无缝的三层整合。</li>
+<li>任意数量的路由接口，可以在边界或Fabric内部创建。</li>
+<li>连接的三层设备可以使用这些接口连建立连接。</li>
+<li>硬件有能力来处理这些百万级的路由。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOIqx.png" alt="image-20210315170641079"></p>
+<h2 id="2-FabricPath理论介绍"><a href="#2-FabricPath理论介绍" class="headerlink" title="2 FabricPath理论介绍"></a>2 FabricPath理论介绍</h2><h3 id="2-1-新的控制层面"><a href="#2-1-新的控制层面" class="headerlink" title="2.1 新的控制层面"></a>2.1 新的控制层面</h3><p>&emsp;&emsp;即插即用的由IS-IS管理的发送拓扑：</p>
+<ul>
+<li>IS-IS自动为所有的FabricPath交换机指派地址。</li>
+<li>计算最短路径。</li>
+<li>在任意的FabricPath交换机之间支持等价多路径。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9t3T.png" alt="image-20210315171114341"></p>
+<h3 id="2-2-新的数据层面"><a href="#2-2-新的数据层面" class="headerlink" title="2.2 新的数据层面"></a>2.2 新的数据层面</h3><ul>
+<li>在边界设备上维护MAC地址与Switch-ID之间的关联。</li>
+<li>流量被封装穿越整个Fabric</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9rU1.png" alt="image-20210315171137880"></p>
+<h3 id="2-2-FabricPath术语"><a href="#2-2-FabricPath术语" class="headerlink" title="2.2 FabricPath术语"></a>2.2 FabricPath术语</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9c8K.png" alt="image-20210315171241755"></p>
+<h4 id="2-2-1-FP-Core-Port"><a href="#2-2-1-FP-Core-Port" class="headerlink" title="2.2.1 FP Core Port"></a>2.2.1 FP Core Port</h4><ul>
+<li>接口被连接到其它FabricPath设备</li>
+<li>发送和接收有FabricPath头部的流量</li>
+<li>不运行STP</li>
+<li>不执行MAC地址学习</li>
+<li>通过二层的IS-IS邻居，交换拓扑信息</li>
+<li>基于Switch-ID表转发数据</li>
+</ul>
+<h4 id="2-2-2-CE-Edge-Port"><a href="#2-2-2-CE-Edge-Port" class="headerlink" title="2.2.2 CE Edge Port"></a>2.2.2 CE Edge Port</h4><ul>
+<li>接口被连接到传统网络设备</li>
+<li>发送和接收标准802.3以太网格式的帧</li>
+<li>参与到一个STP域</li>
+<li>基于MAC地址表转发流量</li>
+</ul>
+<h3 id="2-3-Unknown-Unicast"><a href="#2-3-Unknown-Unicast" class="headerlink" title="2.3 Unknown Unicast"></a>2.3 Unknown Unicast</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y92vD.png" alt="image-20210315172739563"></p>
+<h3 id="2-4-known-Unicast，Conversation-Learning"><a href="#2-4-known-Unicast，Conversation-Learning" class="headerlink" title="2.4 known Unicast，Conversation Learning"></a>2.4 known Unicast，Conversation Learning</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9H8f.png" alt="image-20210315172802054"></p>
+<h3 id="2-5-vPC"><a href="#2-5-vPC" class="headerlink" title="2.5 vPC+"></a>2.5 vPC+</h3><h4 id="2-5-1-vPC-简介"><a href="#2-5-1-vPC-简介" class="headerlink" title="2.5.1 vPC+简介"></a>2.5.1 vPC+简介</h4><ul>
+<li>允许边界端口到FabricPath域的“Dual-Homed”连接，实现Active/Active的转发。</li>
+<li>连接经典以太网交换机，三层路由器，负载均衡器，Dual-homed服务器，等等。</li>
+<li>仅仅只需要这些设备支持port-channel。</li>
+<li>可以提供Active/Active的HSRP。</li>
+<li>配置与标准的vPC几乎完全一样。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9XrQ.png" alt="image-20210315172908170"></p>
+<h4 id="2-5-2-vPC-详细介绍"><a href="#2-5-2-vPC-详细介绍" class="headerlink" title="2.5.2 vPC+详细介绍"></a>2.5.2 vPC+详细介绍</h4><ul>
+<li>vPC+对等体交换机，共享一个虚拟的FabricPath Switch-ID。</li>
+<li>在vPC+ Port-Channels身后的MAC地址，就好像被连接到这个虚拟的交换机上一样，而不是连接到这两个vPC对等体交换机上。</li>
+<li>允许在FabricPath域中，负载均衡的发送流量到这个vPC+虚拟交换机。</li>
+<li>vPC+技术需要配置F模块并且激活FabricPath技术的VDC。</li>
+<li>Peer-Link和所有的vPC+链路必须使用F端口。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9xVs.png" alt="image-20210315172946990"></p>
+<h4 id="2-5-3-vPC-vs-vPC"><a href="#2-5-3-vPC-vs-vPC" class="headerlink" title="2.5.3 vPC vs. vPC+"></a>2.5.3 vPC vs. vPC+</h4><ul>
+<li>一个特定的VDC，要么是一个vPC域的一部分，要么是一个vPC+域的一部分，不能同时属于两个域。</li>
+<li>vPC+只能工作在，配置F模块，并且激活FabricPath特性的VDC中。</li>
+<li>vPC与vPC+之间的转换，会造成流量的中断。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yC9P0.png" alt="image-20210315173022058"></p>
+<h3 id="2-6-TRILL技术"><a href="#2-6-TRILL技术" class="headerlink" title="2.6 TRILL技术"></a>2.6 TRILL技术</h3><p>&emsp;&emsp;TRILL（Transparent Interconnection of Lots of Links）技术简介：</p>
+<ul>
+<li>IETF标准的二层多路径技术。</li>
+<li>被Cisco在内的多个厂商所发起。</li>
+<li>TRILL技术已经从一个草案成为了一个被提议的标准。</li>
+<li>被提议的标准状态，意味着各个厂商可以开始开发与TRILL兼容的软件运用。</li>
+<li>Cisco支持FabricPath的硬件也同时支持TRILL技术。</li>
+</ul>
+<h3 id="2-7-FabricPath-vs-TRILL"><a href="#2-7-FabricPath-vs-TRILL" class="headerlink" title="2.7 FabricPath vs. TRILL"></a>2.7 FabricPath vs. TRILL</h3><ul>
+<li>FabricPath可以通过软件的升级，支持TRILL模式（硬件已经拥有TRILL能力）。</li>
+<li>Cisco将会推送FabricPath的特性到TRILL。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCCGV.png" alt="image-20210315173711478"></p>
+<h3 id="2-8-FabricPath-vs-TRILL-封装"><a href="#2-8-FabricPath-vs-TRILL-封装" class="headerlink" title="2.8 FabricPath vs. TRILL:封装"></a>2.8 FabricPath vs. TRILL:封装</h3><ul>
+<li>TRILL设备能够和在一个共享网络中的多个对等体进行通讯。</li>
+<li>FabricPath使用了一个更加紧凑的帧格式（简化硬件，低延时），只能使用点对点链路。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCAr4.png" alt="image-20210316161037508"></p>
+<h3 id="2-9-FabricPath-vs-TRILL-多路径"><a href="#2-9-FabricPath-vs-TRILL-多路径" class="headerlink" title="2.9 FabricPath vs. TRILL:多路径"></a>2.9 FabricPath vs. TRILL:多路径</h3><ul>
+<li>端到端的多路径（二层边界，Fabric，三层边界）提供弹性和快速的收敛。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCmI1.png" alt="image-20210316161119567"></p>
+<h3 id="2-10-FabricPath-vs-TRILL-多拓扑"><a href="#2-10-FabricPath-vs-TRILL-多拓扑" class="headerlink" title="2.10 FabricPath vs. TRILL:多拓扑"></a>2.10 FabricPath vs. TRILL:多拓扑</h3><ul>
+<li>Topology（拓扑）：在一个Fabric中的一组链路。</li>
+<li>默认所有的链路都属于Topology 0。</li>
+<li>其它的拓扑可以被创建，并且把一部分链路关联到这些拓扑中去。</li>
+<li>一个链路可以同时属于一系列拓扑。</li>
+<li>一个VLAN只能映射到一个唯一的Topology</li>
+<li>拓扑用于VLAN修剪，安全，流量工程，等等。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCYdA.png" alt="image-20210316161206963"></p>
+<h3 id="2-11-FabricPath-vs-TRILL-简化STP的交互"><a href="#2-11-FabricPath-vs-TRILL-简化STP的交互" class="headerlink" title="2.11 FabricPath vs. TRILL:简化STP的交互"></a>2.11 FabricPath vs. TRILL:简化STP的交互</h3><ul>
+<li>Fabric看上去就像一个单一的交换机。</li>
+<li>发送相同的STP信息到所有的边界端口。</li>
+<li>希望成为STP的Root（边界端口将会被阻止，如果收到更加优化的信息）</li>
+<li>没有BPDU信息在Fabric中被发送。</li>
+<li>一个可选的机制，如果需要允许传播TCN。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCtII.png" alt="image-20210316162730054"></p>
 
     </div>
 
@@ -424,7 +510,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://huangzc.site/2020/11/03/MPLS%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="MPLS基础知识">https://huangzc.site/2020/11/03/MPLS基础知识/</a>
+    <a href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/" title="Nexus交换机FabricPath">https://huangzc.site/2021/03/01/Nexus交换机FabricPath/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -446,7 +532,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/MPLS/" rel="tag"><i class="fa fa-tag"></i> MPLS</a>
+              <a href="/tags/Nexus/" rel="tag"><i class="fa fa-tag"></i> Nexus</a>
+              <a href="/tags/FabricPath/" rel="tag"><i class="fa fa-tag"></i> FabricPath</a>
           </div>
 
         
@@ -455,12 +542,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/" rel="prev" title="BGP的选路原则">
-      <i class="fa fa-chevron-left"></i> BGP的选路原则
+    <a href="/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/" rel="prev" title="OSPF路由优选规则">
+      <i class="fa fa-chevron-left"></i> OSPF路由优选规则
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/" rel="next" title="OSPF邻居关系建立及维护">
-      OSPF邻居关系建立及维护 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/03/05/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvDC/" rel="next" title="Nexus交换机VDC">
+      Nexus交换机VDC <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -525,7 +612,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">2 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-MPLS%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-text">2.1 MPLS的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-MPLS%E6%A0%87%E7%AD%BE"><span class="nav-text">2.2 MPLS标签</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%A0%87%E7%AD%BE%E6%8A%A5%E6%96%87%E7%9A%84%E6%9F%A5%E6%89%BE%E4%B8%8E%E8%BD%AC%E5%8F%91"><span class="nav-text">3 标签报文的查找与转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-MPLS%E7%9A%84%E4%B8%89%E5%BC%A0%E8%A1%A8"><span class="nav-text">3.1 MPLS的三张表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-IP%E6%9F%A5%E6%89%BE%E5%92%8C%E6%A0%87%E7%AD%BE%E6%9F%A5%E6%89%BE"><span class="nav-text">3.2 IP查找和标签查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%A0%87%E7%AD%BE%E5%88%86%E9%85%8D%E8%BF%87%E7%A8%8B%E6%A6%82%E8%BF%B0"><span class="nav-text">3.3 标签分配过程概述</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-FabricPath%E7%AE%80%E4%BB%8B"><span class="nav-text">1 FabricPath简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%99%BA%E8%83%BD%E4%BA%8C%E5%B1%82%E7%BD%91%E7%BB%9C%E7%9A%84%E9%9D%A9%E5%91%BD"><span class="nav-text">1.1 智能二层网络的革命</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%BD%93%E5%89%8D%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83%E8%AE%BE%E8%AE%A1"><span class="nav-text">1.2 当前数据中心设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E7%BB%8F%E5%85%B8%E4%BA%8C%E5%B1%82%E7%BD%91%E7%BB%9C%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-text">1.3 经典二层网络的限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Cisco-FabricPath%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-text">1.4 Cisco FabricPath的目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-FabricPath-A-Ethernet-Fabric"><span class="nav-text">1.5 FabricPath : A Ethernet Fabric</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Fabric%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">1. 6 Fabric的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-1-%E4%BC%98%E5%8C%96%E7%9A%84%E4%BD%8E%E5%BB%B6%E6%97%B6%E4%BA%A4%E6%8D%A2"><span class="nav-text">1.6.1 优化的低延时交换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-2-%E9%AB%98%E5%B8%A6%E5%AE%BD%EF%BC%8C%E9%AB%98%E5%BC%B9%E6%80%A7"><span class="nav-text">1.6.2 高带宽，高弹性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-3-%E9%AB%98%E6%89%A9%E5%B1%95%E6%80%A7"><span class="nav-text">1.6.3 高扩展性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E4%BA%8C%E5%B1%82%E7%9A%84%E6%95%B4%E5%90%88"><span class="nav-text">1.7 二层的整合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-%E8%BE%B9%E7%95%8C%E8%AE%BE%E5%A4%87%E7%9A%84%E6%95%B4%E5%90%88"><span class="nav-text">1.8 边界设备的整合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-9-%E4%B8%89%E5%B1%82%E7%9A%84%E6%95%B4%E5%90%88"><span class="nav-text">1.9 三层的整合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-FabricPath%E7%90%86%E8%AE%BA%E4%BB%8B%E7%BB%8D"><span class="nav-text">2 FabricPath理论介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%96%B0%E7%9A%84%E6%8E%A7%E5%88%B6%E5%B1%82%E9%9D%A2"><span class="nav-text">2.1 新的控制层面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%96%B0%E7%9A%84%E6%95%B0%E6%8D%AE%E5%B1%82%E9%9D%A2"><span class="nav-text">2.2 新的数据层面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-FabricPath%E6%9C%AF%E8%AF%AD"><span class="nav-text">2.2 FabricPath术语</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-FP-Core-Port"><span class="nav-text">2.2.1 FP Core Port</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-CE-Edge-Port"><span class="nav-text">2.2.2 CE Edge Port</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Unknown-Unicast"><span class="nav-text">2.3 Unknown Unicast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-known-Unicast%EF%BC%8CConversation-Learning"><span class="nav-text">2.4 known Unicast，Conversation Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-vPC"><span class="nav-text">2.5 vPC+</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-1-vPC-%E7%AE%80%E4%BB%8B"><span class="nav-text">2.5.1 vPC+简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-2-vPC-%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D"><span class="nav-text">2.5.2 vPC+详细介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-3-vPC-vs-vPC"><span class="nav-text">2.5.3 vPC vs. vPC+</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-TRILL%E6%8A%80%E6%9C%AF"><span class="nav-text">2.6 TRILL技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-FabricPath-vs-TRILL"><span class="nav-text">2.7 FabricPath vs. TRILL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-FabricPath-vs-TRILL-%E5%B0%81%E8%A3%85"><span class="nav-text">2.8 FabricPath vs. TRILL:封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-FabricPath-vs-TRILL-%E5%A4%9A%E8%B7%AF%E5%BE%84"><span class="nav-text">2.9 FabricPath vs. TRILL:多路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-FabricPath-vs-TRILL-%E5%A4%9A%E6%8B%93%E6%89%91"><span class="nav-text">2.10 FabricPath vs. TRILL:多拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-11-FabricPath-vs-TRILL-%E7%AE%80%E5%8C%96STP%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-text">2.11 FabricPath vs. TRILL:简化STP的交互</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

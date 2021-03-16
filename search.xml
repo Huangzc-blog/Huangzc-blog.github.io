@@ -128,97 +128,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNA实验一——简单的基础实验</title>
-    <url>/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>熟练掌握 GNS3 模拟器的安装与使用</p>
-</li>
-<li><p>掌握 GNS3 与 CRT 的关联</p>
-</li>
-<li><p>掌握通过 console 口方式登入设备</p>
-</li>
-<li><p>掌握通过 Telnet 方式远程登入设备</p>
-</li>
-<li><p>熟悉设备命令行界面的三种模式</p>
-</li>
-<li><p>熟悉查看路由器相关信息的基本命令</p>
-</li>
-</ol>
-<p>【实验需求】</p>
-<ol>
-<li>安装并使用 GNS3 模拟器及将 GNS3 与 CRT 关联</li>
-<li>路由器不同模式的转换</li>
-</ol>
-<p>&emsp;&emsp;路由器的三个模式：用户模式**&gt;<strong>、特权模式</strong>#<strong>、全局/配置模式</strong>（config）#**。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#用户模式转换为特权模式</span></span><br><span class="line">R1&gt;<span class="built_in">enable</span></span><br><span class="line"><span class="comment">#特权模式转换为全局/配置模式</span></span><br><span class="line">R1<span class="comment">#configure terminal </span></span><br><span class="line">R1(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>配置关闭域名解析、控制台超时和同步</li>
-</ol>
-<p>&emsp;&emsp;当配置Cisco设备长时间不进行配置时，就会退出用户模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#这是在做实验的时候的优化命令时，往往会由于打错命令，造成路由器会自动去向DNS服务器发送域名解析请求，造成耗损路由器CPU，而且解析时间很长而没法继续其他命令。为了加快命令的执行就关闭域名解析功能。在连入公网的路由器上，不需要关于域名解析，可以直接通过输入www.baidu.com去访问百度网站。输入下行命令可关闭域名解析</span></span><br><span class="line">R1(config)<span class="comment">#no ip domain lookup </span></span><br><span class="line"><span class="comment">#当配置Cisco设备长时间不进行配置时，就会退出用户模式。可以进入console口，将控制台超时的时间置为0（永不超时）</span></span><br><span class="line">R1(config)<span class="comment">#line console 0</span></span><br><span class="line">R1(config-line)<span class="comment">#exec-timeout 0</span></span><br><span class="line"><span class="comment">#在实验过程中控制台尝尝或出现一些提示信息，可以输入下行命令关闭日志同步，</span></span><br><span class="line">R1(config-line)<span class="comment">#logging synchronous </span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>设置设备名称</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#hostname Huangzc</span></span><br><span class="line">Huangzc(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>查看路由器的 IOS 版本，IOS 文件名，flash 大小，flash 可用空间及CPU 的利用率以及接口的简要信息</li>
-</ol>
-<p>&emsp;&emsp;查看路由器的IOS版本，IOS文件名：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show version </span></span><br><span class="line">Cisco IOS Software, 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line">Technical Support: http://www.cisco.com/techsupport</span><br><span class="line">Copyright (c) 1986-2010 by Cisco Systems, Inc.</span><br><span class="line">Compiled Wed 18-Aug-10 08:18 by prod_rel_team</span><br><span class="line"></span><br><span class="line">ROM: ROMMON Emulation Microcode</span><br><span class="line">ROM: 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line"></span><br><span class="line">Huangzc uptime is 21 minutes</span><br><span class="line">System returned to ROM by unknown reload cause - suspect boot_data[BOOT_COUNT] 0x0, BOOT_COUNT 0, BOOTDATA 19</span><br><span class="line">System image file is <span class="string">&quot;tftp://255.255.255.255/unknown&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">This product contains cryptographic features and is subject to United</span><br><span class="line">States and <span class="built_in">local</span> country laws governing import, <span class="built_in">export</span>, transfer and</span><br><span class="line">use. Delivery of Cisco cryptographic products does not imply</span><br><span class="line">third-party authority to import, <span class="built_in">export</span>, distribute or use encryption.</span><br><span class="line">Importers, exporters, distributors and users are responsible <span class="keyword">for</span></span><br><span class="line">compliance with U.S. and <span class="built_in">local</span> country laws. By using this product you</span><br><span class="line">agree to comply with applicable laws and regulations. If you are unable</span><br><span class="line">to comply with U.S. and <span class="built_in">local</span> laws, <span class="built_in">return</span> this product immediately.</span><br><span class="line"></span><br><span class="line">A summary of U.S. laws governing Cisco cryptographic products may be found at:</span><br><span class="line">http://www.cisco.com/wwl/<span class="built_in">export</span>/crypto/tool/stqrg.html</span><br><span class="line"></span><br><span class="line">If you require further assistance please contact us by sending email to</span><br><span class="line"><span class="built_in">export</span>@cisco.com.</span><br><span class="line"></span><br><span class="line">Cisco 3745 (R7000) processor (revision 2.0) with 249856K/12288K bytes of memory.</span><br><span class="line">Processor board ID FTX0945W0MY</span><br><span class="line">R7000 CPU at 350MHz, Implementation 39, Rev 2.1, 256KB L2, 512KB L3 Cache</span><br><span class="line">18 FastEthernet interfaces</span><br><span class="line">8 Serial interfaces</span><br><span class="line">1 Serial(sync/async) interface</span><br><span class="line">DRAM configuration is 64 bits wide with parity enabled.</span><br><span class="line">151K bytes of NVRAM.</span><br><span class="line"></span><br><span class="line">Configuration register is 0x2102</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;查看CPU 的利用率：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Huangzc#show processes cpu </span><br><span class="line">CPU utilization <span class="keyword">for</span> five seconds: <span class="number">0</span>%/<span class="number">0</span>%; one minute: <span class="number">0</span>%; five minutes: <span class="number">0</span>%</span><br><span class="line"> PID Runtime(ms)   Invoked      uSecs   <span class="number">5</span>Sec   <span class="number">1</span>Min   <span class="number">5</span>Min TTY Process </span><br><span class="line">   <span class="number">1</span>           <span class="number">4</span>         <span class="number">5</span>        <span class="number">800</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Chunk Manager    </span><br><span class="line">   <span class="number">2</span>           <span class="number">4</span>       <span class="number">284</span>         <span class="number">14</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Load Meter       </span><br><span class="line">   <span class="number">3</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> chkpt message ha </span><br><span class="line">   <span class="number">4</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> EDDRI_MAIN       </span><br><span class="line">   <span class="number">5</span>         <span class="number">296</span>       <span class="number">145</span>       <span class="number">2041</span>  <span class="number">0.00</span>%  <span class="number">0.01</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Check heaps      </span><br><span class="line">   <span class="number">6</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Pool Manager     </span><br><span class="line">   <span class="number">7</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Timers           </span><br><span class="line">   <span class="number">8</span>           <span class="number">0</span>        <span class="number">24</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Dynamic Cach </span><br><span class="line">   <span class="number">9</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Zone Manager </span><br><span class="line">  <span class="number">10</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Periodic Tim </span><br><span class="line">  <span class="number">11</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Deferred Por </span><br><span class="line">  <span class="number">12</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Seat Manager </span><br><span class="line">  <span class="number">13</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC BackPressure </span><br><span class="line">  <span class="number">14</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> OIR Handler      </span><br><span class="line">  <span class="number">15</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Crash writer     </span><br><span class="line">  <span class="number">16</span>           <span class="number">4</span>        <span class="number">49</span>         <span class="number">81</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Environmental mo </span><br><span class="line">  <span class="number">17</span>          <span class="number">12</span>        <span class="number">28</span>        <span class="number">428</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ARP Input        </span><br><span class="line">  <span class="number">18</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ATM Idle Timer   </span><br><span class="line">  <span class="number">19</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA high-capacit </span><br><span class="line">  <span class="number">20</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA_SERVER_DEADT </span><br><span class="line">  <span class="number">21</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Policy Manager  </span><br><span class="line">  --more--</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;查看接口的简要信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show ip interface brief </span></span><br><span class="line">Interface                  IP-Address      OK? Method Status                Protocol</span><br><span class="line">FastEthernet0/0            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial0/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet0/1            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet3/0            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/1            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/2            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/3            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/4            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/5            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/6            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/7            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/8            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/9            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/10           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/11           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/12           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/13           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/14           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/15           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">Vlan1                      unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;受实验环境所限，flash信息暂时无法查看</p>
-<ol start="6">
-<li>路由器的安全加固：console 口加密和进入特权模式的加密</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置console口的密码，并应用</span></span><br><span class="line">Huangzc(config)<span class="comment">#line console 0</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#login</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（明文）</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable password 456</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（密文），若两者都启用的话，则明文不生效</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable secret 789</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/22/wOvXwV.png"></p>
-<ol start="7">
-<li>使用 Telnet 远程登入设备</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123456</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#transport input telnet </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/22/wOvjoT.png"></p>
-<ol start="8">
-<li>了解 DTE 和 DCE 的区别以及 DCE 的时钟频率设置</li>
-</ol>
-<p>① 意思不同</p>
-<p>&emsp;&emsp;DCE的意思是数据通信设备或者数据电路终端设备，该设备和其与通信网络的连接构成了网络终端的用户网络接口。DTE的意思是数据终端设备，指的是位于用户网络接口用户端的设备。</p>
-<p>② 作用不同</p>
-<p>&emsp;&emsp;DCE提供了到网络的一条物理连接、转发业务量，并且提供了一个用于同步DCE设备和DTE设备之间数据传输的时钟信号。调制解调器和接口卡都是DCE设备的例子。</p>
-<p>&emsp;&emsp;DTE它能够作为信源、信宿或同时为二者。数据终端设备通过数据通信设备连接到一个数据网络上，并且通常使用数据通信设备产生的时钟信号。</p>
-<p>③用法和功能不同</p>
-<p>&emsp;&emsp;DTE与DCE比较Data Communications Equipment（数据通讯设备）的首字母缩略词DCE，它在DTE和传输线路之间提供信号变换和编码功能，并负责建立、保持和释放链路的连接，如 Modem。DCE设备通常是与DTE对接，因此针脚的分配相反，也就是2是接收，3是发送。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#int s1/0</span></span><br><span class="line">Huangzc(config-if)<span class="comment">#clock rate 1000</span></span><br></pre></td></tr></table></figure>
-
-<ol start="9">
-<li>查看当前的配置信息以及保存配置文件</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前的配置信息</span></span><br><span class="line">R1<span class="comment">#show running-config </span></span><br><span class="line"><span class="comment">#保存配置文件</span></span><br><span class="line">R1<span class="comment">#write </span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>基础配置</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNA实验七——STP 的运用</title>
     <url>/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。</p>
@@ -317,6 +226,185 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验一——简单的基础实验</title>
+    <url>/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>熟练掌握 GNS3 模拟器的安装与使用</p>
+</li>
+<li><p>掌握 GNS3 与 CRT 的关联</p>
+</li>
+<li><p>掌握通过 console 口方式登入设备</p>
+</li>
+<li><p>掌握通过 Telnet 方式远程登入设备</p>
+</li>
+<li><p>熟悉设备命令行界面的三种模式</p>
+</li>
+<li><p>熟悉查看路由器相关信息的基本命令</p>
+</li>
+</ol>
+<p>【实验需求】</p>
+<ol>
+<li>安装并使用 GNS3 模拟器及将 GNS3 与 CRT 关联</li>
+<li>路由器不同模式的转换</li>
+</ol>
+<p>&emsp;&emsp;路由器的三个模式：用户模式**&gt;<strong>、特权模式</strong>#<strong>、全局/配置模式</strong>（config）#**。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#用户模式转换为特权模式</span></span><br><span class="line">R1&gt;<span class="built_in">enable</span></span><br><span class="line"><span class="comment">#特权模式转换为全局/配置模式</span></span><br><span class="line">R1<span class="comment">#configure terminal </span></span><br><span class="line">R1(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>配置关闭域名解析、控制台超时和同步</li>
+</ol>
+<p>&emsp;&emsp;当配置Cisco设备长时间不进行配置时，就会退出用户模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#这是在做实验的时候的优化命令时，往往会由于打错命令，造成路由器会自动去向DNS服务器发送域名解析请求，造成耗损路由器CPU，而且解析时间很长而没法继续其他命令。为了加快命令的执行就关闭域名解析功能。在连入公网的路由器上，不需要关于域名解析，可以直接通过输入www.baidu.com去访问百度网站。输入下行命令可关闭域名解析</span></span><br><span class="line">R1(config)<span class="comment">#no ip domain lookup </span></span><br><span class="line"><span class="comment">#当配置Cisco设备长时间不进行配置时，就会退出用户模式。可以进入console口，将控制台超时的时间置为0（永不超时）</span></span><br><span class="line">R1(config)<span class="comment">#line console 0</span></span><br><span class="line">R1(config-line)<span class="comment">#exec-timeout 0</span></span><br><span class="line"><span class="comment">#在实验过程中控制台尝尝或出现一些提示信息，可以输入下行命令关闭日志同步，</span></span><br><span class="line">R1(config-line)<span class="comment">#logging synchronous </span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>设置设备名称</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#hostname Huangzc</span></span><br><span class="line">Huangzc(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>查看路由器的 IOS 版本，IOS 文件名，flash 大小，flash 可用空间及CPU 的利用率以及接口的简要信息</li>
+</ol>
+<p>&emsp;&emsp;查看路由器的IOS版本，IOS文件名：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show version </span></span><br><span class="line">Cisco IOS Software, 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line">Technical Support: http://www.cisco.com/techsupport</span><br><span class="line">Copyright (c) 1986-2010 by Cisco Systems, Inc.</span><br><span class="line">Compiled Wed 18-Aug-10 08:18 by prod_rel_team</span><br><span class="line"></span><br><span class="line">ROM: ROMMON Emulation Microcode</span><br><span class="line">ROM: 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line"></span><br><span class="line">Huangzc uptime is 21 minutes</span><br><span class="line">System returned to ROM by unknown reload cause - suspect boot_data[BOOT_COUNT] 0x0, BOOT_COUNT 0, BOOTDATA 19</span><br><span class="line">System image file is <span class="string">&quot;tftp://255.255.255.255/unknown&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">This product contains cryptographic features and is subject to United</span><br><span class="line">States and <span class="built_in">local</span> country laws governing import, <span class="built_in">export</span>, transfer and</span><br><span class="line">use. Delivery of Cisco cryptographic products does not imply</span><br><span class="line">third-party authority to import, <span class="built_in">export</span>, distribute or use encryption.</span><br><span class="line">Importers, exporters, distributors and users are responsible <span class="keyword">for</span></span><br><span class="line">compliance with U.S. and <span class="built_in">local</span> country laws. By using this product you</span><br><span class="line">agree to comply with applicable laws and regulations. If you are unable</span><br><span class="line">to comply with U.S. and <span class="built_in">local</span> laws, <span class="built_in">return</span> this product immediately.</span><br><span class="line"></span><br><span class="line">A summary of U.S. laws governing Cisco cryptographic products may be found at:</span><br><span class="line">http://www.cisco.com/wwl/<span class="built_in">export</span>/crypto/tool/stqrg.html</span><br><span class="line"></span><br><span class="line">If you require further assistance please contact us by sending email to</span><br><span class="line"><span class="built_in">export</span>@cisco.com.</span><br><span class="line"></span><br><span class="line">Cisco 3745 (R7000) processor (revision 2.0) with 249856K/12288K bytes of memory.</span><br><span class="line">Processor board ID FTX0945W0MY</span><br><span class="line">R7000 CPU at 350MHz, Implementation 39, Rev 2.1, 256KB L2, 512KB L3 Cache</span><br><span class="line">18 FastEthernet interfaces</span><br><span class="line">8 Serial interfaces</span><br><span class="line">1 Serial(sync/async) interface</span><br><span class="line">DRAM configuration is 64 bits wide with parity enabled.</span><br><span class="line">151K bytes of NVRAM.</span><br><span class="line"></span><br><span class="line">Configuration register is 0x2102</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看CPU 的利用率：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Huangzc#show processes cpu </span><br><span class="line">CPU utilization <span class="keyword">for</span> five seconds: <span class="number">0</span>%/<span class="number">0</span>%; one minute: <span class="number">0</span>%; five minutes: <span class="number">0</span>%</span><br><span class="line"> PID Runtime(ms)   Invoked      uSecs   <span class="number">5</span>Sec   <span class="number">1</span>Min   <span class="number">5</span>Min TTY Process </span><br><span class="line">   <span class="number">1</span>           <span class="number">4</span>         <span class="number">5</span>        <span class="number">800</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Chunk Manager    </span><br><span class="line">   <span class="number">2</span>           <span class="number">4</span>       <span class="number">284</span>         <span class="number">14</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Load Meter       </span><br><span class="line">   <span class="number">3</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> chkpt message ha </span><br><span class="line">   <span class="number">4</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> EDDRI_MAIN       </span><br><span class="line">   <span class="number">5</span>         <span class="number">296</span>       <span class="number">145</span>       <span class="number">2041</span>  <span class="number">0.00</span>%  <span class="number">0.01</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Check heaps      </span><br><span class="line">   <span class="number">6</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Pool Manager     </span><br><span class="line">   <span class="number">7</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Timers           </span><br><span class="line">   <span class="number">8</span>           <span class="number">0</span>        <span class="number">24</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Dynamic Cach </span><br><span class="line">   <span class="number">9</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Zone Manager </span><br><span class="line">  <span class="number">10</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Periodic Tim </span><br><span class="line">  <span class="number">11</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Deferred Por </span><br><span class="line">  <span class="number">12</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Seat Manager </span><br><span class="line">  <span class="number">13</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC BackPressure </span><br><span class="line">  <span class="number">14</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> OIR Handler      </span><br><span class="line">  <span class="number">15</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Crash writer     </span><br><span class="line">  <span class="number">16</span>           <span class="number">4</span>        <span class="number">49</span>         <span class="number">81</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Environmental mo </span><br><span class="line">  <span class="number">17</span>          <span class="number">12</span>        <span class="number">28</span>        <span class="number">428</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ARP Input        </span><br><span class="line">  <span class="number">18</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ATM Idle Timer   </span><br><span class="line">  <span class="number">19</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA high-capacit </span><br><span class="line">  <span class="number">20</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA_SERVER_DEADT </span><br><span class="line">  <span class="number">21</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Policy Manager  </span><br><span class="line">  --more--</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看接口的简要信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show ip interface brief </span></span><br><span class="line">Interface                  IP-Address      OK? Method Status                Protocol</span><br><span class="line">FastEthernet0/0            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial0/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet0/1            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet3/0            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/1            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/2            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/3            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/4            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/5            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/6            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/7            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/8            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/9            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/10           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/11           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/12           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/13           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/14           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/15           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">Vlan1                      unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;受实验环境所限，flash信息暂时无法查看</p>
+<ol start="6">
+<li>路由器的安全加固：console 口加密和进入特权模式的加密</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置console口的密码，并应用</span></span><br><span class="line">Huangzc(config)<span class="comment">#line console 0</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#login</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（明文）</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable password 456</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（密文），若两者都启用的话，则明文不生效</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable secret 789</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/22/wOvXwV.png"></p>
+<ol start="7">
+<li>使用 Telnet 远程登入设备</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123456</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#transport input telnet </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/22/wOvjoT.png"></p>
+<ol start="8">
+<li>了解 DTE 和 DCE 的区别以及 DCE 的时钟频率设置</li>
+</ol>
+<p>① 意思不同</p>
+<p>&emsp;&emsp;DCE的意思是数据通信设备或者数据电路终端设备，该设备和其与通信网络的连接构成了网络终端的用户网络接口。DTE的意思是数据终端设备，指的是位于用户网络接口用户端的设备。</p>
+<p>② 作用不同</p>
+<p>&emsp;&emsp;DCE提供了到网络的一条物理连接、转发业务量，并且提供了一个用于同步DCE设备和DTE设备之间数据传输的时钟信号。调制解调器和接口卡都是DCE设备的例子。</p>
+<p>&emsp;&emsp;DTE它能够作为信源、信宿或同时为二者。数据终端设备通过数据通信设备连接到一个数据网络上，并且通常使用数据通信设备产生的时钟信号。</p>
+<p>③用法和功能不同</p>
+<p>&emsp;&emsp;DTE与DCE比较Data Communications Equipment（数据通讯设备）的首字母缩略词DCE，它在DTE和传输线路之间提供信号变换和编码功能，并负责建立、保持和释放链路的连接，如 Modem。DCE设备通常是与DTE对接，因此针脚的分配相反，也就是2是接收，3是发送。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#int s1/0</span></span><br><span class="line">Huangzc(config-if)<span class="comment">#clock rate 1000</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>查看当前的配置信息以及保存配置文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前的配置信息</span></span><br><span class="line">R1<span class="comment">#show running-config </span></span><br><span class="line"><span class="comment">#保存配置文件</span></span><br><span class="line">R1<span class="comment">#write </span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>基础配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNA实验二——静态路由的应用</title>
+    <url>/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li>理解路由的作用</li>
+<li>掌握静态路由的配置</li>
+<li>理解路由表的含义</li>
+<li>理解默认路由的作用与配置</li>
+<li>理解默认路由的使用场合</li>
+<li>理解 traceroute 和 ping 命令的使用</li>
+<li>理解 loopback 接口的作用</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/09/22/wXSEGD.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li><p>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</p>
+<p><img src="https://s1.ax1x.com/2020/09/23/wvabTg.png"></p>
+</li>
+<li><p>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.10.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.10.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.20.1 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.20.2 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.2.254 255.255.255.0                             </span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0 192.168.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0 gateway 192.168.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.2.1 255.255.255.0 192.168.2.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC2 : 192.168.2.1 255.255.255.0 gateway 192.168.2.254</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>测试 PC1 与 PC2 两主机之间的连通性</li>
+</ol>
+<p>&emsp;&emsp;PC1与PC2之间不可达，因为PC1的网关R1处没有去往192.168.2.0/24网段的路由。</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1LfP.png"></p>
+<ol start="4">
+<li>在 R1 上创建一条到达对端主机 PC2 所在网络的静态路由，要求使用下一跳方式实现</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.10.2</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>在 R3 上创建一条到达对端主机 PC1 所在网络的静态路由，要求使用出接口方式实现</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>观察 R1 和 R3 上的路由表，仔细观察使用出接口与使用下一跳方式的静态路由表项的不同</li>
+</ol>
+<p>&emsp;&emsp;R1为下一跳：</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1v6S.png"></p>
+<p>&emsp;&emsp;R2为出接口：</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1xOg.png"></p>
+<ol start="6">
+<li>添加合适的配置，实现 PC1 与 PC2 之间的连通性，使用 ping 进行测试</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 192.168.10.1</span></span><br><span class="line">R2(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.20.2</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3SmQ.png"></p>
+<ol start="6">
+<li>分别在 PC1 和 PC2 上使用 tracert 观察两主机通信过程的传输路径</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz39Ts.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3iYq.png"></p>
+<ol start="6">
+<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.255</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 192.168.10.2</span><br><span class="line"></span><br><span class="line">R3(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 s2/1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3Ff0.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3n0J.png"></p>
+<ol start="6">
+<li>删除 R1 和 R3 上的静态路由条目，使用默认路由实现 PC1 与 PC2 之间的连通性</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 192.168.10.2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3mm4.png"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>静态路由</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验九——NAT 和 PPP 的应用</title>
     <url>/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 NAT 的作用；不同 NAT 的特点及配置；不同 NAT 的使用场合； PPP 的 PAP 和 CHAP 验证；辅助地址的作用； NAT 的验证和查看命令。</p>
@@ -412,94 +500,6 @@
         <tag>CCNA</tag>
         <tag>NAT</tag>
         <tag>PPP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验二——静态路由的应用</title>
-    <url>/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li>理解路由的作用</li>
-<li>掌握静态路由的配置</li>
-<li>理解路由表的含义</li>
-<li>理解默认路由的作用与配置</li>
-<li>理解默认路由的使用场合</li>
-<li>理解 traceroute 和 ping 命令的使用</li>
-<li>理解 loopback 接口的作用</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/09/22/wXSEGD.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li><p>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</p>
-<p><img src="https://s1.ax1x.com/2020/09/23/wvabTg.png"></p>
-</li>
-<li><p>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.10.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.10.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.20.1 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.20.2 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.2.254 255.255.255.0                             </span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0 192.168.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0 gateway 192.168.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.2.1 255.255.255.0 192.168.2.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC2 : 192.168.2.1 255.255.255.0 gateway 192.168.2.254</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>测试 PC1 与 PC2 两主机之间的连通性</li>
-</ol>
-<p>&emsp;&emsp;PC1与PC2之间不可达，因为PC1的网关R1处没有去往192.168.2.0/24网段的路由。</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1LfP.png"></p>
-<ol start="4">
-<li>在 R1 上创建一条到达对端主机 PC2 所在网络的静态路由，要求使用下一跳方式实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.10.2</span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>在 R3 上创建一条到达对端主机 PC1 所在网络的静态路由，要求使用出接口方式实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>观察 R1 和 R3 上的路由表，仔细观察使用出接口与使用下一跳方式的静态路由表项的不同</li>
-</ol>
-<p>&emsp;&emsp;R1为下一跳：</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1v6S.png"></p>
-<p>&emsp;&emsp;R2为出接口：</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1xOg.png"></p>
-<ol start="6">
-<li>添加合适的配置，实现 PC1 与 PC2 之间的连通性，使用 ping 进行测试</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 192.168.10.1</span></span><br><span class="line">R2(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.20.2</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3SmQ.png"></p>
-<ol start="6">
-<li>分别在 PC1 和 PC2 上使用 tracert 观察两主机通信过程的传输路径</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz39Ts.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3iYq.png"></p>
-<ol start="6">
-<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.255</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 192.168.10.2</span><br><span class="line"></span><br><span class="line">R3(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 s2/1</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3Ff0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3n0J.png"></p>
-<ol start="6">
-<li>删除 R1 和 R3 上的静态路由条目，使用默认路由实现 PC1 与 PC2 之间的连通性</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 192.168.10.2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3mm4.png"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>静态路由</tag>
       </tags>
   </entry>
   <entry>
@@ -1074,6 +1074,109 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP交换综合实验四</title>
+    <url>/2019/03/21/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了掌握交换端口安全的应用与配置；DHCP SNOOPING 的应用与配置；DAI 的应用与配置；IP SG 的应用与配置；PVLAN 的应用与配置；802.1x 的应用与配置 。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握交换端口安全的应用与配置</p>
+</li>
+<li><p>掌握 DHCP SNOOPING 的应用与配置</p>
+</li>
+<li><p>掌握 DAI 的应用与配置</p>
+</li>
+<li><p>掌握 IP SG 的应用与配置</p>
+</li>
+<li><p>熟悉 PVLAN 的应用与配置</p>
+</li>
+<li><p>熟悉 802.1x 的应用与配置 </p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p> <img src="https://s1.ax1x.com/2020/09/02/wpEfUI.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/02/wpEWVA.png"></p>
+<ol start="2">
+<li>根据图示，将各主机、DHCP 服务器以及 ACS 服务器划分进相应的 VLAN 中， 各 VLAN 地址段信息，以及路由器与多层交换间链路的地址自己规划，其中VLAN10 和 VLAN20 的主机通过 DHCP 方式获取 IP 地址。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10,20,30,40 </span></span><br><span class="line"><span class="comment">#将ACS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/3</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e1/0-1</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line"><span class="comment">#由于各PC机与DHCP服务器不在同一Vlan中，所以需要配置DHCP中继来确保PC能够通过DHCP获取IP地址</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/02/w98NgH.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w98s58.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w93s1J.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w91tIO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w91Eq0.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w91KG4.png"></p>
+<ol start="3">
+<li>在该园区网络内部署合适的第一跳冗余技术以及合适的路由协议，并且要求在正常情况下，DSW1 作为 VLAN10 主网关，DSW2 作为 VLAN20 的主网关， DSW1 和 DSW2 中的任何一台设备出现故障都不能影响用户的网络访问。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上启用HRSP协议，使DSW1作为Vlan 10的主网关</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config)<span class="comment">#intterface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为Vlan 10的主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line">DSW1(config-if)<span class="comment">#intterface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上启用HRSP协议，使DSW2作为Vlan 20的主网关</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt  </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit </span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangnzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW2的优先级减少6小于DSW2的105，DSW1成为Vlan 20的主网关 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/02/w9J9wq.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9JFYT.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9Y6PK.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9Y8U0.png"></p>
+<ol start="4">
+<li>要求连接所有 PC 机和 SRV 的端口忽视生成树过程，直接跳转到转发状态。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#spanning-tree mode rapid-pvst  </span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">DSW2(config)<span class="comment">#spanning-tree mode rapid-pvst </span></span><br><span class="line">DSW2(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW2(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#spanning-tree mode rapid-pvst   </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#spanning-tree mode rapid-pvst      </span></span><br><span class="line">ASW2(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>完成必要配置，实现 VLAN10 和 VLAN20 的主机可以通过 DHCP 获取 IP 地址，并且各主机可以访问因特网。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置DHCP服务器,使得vlan 10，vlan 20的主机通过DHCP的方式获取IP地址</span></span><br><span class="line">DHCP(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DHCP(config-if)<span class="comment">#ip address 192.168.40.100 255.255.255.0</span></span><br><span class="line">DHCP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DHCP(config-if)<span class="comment">#exit </span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 10 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.10.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.10.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 20</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.20.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.20.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/02/w9Ja7t.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9JwAP.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9JU0I.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9JNnA.png"></p>
+<p>&emsp;&emsp;在R1上配置NAT，使各主机能够访问Internet</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#设置ACL，匹配感兴趣流量</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.10.0 0.0.0.255 </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.20.0 0.0.0.255 </span></span><br><span class="line"><span class="comment">#指定内外接口</span></span><br><span class="line">R1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">R1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip nat inside</span></span><br><span class="line"><span class="comment">#配置NAT，将内网IP地址转换为外网IP地址</span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 1 interface e0/0 overload </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用PC 1访问Internet：</p>
+<p><img src="https://s1.ax1x.com/2020/09/02/w9JQk6.png"></p>
+<ol start="6">
+<li>在 ASW1 和 ASW2 上，采用合适的方式实现连着 PC 的接口避免 MAC 地址洪泛攻击，并且一个接口只允许接入一台 PC，当有非法 PC 接入时，能够产生告警消息。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br><span class="line">ASW2(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>将连接 PC1 的端口设置成该端口只允许 PC1 接入，实现任何情况下，其他主机都不允许通过该端口接入园区网络。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将PC机与交换机对应的端口绑定起来，防止其他主机通过该端口接入园区网络</span></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:09</span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/2</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0a</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0b</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/2                                                    </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky                 </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0c</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>为了确保该园区网内的用户可以正常获取 IP 地址，避免未授权的 DHCP 服务器接入，在该园区网合适的交换机上部署 DHCP Snooping 技术，并且为了提高园区网的安全，最大限度的降低 ARP 攻击和 IP 地址欺骗等攻击对网络造成的影响，在合适的交换机上部署动态 ARP 检测和 IP 源防护技术。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW2上部署DHCP Snooping 技术</span></span><br><span class="line">DSW2(config)<span class="comment">#ip dhcp snooping </span></span><br><span class="line"><span class="comment">#在ASW1部署动态ARP检测</span></span><br><span class="line">ASW1(config)<span class="comment">#ip arp inspection vlan 10 </span></span><br><span class="line"><span class="comment">#将e0/1设置为信任端口</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line"><span class="comment">#将非信任端口设置限制速率（此处的非信任端口为所有闲置端口）</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection trust </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/0,e0/3,e0/2-3</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection limit rate 10</span></span><br><span class="line"><span class="comment">#在e0/1、e0/2上部署IP源防护技术</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip verify source port-security</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>实现其他 PC 通过 ASW1 接入园区网络的时候，需要通过 802.1x 认证才能正常连入网络，如果PC 不支持802.1X 认证，那么就将该PC 划分到来宾VLAN60 里面，要求认证方式使用 AAA。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#aaa new-model </span></span><br><span class="line">ASW1(config)<span class="comment">#aaa authentication login default group radius local enable none </span></span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li><p>在 ACS 上添加一个账户，用户名和密码自定，实现该用户通过 802.1x 验证后，就被自动划分到 VLAN50。</p>
+</li>
+<li><p>要求对所有设备的vty 登录都采用AAA 认证，并且当 AAA 服务器不可达时， 采用本地数据库进行认证。</p>
+</li>
+</ol>
+<p>&emsp;&emsp;<strong>由于受到实验条件的限制，第10、11条要求暂时无法实现。</strong></p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP交换综合实验二</title>
     <url>/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。</p>
@@ -1234,109 +1337,6 @@
 <p><img src="https://s1.ax1x.com/2020/08/31/dXJGE4.png"></p>
 <p><img src="https://s1.ax1x.com/2020/08/31/dXJ1DU.png"></p>
 <p><img src="https://s1.ax1x.com/2020/08/31/dXJBDO.png"></p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP交换综合实验四</title>
-    <url>/2019/03/21/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了掌握交换端口安全的应用与配置；DHCP SNOOPING 的应用与配置；DAI 的应用与配置；IP SG 的应用与配置；PVLAN 的应用与配置；802.1x 的应用与配置 。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握交换端口安全的应用与配置</p>
-</li>
-<li><p>掌握 DHCP SNOOPING 的应用与配置</p>
-</li>
-<li><p>掌握 DAI 的应用与配置</p>
-</li>
-<li><p>掌握 IP SG 的应用与配置</p>
-</li>
-<li><p>熟悉 PVLAN 的应用与配置</p>
-</li>
-<li><p>熟悉 802.1x 的应用与配置 </p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p> <img src="https://s1.ax1x.com/2020/09/02/wpEfUI.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/02/wpEWVA.png"></p>
-<ol start="2">
-<li>根据图示，将各主机、DHCP 服务器以及 ACS 服务器划分进相应的 VLAN 中， 各 VLAN 地址段信息，以及路由器与多层交换间链路的地址自己规划，其中VLAN10 和 VLAN20 的主机通过 DHCP 方式获取 IP 地址。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10,20,30,40 </span></span><br><span class="line"><span class="comment">#将ACS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/3</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e1/0-1</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line"><span class="comment">#由于各PC机与DHCP服务器不在同一Vlan中，所以需要配置DHCP中继来确保PC能够通过DHCP获取IP地址</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip helper-address 192.168.40.100</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/02/w98NgH.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w98s58.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w93s1J.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w91tIO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w91Eq0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w91KG4.png"></p>
-<ol start="3">
-<li>在该园区网络内部署合适的第一跳冗余技术以及合适的路由协议，并且要求在正常情况下，DSW1 作为 VLAN10 主网关，DSW2 作为 VLAN20 的主网关， DSW1 和 DSW2 中的任何一台设备出现故障都不能影响用户的网络访问。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上启用HRSP协议，使DSW1作为Vlan 10的主网关</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config)<span class="comment">#intterface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为Vlan 10的主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line">DSW1(config-if)<span class="comment">#intterface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上启用HRSP协议，使DSW2作为Vlan 20的主网关</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt  </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit </span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangnzc</span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW2的优先级减少6小于DSW2的105，DSW1成为Vlan 20的主网关 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/02/w9J9wq.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9JFYT.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9Y6PK.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9Y8U0.png"></p>
-<ol start="4">
-<li>要求连接所有 PC 机和 SRV 的端口忽视生成树过程，直接跳转到转发状态。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#spanning-tree mode rapid-pvst  </span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">DSW2(config)<span class="comment">#spanning-tree mode rapid-pvst </span></span><br><span class="line">DSW2(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW2(config-if)<span class="comment">#spanning-tree portfast edge </span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#spanning-tree mode rapid-pvst   </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#spanning-tree mode rapid-pvst      </span></span><br><span class="line">ASW2(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#spanning-tree portfast </span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>完成必要配置，实现 VLAN10 和 VLAN20 的主机可以通过 DHCP 获取 IP 地址，并且各主机可以访问因特网。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置DHCP服务器,使得vlan 10，vlan 20的主机通过DHCP的方式获取IP地址</span></span><br><span class="line">DHCP(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DHCP(config-if)<span class="comment">#ip address 192.168.40.100 255.255.255.0</span></span><br><span class="line">DHCP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DHCP(config-if)<span class="comment">#exit </span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 10 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.10.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.10.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br><span class="line">DHCP(config)<span class="comment">#ip dhcp pool vlan 20</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#network 192.168.20.0 255.255.255.0</span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#default-router 192.168.20.254 </span></span><br><span class="line">DHCP(dhcp-config)<span class="comment">#dns-server 8.8.8.8</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/02/w9Ja7t.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9JwAP.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9JU0I.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9JNnA.png"></p>
-<p>&emsp;&emsp;在R1上配置NAT，使各主机能够访问Internet</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#设置ACL，匹配感兴趣流量</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.10.0 0.0.0.255 </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit 192.168.20.0 0.0.0.255 </span></span><br><span class="line"><span class="comment">#指定内外接口</span></span><br><span class="line">R1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">R1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip nat inside</span></span><br><span class="line"><span class="comment">#配置NAT，将内网IP地址转换为外网IP地址</span></span><br><span class="line">R1(config)<span class="comment">#ip nat inside source list 1 interface e0/0 overload </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用PC 1访问Internet：</p>
-<p><img src="https://s1.ax1x.com/2020/09/02/w9JQk6.png"></p>
-<ol start="6">
-<li>在 ASW1 和 ASW2 上，采用合适的方式实现连着 PC 的接口避免 MAC 地址洪泛攻击，并且一个接口只允许接入一台 PC，当有非法 PC 接入时，能够产生告警消息。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br><span class="line">ASW2(config)<span class="comment">#int range e0/1-2</span></span><br><span class="line">ASW2(config-if-range)<span class="comment">#switchport port-security maximum 1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>将连接 PC1 的端口设置成该端口只允许 PC1 接入，实现任何情况下，其他主机都不允许通过该端口接入园区网络。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将PC机与交换机对应的端口绑定起来，防止其他主机通过该端口接入园区网络</span></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:09</span></span><br><span class="line"></span><br><span class="line">ASW1(config)<span class="comment">#interface e0/2</span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW1(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0a</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0b</span></span><br><span class="line"></span><br><span class="line">ASW2(config)<span class="comment">#int e0/2                                                    </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address sticky                 </span></span><br><span class="line">ASW2(config-if)<span class="comment">#switchport port-security mac-address 00:50:79:66:68:0c</span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>为了确保该园区网内的用户可以正常获取 IP 地址，避免未授权的 DHCP 服务器接入，在该园区网合适的交换机上部署 DHCP Snooping 技术，并且为了提高园区网的安全，最大限度的降低 ARP 攻击和 IP 地址欺骗等攻击对网络造成的影响，在合适的交换机上部署动态 ARP 检测和 IP 源防护技术。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW2上部署DHCP Snooping 技术</span></span><br><span class="line">DSW2(config)<span class="comment">#ip dhcp snooping </span></span><br><span class="line"><span class="comment">#在ASW1部署动态ARP检测</span></span><br><span class="line">ASW1(config)<span class="comment">#ip arp inspection vlan 10 </span></span><br><span class="line"><span class="comment">#将e0/1设置为信任端口</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line"><span class="comment">#将非信任端口设置限制速率（此处的非信任端口为所有闲置端口）</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection trust </span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/0,e0/3,e0/2-3</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip arp inspection limit rate 10</span></span><br><span class="line"><span class="comment">#在e0/1、e0/2上部署IP源防护技术</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#ip verify source port-security</span></span><br></pre></td></tr></table></figure>
-
-<ol start="9">
-<li>实现其他 PC 通过 ASW1 接入园区网络的时候，需要通过 802.1x 认证才能正常连入网络，如果PC 不支持802.1X 认证，那么就将该PC 划分到来宾VLAN60 里面，要求认证方式使用 AAA。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ASW1(config)<span class="comment">#aaa new-model </span></span><br><span class="line">ASW1(config)<span class="comment">#aaa authentication login default group radius local enable none </span></span><br></pre></td></tr></table></figure>
-
-<ol start="10">
-<li><p>在 ACS 上添加一个账户，用户名和密码自定，实现该用户通过 802.1x 验证后，就被自动划分到 VLAN50。</p>
-</li>
-<li><p>要求对所有设备的vty 登录都采用AAA 认证，并且当 AAA 服务器不可达时， 采用本地数据库进行认证。</p>
-</li>
-</ol>
-<p>&emsp;&emsp;<strong>由于受到实验条件的限制，第10、11条要求暂时无法实现。</strong></p>
 ]]></content>
       <categories>
         <category>CCNP实验</category>
@@ -1910,6 +1910,180 @@
       <tags>
         <tag>Nexus</tag>
         <tag>FEX</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nexus交换机FabricPath</title>
+    <url>/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/</url>
+    <content><![CDATA[<a id="more"></a>
+
+<h2 id="1-FabricPath简介"><a href="#1-FabricPath简介" class="headerlink" title="1 FabricPath简介"></a>1 FabricPath简介</h2><h3 id="1-1-智能二层网络的革命"><a href="#1-1-智能二层网络的革命" class="headerlink" title="1.1 智能二层网络的革命"></a>1.1 智能二层网络的革命</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOC8J.png" alt="image-20210315164725657"></p>
+<h3 id="1-2-当前数据中心设计"><a href="#1-2-当前数据中心设计" class="headerlink" title="1.2 当前数据中心设计"></a>1.2 当前数据中心设计</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOP29.png" alt="image-20210315164605993"></p>
+<h3 id="1-3-经典二层网络的限制"><a href="#1-3-经典二层网络的限制" class="headerlink" title="1.3 经典二层网络的限制"></a>1.3 经典二层网络的限制</h3><ol>
+<li>本地的STP问题将会影响整个网络，排错难度增大。</li>
+<li>STP技术提供了限制的带宽（不能实现负载均衡）。</li>
+<li>STP的收敛是混乱的。</li>
+<li>树状接口引入了不优化的路径。</li>
+<li>MAC地址表没有很好的扩展性。</li>
+<li>泛洪流量将会影响整个网络。</li>
+</ol>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOivR.png" alt="image-20210315165236704"></p>
+<h3 id="1-4-Cisco-FabricPath的目标"><a href="#1-4-Cisco-FabricPath的目标" class="headerlink" title="1.4 Cisco FabricPath的目标"></a>1.4 Cisco FabricPath的目标</h3><p>&emsp;&emsp;FabricPath技术融合了路由与交换的优势，实现一个端到端的大二层网络。</p>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOkK1.png" alt="image-20210315165321194"></p>
+<h3 id="1-5-FabricPath-A-Ethernet-Fabric"><a href="#1-5-FabricPath-A-Ethernet-Fabric" class="headerlink" title="1.5 FabricPath : A Ethernet Fabric"></a>1.5 FabricPath : A Ethernet Fabric</h3><ol>
+<li><p>使用任意的拓扑，连接一组的交换机</p>
+</li>
+<li><p>使用一个简单的CLI命令，汇聚交换机到一个Fabric</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N7K(config)<span class="comment">#interface ethernet 1/1</span></span><br><span class="line">N7K(config-if)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>没有STP技术，是一个基于三层技术的开放协议，提供了Fabric范围的智能，并且把所有的组件捆绑到一起。</p>
+</li>
+</ol>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOADx.png" alt="image-20210315165621259"></p>
+<h3 id="1-6-Fabric的定义"><a href="#1-6-Fabric的定义" class="headerlink" title="1. 6 Fabric的定义"></a>1. 6 Fabric的定义</h3><p>&emsp;&emsp;从外部看，一个Fabric就像一个交换机。从内部看，一个协议提供了整个Fabric范围的智能，并且把所有组件绑定在一起。这个协议提供了即插即用的特性：</p>
+<ul>
+<li>优化的任意到任意的低延时连接</li>
+<li>高带宽，高弹性</li>
+<li>开放的管理和排错功能</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOeUO.png" alt="image-20210315164521167"></p>
+<h4 id="1-6-1-优化的低延时交换"><a href="#1-6-1-优化的低延时交换" class="headerlink" title="1.6.1 优化的低延时交换"></a>1.6.1 优化的低延时交换</h4><p>&emsp;&emsp;Shortest Path Any-to-Any（任意到任意最短路径）</p>
+<ul>
+<li>在包进入Fabric的边界设备执行简单的地址查询。</li>
+<li>流量使用可用的最短路劲来转发。</li>
+<li>可靠的二层和三层任意到任意的连接（就像在一个交换机内部一样，没有STP技术）</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOJVf.png" alt="image-20210315165750821"></p>
+<h4 id="1-6-2-高带宽，高弹性"><a href="#1-6-2-高带宽，高弹性" class="headerlink" title="1.6.2 高带宽，高弹性"></a>1.6.2 高带宽，高弹性</h4><p>&emsp;&emsp;Equal Cost Multi-pathing（等价多路径）</p>
+<ul>
+<li>多路径（Multi-pathing），在两个设备间，最多256个活动路径。</li>
+<li>如果出现故障，流量将会在剩余的链路中被分布，提供快速的收敛。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOtIS.png" alt="image-20210315165845703"></p>
+<h4 id="1-6-3-高扩展性"><a href="#1-6-3-高扩展性" class="headerlink" title="1.6.3 高扩展性"></a>1.6.3 高扩展性</h4><p>&emsp;&emsp;Conversational Learning（会话的MAC地址学习）</p>
+<ul>
+<li>每端口的MAC地址表，仅仅只学习那些可以通过Fabric抵达的对等体的MAC地址。</li>
+<li>一个虚拟的无限数量的主机，能够被加入这个Fabric。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOd2j.png" alt="image-20210315165858185"></p>
+<h3 id="1-7-二层的整合"><a href="#1-7-二层的整合" class="headerlink" title="1.7 二层的整合"></a>1.7 二层的整合</h3><p>&emsp;&emsp;vPC+</p>
+<ul>
+<li>允许无限制的延伸VLANs，不用担心出现环路。</li>
+<li>设备可以使用IEEE标准的Port Channel技术，通过Active/Active链路接入到Fabric，不需要使用STP技术。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sORG4.png" alt="image-20210315170429015"></p>
+<h3 id="1-8-边界设备的整合"><a href="#1-8-边界设备的整合" class="headerlink" title="1.8 边界设备的整合"></a>1.8 边界设备的整合</h3><p>&emsp;&emsp;主机可以利用多个三层默认网关</p>
+<ul>
+<li>主机只看到一个默认网关。</li>
+<li>Fabric提供了多个透明的同时Active的默认网关。</li>
+<li>允许从Fabric内部到外部三层网络的的多路径。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sO4MR.png" alt="image-20210315170527144"></p>
+<h3 id="1-9-三层的整合"><a href="#1-9-三层的整合" class="headerlink" title="1.9 三层的整合"></a>1.9 三层的整合</h3><p>&emsp;&emsp;XL Tables，SVIs Anywhere</p>
+<ul>
+<li>Fabric提供了无缝的三层整合。</li>
+<li>任意数量的路由接口，可以在边界或Fabric内部创建。</li>
+<li>连接的三层设备可以使用这些接口连建立连接。</li>
+<li>硬件有能力来处理这些百万级的路由。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOIqx.png" alt="image-20210315170641079"></p>
+<h2 id="2-FabricPath理论介绍"><a href="#2-FabricPath理论介绍" class="headerlink" title="2 FabricPath理论介绍"></a>2 FabricPath理论介绍</h2><h3 id="2-1-新的控制层面"><a href="#2-1-新的控制层面" class="headerlink" title="2.1 新的控制层面"></a>2.1 新的控制层面</h3><p>&emsp;&emsp;即插即用的由IS-IS管理的发送拓扑：</p>
+<ul>
+<li>IS-IS自动为所有的FabricPath交换机指派地址。</li>
+<li>计算最短路径。</li>
+<li>在任意的FabricPath交换机之间支持等价多路径。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9t3T.png" alt="image-20210315171114341"></p>
+<h3 id="2-2-新的数据层面"><a href="#2-2-新的数据层面" class="headerlink" title="2.2 新的数据层面"></a>2.2 新的数据层面</h3><ul>
+<li>在边界设备上维护MAC地址与Switch-ID之间的关联。</li>
+<li>流量被封装穿越整个Fabric</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9rU1.png" alt="image-20210315171137880"></p>
+<h3 id="2-2-FabricPath术语"><a href="#2-2-FabricPath术语" class="headerlink" title="2.2 FabricPath术语"></a>2.2 FabricPath术语</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9c8K.png" alt="image-20210315171241755"></p>
+<h4 id="2-2-1-FP-Core-Port"><a href="#2-2-1-FP-Core-Port" class="headerlink" title="2.2.1 FP Core Port"></a>2.2.1 FP Core Port</h4><ul>
+<li>接口被连接到其它FabricPath设备</li>
+<li>发送和接收有FabricPath头部的流量</li>
+<li>不运行STP</li>
+<li>不执行MAC地址学习</li>
+<li>通过二层的IS-IS邻居，交换拓扑信息</li>
+<li>基于Switch-ID表转发数据</li>
+</ul>
+<h4 id="2-2-2-CE-Edge-Port"><a href="#2-2-2-CE-Edge-Port" class="headerlink" title="2.2.2 CE Edge Port"></a>2.2.2 CE Edge Port</h4><ul>
+<li>接口被连接到传统网络设备</li>
+<li>发送和接收标准802.3以太网格式的帧</li>
+<li>参与到一个STP域</li>
+<li>基于MAC地址表转发流量</li>
+</ul>
+<h3 id="2-3-Unknown-Unicast"><a href="#2-3-Unknown-Unicast" class="headerlink" title="2.3 Unknown Unicast"></a>2.3 Unknown Unicast</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y92vD.png" alt="image-20210315172739563"></p>
+<h3 id="2-4-known-Unicast，Conversation-Learning"><a href="#2-4-known-Unicast，Conversation-Learning" class="headerlink" title="2.4 known Unicast，Conversation Learning"></a>2.4 known Unicast，Conversation Learning</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9H8f.png" alt="image-20210315172802054"></p>
+<h3 id="2-5-vPC"><a href="#2-5-vPC" class="headerlink" title="2.5 vPC+"></a>2.5 vPC+</h3><h4 id="2-5-1-vPC-简介"><a href="#2-5-1-vPC-简介" class="headerlink" title="2.5.1 vPC+简介"></a>2.5.1 vPC+简介</h4><ul>
+<li>允许边界端口到FabricPath域的“Dual-Homed”连接，实现Active/Active的转发。</li>
+<li>连接经典以太网交换机，三层路由器，负载均衡器，Dual-homed服务器，等等。</li>
+<li>仅仅只需要这些设备支持port-channel。</li>
+<li>可以提供Active/Active的HSRP。</li>
+<li>配置与标准的vPC几乎完全一样。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9XrQ.png" alt="image-20210315172908170"></p>
+<h4 id="2-5-2-vPC-详细介绍"><a href="#2-5-2-vPC-详细介绍" class="headerlink" title="2.5.2 vPC+详细介绍"></a>2.5.2 vPC+详细介绍</h4><ul>
+<li>vPC+对等体交换机，共享一个虚拟的FabricPath Switch-ID。</li>
+<li>在vPC+ Port-Channels身后的MAC地址，就好像被连接到这个虚拟的交换机上一样，而不是连接到这两个vPC对等体交换机上。</li>
+<li>允许在FabricPath域中，负载均衡的发送流量到这个vPC+虚拟交换机。</li>
+<li>vPC+技术需要配置F模块并且激活FabricPath技术的VDC。</li>
+<li>Peer-Link和所有的vPC+链路必须使用F端口。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9xVs.png" alt="image-20210315172946990"></p>
+<h4 id="2-5-3-vPC-vs-vPC"><a href="#2-5-3-vPC-vs-vPC" class="headerlink" title="2.5.3 vPC vs. vPC+"></a>2.5.3 vPC vs. vPC+</h4><ul>
+<li>一个特定的VDC，要么是一个vPC域的一部分，要么是一个vPC+域的一部分，不能同时属于两个域。</li>
+<li>vPC+只能工作在，配置F模块，并且激活FabricPath特性的VDC中。</li>
+<li>vPC与vPC+之间的转换，会造成流量的中断。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yC9P0.png" alt="image-20210315173022058"></p>
+<h3 id="2-6-TRILL技术"><a href="#2-6-TRILL技术" class="headerlink" title="2.6 TRILL技术"></a>2.6 TRILL技术</h3><p>&emsp;&emsp;TRILL（Transparent Interconnection of Lots of Links）技术简介：</p>
+<ul>
+<li>IETF标准的二层多路径技术。</li>
+<li>被Cisco在内的多个厂商所发起。</li>
+<li>TRILL技术已经从一个草案成为了一个被提议的标准。</li>
+<li>被提议的标准状态，意味着各个厂商可以开始开发与TRILL兼容的软件运用。</li>
+<li>Cisco支持FabricPath的硬件也同时支持TRILL技术。</li>
+</ul>
+<h3 id="2-7-FabricPath-vs-TRILL"><a href="#2-7-FabricPath-vs-TRILL" class="headerlink" title="2.7 FabricPath vs. TRILL"></a>2.7 FabricPath vs. TRILL</h3><ul>
+<li>FabricPath可以通过软件的升级，支持TRILL模式（硬件已经拥有TRILL能力）。</li>
+<li>Cisco将会推送FabricPath的特性到TRILL。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCCGV.png" alt="image-20210315173711478"></p>
+<h3 id="2-8-FabricPath-vs-TRILL-封装"><a href="#2-8-FabricPath-vs-TRILL-封装" class="headerlink" title="2.8 FabricPath vs. TRILL:封装"></a>2.8 FabricPath vs. TRILL:封装</h3><ul>
+<li>TRILL设备能够和在一个共享网络中的多个对等体进行通讯。</li>
+<li>FabricPath使用了一个更加紧凑的帧格式（简化硬件，低延时），只能使用点对点链路。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCAr4.png" alt="image-20210316161037508"></p>
+<h3 id="2-9-FabricPath-vs-TRILL-多路径"><a href="#2-9-FabricPath-vs-TRILL-多路径" class="headerlink" title="2.9 FabricPath vs. TRILL:多路径"></a>2.9 FabricPath vs. TRILL:多路径</h3><ul>
+<li>端到端的多路径（二层边界，Fabric，三层边界）提供弹性和快速的收敛。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCmI1.png" alt="image-20210316161119567"></p>
+<h3 id="2-10-FabricPath-vs-TRILL-多拓扑"><a href="#2-10-FabricPath-vs-TRILL-多拓扑" class="headerlink" title="2.10 FabricPath vs. TRILL:多拓扑"></a>2.10 FabricPath vs. TRILL:多拓扑</h3><ul>
+<li>Topology（拓扑）：在一个Fabric中的一组链路。</li>
+<li>默认所有的链路都属于Topology 0。</li>
+<li>其它的拓扑可以被创建，并且把一部分链路关联到这些拓扑中去。</li>
+<li>一个链路可以同时属于一系列拓扑。</li>
+<li>一个VLAN只能映射到一个唯一的Topology</li>
+<li>拓扑用于VLAN修剪，安全，流量工程，等等。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCYdA.png" alt="image-20210316161206963"></p>
+<h3 id="2-11-FabricPath-vs-TRILL-简化STP的交互"><a href="#2-11-FabricPath-vs-TRILL-简化STP的交互" class="headerlink" title="2.11 FabricPath vs. TRILL:简化STP的交互"></a>2.11 FabricPath vs. TRILL:简化STP的交互</h3><ul>
+<li>Fabric看上去就像一个单一的交换机。</li>
+<li>发送相同的STP信息到所有的边界端口。</li>
+<li>希望成为STP的Root（边界端口将会被阻止，如果收到更加优化的信息）</li>
+<li>没有BPDU信息在Fabric中被发送。</li>
+<li>一个可选的机制，如果需要允许传播TCN。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCtII.png" alt="image-20210316162730054"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Nexus</tag>
+        <tag>FabricPath</tag>
       </tags>
   </entry>
   <entry>
