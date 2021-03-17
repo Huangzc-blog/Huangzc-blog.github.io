@@ -35,30 +35,49 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="emmmmmmmmmmmm">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Huangzc&#39;s blog">
-<meta property="og:url" content="https://huangzc.site/index.html">
+  <meta name="description" content="1 配置N5K的FabricPath1.1 在N5K-1&#x2F;N5K-2上启用特性集1234567891011#N5K-1安装FabricPath特性集，并且启用FabricPath特性集N5K-1(config)#install feature-set fabricpath N5K-1(config)#feature-set fabricpath #N5K-1手动配置Switch-ID N5K">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nexus交换机FabricPath配置">
+<meta property="og:url" content="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="emmmmmmmmmmmm">
+<meta property="og:description" content="1 配置N5K的FabricPath1.1 在N5K-1&#x2F;N5K-2上启用特性集1234567891011#N5K-1安装FabricPath特性集，并且启用FabricPath特性集N5K-1(config)#install feature-set fabricpath N5K-1(config)#feature-set fabricpath #N5K-1手动配置Switch-ID N5K">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6ciGCR.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6ciUKK.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cidbD.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6ci0Ve.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6ciWqS.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6ciqMV.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6ciLrT.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6civa4.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFEZD.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFwQ0.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFUWn.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFBLT.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFreU.png">
+<meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFswF.png">
+<meta property="article:published_time" content="2021-02-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-17T08:35:06.389Z">
 <meta property="article:author" content="Huangzc">
+<meta property="article:tag" content="Nexus">
+<meta property="article:tag" content="FabricPath">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s3.ax1x.com/2021/03/17/6ciGCR.png">
 
-<link rel="canonical" href="https://huangzc.site/">
+<link rel="canonical" href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Huangzc's blog</title>
+  <title>Nexus交换机FabricPath配置 | Huangzc's blog</title>
   
 
 
@@ -209,715 +228,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/12/vPC%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/12/vPC%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">vPC术语介绍</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-03-12 02:00:00 / 修改时间：14:57:06" itemprop="dateCreated datePublished" datetime="2021-03-12T02:00:00+08:00">2021-03-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;本篇文章主要介绍一些在vPC中常见的一些术语。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/12/vPC%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/" class="post-title-link" itemprop="url">Nexus交换机vPC</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-03-12 00:00:00 / 修改时间：13:32:24" itemprop="dateCreated datePublished" datetime="2021-03-12T00:00:00+08:00">2021-03-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;Port Channel是将多个端口，可以是同一块板卡，也可以使不同板卡上的端口，捆绑在一起，增大级联带宽和冗余性。同时，port-channel中的所有端口完全负载均衡。而vPC技术是一种虚拟捆绑的技术，相较于直接使用port-channel来讲，他可以实现将不同的线路进行捆绑。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">Nexus交换机vPC配置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-03-12 00:00:00 / 修改时间：13:44:47" itemprop="dateCreated datePublished" datetime="2021-03-12T00:00:00+08:00">2021-03-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Nexus%E5%AE%9E%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">Nexus实验</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;Nexus交换机vPC配置。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/" class="post-title-link" itemprop="url">Nexus交换机FEX</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-08 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-08T00:00:00+08:00">2021-03-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-12 13:40:24" itemprop="dateModified" datetime="2021-03-12T13:40:24+08:00">2021-03-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;FEX（Fabric Extenders），Cisco Nexus 2000 可以通过FEX技术成为N5K和N7K的一个远程线卡，被Cisco Nexus交换机管理和配置。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/05/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvDC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/05/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvDC/" class="post-title-link" itemprop="url">Nexus交换机VDC</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-05 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-05T00:00:00+08:00">2021-03-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-12 13:37:22" itemprop="dateModified" datetime="2021-03-12T13:37:22+08:00">2021-03-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;VDC技术提供了分离的资源和操作环境，并且VDC创建了一个分离的故障域。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/05/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvDC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/" class="post-title-link" itemprop="url">Nexus交换机FabricPath</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-01 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-01T00:00:00+08:00">2021-03-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-16 17:34:31" itemprop="dateModified" datetime="2021-03-16T17:34:31+08:00">2021-03-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-
-<h2 id="1-FabricPath简介"><a href="#1-FabricPath简介" class="headerlink" title="1 FabricPath简介"></a>1 FabricPath简介</h2><h3 id="1-1-智能二层网络的革命"><a href="#1-1-智能二层网络的革命" class="headerlink" title="1.1 智能二层网络的革命"></a>1.1 智能二层网络的革命</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOC8J.png" alt="image-20210315164725657"></p>
-<h3 id="1-2-当前数据中心设计"><a href="#1-2-当前数据中心设计" class="headerlink" title="1.2 当前数据中心设计"></a>1.2 当前数据中心设计</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOP29.png" alt="image-20210315164605993"></p>
-<h3 id="1-3-经典二层网络的限制"><a href="#1-3-经典二层网络的限制" class="headerlink" title="1.3 经典二层网络的限制"></a>1.3 经典二层网络的限制</h3><ol>
-<li>本地的STP问题将会影响整个网络，排错难度增大。</li>
-<li>STP技术提供了限制的带宽（不能实现负载均衡）。</li>
-<li>STP的收敛是混乱的。</li>
-<li>树状接口引入了不优化的路径。</li>
-<li>MAC地址表没有很好的扩展性。</li>
-<li>泛洪流量将会影响整个网络。</li>
-</ol>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOivR.png" alt="image-20210315165236704"></p>
-<h3 id="1-4-Cisco-FabricPath的目标"><a href="#1-4-Cisco-FabricPath的目标" class="headerlink" title="1.4 Cisco FabricPath的目标"></a>1.4 Cisco FabricPath的目标</h3><p>&emsp;&emsp;FabricPath技术融合了路由与交换的优势，实现一个端到端的大二层网络。</p>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOkK1.png" alt="image-20210315165321194"></p>
-<h3 id="1-5-FabricPath-A-Ethernet-Fabric"><a href="#1-5-FabricPath-A-Ethernet-Fabric" class="headerlink" title="1.5 FabricPath : A Ethernet Fabric"></a>1.5 FabricPath : A Ethernet Fabric</h3><ol>
-<li><p>使用任意的拓扑，连接一组的交换机</p>
-</li>
-<li><p>使用一个简单的CLI命令，汇聚交换机到一个Fabric</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">N7K(config)<span class="comment">#interface ethernet 1/1</span></span><br><span class="line">N7K(config-if)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>没有STP技术，是一个基于三层技术的开放协议，提供了Fabric范围的智能，并且把所有的组件捆绑到一起。</p>
-</li>
-</ol>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOADx.png" alt="image-20210315165621259"></p>
-<h3 id="1-6-Fabric的定义"><a href="#1-6-Fabric的定义" class="headerlink" title="1. 6 Fabric的定义"></a>1. 6 Fabric的定义</h3><p>&emsp;&emsp;从外部看，一个Fabric就像一个交换机。从内部看，一个协议提供了整个Fabric范围的智能，并且把所有组件绑定在一起。这个协议提供了即插即用的特性：</p>
-<ul>
-<li>优化的任意到任意的低延时连接</li>
-<li>高带宽，高弹性</li>
-<li>开放的管理和排错功能</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOeUO.png" alt="image-20210315164521167"></p>
-<h4 id="1-6-1-优化的低延时交换"><a href="#1-6-1-优化的低延时交换" class="headerlink" title="1.6.1 优化的低延时交换"></a>1.6.1 优化的低延时交换</h4><p>&emsp;&emsp;Shortest Path Any-to-Any（任意到任意最短路径）</p>
-<ul>
-<li>在包进入Fabric的边界设备执行简单的地址查询。</li>
-<li>流量使用可用的最短路劲来转发。</li>
-<li>可靠的二层和三层任意到任意的连接（就像在一个交换机内部一样，没有STP技术）</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOJVf.png" alt="image-20210315165750821"></p>
-<h4 id="1-6-2-高带宽，高弹性"><a href="#1-6-2-高带宽，高弹性" class="headerlink" title="1.6.2 高带宽，高弹性"></a>1.6.2 高带宽，高弹性</h4><p>&emsp;&emsp;Equal Cost Multi-pathing（等价多路径）</p>
-<ul>
-<li>多路径（Multi-pathing），在两个设备间，最多256个活动路径。</li>
-<li>如果出现故障，流量将会在剩余的链路中被分布，提供快速的收敛。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOtIS.png" alt="image-20210315165845703"></p>
-<h4 id="1-6-3-高扩展性"><a href="#1-6-3-高扩展性" class="headerlink" title="1.6.3 高扩展性"></a>1.6.3 高扩展性</h4><p>&emsp;&emsp;Conversational Learning（会话的MAC地址学习）</p>
-<ul>
-<li>每端口的MAC地址表，仅仅只学习那些可以通过Fabric抵达的对等体的MAC地址。</li>
-<li>一个虚拟的无限数量的主机，能够被加入这个Fabric。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOd2j.png" alt="image-20210315165858185"></p>
-<h3 id="1-7-二层的整合"><a href="#1-7-二层的整合" class="headerlink" title="1.7 二层的整合"></a>1.7 二层的整合</h3><p>&emsp;&emsp;vPC+</p>
-<ul>
-<li>允许无限制的延伸VLANs，不用担心出现环路。</li>
-<li>设备可以使用IEEE标准的Port Channel技术，通过Active/Active链路接入到Fabric，不需要使用STP技术。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sORG4.png" alt="image-20210315170429015"></p>
-<h3 id="1-8-边界设备的整合"><a href="#1-8-边界设备的整合" class="headerlink" title="1.8 边界设备的整合"></a>1.8 边界设备的整合</h3><p>&emsp;&emsp;主机可以利用多个三层默认网关</p>
-<ul>
-<li>主机只看到一个默认网关。</li>
-<li>Fabric提供了多个透明的同时Active的默认网关。</li>
-<li>允许从Fabric内部到外部三层网络的的多路径。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sO4MR.png" alt="image-20210315170527144"></p>
-<h3 id="1-9-三层的整合"><a href="#1-9-三层的整合" class="headerlink" title="1.9 三层的整合"></a>1.9 三层的整合</h3><p>&emsp;&emsp;XL Tables，SVIs Anywhere</p>
-<ul>
-<li>Fabric提供了无缝的三层整合。</li>
-<li>任意数量的路由接口，可以在边界或Fabric内部创建。</li>
-<li>连接的三层设备可以使用这些接口连建立连接。</li>
-<li>硬件有能力来处理这些百万级的路由。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOIqx.png" alt="image-20210315170641079"></p>
-<h2 id="2-FabricPath理论介绍"><a href="#2-FabricPath理论介绍" class="headerlink" title="2 FabricPath理论介绍"></a>2 FabricPath理论介绍</h2><h3 id="2-1-新的控制层面"><a href="#2-1-新的控制层面" class="headerlink" title="2.1 新的控制层面"></a>2.1 新的控制层面</h3><p>&emsp;&emsp;即插即用的由IS-IS管理的发送拓扑：</p>
-<ul>
-<li>IS-IS自动为所有的FabricPath交换机指派地址。</li>
-<li>计算最短路径。</li>
-<li>在任意的FabricPath交换机之间支持等价多路径。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6y9t3T.png" alt="image-20210315171114341"></p>
-<h3 id="2-2-新的数据层面"><a href="#2-2-新的数据层面" class="headerlink" title="2.2 新的数据层面"></a>2.2 新的数据层面</h3><ul>
-<li>在边界设备上维护MAC地址与Switch-ID之间的关联。</li>
-<li>流量被封装穿越整个Fabric</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6y9rU1.png" alt="image-20210315171137880"></p>
-<h3 id="2-2-FabricPath术语"><a href="#2-2-FabricPath术语" class="headerlink" title="2.2 FabricPath术语"></a>2.2 FabricPath术语</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9c8K.png" alt="image-20210315171241755"></p>
-<h4 id="2-2-1-FP-Core-Port"><a href="#2-2-1-FP-Core-Port" class="headerlink" title="2.2.1 FP Core Port"></a>2.2.1 FP Core Port</h4><ul>
-<li>接口被连接到其它FabricPath设备</li>
-<li>发送和接收有FabricPath头部的流量</li>
-<li>不运行STP</li>
-<li>不执行MAC地址学习</li>
-<li>通过二层的IS-IS邻居，交换拓扑信息</li>
-<li>基于Switch-ID表转发数据</li>
-</ul>
-<h4 id="2-2-2-CE-Edge-Port"><a href="#2-2-2-CE-Edge-Port" class="headerlink" title="2.2.2 CE Edge Port"></a>2.2.2 CE Edge Port</h4><ul>
-<li>接口被连接到传统网络设备</li>
-<li>发送和接收标准802.3以太网格式的帧</li>
-<li>参与到一个STP域</li>
-<li>基于MAC地址表转发流量</li>
-</ul>
-<h3 id="2-3-Unknown-Unicast"><a href="#2-3-Unknown-Unicast" class="headerlink" title="2.3 Unknown Unicast"></a>2.3 Unknown Unicast</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y92vD.png" alt="image-20210315172739563"></p>
-<h3 id="2-4-known-Unicast，Conversation-Learning"><a href="#2-4-known-Unicast，Conversation-Learning" class="headerlink" title="2.4 known Unicast，Conversation Learning"></a>2.4 known Unicast，Conversation Learning</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9H8f.png" alt="image-20210315172802054"></p>
-<h3 id="2-5-vPC"><a href="#2-5-vPC" class="headerlink" title="2.5 vPC+"></a>2.5 vPC+</h3><h4 id="2-5-1-vPC-简介"><a href="#2-5-1-vPC-简介" class="headerlink" title="2.5.1 vPC+简介"></a>2.5.1 vPC+简介</h4><ul>
-<li>允许边界端口到FabricPath域的“Dual-Homed”连接，实现Active/Active的转发。</li>
-<li>连接经典以太网交换机，三层路由器，负载均衡器，Dual-homed服务器，等等。</li>
-<li>仅仅只需要这些设备支持port-channel。</li>
-<li>可以提供Active/Active的HSRP。</li>
-<li>配置与标准的vPC几乎完全一样。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6y9XrQ.png" alt="image-20210315172908170"></p>
-<h4 id="2-5-2-vPC-详细介绍"><a href="#2-5-2-vPC-详细介绍" class="headerlink" title="2.5.2 vPC+详细介绍"></a>2.5.2 vPC+详细介绍</h4><ul>
-<li>vPC+对等体交换机，共享一个虚拟的FabricPath Switch-ID。</li>
-<li>在vPC+ Port-Channels身后的MAC地址，就好像被连接到这个虚拟的交换机上一样，而不是连接到这两个vPC对等体交换机上。</li>
-<li>允许在FabricPath域中，负载均衡的发送流量到这个vPC+虚拟交换机。</li>
-<li>vPC+技术需要配置F模块并且激活FabricPath技术的VDC。</li>
-<li>Peer-Link和所有的vPC+链路必须使用F端口。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6y9xVs.png" alt="image-20210315172946990"></p>
-<h4 id="2-5-3-vPC-vs-vPC"><a href="#2-5-3-vPC-vs-vPC" class="headerlink" title="2.5.3 vPC vs. vPC+"></a>2.5.3 vPC vs. vPC+</h4><ul>
-<li>一个特定的VDC，要么是一个vPC域的一部分，要么是一个vPC+域的一部分，不能同时属于两个域。</li>
-<li>vPC+只能工作在，配置F模块，并且激活FabricPath特性的VDC中。</li>
-<li>vPC与vPC+之间的转换，会造成流量的中断。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yC9P0.png" alt="image-20210315173022058"></p>
-<h3 id="2-6-TRILL技术"><a href="#2-6-TRILL技术" class="headerlink" title="2.6 TRILL技术"></a>2.6 TRILL技术</h3><p>&emsp;&emsp;TRILL（Transparent Interconnection of Lots of Links）技术简介：</p>
-<ul>
-<li>IETF标准的二层多路径技术。</li>
-<li>被Cisco在内的多个厂商所发起。</li>
-<li>TRILL技术已经从一个草案成为了一个被提议的标准。</li>
-<li>被提议的标准状态，意味着各个厂商可以开始开发与TRILL兼容的软件运用。</li>
-<li>Cisco支持FabricPath的硬件也同时支持TRILL技术。</li>
-</ul>
-<h3 id="2-7-FabricPath-vs-TRILL"><a href="#2-7-FabricPath-vs-TRILL" class="headerlink" title="2.7 FabricPath vs. TRILL"></a>2.7 FabricPath vs. TRILL</h3><ul>
-<li>FabricPath可以通过软件的升级，支持TRILL模式（硬件已经拥有TRILL能力）。</li>
-<li>Cisco将会推送FabricPath的特性到TRILL。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCCGV.png" alt="image-20210315173711478"></p>
-<h3 id="2-8-FabricPath-vs-TRILL-封装"><a href="#2-8-FabricPath-vs-TRILL-封装" class="headerlink" title="2.8 FabricPath vs. TRILL:封装"></a>2.8 FabricPath vs. TRILL:封装</h3><ul>
-<li>TRILL设备能够和在一个共享网络中的多个对等体进行通讯。</li>
-<li>FabricPath使用了一个更加紧凑的帧格式（简化硬件，低延时），只能使用点对点链路。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCAr4.png" alt="image-20210316161037508"></p>
-<h3 id="2-9-FabricPath-vs-TRILL-多路径"><a href="#2-9-FabricPath-vs-TRILL-多路径" class="headerlink" title="2.9 FabricPath vs. TRILL:多路径"></a>2.9 FabricPath vs. TRILL:多路径</h3><ul>
-<li>端到端的多路径（二层边界，Fabric，三层边界）提供弹性和快速的收敛。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCmI1.png" alt="image-20210316161119567"></p>
-<h3 id="2-10-FabricPath-vs-TRILL-多拓扑"><a href="#2-10-FabricPath-vs-TRILL-多拓扑" class="headerlink" title="2.10 FabricPath vs. TRILL:多拓扑"></a>2.10 FabricPath vs. TRILL:多拓扑</h3><ul>
-<li>Topology（拓扑）：在一个Fabric中的一组链路。</li>
-<li>默认所有的链路都属于Topology 0。</li>
-<li>其它的拓扑可以被创建，并且把一部分链路关联到这些拓扑中去。</li>
-<li>一个链路可以同时属于一系列拓扑。</li>
-<li>一个VLAN只能映射到一个唯一的Topology</li>
-<li>拓扑用于VLAN修剪，安全，流量工程，等等。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCYdA.png" alt="image-20210316161206963"></p>
-<h3 id="2-11-FabricPath-vs-TRILL-简化STP的交互"><a href="#2-11-FabricPath-vs-TRILL-简化STP的交互" class="headerlink" title="2.11 FabricPath vs. TRILL:简化STP的交互"></a>2.11 FabricPath vs. TRILL:简化STP的交互</h3><ul>
-<li>Fabric看上去就像一个单一的交换机。</li>
-<li>发送相同的STP信息到所有的边界端口。</li>
-<li>希望成为STP的Root（边界端口将会被阻止，如果收到更加优化的信息）</li>
-<li>没有BPDU信息在Fabric中被发送。</li>
-<li>一个可选的机制，如果需要允许传播TCN。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCtII.png" alt="image-20210316162730054"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -933,10 +247,9 @@
       <meta itemprop="name" content="Huangzc's blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">Nexus交换机FabricPath配置</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Nexus交换机FabricPath配置
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -989,7 +302,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
+        <a id="more"></a>
 
 <p><img src="https://s3.ax1x.com/2021/03/17/6ciGCR.png" alt="image-20210317131636782"></p>
 <h2 id="1-配置N5K的FabricPath"><a href="#1-配置N5K的FabricPath" class="headerlink" title="1 配置N5K的FabricPath"></a>1 配置N5K的FabricPath</h2><h3 id="1-1-在N5K-1-N5K-2上启用特性集"><a href="#1-1-在N5K-1-N5K-2上启用特性集" class="headerlink" title="1.1 在N5K-1/N5K-2上启用特性集"></a>1.1 在N5K-1/N5K-2上启用特性集</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#N5K-1安装FabricPath特性集，并且启用FabricPath特性集</span></span><br><span class="line">N5K-1(config)<span class="comment">#install feature-set fabricpath </span></span><br><span class="line">N5K-1(config)<span class="comment">#feature-set fabricpath </span></span><br><span class="line"><span class="comment">#N5K-1手动配置Switch-ID </span></span><br><span class="line">N5K-1(config)<span class="comment">#fabricpath switch-id 51 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N5K-2安装FabricPath特性集，并且启用FabricPath特性集</span></span><br><span class="line">N5K-2(config)<span class="comment">#install feature-set fabricpath </span></span><br><span class="line">N5K-2(config)<span class="comment">#feature-set fabricpath </span></span><br><span class="line"><span class="comment">#N5K-2手动配置Switch-ID </span></span><br><span class="line">N5K-2(config)<span class="comment">#fabricpath switch-id 52</span></span><br></pre></td></tr></table></figure>
@@ -1059,309 +372,96 @@
 <h3 id="5-2-配置N7K-3-vPC-Domain"><a href="#5-2-配置N7K-3-vPC-Domain" class="headerlink" title="5.2 配置N7K-3 vPC Domain"></a>5.2 配置N7K-3 vPC Domain</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="number">#fea</span>ture vpc</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="selector-id">#vpc</span> domain <span class="number">7</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#role</span> priority <span class="number">73</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#peer-keepalive</span> destination <span class="number">192.168</span>.<span class="number">1.4</span> source <span class="number">192.168</span>.<span class="number">1.3</span> vrf P-K-L</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#dual-active</span> exclude interface-vlan <span class="number">10</span>,<span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="number">#fab</span>ricpath switch-id <span class="number">77</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> port-channel1</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-if)</span></span><span class="selector-id">#vpc</span> peer-link</span><br></pre></td></tr></table></figure>
 
 <h3 id="5-3-配置N7K-4-vPC-Domain"><a href="#5-3-配置N7K-4-vPC-Domain" class="headerlink" title="5.3 配置N7K-4 vPC Domain"></a>5.3 配置N7K-4 vPC Domain</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature vpc</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#role priority 74</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.3 source 192.168.1.4 vrf P-K-L</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#dual-active exclude interface-vlan 10,30</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#fabricpath switch-id 77</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface port-channel1</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#vpc peer-link</span></span><br></pre></td></tr></table></figure>
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
+        <div class="reward-container">
+  <div>听说这是一个让人变帅的按钮！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
       
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/" class="post-title-link" itemprop="url">OSPF路由优选规则</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-15 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-15T00:00:00+08:00">2020-11-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-16 23:42:36" itemprop="dateModified" datetime="2020-11-16T23:42:36+08:00">2020-11-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>875</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Huangzc 微信支付">
+        <p>微信支付</p>
+      </div>
       
-          <p>&emsp;&emsp;在路由表中我们可以看到通过OSPF路由协议学习到的路由是哪一种类型（如O、O IA、O E1、O E2、O N1、O N2）的。当路由器学习到不同类型的同一路由时是如何选择的呢？本篇文章主要介绍OSPF路由的优先选择原则。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Huangzc 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
         
-      
-    </div>
 
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Huangzc
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/" title="Nexus交换机FabricPath配置">https://huangzc.site/2021/03/01/Nexus交换机FabricPath配置/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+	  
+	  <div>
+		
+			<div>
     
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-bug"></i>感谢您的阅读-------------</div>
     
-    
+</div>
+		
+	  </div>
+	  
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/" class="post-title-link" itemprop="url">OSPF特殊区域</a>
-        </h2>
+          <div class="post-tags">
+              <a href="/tags/Nexus/" rel="tag"><i class="fa fa-tag"></i> Nexus</a>
+              <a href="/tags/FabricPath/" rel="tag"><i class="fa fa-tag"></i> FabricPath</a>
+          </div>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-13 00:00:00" itemprop="dateCreated datePublished" datetime="2020-11-13T00:00:00+08:00">2020-11-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-14 16:20:16" itemprop="dateModified" datetime="2020-11-14T16:20:16+08:00">2020-11-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/" rel="prev" title="OSPF路由优选规则">
+      <i class="fa fa-chevron-left"></i> OSPF路由优选规则
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/" rel="next" title="Nexus交换机FabricPath">
+      Nexus交换机FabricPath <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpg">
-      <meta itemprop="name" content="Huangzc">
-      <meta itemprop="description" content="emmmmmmmmmmmm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Huangzc's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/" class="post-title-link" itemprop="url">OSPF邻居关系建立及维护</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-11-11 00:00:00 / 修改时间：23:32:53" itemprop="dateCreated datePublished" datetime="2020-11-11T00:00:00+08:00">2020-11-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>&emsp;&emsp;OSPF邻居关系的建立是经历了七个不同的状态逐步建立起来的，状态之间的转换以及邻居关系建立后的维护主要通过OSPF的五个报文进行数据的传输。 本篇文章详细介绍了OSPF邻居关系的建立与维护。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MTQ0Mi8yNzkyMw=="></div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -1408,6 +508,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AEN5K%E7%9A%84FabricPath"><span class="nav-text">1 配置N5K的FabricPath</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%9C%A8N5K-1-N5K-2%E4%B8%8A%E5%90%AF%E7%94%A8%E7%89%B9%E6%80%A7%E9%9B%86"><span class="nav-text">1.1 在N5K-1&#x2F;N5K-2上启用特性集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%9C%A8N5K-1-N5K-2%E4%B8%8A%E9%85%8D%E7%BD%AEVLAN%E7%9A%84FP%E6%A8%A1%E5%BC%8F"><span class="nav-text">1.2 在N5K-1&#x2F;N5K-2上配置VLAN的FP模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%9C%A8N5K-1%E6%8E%A5%E5%8F%A3%E4%B8%8A%E5%90%AF%E7%94%A8FabricPath"><span class="nav-text">1.3 在N5K-1接口上启用FabricPath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E5%9C%A8N5K-2%E6%8E%A5%E5%8F%A3%E4%B8%8A%E5%90%AF%E7%94%A8FabricPath"><span class="nav-text">1.4 在N5K-2接口上启用FabricPath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E6%9F%A5%E7%9C%8BFabricPath%E7%8A%B6%E6%80%81"><span class="nav-text">1.5 查看FabricPath状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E6%B5%8B%E8%AF%95%E4%BC%9A%E8%AF%9DMAC%E5%9C%B0%E5%9D%80%E5%AD%A6%E4%B9%A0"><span class="nav-text">1.6 测试会话MAC地址学习</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AEN7K%E7%9A%84FabricPath"><span class="nav-text">2 配置N7K的FabricPath</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%9C%A8N7K-3%E5%90%AF%E7%94%A8%E7%89%B9%E6%80%A7%E9%9B%86"><span class="nav-text">2.1 在N7K-3启用特性集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%9C%A8N7K-4%E5%90%AF%E7%94%A8%E7%89%B9%E6%80%A7%E9%9B%86"><span class="nav-text">2.2 在N7K-4启用特性集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%9C%A8N7K-3-N7K-4%E4%B8%8A%E9%85%8D%E7%BD%AEVLAN%E7%9A%84FP%E6%A8%A1%E5%BC%8F"><span class="nav-text">2.3 在N7K-3&#x2F;N7K-4上配置VLAN的FP模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E5%9C%A8N7K-3%E6%8E%A5%E5%8F%A3%E4%B8%8A%E5%90%AF%E7%94%A8FabricPath"><span class="nav-text">2.4 在N7K-3接口上启用FabricPath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E5%9C%A8N7K-4%E6%8E%A5%E5%8F%A3%E4%B8%8A%E5%90%AF%E7%94%A8FabricPath"><span class="nav-text">2.5 在N7K-4接口上启用FabricPath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E5%9C%A8N5K-1-N5K-2%E6%8E%A5%E5%8F%A3%E4%B8%8A%E5%90%AF%E7%94%A8FabricPath"><span class="nav-text">2.6 在N5K-1&#x2F;N5K-2接口上启用FabricPath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-%E6%9F%A5%E7%9C%8BFabricPath%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB"><span class="nav-text">2.7 查看FabricPath邻居关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-%E6%9F%A5%E7%9C%8BFabricPath-Switch-id"><span class="nav-text">2.8 查看FabricPath Switch-id</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-%E6%9F%A5%E7%9C%8BFabricPath%E8%B7%AF%E7%94%B1"><span class="nav-text">2.9 查看FabricPath路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-%E6%9F%A5%E7%9C%8BFabricPath%E5%A4%9A%E7%9B%AE%E7%9A%84%E6%A0%91%E6%A0%B9"><span class="nav-text">2.10 查看FabricPath多目的树根</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AEN5K%E7%9A%84vPC"><span class="nav-text">3 配置N5K的vPC+</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-N5K-1%E9%85%8D%E7%BD%AEvPC-Domain%E4%B8%8EPeer-Link"><span class="nav-text">3.1 N5K-1配置vPC+ Domain与Peer-Link</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-N5K-2%E9%85%8D%E7%BD%AEvPC-Domain%E4%B8%8EPeer-Link"><span class="nav-text">3.2 N5K-2配置vPC+ Domain与Peer-Link</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E5%9C%A8N7K-3%E4%B8%8A%E6%9F%A5%E7%9C%8BSwitch-ID"><span class="nav-text">3.3 在N7K-3上查看Switch-ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E5%9C%A8N7K-3%E4%B8%8A%E6%9F%A5%E7%9C%8BFabricPath-Route"><span class="nav-text">3.4 在N7K-3上查看FabricPath Route</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-N5K-1%E9%85%8D%E7%BD%AEvPC-%E7%AB%AF%E5%8F%A3"><span class="nav-text">3.5 N5K-1配置vPC+端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-N5K-2%E9%85%8D%E7%BD%AEvPC-%E7%AB%AF%E5%8F%A3"><span class="nav-text">3.6 N5K-2配置vPC+端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-C921%E9%85%8D%E7%BD%AEPort-Channel"><span class="nav-text">3.7 C921配置Port-Channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-%E5%85%B3%E4%BA%8EFabricPath-STP%E7%9A%84%E8%B0%83%E6%95%B4"><span class="nav-text">3.8 关于FabricPath STP的调整</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AEN7K%E8%B7%AF%E7%94%B1%E4%B8%8EHSRP"><span class="nav-text">4 配置N7K路由与HSRP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-R4%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE"><span class="nav-text">4.1 R4路由配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-N7K-3%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE"><span class="nav-text">4.2 N7K-3路由配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-N7K-4%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE"><span class="nav-text">4.3 N7K-4路由配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-N7K-3-HSRP%E9%85%8D%E7%BD%AE"><span class="nav-text">4.4 N7K-3 HSRP配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-N7K-4-HSRP%E9%85%8D%E7%BD%AE"><span class="nav-text">4.5 N7K-4 HSRP配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-C1921%E6%B5%8B%E8%AF%95"><span class="nav-text">4.6 C1921测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E9%85%8D%E7%BD%AEN7K%E7%9A%84vPC"><span class="nav-text">5 配置N7K的vPC+</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E9%85%8D%E7%BD%AEPeer-Keepalive%E9%93%BE%E8%B7%AF"><span class="nav-text">5.1 配置Peer Keepalive链路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E9%85%8D%E7%BD%AEN7K-3-vPC-Domain"><span class="nav-text">5.2 配置N7K-3 vPC Domain</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E9%85%8D%E7%BD%AEN7K-4-vPC-Domain"><span class="nav-text">5.3 配置N7K-4 vPC Domain</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1619,6 +720,21 @@ setInterval("createtime()",250);
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
 
   
   <script type="text/javascript"
