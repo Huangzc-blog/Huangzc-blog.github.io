@@ -6,7 +6,7 @@
   <link href="https://huangzc.site/atom.xml" rel="self"/>
   
   <link href="https://huangzc.site/"/>
-  <updated>2021-03-12T06:57:06.554Z</updated>
+  <updated>2021-03-19T02:05:50.712Z</updated>
   <id>https://huangzc.site/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Nexus交换机FabricPath配置</title>
+    <link href="https://huangzc.site/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/"/>
+    <id>https://huangzc.site/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/</id>
+    <published>2021-03-15T16:00:00.000Z</published>
+    <updated>2021-03-19T02:05:50.712Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;本篇文章主要介绍在Nexus交换机上FabricPath的配步骤。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Nexus实验" scheme="https://huangzc.site/categories/Nexus%E5%AE%9E%E9%AA%8C/"/>
+    
+    
+    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
+    
+    <category term="FabricPath" scheme="https://huangzc.site/tags/FabricPath/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nexus交换机FabricPath</title>
+    <link href="https://huangzc.site/2021/03/15/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/"/>
+    <id>https://huangzc.site/2021/03/15/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/</id>
+    <published>2021-03-14T16:00:00.000Z</published>
+    <updated>2021-03-19T01:51:13.539Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;FabricPath是Cisco Nexus交换机上的一项技术特性，这个技术做到了以下几点：实现两点间多条路径同时转发流量EMCP(Equal Cost Multi Pathing)；类似IP网络的平滑扩展；快速收敛；防止广播风暴；保持原有二层网络配置的简洁性。FabricPath摆脱传统二层“交换”的弊端，在二层环境中实现类似三层IP的“路由”行为。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
+    
+    <category term="FabricPath" scheme="https://huangzc.site/tags/FabricPath/"/>
+    
+  </entry>
   
   <entry>
     <title>vPC术语介绍</title>
@@ -118,65 +160,6 @@
     <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
     
     <category term="VDC" scheme="https://huangzc.site/tags/VDC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Nexus交换机FabricPath</title>
-    <link href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/"/>
-    <id>https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/</id>
-    <published>2021-02-28T16:00:00.000Z</published>
-    <updated>2021-03-16T09:34:31.879Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-
-&lt;h2 id=&quot;1-FabricPath简介&quot;&gt;&lt;a href=&quot;#1-FabricPath简介&quot; class=&quot;headerlink&quot; title=&quot;1 FabricPath简介&quot;&gt;&lt;/a&gt;1 FabricPath简介&lt;/h2&gt;&lt;h3</summary>
-        
-      
-    
-    
-    
-    <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
-    
-    <category term="FabricPath" scheme="https://huangzc.site/tags/FabricPath/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Nexus交换机FabricPath配置</title>
-    <link href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/"/>
-    <id>https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/</id>
-    <published>2021-02-28T16:00:00.000Z</published>
-    <updated>2021-03-17T08:35:06.389Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://s3.ax1x.com/2021/03/17/6ciGCR.png&quot; alt=&quot;image-20210317131636782&quot;&gt;&lt;/p&gt;
-&lt;h2</summary>
-        
-      
-    
-    
-    
-    <category term="Nexus实验" scheme="https://huangzc.site/categories/Nexus%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
-    
-    <category term="FabricPath" scheme="https://huangzc.site/tags/FabricPath/"/>
     
   </entry>
   

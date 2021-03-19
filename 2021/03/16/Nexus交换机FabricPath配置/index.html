@@ -35,12 +35,12 @@
     var CONFIG = {"hostname":"huangzc.site","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1 配置N5K的FabricPath1.1 在N5K-1&#x2F;N5K-2上启用特性集1234567891011#N5K-1安装FabricPath特性集，并且启用FabricPath特性集N5K-1(config)#install feature-set fabricpath N5K-1(config)#feature-set fabricpath #N5K-1手动配置Switch-ID N5K">
+  <meta name="description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍在Nexus交换机上FabricPath的配步骤。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nexus交换机FabricPath配置">
-<meta property="og:url" content="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:url" content="https://huangzc.site/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="Huangzc&#39;s blog">
-<meta property="og:description" content="1 配置N5K的FabricPath1.1 在N5K-1&#x2F;N5K-2上启用特性集1234567891011#N5K-1安装FabricPath特性集，并且启用FabricPath特性集N5K-1(config)#install feature-set fabricpath N5K-1(config)#feature-set fabricpath #N5K-1手动配置Switch-ID N5K">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;本篇文章主要介绍在Nexus交换机上FabricPath的配步骤。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6ciGCR.png">
 <meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6ciUKK.png">
@@ -56,15 +56,15 @@
 <meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFBLT.png">
 <meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFreU.png">
 <meta property="og:image" content="https://s3.ax1x.com/2021/03/17/6cFswF.png">
-<meta property="article:published_time" content="2021-02-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-03-17T08:35:06.389Z">
+<meta property="article:published_time" content="2021-03-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-19T02:05:50.712Z">
 <meta property="article:author" content="Huangzc">
 <meta property="article:tag" content="Nexus">
 <meta property="article:tag" content="FabricPath">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s3.ax1x.com/2021/03/17/6ciGCR.png">
 
-<link rel="canonical" href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/">
+<link rel="canonical" href="https://huangzc.site/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/">
 
 
 <script id="page-configurations">
@@ -235,7 +235,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="https://huangzc.site/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpg">
@@ -258,14 +258,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-03-01 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-01T00:00:00+08:00">2021-03-01</time>
+              <time title="创建时间：2021-03-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-16T00:00:00+08:00">2021-03-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-17 16:35:06" itemprop="dateModified" datetime="2021-03-17T16:35:06+08:00">2021-03-17</time>
+                <time title="修改时间：2021-03-19 10:05:50" itemprop="dateModified" datetime="2021-03-19T10:05:50+08:00">2021-03-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,7 +302,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <a id="more"></a>
+        <p>&emsp;&emsp;本篇文章主要介绍在Nexus交换机上FabricPath的配步骤。</p>
+<a id="more"></a>
 
 <p><img src="https://s3.ax1x.com/2021/03/17/6ciGCR.png" alt="image-20210317131636782"></p>
 <h2 id="1-配置N5K的FabricPath"><a href="#1-配置N5K的FabricPath" class="headerlink" title="1 配置N5K的FabricPath"></a>1 配置N5K的FabricPath</h2><h3 id="1-1-在N5K-1-N5K-2上启用特性集"><a href="#1-1-在N5K-1-N5K-2上启用特性集" class="headerlink" title="1.1 在N5K-1/N5K-2上启用特性集"></a>1.1 在N5K-1/N5K-2上启用特性集</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#N5K-1安装FabricPath特性集，并且启用FabricPath特性集</span></span><br><span class="line">N5K-1(config)<span class="comment">#install feature-set fabricpath </span></span><br><span class="line">N5K-1(config)<span class="comment">#feature-set fabricpath </span></span><br><span class="line"><span class="comment">#N5K-1手动配置Switch-ID </span></span><br><span class="line">N5K-1(config)<span class="comment">#fabricpath switch-id 51 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N5K-2安装FabricPath特性集，并且启用FabricPath特性集</span></span><br><span class="line">N5K-2(config)<span class="comment">#install feature-set fabricpath </span></span><br><span class="line">N5K-2(config)<span class="comment">#feature-set fabricpath </span></span><br><span class="line"><span class="comment">#N5K-2手动配置Switch-ID </span></span><br><span class="line">N5K-2(config)<span class="comment">#fabricpath switch-id 52</span></span><br></pre></td></tr></table></figure>
@@ -406,7 +407,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://huangzc.site/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/" title="Nexus交换机FabricPath配置">https://huangzc.site/2021/03/01/Nexus交换机FabricPath配置/</a>
+    <a href="https://huangzc.site/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/" title="Nexus交换机FabricPath配置">https://huangzc.site/2021/03/16/Nexus交换机FabricPath配置/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -438,13 +439,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/" rel="prev" title="OSPF路由优选规则">
-      <i class="fa fa-chevron-left"></i> OSPF路由优选规则
+    <a href="/2021/03/15/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/" rel="prev" title="Nexus交换机FabricPath">
+      <i class="fa fa-chevron-left"></i> Nexus交换机FabricPath
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/03/01/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/" rel="next" title="Nexus交换机FabricPath">
-      Nexus交换机FabricPath <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
