@@ -415,94 +415,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNA实验二——静态路由的应用</title>
-    <url>/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li>理解路由的作用</li>
-<li>掌握静态路由的配置</li>
-<li>理解路由表的含义</li>
-<li>理解默认路由的作用与配置</li>
-<li>理解默认路由的使用场合</li>
-<li>理解 traceroute 和 ping 命令的使用</li>
-<li>理解 loopback 接口的作用</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/09/22/wXSEGD.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li><p>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</p>
-<p><img src="https://s1.ax1x.com/2020/09/23/wvabTg.png"></p>
-</li>
-<li><p>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.10.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.10.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.20.1 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.20.2 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.2.254 255.255.255.0                             </span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0 192.168.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0 gateway 192.168.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.2.1 255.255.255.0 192.168.2.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC2 : 192.168.2.1 255.255.255.0 gateway 192.168.2.254</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>测试 PC1 与 PC2 两主机之间的连通性</li>
-</ol>
-<p>&emsp;&emsp;PC1与PC2之间不可达，因为PC1的网关R1处没有去往192.168.2.0/24网段的路由。</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1LfP.png"></p>
-<ol start="4">
-<li>在 R1 上创建一条到达对端主机 PC2 所在网络的静态路由，要求使用下一跳方式实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.10.2</span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>在 R3 上创建一条到达对端主机 PC1 所在网络的静态路由，要求使用出接口方式实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>观察 R1 和 R3 上的路由表，仔细观察使用出接口与使用下一跳方式的静态路由表项的不同</li>
-</ol>
-<p>&emsp;&emsp;R1为下一跳：</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1v6S.png"></p>
-<p>&emsp;&emsp;R2为出接口：</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1xOg.png"></p>
-<ol start="6">
-<li>添加合适的配置，实现 PC1 与 PC2 之间的连通性，使用 ping 进行测试</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 192.168.10.1</span></span><br><span class="line">R2(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.20.2</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3SmQ.png"></p>
-<ol start="6">
-<li>分别在 PC1 和 PC2 上使用 tracert 观察两主机通信过程的传输路径</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz39Ts.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3iYq.png"></p>
-<ol start="6">
-<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.255</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 192.168.10.2</span><br><span class="line"></span><br><span class="line">R3(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 s2/1</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3Ff0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3n0J.png"></p>
-<ol start="6">
-<li>删除 R1 和 R3 上的静态路由条目，使用默认路由实现 PC1 与 PC2 之间的连通性</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 192.168.10.2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3mm4.png"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>静态路由</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNA实验五——单区域 OSPF 的实现</title>
     <url>/2018/10/09/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置； OSPF 的邻居表、拓扑表及路由表的含义； OSPF 的 DR 和 BDR 的作用； OSPF 的 DR 和 BDR 的选举； OSPF 路由协议的相关信息的查看和调试； OSPF 中 hello 报文的作用和格式。</p>
@@ -641,6 +553,94 @@
       <tags>
         <tag>CCNA</tag>
         <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNA实验二——静态路由的应用</title>
+    <url>/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li>理解路由的作用</li>
+<li>掌握静态路由的配置</li>
+<li>理解路由表的含义</li>
+<li>理解默认路由的作用与配置</li>
+<li>理解默认路由的使用场合</li>
+<li>理解 traceroute 和 ping 命令的使用</li>
+<li>理解 loopback 接口的作用</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/09/22/wXSEGD.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li><p>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</p>
+<p><img src="https://s1.ax1x.com/2020/09/23/wvabTg.png"></p>
+</li>
+<li><p>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.10.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.10.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.20.1 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.20.2 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.2.254 255.255.255.0                             </span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0 192.168.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0 gateway 192.168.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.2.1 255.255.255.0 192.168.2.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC2 : 192.168.2.1 255.255.255.0 gateway 192.168.2.254</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>测试 PC1 与 PC2 两主机之间的连通性</li>
+</ol>
+<p>&emsp;&emsp;PC1与PC2之间不可达，因为PC1的网关R1处没有去往192.168.2.0/24网段的路由。</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1LfP.png"></p>
+<ol start="4">
+<li>在 R1 上创建一条到达对端主机 PC2 所在网络的静态路由，要求使用下一跳方式实现</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.10.2</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>在 R3 上创建一条到达对端主机 PC1 所在网络的静态路由，要求使用出接口方式实现</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>观察 R1 和 R3 上的路由表，仔细观察使用出接口与使用下一跳方式的静态路由表项的不同</li>
+</ol>
+<p>&emsp;&emsp;R1为下一跳：</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1v6S.png"></p>
+<p>&emsp;&emsp;R2为出接口：</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1xOg.png"></p>
+<ol start="6">
+<li>添加合适的配置，实现 PC1 与 PC2 之间的连通性，使用 ping 进行测试</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 192.168.10.1</span></span><br><span class="line">R2(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.20.2</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3SmQ.png"></p>
+<ol start="6">
+<li>分别在 PC1 和 PC2 上使用 tracert 观察两主机通信过程的传输路径</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz39Ts.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3iYq.png"></p>
+<ol start="6">
+<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.255</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 192.168.10.2</span><br><span class="line"></span><br><span class="line">R3(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 s2/1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3Ff0.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3n0J.png"></p>
+<ol start="6">
+<li>删除 R1 和 R3 上的静态路由条目，使用默认路由实现 PC1 与 PC2 之间的连通性</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 192.168.10.2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3mm4.png"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>静态路由</tag>
       </tags>
   </entry>
   <entry>
@@ -940,6 +940,140 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP交换综合实验三</title>
+    <url>/2019/03/14/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 HSRP 的配置与检验</p>
+</li>
+<li><p>掌握 VRRP 的配置与检验</p>
+</li>
+<li><p>掌握 GLBP 的配置与检验</p>
+</li>
+<li><p>熟悉 NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p> <img src="https://s1.ax1x.com/2020/09/01/djuPsJ.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/01/djxDrF.png"></p>
+<ol start="2">
+<li>根据图示，将各主机与 NMS 划分进相应的 VLAN 中，各主机以及 NMS 的地址自己规划，其中 NMS 是一台安装了 SNMP 网管软件、Syslog 日志服务器和网络嗅探器的网络管理服务器，并且两多层交换机做为各 PC 的网关。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10 </span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 20 </span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 30</span></span><br><span class="line"><span class="comment">#将NMS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/2</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e0/3,e1/0</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;各主机的端口配置情况（可以通过端口是否出现在vlan中来判断是否为trunk）：</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxiAgA.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dvtr9J.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dvNS3j.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dvts39.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dvN8UO.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dvtBh4.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dvt0NF.png"></p>
+<ol start="2">
+<li>采用 HSRP 协议实现 VLAN10 的主网关为 DSW1，备份网关为 DSW2,VLAN20的主网关为 DSW2，备份网关为 DSW1,在园区网络内采用任意协议实现 PC 机可以访问 Internet 网络，HSRP 组编号应与它们为之提供服务的 VLAN 的编号匹配。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行HSRP协议</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10</span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在HRSP协议中，虚拟IP不可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认关闭）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt</span></span><br><span class="line"><span class="comment">#设置standby 10的优先级为110（可通过设置优先级来确定主/备份设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110</span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#在DSW2上运行HSRP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/01/dxi3gs.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxi13j.png"></p>
+<ol start="4">
+<li>当多层交换机的上行链路发生故障，确保来自 PC 的流量不会采用次优路径。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;关闭DSW1上e0/0的端口，用追踪路由查看路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 08:21:57.629: %TRACK-6-STATE: 10 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 08:21:59.634: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 08:22:00.239: %HSRP-5-STATECHANGE: Vlan10 Grp 10 state Active -&gt; Speak</span><br><span class="line">*Sep  1 08:22:00.637: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0,changed state to down</span><br><span class="line">*Sep  1 08:22:11.522: %HSRP-5-STATECHANGE: Vlan10 Grp 10 state Speak -&gt; Standby</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;由于DSW1的e0/0端口被关闭，优先级减少6，小于DSW2的105，故DSW1的Group 10状态转为Standby，DSW2的Group 10状态转为Active。</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxmmt0.png"></p>
+<p>在PC 1上进行对Internet的路由跟踪，从下图可以得知，数据是从DSW2上转发的。</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxmDnH.png"></p>
+<ol start="5">
+<li>删除 HSRP 的配置，使用 VRRP 实现 VLAN10 的主网关为 DSW1，备份网关为 DSW2,VLAN20 的主网关为 DSW2，备份网关为 DSW1, VRRP 组编号应与它们为之提供服务的 VLAN 的编号匹配，如果多层交换机的上行链路发生故障，同样请确保来自 PC 的流量不会采用次优路径。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行VRRP协议</span></span><br><span class="line">DSW1(config-if)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在VRRP协议中，虚拟IP可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认开启）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 preempt </span></span><br><span class="line"><span class="comment">#设置vrrp 10的优先级为110（可通过设置优先级来确定主/备份设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 priority 110</span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 authentication text huangzc</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 authentication text huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上运行VRRP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 priority 105 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10  authentication text huangzc</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 priority 110 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20  authentication text huangzc</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/01/dxoMGD.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxoQRe.png"></p>
+<p>&emsp;&emsp;使用track使 PC 的流量不会采用次优路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 track 10 decrement 6</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;关闭DSW2 的e0/0, 用追踪路由查看路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW2(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW2(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 09:03:34.438: %TRACK-6-STATE: 20 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 09:03:34.443: %OSPF-5-ADJCHG: Process 110, Nbr 12.12.12.2 on Ethernet0/0 from FULL to DOWN, Neighbor Down: Interface down or detached</span><br><span class="line">*Sep  1 09:03:36.441: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 09:03:37.449: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to down</span><br><span class="line">*Sep  1 09:03:37.722: %VRRP-6-STATECHANGE: Vl20 Grp 20 state Master -&gt; Backup</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;由于DSW2的e0/0端口被关闭，优先级减少6，小于DSW2的105，故DSW2的Group 20状态转为Backup，DSW1的Group 10状态转为Master。</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxrEz8.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxrmLQ.png"></p>
+<ol start="6">
+<li>删除 VRRP 的配置，在该园区网络中部署 GLBP 实现各 VLAN 的主机可以同时通过DSW1 和DSW2 进行外部网络资源的访问，并且实现DSW1 为VLAN10 的 AVG，DSW2 为 VLAN20 的 AVG。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行GLBP协议</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在GLBP协议中，虚拟IP不可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认关闭）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 preempt </span></span><br><span class="line"><span class="comment">#设置glbp 10的优先级为120（可通过设置优先级来确定AVG/AVF设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 priority 120 </span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#修改负载均衡方式</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 load-balancing weighted </span></span><br><span class="line"><span class="comment">#修改权重为140。（最低为100，最高为140。如果权重低于100，将不能进行数据的转发。如果想恢复转发数据，那么权重必须大于或等于140）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 weighting 140 lower 100 upper 140</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 ip 192.168.20.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 load-balancing weighted </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 weighting 140 lower 100 upper 140</span></span><br><span class="line"><span class="comment">#在DSW2上运行GLBP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 load-balancing weighted </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 weighting 140 lower 100 upper 140</span></span><br><span class="line">DSW2(config-if)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 priority 120 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 load-balancing weighted </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 weighting 140 lower 100 upper 140</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看GLBP的详细信息，DSW1为Vlan 10的AVG，负责分发虚拟MAC地址，AVG同时也可以是AVF。DSW2为Vlan 20的AVF。DSW2为Vlan 20的AVG，负责分发虚拟MAC地址，同时也是AVF。DSW1为Vlan 20的AVF。</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxWAK0.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxWVbT.png"></p>
+<p>&emsp;&emsp;在PC1与PC2上对路由进行跟踪，PC1的数据由DSW1转发，PC2的数据由DSW2转发。实现负载均衡。</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx4ma8.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dx4MGQ.png"></p>
+<p>&emsp;&emsp;使用track使 PC 的流量不会采用次优路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的权重减少50为90，小于100，无法转发数据</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 weighting track 10 decrement 50</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config-if)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 weighting track 20 decrement 50</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;关闭DSW2 的e0/0, 用追踪路由查看路径：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 11:35:58.763: %TRACK-6-STATE: 10 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 11:36:00.762: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 11:36:01.768: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to down</span><br><span class="line">*Sep  1 11:36:29.913: %GLBP-6-FWDSTATECHANGE: Vlan10 Grp 10 Fwd 2 state Active -&gt; Listen</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;当上层链路发生故障时，DSW1的Group 10的权重小于100，故不能转发数据，处于Listen状态。但是DSW1仍是Group 10 的AVG，它将原本自己的MAC地址分配给了DSW2的Group 10，因此，此时的DSW2的负责Vlan 10的所有数据转发。</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxfxhQ.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxh9cn.png"></p>
+<p>&emsp;&emsp;PC1与PC2访问Internet时，均为DSW2转发。</p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxhy4g.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/01/dxh2gs.png"></p>
+<ol start="7">
+<li>在路由器 R1 上设置路由器的当前时间为 12:00:00 Mar 7 2019，时区为 CN， NTP 的master 值为2，使用安全的方式实现多层交换通过R1 完成时钟同步。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#clock set 12:00:00 Mar 7 2019</span></span><br><span class="line">R1(config)<span class="comment">#clock timezone CN +8</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;Server：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ntp master 2</span></span><br><span class="line">R1(config)<span class="comment">#int range e0/0-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ntp broadcast </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;Client :</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#int e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ntp broadcast client </span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>将多层交换以及 R1 上的日志信息发送到 NMS 上的 Syslog 日志服务器上， 并且设置这些设备的 Log Buffer 为 8192 bytes，logging trap 为 5。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#logging buffered 8192</span></span><br><span class="line">R1(config)<span class="comment">#logging trap 5    </span></span><br><span class="line">R1(config)<span class="comment">#logging host 192.168.30.1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>在 R1 上设置 SNMP 的 community 为huangzc，并且权限为 RW，通过 PC 机上的 SNMP 工具实现对 R1 设备的管理和监控。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#snmp-server community huangzc rw </span></span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li>使用 SPAN 将 DSW1 上的 VLAN10 数据发送到 NMS 上进行流量分析。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#no monitor session all </span></span><br><span class="line">DSW1(config)<span class="comment">#monitor session 8 source vlan 10 </span></span><br><span class="line">DSW1(config)<span class="comment">#monitor session 8 destination interface e0/2</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP交换综合实验二</title>
     <url>/2019/03/07/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 RSTP 的配置与检验； MST 的配置与检验；生成树特性的应用；实现 VLAN 间的通信。</p>
@@ -1100,140 +1234,6 @@
 <p><img src="https://s1.ax1x.com/2020/08/31/dXJGE4.png"></p>
 <p><img src="https://s1.ax1x.com/2020/08/31/dXJ1DU.png"></p>
 <p><img src="https://s1.ax1x.com/2020/08/31/dXJBDO.png"></p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP交换综合实验三</title>
-    <url>/2019/03/14/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍了 HSRP 的配置与检验；掌握 VRRP 的配置与检验；GLBP 的配置与检验； NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握 HSRP 的配置与检验</p>
-</li>
-<li><p>掌握 VRRP 的配置与检验</p>
-</li>
-<li><p>掌握 GLBP 的配置与检验</p>
-</li>
-<li><p>熟悉 NTP、Syslog、SNMP、Track 以及 SPAN 技术的应用与配置</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p> <img src="https://s1.ax1x.com/2020/09/01/djuPsJ.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建。</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/01/djxDrF.png"></p>
-<ol start="2">
-<li>根据图示，将各主机与 NMS 划分进相应的 VLAN 中，各主机以及 NMS 的地址自己规划，其中 NMS 是一台安装了 SNMP 网管软件、Syslog 日志服务器和网络嗅探器的网络管理服务器，并且两多层交换机做为各 PC 的网关。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在各交换机上创建vlan，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 10 </span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 20 </span></span><br><span class="line">DSW1(config)<span class="comment">#vlan 30</span></span><br><span class="line"><span class="comment">#将NMS所在的端口划分进vlan 30</span></span><br><span class="line">DSW1(config)<span class="comment">#interface ethernet 0/2</span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">DSW1(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line"><span class="comment">#配置各主机的IP地址，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 11.11.11.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface e0/1</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no switchport </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 21.21.21.1 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#将其余与交换机相连的端口设置为trunk，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface range e0/3,e1/0</span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">DSW1(config-if-range)<span class="comment">#switchport mode trunk </span></span><br><span class="line"><span class="comment">#将各PC划分进对应的vlan，此处以ASW1为例。</span></span><br><span class="line">ASW1(config)<span class="comment">#interface range e0/1-2</span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport mode access </span></span><br><span class="line">ASW1(config-if-range)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"><span class="comment">#在三层交换机上启用SVI端口作为各PC机的网关，此处以DSW1为例。</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#ip address 192.168.10.252 255.255.255.0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#其余配置略</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;各主机的端口配置情况（可以通过端口是否出现在vlan中来判断是否为trunk）：</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxiAgA.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dvtr9J.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dvNS3j.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dvts39.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dvN8UO.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dvtBh4.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dvt0NF.png"></p>
-<ol start="2">
-<li>采用 HSRP 协议实现 VLAN10 的主网关为 DSW1，备份网关为 DSW2,VLAN20的主网关为 DSW2，备份网关为 DSW1,在园区网络内采用任意协议实现 PC 机可以访问 Internet 网络，HSRP 组编号应与它们为之提供服务的 VLAN 的编号匹配。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行HSRP协议</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10</span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在HRSP协议中，虚拟IP不可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认关闭）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 preempt</span></span><br><span class="line"><span class="comment">#设置standby 10的优先级为110（可通过设置优先级来确定主/备份设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 priority 110</span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 ip 192.168.20.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#exit</span></span><br><span class="line"><span class="comment">#在DSW2上运行HSRP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 ip 192.168.10.254 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 priority 105 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 ip 192.168.20.254 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 priority 110 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#exit</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/01/dxi3gs.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxi13j.png"></p>
-<ol start="4">
-<li>当多层交换机的上行链路发生故障，确保来自 PC 的流量不会采用次优路径。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#standby 10 track 10 decrement 6</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#standby 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;关闭DSW1上e0/0的端口，用追踪路由查看路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 08:21:57.629: %TRACK-6-STATE: 10 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 08:21:59.634: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 08:22:00.239: %HSRP-5-STATECHANGE: Vlan10 Grp 10 state Active -&gt; Speak</span><br><span class="line">*Sep  1 08:22:00.637: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0,changed state to down</span><br><span class="line">*Sep  1 08:22:11.522: %HSRP-5-STATECHANGE: Vlan10 Grp 10 state Speak -&gt; Standby</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;由于DSW1的e0/0端口被关闭，优先级减少6，小于DSW2的105，故DSW1的Group 10状态转为Standby，DSW2的Group 10状态转为Active。</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxmmt0.png"></p>
-<p>在PC 1上进行对Internet的路由跟踪，从下图可以得知，数据是从DSW2上转发的。</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxmDnH.png"></p>
-<ol start="5">
-<li>删除 HSRP 的配置，使用 VRRP 实现 VLAN10 的主网关为 DSW1，备份网关为 DSW2,VLAN20 的主网关为 DSW2，备份网关为 DSW1, VRRP 组编号应与它们为之提供服务的 VLAN 的编号匹配，如果多层交换机的上行链路发生故障，同样请确保来自 PC 的流量不会采用次优路径。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行VRRP协议</span></span><br><span class="line">DSW1(config-if)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在VRRP协议中，虚拟IP可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认开启）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 preempt </span></span><br><span class="line"><span class="comment">#设置vrrp 10的优先级为110（可通过设置优先级来确定主/备份设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 priority 110</span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 authentication text huangzc</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 ip 192.168.20.254 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 priority 105</span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 20 authentication text huangzc</span></span><br><span class="line"><span class="comment">#在DSW2上运行VRRP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10 priority 105 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 10  authentication text huangzc</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 priority 110 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20  authentication text huangzc</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/01/dxoMGD.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxoQRe.png"></p>
-<p>&emsp;&emsp;使用track使 PC 的流量不会采用次优路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的优先级减少6小于DSW2的105，DSW2成为主网关 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#vrrp 10 track 10 decrement 6</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#vrrp 20 track 20 decrement 6</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;关闭DSW2 的e0/0, 用追踪路由查看路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW2(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW2(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 09:03:34.438: %TRACK-6-STATE: 20 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 09:03:34.443: %OSPF-5-ADJCHG: Process 110, Nbr 12.12.12.2 on Ethernet0/0 from FULL to DOWN, Neighbor Down: Interface down or detached</span><br><span class="line">*Sep  1 09:03:36.441: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 09:03:37.449: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to down</span><br><span class="line">*Sep  1 09:03:37.722: %VRRP-6-STATECHANGE: Vl20 Grp 20 state Master -&gt; Backup</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;由于DSW2的e0/0端口被关闭，优先级减少6，小于DSW2的105，故DSW2的Group 20状态转为Backup，DSW1的Group 10状态转为Master。</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxrEz8.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxrmLQ.png"></p>
-<ol start="6">
-<li>删除 VRRP 的配置，在该园区网络中部署 GLBP 实现各 VLAN 的主机可以同时通过DSW1 和DSW2 进行外部网络资源的访问，并且实现DSW1 为VLAN10 的 AVG，DSW2 为 VLAN20 的 AVG。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在DSW1上运行GLBP协议</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#配置vlan 10的虚拟网关为192.168.10.254（在GLBP协议中，虚拟IP不可以与实际物理IP相同）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 ip 192.168.10.254</span></span><br><span class="line"><span class="comment">#开启抢占模式（优先级高的设备可以抢占优先级低的设备成为主网关，默认关闭）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 preempt </span></span><br><span class="line"><span class="comment">#设置glbp 10的优先级为120（可通过设置优先级来确定AVG/AVF设备）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 priority 120 </span></span><br><span class="line"><span class="comment">#开启认证，防止非法设备的接入</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 authentication md5 key-string huangzc</span></span><br><span class="line"><span class="comment">#修改负载均衡方式</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 load-balancing weighted </span></span><br><span class="line"><span class="comment">#修改权重为140。（最低为100，最高为140。如果权重低于100，将不能进行数据的转发。如果想恢复转发数据，那么权重必须大于或等于140）</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 weighting 140 lower 100 upper 140</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 20 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 ip 192.168.20.254</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 preempt </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 priority 110 </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 load-balancing weighted </span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 20 weighting 140 lower 100 upper 140</span></span><br><span class="line"><span class="comment">#在DSW2上运行GLBP协议</span></span><br><span class="line">DSW2(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 ip 192.168.10.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 priority 110</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 load-balancing weighted </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 10 weighting 140 lower 100 upper 140</span></span><br><span class="line">DSW2(config-if)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 ip 192.168.20.254</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 preempt </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 priority 120 </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 authentication md5 key-string huangzc</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 load-balancing weighted </span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 weighting 140 lower 100 upper 140</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;查看GLBP的详细信息，DSW1为Vlan 10的AVG，负责分发虚拟MAC地址，AVG同时也可以是AVF。DSW2为Vlan 20的AVF。DSW2为Vlan 20的AVG，负责分发虚拟MAC地址，同时也是AVF。DSW1为Vlan 20的AVF。</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxWAK0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxWVbT.png"></p>
-<p>&emsp;&emsp;在PC1与PC2上对路由进行跟踪，PC1的数据由DSW1转发，PC2的数据由DSW2转发。实现负载均衡。</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx4ma8.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dx4MGQ.png"></p>
-<p>&emsp;&emsp;使用track使 PC 的流量不会采用次优路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建track 10 跟踪DSW1上层链路interface e0/0的状态</span></span><br><span class="line">DSW1(config)<span class="comment">#track 10 interface e0/0 line-protocol </span></span><br><span class="line">DSW1(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW1(config)<span class="comment">#interface vlan 10 </span></span><br><span class="line"><span class="comment">#当上层链路发生故障时，DSW1的权重减少50为90，小于100，无法转发数据</span></span><br><span class="line">DSW1(config-if)<span class="comment">#glbp 10 weighting track 10 decrement 50</span></span><br><span class="line"><span class="comment">#DSW2同理</span></span><br><span class="line">DSW2(config)<span class="comment">#track 20 interface e0/0 line-protocol  </span></span><br><span class="line">DSW2(config-track)<span class="comment">#exit</span></span><br><span class="line">DSW2(config-if)<span class="comment">#interface vlan 20</span></span><br><span class="line">DSW2(config-if)<span class="comment">#glbp 20 weighting track 20 decrement 50</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;关闭DSW2 的e0/0, 用追踪路由查看路径：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#interface e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#shutdown </span></span><br><span class="line">*Sep  1 11:35:58.763: %TRACK-6-STATE: 10 interface Et0/0 line-protocol Up -&gt; Down</span><br><span class="line">*Sep  1 11:36:00.762: %LINK-5-CHANGED: Interface Ethernet0/0, changed state to administratively down</span><br><span class="line">*Sep  1 11:36:01.768: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to down</span><br><span class="line">*Sep  1 11:36:29.913: %GLBP-6-FWDSTATECHANGE: Vlan10 Grp 10 Fwd 2 state Active -&gt; Listen</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;当上层链路发生故障时，DSW1的Group 10的权重小于100，故不能转发数据，处于Listen状态。但是DSW1仍是Group 10 的AVG，它将原本自己的MAC地址分配给了DSW2的Group 10，因此，此时的DSW2的负责Vlan 10的所有数据转发。</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxfxhQ.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxh9cn.png"></p>
-<p>&emsp;&emsp;PC1与PC2访问Internet时，均为DSW2转发。</p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxhy4g.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/01/dxh2gs.png"></p>
-<ol start="7">
-<li>在路由器 R1 上设置路由器的当前时间为 12:00:00 Mar 7 2019，时区为 CN， NTP 的master 值为2，使用安全的方式实现多层交换通过R1 完成时钟同步。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#clock set 12:00:00 Mar 7 2019</span></span><br><span class="line">R1(config)<span class="comment">#clock timezone CN +8</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;Server：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ntp master 2</span></span><br><span class="line">R1(config)<span class="comment">#int range e0/0-2</span></span><br><span class="line">R1(config-if-range)<span class="comment">#ntp broadcast </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;Client :</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#int e0/0</span></span><br><span class="line">DSW1(config-if)<span class="comment">#ntp broadcast client </span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>将多层交换以及 R1 上的日志信息发送到 NMS 上的 Syslog 日志服务器上， 并且设置这些设备的 Log Buffer 为 8192 bytes，logging trap 为 5。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#logging buffered 8192</span></span><br><span class="line">R1(config)<span class="comment">#logging trap 5    </span></span><br><span class="line">R1(config)<span class="comment">#logging host 192.168.30.1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="9">
-<li>在 R1 上设置 SNMP 的 community 为huangzc，并且权限为 RW，通过 PC 机上的 SNMP 工具实现对 R1 设备的管理和监控。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#snmp-server community huangzc rw </span></span><br></pre></td></tr></table></figure>
-
-<ol start="10">
-<li>使用 SPAN 将 DSW1 上的 VLAN10 数据发送到 NMS 上进行流量分析。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DSW1(config)<span class="comment">#no monitor session all </span></span><br><span class="line">DSW1(config)<span class="comment">#monitor session 8 source vlan 10 </span></span><br><span class="line">DSW1(config)<span class="comment">#monitor session 8 destination interface e0/2</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
 ]]></content>
       <categories>
         <category>CCNP实验</category>
@@ -1913,88 +1913,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Nexus交换机FabricPath配置</title>
-    <url>/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍在Nexus交换机上FabricPath的配步骤。</p>
-<a id="more"></a>
-
-<p><img src="https://s3.ax1x.com/2021/03/17/6ciGCR.png" alt="image-20210317131636782"></p>
-<h2 id="1-配置N5K的FabricPath"><a href="#1-配置N5K的FabricPath" class="headerlink" title="1 配置N5K的FabricPath"></a>1 配置N5K的FabricPath</h2><h3 id="1-1-在N5K-1-N5K-2上启用特性集"><a href="#1-1-在N5K-1-N5K-2上启用特性集" class="headerlink" title="1.1 在N5K-1/N5K-2上启用特性集"></a>1.1 在N5K-1/N5K-2上启用特性集</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#N5K-1安装FabricPath特性集，并且启用FabricPath特性集</span></span><br><span class="line">N5K-1(config)<span class="comment">#install feature-set fabricpath </span></span><br><span class="line">N5K-1(config)<span class="comment">#feature-set fabricpath </span></span><br><span class="line"><span class="comment">#N5K-1手动配置Switch-ID </span></span><br><span class="line">N5K-1(config)<span class="comment">#fabricpath switch-id 51 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N5K-2安装FabricPath特性集，并且启用FabricPath特性集</span></span><br><span class="line">N5K-2(config)<span class="comment">#install feature-set fabricpath </span></span><br><span class="line">N5K-2(config)<span class="comment">#feature-set fabricpath </span></span><br><span class="line"><span class="comment">#N5K-2手动配置Switch-ID </span></span><br><span class="line">N5K-2(config)<span class="comment">#fabricpath switch-id 52</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-在N5K-1-N5K-2上配置VLAN的FP模式"><a href="#1-2-在N5K-1-N5K-2上配置VLAN的FP模式" class="headerlink" title="1.2 在N5K-1/N5K-2上配置VLAN的FP模式"></a>1.2 在N5K-1/N5K-2上配置VLAN的FP模式</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#N5K-1配置VLAN10为FabricPath模式</span></span><br><span class="line">N5K-1(config)<span class="comment">#vlan 10 </span></span><br><span class="line">N5K-1(config-vlan)<span class="comment">#mode fabricpath </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N5K-2配置VLAN10为FabricPath模式</span></span><br><span class="line">N5K-2(config)<span class="comment">#vlan 10 </span></span><br><span class="line">N5K-2(config-vlan)<span class="comment">#mode fabricpath</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-3-在N5K-1接口上启用FabricPath"><a href="#1-3-在N5K-1接口上启用FabricPath" class="headerlink" title="1.3 在N5K-1接口上启用FabricPath"></a>1.3 在N5K-1接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-1(config)<span class="comment">#feature lacp</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface ethernet 1/10-11</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment">#channel-group 6 mode active</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment">#exit</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface port-channel 6</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport mode fabricpath</span></span><br><span class="line"></span><br><span class="line">N5K-1(config)<span class="comment">#interface ethernet 1/5</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#shutdown</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-4-在N5K-2接口上启用FabricPath"><a href="#1-4-在N5K-2接口上启用FabricPath" class="headerlink" title="1.4 在N5K-2接口上启用FabricPath"></a>1.4 在N5K-2接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-2(config)<span class="comment">#feature lacp</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface ethernet 1/10-11</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment">#channel-group 6 mode active</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment">#exit</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface port-channel 6</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport mode fabricpath</span></span><br><span class="line"></span><br><span class="line">N5K-2(config)<span class="comment">#interface ethernet 1/5</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#shutdown</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-5-查看FabricPath状态"><a href="#1-5-查看FabricPath状态" class="headerlink" title="1.5 查看FabricPath状态"></a>1.5 查看FabricPath状态</h3><p><img src="https://s3.ax1x.com/2021/03/17/6ciUKK.png" alt="image-20210317132832656"></p>
-<p><img src="https://s3.ax1x.com/2021/03/17/6cidbD.png" alt="image-20210317132838655"></p>
-<h3 id="1-6-测试会话MAC地址学习"><a href="#1-6-测试会话MAC地址学习" class="headerlink" title="1.6 测试会话MAC地址学习"></a>1.6 测试会话MAC地址学习</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1 MAC 地址与IP 地址配置:</span><br><span class="line">interface FastEthernet0/0</span><br><span class="line">mac-address 0001.0001.0001</span><br><span class="line">ip address 10.1.1.1 255.255.255.0</span><br><span class="line">no keepalive</span><br><span class="line">no cdp <span class="built_in">enable</span></span><br><span class="line">R2 MAC 地址与IP 地址配置:</span><br><span class="line">interface FastEthernet0/0</span><br><span class="line">mac-address 0002.0002.0002</span><br><span class="line">ip address 10.1.1.2 255.255.255.0</span><br><span class="line">no keepalive</span><br><span class="line">no cdp <span class="built_in">enable</span></span><br><span class="line"></span><br><span class="line">R1 R2 都开启“Debug ARP ”</span><br><span class="line"></span><br><span class="line">测试之前清除VLAN10 的MAC 地址表:</span><br><span class="line">N5K-1<span class="comment">#clear mac address-table dynamic vlan 10</span></span><br><span class="line">N5K-2<span class="comment">#clear mac address-table dynamic vlan 10</span></span><br><span class="line"></span><br><span class="line">Shut/no Shut R1 Fa0/0 进行测试:</span><br><span class="line"></span><br><span class="line">R1发送免费ARP的Debug</span><br><span class="line">*Mar 14 02:40:30.745: IP ARP: sent rep src 10.1.1.1 0001.0001.0001,</span><br><span class="line">dst 10.1.1.1 ffff.ffff.ffff FastEthernet0/0</span><br><span class="line"></span><br><span class="line">R2接收到R1的免费ARP的Debug</span><br><span class="line">*Mar 14 02:40:16.581: IP ARP: rcvd rep src 10.1.1.1 0001.0001.0001,</span><br><span class="line">dst 10.1.1.1 FastEthernet0/0</span><br></pre></td></tr></table></figure>
-
-<p>N5K-1 学习到R1 的MAC 地址：</p>
-<p><img src="https://s3.ax1x.com/2021/03/17/6ci0Ve.png" alt="image-20210317154900110"></p>
-<p>N5K-2 并不会学习R1 的MAC 地址：</p>
-<p><img src="https://s3.ax1x.com/2021/03/17/6ciWqS.png" alt="image-20210317154905092"></p>
-<h2 id="2-配置N7K的FabricPath"><a href="#2-配置N7K的FabricPath" class="headerlink" title="2 配置N7K的FabricPath"></a>2 配置N7K的FabricPath</h2><h3 id="2-1-在N7K-3启用特性集"><a href="#2-1-在N7K-3启用特性集" class="headerlink" title="2.1 在N7K-3启用特性集"></a>2.1 在N7K-3启用特性集</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在Default VDC N7K-1 上安装FabricPath 特性集</span></span><br><span class="line">DC1-N7K-1(config)<span class="comment">#install feature-set fabricpath</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在N7K-3 上启用FabricPath 特性集</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#feature-set fabricpath</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N7K-3 手动配置Switch-ID 与Root-Priority ，默认64</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#fabricpath switch-id 73</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#fabricpath domain default</span></span><br><span class="line">DC1-N7K-3(config-fabricpath-isis)<span class="comment">#root-priority 100</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-2-在N7K-4启用特性集"><a href="#2-2-在N7K-4启用特性集" class="headerlink" title="2.2 在N7K-4启用特性集"></a>2.2 在N7K-4启用特性集</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#N7K-4上启用FabricPath 特性集</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#feature-set fabricpath</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N7K-4 手动配置Switch-ID 与Root-Priority ，默认64</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#fabricpath switch-id 74</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#fabricpath domain default</span></span><br><span class="line">DC1-N7K-4(config-fabricpath-isis)<span class="comment">#root-priority 90</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-在N7K-3-N7K-4上配置VLAN的FP模式"><a href="#2-3-在N7K-3-N7K-4上配置VLAN的FP模式" class="headerlink" title="2.3 在N7K-3/N7K-4上配置VLAN的FP模式"></a>2.3 在N7K-3/N7K-4上配置VLAN的FP模式</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N7K-3配置VLAN10为FabricPath 模式</span><br><span class="line">DC1-N7K-3(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#mode fabricpath</span></span><br><span class="line"></span><br><span class="line">N7K-4配置VLAN10为FabricPath 模式</span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC1-N7K-4(config-vlan)<span class="comment">#mode fabricpath</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-4-在N7K-3接口上启用FabricPath"><a href="#2-4-在N7K-3接口上启用FabricPath" class="headerlink" title="2.4 在N7K-3接口上启用FabricPath"></a>2.4 在N7K-3接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-3(config)<span class="comment">#feature lacp</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/19-20</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#channel-group 1 mode active</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/21-22</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#channel-group 2 mode active</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/23-24</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#channel-group 5 mode active</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface po1 , po2 , po5</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-5-在N7K-4接口上启用FabricPath"><a href="#2-5-在N7K-4接口上启用FabricPath" class="headerlink" title="2.5 在N7K-4接口上启用FabricPath"></a>2.5 在N7K-4接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature lacp</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface e3/25-26</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#channel-group 1 mode active</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface e3/29-30</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#channel-group 3 mode active</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface e3/31-32</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#channel-group 4 mode active</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface po1 , po3 , po4</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-6-在N5K-1-N5K-2接口上启用FabricPath"><a href="#2-6-在N5K-1-N5K-2接口上启用FabricPath" class="headerlink" title="2.6 在N5K-1/N5K-2接口上启用FabricPath"></a>2.6 在N5K-1/N5K-2接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-1(config)<span class="comment">#interface e1/21-22</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment">#channel-group 2 mode active</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface e1/31-32</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment"># channel-group 4 mode active</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface po2 , po4</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment">#switchport mode fabricpath</span></span><br><span class="line"></span><br><span class="line">N5K-2(config)<span class="comment">#interface e1/23-24</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment">#channel-group 5 mode active</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface e1/29-30</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment"># channel-group 3 mode active</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface po3 , po5</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-7-查看FabricPath邻居关系"><a href="#2-7-查看FabricPath邻居关系" class="headerlink" title="2.7 查看FabricPath邻居关系"></a>2.7 查看FabricPath邻居关系</h3><p><img src="https://s3.ax1x.com/2021/03/17/6ciqMV.png" alt="image-20210317155826746"></p>
-<h3 id="2-8-查看FabricPath-Switch-id"><a href="#2-8-查看FabricPath-Switch-id" class="headerlink" title="2.8 查看FabricPath Switch-id"></a>2.8 查看FabricPath Switch-id</h3><p><img src="https://s3.ax1x.com/2021/03/17/6ciLrT.png" alt="image-20210317155839209"></p>
-<h3 id="2-9-查看FabricPath路由"><a href="#2-9-查看FabricPath路由" class="headerlink" title="2.9 查看FabricPath路由"></a>2.9 查看FabricPath路由</h3><p><img src="https://s3.ax1x.com/2021/03/17/6civa4.png" alt="image-20210317155851308"></p>
-<h3 id="2-10-查看FabricPath多目的树根"><a href="#2-10-查看FabricPath多目的树根" class="headerlink" title="2.10 查看FabricPath多目的树根"></a>2.10 查看FabricPath多目的树根</h3><p><img src="https://s3.ax1x.com/2021/03/17/6cFEZD.png" alt="image-20210317155905811"></p>
-<p><img src="https://s3.ax1x.com/2021/03/17/6cFwQ0.png" alt="image-20210317155931448"></p>
-<p><img src="https://s3.ax1x.com/2021/03/17/6cFUWn.png" alt="image-20210317155936151"></p>
-<h2 id="3-配置N5K的vPC"><a href="#3-配置N5K的vPC" class="headerlink" title="3 配置N5K的vPC+"></a>3 配置N5K的vPC+</h2><h3 id="3-1-N5K-1配置vPC-Domain与Peer-Link"><a href="#3-1-N5K-1配置vPC-Domain与Peer-Link" class="headerlink" title="3.1 N5K-1配置vPC+ Domain与Peer-Link"></a>3.1 N5K-1配置vPC+ Domain与Peer-Link</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-1(config)<span class="comment">#feature vpc</span></span><br><span class="line">N5K-1(config)<span class="comment">#vpc domain 5</span></span><br><span class="line">N5K-1(config-vpc-domain)<span class="comment">#role priority 51</span></span><br><span class="line">N5K-1(config-vpc-domain)<span class="comment">#peer-keepalive destination 137.60.3.52 source 137.60.3.51 vrf management</span></span><br><span class="line">N5K-1(config-vpc-domain)<span class="comment">#fabricpath switch-id 55</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface port-channel 6</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#vpc peer-link</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-2-N5K-2配置vPC-Domain与Peer-Link"><a href="#3-2-N5K-2配置vPC-Domain与Peer-Link" class="headerlink" title="3.2 N5K-2配置vPC+ Domain与Peer-Link"></a>3.2 N5K-2配置vPC+ Domain与Peer-Link</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-2(config)<span class="comment">#feature vpc</span></span><br><span class="line">N5K-2(config)<span class="comment">#vpc domain 5</span></span><br><span class="line">N5K-2(config-vpc-domain)<span class="comment">#role priority 52</span></span><br><span class="line">N5K-2(config-vpc-domain)<span class="comment">#peer-keepalive destination 137.60.3.51 source 137.60.3.52 vrf management</span></span><br><span class="line">N5K-2(config-vpc-domain)<span class="comment">#fabricpath switch-id 55</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface port-channel 6</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#vpc peer-link</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-3-在N7K-3上查看Switch-ID"><a href="#3-3-在N7K-3上查看Switch-ID" class="headerlink" title="3.3 在N7K-3上查看Switch-ID"></a>3.3 在N7K-3上查看Switch-ID</h3><p><img src="https://s3.ax1x.com/2021/03/17/6cFBLT.png" alt="image-20210317160131268"></p>
-<h3 id="3-4-在N7K-3上查看FabricPath-Route"><a href="#3-4-在N7K-3上查看FabricPath-Route" class="headerlink" title="3.4 在N7K-3上查看FabricPath Route"></a>3.4 在N7K-3上查看FabricPath Route</h3><p><img src="https://s3.ax1x.com/2021/03/17/6cFreU.png" alt="image-20210317160146330"></p>
-<h3 id="3-5-N5K-1配置vPC-端口"><a href="#3-5-N5K-1配置vPC-端口" class="headerlink" title="3.5 N5K-1配置vPC+端口"></a>3.5 N5K-1配置vPC+端口</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-1(config)<span class="comment">#interface e1/25</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#shutdown</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#channel-group 100 mode on</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">N5K-1(config)<span class="comment">#interface port-channel 100</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#vpc 100</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-6-N5K-2配置vPC-端口"><a href="#3-6-N5K-2配置vPC-端口" class="headerlink" title="3.6 N5K-2配置vPC+端口"></a>3.6 N5K-2配置vPC+端口</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-2(config)<span class="comment">#interface e1/25</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#shutdown</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#channel-group 100 mode on</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">N5K-2(config)<span class="comment">#interface port-channel 100</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#vpc 100</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-7-C921配置Port-Channel"><a href="#3-7-C921配置Port-Channel" class="headerlink" title="3.7 C921配置Port-Channel"></a>3.7 C921配置Port-Channel</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C1921(config)<span class="comment">#interface port-channel 1</span></span><br><span class="line">C1921(config-if)<span class="comment">#ip address 10.1.1.200 255.255.255.0</span></span><br><span class="line">C1921(config)<span class="comment">#interface range gi0/0-1</span></span><br><span class="line">C1921(config-if-range)<span class="comment">#channel-group 1</span></span><br><span class="line">C1921(config-if-range)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-8-关于FabricPath-STP的调整"><a href="#3-8-关于FabricPath-STP的调整" class="headerlink" title="3.8 关于FabricPath STP的调整"></a>3.8 关于FabricPath STP的调整</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">N5K-1(config)# spanning-tree<span class="built_in"> vlan </span>10 priority 8192</span><br><span class="line">N5K-1(config)# spanning-tree domain 55</span><br><span class="line">N5K-2(config)# spanning-tree<span class="built_in"> vlan </span>10 priority 8192</span><br><span class="line">N5K-2(config)# spanning-tree domain 55</span><br></pre></td></tr></table></figure>
-
-<p><strong>在一个vPC+ 环境应该使用一个Domain ID</strong><br><strong>不同的Gateway Switch 使用不同的Domian ID</strong></p>
-<p><img src="https://s3.ax1x.com/2021/03/17/6cFswF.png" alt="image-20210317161528188"></p>
-<h2 id="4-配置N7K路由与HSRP"><a href="#4-配置N7K路由与HSRP" class="headerlink" title="4 配置N7K路由与HSRP"></a>4 配置N7K路由与HSRP</h2><h3 id="4-1-R4路由配置"><a href="#4-1-R4路由配置" class="headerlink" title="4.1 R4路由配置"></a>4.1 R4路由配置</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R4(config)#interface lo 0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> address </span>202.100.1.1 255.255.255.0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> ospf </span>1<span class="built_in"> area </span>0</span><br><span class="line"></span><br><span class="line">R4(config)#interface gigabitEthernet 0/0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> address </span>61.128.1.10 255.255.255.0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> ospf </span>1<span class="built_in"> area </span>0</span><br><span class="line">R4(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">R4(config)#interface gigabitEthernet 0/1</span><br><span class="line">R4(config-if)#ip<span class="built_in"> address </span>61.128.2.10 255.255.255.0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> ospf </span>1<span class="built_in"> area </span>0</span><br><span class="line">R4(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">R4(config)#router<span class="built_in"> ospf </span>1</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-2-N7K-3路由配置"><a href="#4-2-N7K-3路由配置" class="headerlink" title="4.2 N7K-3路由配置"></a>4.2 N7K-3路由配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-3(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#vlan 20</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#name R4-N7K3</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/17</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#switchport access vlan 20</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#vlan 20</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#name R4-N7K3</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/17</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#switchport access vlan 20</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface vlan 20</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip address 61.128.1.3 255.255.255.0</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#vlan 40</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#name N7K3-N7K4</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#mode fabricpath</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface vlan 40</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip address 61.128.4.3/24</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-3-N7K-4路由配置"><a href="#4-3-N7K-4路由配置" class="headerlink" title="4.3 N7K-4路由配置"></a>4.3 N7K-4路由配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vlan 30</span></span><br><span class="line">DC1-N7K-4(config-vlan)<span class="comment">#name R4-N7K4</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface e3/27</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface vlan 30</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip address 61.128.2.4/24</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vlan 40</span></span><br><span class="line">DC1-N7K-4(config-vlan)<span class="comment">#name N7K3-N7K4</span></span><br><span class="line">DC1-N7K-4(config-vlan)<span class="comment">#mode fabricpath</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface vlan 40</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip address 61.128.4.4/24</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-4-N7K-3-HSRP配置"><a href="#4-4-N7K-3-HSRP配置" class="headerlink" title="4.4 N7K-3 HSRP配置"></a>4.4 N7K-3 HSRP配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-3(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip address 10.1.1.254/24</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip ospf passive-interface</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC1-N7K-3(config-if-hsrp)<span class="comment">#ip 10.1.1.100</span></span><br><span class="line">DC1-N7K-3(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line">DC1-N7K-3(config-if-hsrp)<span class="comment">#priority 105</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-5-N7K-4-HSRP配置"><a href="#4-5-N7K-4-HSRP配置" class="headerlink" title="4.5 N7K-4 HSRP配置"></a>4.5 N7K-4 HSRP配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip address 10.1.1.253/24</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip ospf passive-interface</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC1-N7K-4(config-if-hsrp)<span class="comment">#ip 10.1.1.100</span></span><br><span class="line">DC1-N7K-4(config-if-hsrp)<span class="comment">#preempt</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-6-C1921测试"><a href="#4-6-C1921测试" class="headerlink" title="4.6 C1921测试"></a>4.6 C1921测试</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C1921(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 10.1.1.100</span></span><br><span class="line">C1921<span class="comment">#ping 202.100.1.1</span></span><br><span class="line">Type escape sequence to abort.</span><br><span class="line">Sending 5, 100-byte ICMP Echos to 202.100.1.1, timeout is 2 seconds:</span><br><span class="line">!!!!!</span><br><span class="line">Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/4 ms</span><br></pre></td></tr></table></figure>
-
-<h2 id="5-配置N7K的vPC"><a href="#5-配置N7K的vPC" class="headerlink" title="5 配置N7K的vPC+"></a>5 配置N7K的vPC+</h2><h3 id="5-1-配置Peer-Keepalive链路"><a href="#5-1-配置Peer-Keepalive链路" class="headerlink" title="5.1 配置Peer Keepalive链路"></a>5.1 配置Peer Keepalive链路</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-3(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e4/18</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip address 192.168.1.3/24</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface ethernet 4/26</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip address 192.168.1.4/24</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#确认链路连通性:</span></span><br><span class="line">DC1-N7K-3<span class="comment">#ping 192.168.1.4 vrf P-K-L</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="5-2-配置N7K-3-vPC-Domain"><a href="#5-2-配置N7K-3-vPC-Domain" class="headerlink" title="5.2 配置N7K-3 vPC Domain"></a>5.2 配置N7K-3 vPC Domain</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="number">#fea</span>ture vpc</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="selector-id">#vpc</span> domain <span class="number">7</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#role</span> priority <span class="number">73</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#peer-keepalive</span> destination <span class="number">192.168</span>.<span class="number">1.4</span> source <span class="number">192.168</span>.<span class="number">1.3</span> vrf P-K-L</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#dual-active</span> exclude interface-vlan <span class="number">10</span>,<span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="number">#fab</span>ricpath switch-id <span class="number">77</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> port-channel1</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-if)</span></span><span class="selector-id">#vpc</span> peer-link</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-3-配置N7K-4-vPC-Domain"><a href="#5-3-配置N7K-4-vPC-Domain" class="headerlink" title="5.3 配置N7K-4 vPC Domain"></a>5.3 配置N7K-4 vPC Domain</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature vpc</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#role priority 74</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.3 source 192.168.1.4 vrf P-K-L</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#dual-active exclude interface-vlan 10,30</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#fabricpath switch-id 77</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface port-channel1</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#vpc peer-link</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Nexus实验</category>
-      </categories>
-      <tags>
-        <tag>Nexus</tag>
-        <tag>FabricPath</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Nexus交换机FabricPath</title>
     <url>/2021/03/15/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/</url>
     <content><![CDATA[<p>&emsp;&emsp;FabricPath是Cisco Nexus交换机上的一项技术特性，这个技术做到了以下几点：实现两点间多条路径同时转发流量EMCP(Equal Cost Multi Pathing)；类似IP网络的平滑扩展；快速收敛；防止广播风暴；保持原有二层网络配置的简洁性。FabricPath摆脱传统二层“交换”的弊端，在二层环境中实现类似三层IP的“路由”行为。</p>
@@ -2163,6 +2081,88 @@
 ]]></content>
       <categories>
         <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Nexus</tag>
+        <tag>FabricPath</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nexus交换机FabricPath配置</title>
+    <url>/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍在Nexus交换机上FabricPath的配步骤。</p>
+<a id="more"></a>
+
+<p><img src="https://s3.ax1x.com/2021/03/17/6ciGCR.png" alt="image-20210317131636782"></p>
+<h2 id="1-配置N5K的FabricPath"><a href="#1-配置N5K的FabricPath" class="headerlink" title="1 配置N5K的FabricPath"></a>1 配置N5K的FabricPath</h2><h3 id="1-1-在N5K-1-N5K-2上启用特性集"><a href="#1-1-在N5K-1-N5K-2上启用特性集" class="headerlink" title="1.1 在N5K-1/N5K-2上启用特性集"></a>1.1 在N5K-1/N5K-2上启用特性集</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#N5K-1安装FabricPath特性集，并且启用FabricPath特性集</span></span><br><span class="line">N5K-1(config)<span class="comment">#install feature-set fabricpath </span></span><br><span class="line">N5K-1(config)<span class="comment">#feature-set fabricpath </span></span><br><span class="line"><span class="comment">#N5K-1手动配置Switch-ID </span></span><br><span class="line">N5K-1(config)<span class="comment">#fabricpath switch-id 51 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N5K-2安装FabricPath特性集，并且启用FabricPath特性集</span></span><br><span class="line">N5K-2(config)<span class="comment">#install feature-set fabricpath </span></span><br><span class="line">N5K-2(config)<span class="comment">#feature-set fabricpath </span></span><br><span class="line"><span class="comment">#N5K-2手动配置Switch-ID </span></span><br><span class="line">N5K-2(config)<span class="comment">#fabricpath switch-id 52</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-在N5K-1-N5K-2上配置VLAN的FP模式"><a href="#1-2-在N5K-1-N5K-2上配置VLAN的FP模式" class="headerlink" title="1.2 在N5K-1/N5K-2上配置VLAN的FP模式"></a>1.2 在N5K-1/N5K-2上配置VLAN的FP模式</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#N5K-1配置VLAN10为FabricPath模式</span></span><br><span class="line">N5K-1(config)<span class="comment">#vlan 10 </span></span><br><span class="line">N5K-1(config-vlan)<span class="comment">#mode fabricpath </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N5K-2配置VLAN10为FabricPath模式</span></span><br><span class="line">N5K-2(config)<span class="comment">#vlan 10 </span></span><br><span class="line">N5K-2(config-vlan)<span class="comment">#mode fabricpath</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-在N5K-1接口上启用FabricPath"><a href="#1-3-在N5K-1接口上启用FabricPath" class="headerlink" title="1.3 在N5K-1接口上启用FabricPath"></a>1.3 在N5K-1接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-1(config)<span class="comment">#feature lacp</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface ethernet 1/10-11</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment">#channel-group 6 mode active</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment">#exit</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface port-channel 6</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport mode fabricpath</span></span><br><span class="line"></span><br><span class="line">N5K-1(config)<span class="comment">#interface ethernet 1/5</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#shutdown</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-在N5K-2接口上启用FabricPath"><a href="#1-4-在N5K-2接口上启用FabricPath" class="headerlink" title="1.4 在N5K-2接口上启用FabricPath"></a>1.4 在N5K-2接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-2(config)<span class="comment">#feature lacp</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface ethernet 1/10-11</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment">#channel-group 6 mode active</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment">#exit</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface port-channel 6</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport mode fabricpath</span></span><br><span class="line"></span><br><span class="line">N5K-2(config)<span class="comment">#interface ethernet 1/5</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#shutdown</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-5-查看FabricPath状态"><a href="#1-5-查看FabricPath状态" class="headerlink" title="1.5 查看FabricPath状态"></a>1.5 查看FabricPath状态</h3><p><img src="https://s3.ax1x.com/2021/03/17/6ciUKK.png" alt="image-20210317132832656"></p>
+<p><img src="https://s3.ax1x.com/2021/03/17/6cidbD.png" alt="image-20210317132838655"></p>
+<h3 id="1-6-测试会话MAC地址学习"><a href="#1-6-测试会话MAC地址学习" class="headerlink" title="1.6 测试会话MAC地址学习"></a>1.6 测试会话MAC地址学习</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1 MAC 地址与IP 地址配置:</span><br><span class="line">interface FastEthernet0/0</span><br><span class="line">mac-address 0001.0001.0001</span><br><span class="line">ip address 10.1.1.1 255.255.255.0</span><br><span class="line">no keepalive</span><br><span class="line">no cdp <span class="built_in">enable</span></span><br><span class="line">R2 MAC 地址与IP 地址配置:</span><br><span class="line">interface FastEthernet0/0</span><br><span class="line">mac-address 0002.0002.0002</span><br><span class="line">ip address 10.1.1.2 255.255.255.0</span><br><span class="line">no keepalive</span><br><span class="line">no cdp <span class="built_in">enable</span></span><br><span class="line"></span><br><span class="line">R1 R2 都开启“Debug ARP ”</span><br><span class="line"></span><br><span class="line">测试之前清除VLAN10 的MAC 地址表:</span><br><span class="line">N5K-1<span class="comment">#clear mac address-table dynamic vlan 10</span></span><br><span class="line">N5K-2<span class="comment">#clear mac address-table dynamic vlan 10</span></span><br><span class="line"></span><br><span class="line">Shut/no Shut R1 Fa0/0 进行测试:</span><br><span class="line"></span><br><span class="line">R1发送免费ARP的Debug</span><br><span class="line">*Mar 14 02:40:30.745: IP ARP: sent rep src 10.1.1.1 0001.0001.0001,</span><br><span class="line">dst 10.1.1.1 ffff.ffff.ffff FastEthernet0/0</span><br><span class="line"></span><br><span class="line">R2接收到R1的免费ARP的Debug</span><br><span class="line">*Mar 14 02:40:16.581: IP ARP: rcvd rep src 10.1.1.1 0001.0001.0001,</span><br><span class="line">dst 10.1.1.1 FastEthernet0/0</span><br></pre></td></tr></table></figure>
+
+<p>N5K-1 学习到R1 的MAC 地址：</p>
+<p><img src="https://s3.ax1x.com/2021/03/17/6ci0Ve.png" alt="image-20210317154900110"></p>
+<p>N5K-2 并不会学习R1 的MAC 地址：</p>
+<p><img src="https://s3.ax1x.com/2021/03/17/6ciWqS.png" alt="image-20210317154905092"></p>
+<h2 id="2-配置N7K的FabricPath"><a href="#2-配置N7K的FabricPath" class="headerlink" title="2 配置N7K的FabricPath"></a>2 配置N7K的FabricPath</h2><h3 id="2-1-在N7K-3启用特性集"><a href="#2-1-在N7K-3启用特性集" class="headerlink" title="2.1 在N7K-3启用特性集"></a>2.1 在N7K-3启用特性集</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在Default VDC N7K-1 上安装FabricPath 特性集</span></span><br><span class="line">DC1-N7K-1(config)<span class="comment">#install feature-set fabricpath</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在N7K-3 上启用FabricPath 特性集</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#feature-set fabricpath</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N7K-3 手动配置Switch-ID 与Root-Priority ，默认64</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#fabricpath switch-id 73</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#fabricpath domain default</span></span><br><span class="line">DC1-N7K-3(config-fabricpath-isis)<span class="comment">#root-priority 100</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-在N7K-4启用特性集"><a href="#2-2-在N7K-4启用特性集" class="headerlink" title="2.2 在N7K-4启用特性集"></a>2.2 在N7K-4启用特性集</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#N7K-4上启用FabricPath 特性集</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#feature-set fabricpath</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#N7K-4 手动配置Switch-ID 与Root-Priority ，默认64</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#fabricpath switch-id 74</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#fabricpath domain default</span></span><br><span class="line">DC1-N7K-4(config-fabricpath-isis)<span class="comment">#root-priority 90</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-在N7K-3-N7K-4上配置VLAN的FP模式"><a href="#2-3-在N7K-3-N7K-4上配置VLAN的FP模式" class="headerlink" title="2.3 在N7K-3/N7K-4上配置VLAN的FP模式"></a>2.3 在N7K-3/N7K-4上配置VLAN的FP模式</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N7K-3配置VLAN10为FabricPath 模式</span><br><span class="line">DC1-N7K-3(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#mode fabricpath</span></span><br><span class="line"></span><br><span class="line">N7K-4配置VLAN10为FabricPath 模式</span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC1-N7K-4(config-vlan)<span class="comment">#mode fabricpath</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-在N7K-3接口上启用FabricPath"><a href="#2-4-在N7K-3接口上启用FabricPath" class="headerlink" title="2.4 在N7K-3接口上启用FabricPath"></a>2.4 在N7K-3接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-3(config)<span class="comment">#feature lacp</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/19-20</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#channel-group 1 mode active</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/21-22</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#channel-group 2 mode active</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/23-24</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#channel-group 5 mode active</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface po1 , po2 , po5</span></span><br><span class="line">DC1-N7K-3(config-if-range)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-在N7K-4接口上启用FabricPath"><a href="#2-5-在N7K-4接口上启用FabricPath" class="headerlink" title="2.5 在N7K-4接口上启用FabricPath"></a>2.5 在N7K-4接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature lacp</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface e3/25-26</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#channel-group 1 mode active</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface e3/29-30</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#channel-group 3 mode active</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface e3/31-32</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#channel-group 4 mode active</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface po1 , po3 , po4</span></span><br><span class="line">DC1-N7K-4(config-if-range)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-6-在N5K-1-N5K-2接口上启用FabricPath"><a href="#2-6-在N5K-1-N5K-2接口上启用FabricPath" class="headerlink" title="2.6 在N5K-1/N5K-2接口上启用FabricPath"></a>2.6 在N5K-1/N5K-2接口上启用FabricPath</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-1(config)<span class="comment">#interface e1/21-22</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment">#channel-group 2 mode active</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface e1/31-32</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment"># channel-group 4 mode active</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface po2 , po4</span></span><br><span class="line">N5K-1(config-if-range)<span class="comment">#switchport mode fabricpath</span></span><br><span class="line"></span><br><span class="line">N5K-2(config)<span class="comment">#interface e1/23-24</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment">#channel-group 5 mode active</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface e1/29-30</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment"># channel-group 3 mode active</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface po3 , po5</span></span><br><span class="line">N5K-2(config-if-range)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-7-查看FabricPath邻居关系"><a href="#2-7-查看FabricPath邻居关系" class="headerlink" title="2.7 查看FabricPath邻居关系"></a>2.7 查看FabricPath邻居关系</h3><p><img src="https://s3.ax1x.com/2021/03/17/6ciqMV.png" alt="image-20210317155826746"></p>
+<h3 id="2-8-查看FabricPath-Switch-id"><a href="#2-8-查看FabricPath-Switch-id" class="headerlink" title="2.8 查看FabricPath Switch-id"></a>2.8 查看FabricPath Switch-id</h3><p><img src="https://s3.ax1x.com/2021/03/17/6ciLrT.png" alt="image-20210317155839209"></p>
+<h3 id="2-9-查看FabricPath路由"><a href="#2-9-查看FabricPath路由" class="headerlink" title="2.9 查看FabricPath路由"></a>2.9 查看FabricPath路由</h3><p><img src="https://s3.ax1x.com/2021/03/17/6civa4.png" alt="image-20210317155851308"></p>
+<h3 id="2-10-查看FabricPath多目的树根"><a href="#2-10-查看FabricPath多目的树根" class="headerlink" title="2.10 查看FabricPath多目的树根"></a>2.10 查看FabricPath多目的树根</h3><p><img src="https://s3.ax1x.com/2021/03/17/6cFEZD.png" alt="image-20210317155905811"></p>
+<p><img src="https://s3.ax1x.com/2021/03/17/6cFwQ0.png" alt="image-20210317155931448"></p>
+<p><img src="https://s3.ax1x.com/2021/03/17/6cFUWn.png" alt="image-20210317155936151"></p>
+<h2 id="3-配置N5K的vPC"><a href="#3-配置N5K的vPC" class="headerlink" title="3 配置N5K的vPC+"></a>3 配置N5K的vPC+</h2><h3 id="3-1-N5K-1配置vPC-Domain与Peer-Link"><a href="#3-1-N5K-1配置vPC-Domain与Peer-Link" class="headerlink" title="3.1 N5K-1配置vPC+ Domain与Peer-Link"></a>3.1 N5K-1配置vPC+ Domain与Peer-Link</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-1(config)<span class="comment">#feature vpc</span></span><br><span class="line">N5K-1(config)<span class="comment">#vpc domain 5</span></span><br><span class="line">N5K-1(config-vpc-domain)<span class="comment">#role priority 51</span></span><br><span class="line">N5K-1(config-vpc-domain)<span class="comment">#peer-keepalive destination 137.60.3.52 source 137.60.3.51 vrf management</span></span><br><span class="line">N5K-1(config-vpc-domain)<span class="comment">#fabricpath switch-id 55</span></span><br><span class="line">N5K-1(config)<span class="comment">#interface port-channel 6</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#vpc peer-link</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-N5K-2配置vPC-Domain与Peer-Link"><a href="#3-2-N5K-2配置vPC-Domain与Peer-Link" class="headerlink" title="3.2 N5K-2配置vPC+ Domain与Peer-Link"></a>3.2 N5K-2配置vPC+ Domain与Peer-Link</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-2(config)<span class="comment">#feature vpc</span></span><br><span class="line">N5K-2(config)<span class="comment">#vpc domain 5</span></span><br><span class="line">N5K-2(config-vpc-domain)<span class="comment">#role priority 52</span></span><br><span class="line">N5K-2(config-vpc-domain)<span class="comment">#peer-keepalive destination 137.60.3.51 source 137.60.3.52 vrf management</span></span><br><span class="line">N5K-2(config-vpc-domain)<span class="comment">#fabricpath switch-id 55</span></span><br><span class="line">N5K-2(config)<span class="comment">#interface port-channel 6</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#vpc peer-link</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-在N7K-3上查看Switch-ID"><a href="#3-3-在N7K-3上查看Switch-ID" class="headerlink" title="3.3 在N7K-3上查看Switch-ID"></a>3.3 在N7K-3上查看Switch-ID</h3><p><img src="https://s3.ax1x.com/2021/03/17/6cFBLT.png" alt="image-20210317160131268"></p>
+<h3 id="3-4-在N7K-3上查看FabricPath-Route"><a href="#3-4-在N7K-3上查看FabricPath-Route" class="headerlink" title="3.4 在N7K-3上查看FabricPath Route"></a>3.4 在N7K-3上查看FabricPath Route</h3><p><img src="https://s3.ax1x.com/2021/03/17/6cFreU.png" alt="image-20210317160146330"></p>
+<h3 id="3-5-N5K-1配置vPC-端口"><a href="#3-5-N5K-1配置vPC-端口" class="headerlink" title="3.5 N5K-1配置vPC+端口"></a>3.5 N5K-1配置vPC+端口</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-1(config)<span class="comment">#interface e1/25</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#shutdown</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#channel-group 100 mode on</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">N5K-1(config)<span class="comment">#interface port-channel 100</span></span><br><span class="line">N5K-1(config-if)<span class="comment">#vpc 100</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-6-N5K-2配置vPC-端口"><a href="#3-6-N5K-2配置vPC-端口" class="headerlink" title="3.6 N5K-2配置vPC+端口"></a>3.6 N5K-2配置vPC+端口</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N5K-2(config)<span class="comment">#interface e1/25</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#shutdown</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#channel-group 100 mode on</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">N5K-2(config)<span class="comment">#interface port-channel 100</span></span><br><span class="line">N5K-2(config-if)<span class="comment">#vpc 100</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-7-C921配置Port-Channel"><a href="#3-7-C921配置Port-Channel" class="headerlink" title="3.7 C921配置Port-Channel"></a>3.7 C921配置Port-Channel</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C1921(config)<span class="comment">#interface port-channel 1</span></span><br><span class="line">C1921(config-if)<span class="comment">#ip address 10.1.1.200 255.255.255.0</span></span><br><span class="line">C1921(config)<span class="comment">#interface range gi0/0-1</span></span><br><span class="line">C1921(config-if-range)<span class="comment">#channel-group 1</span></span><br><span class="line">C1921(config-if-range)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-8-关于FabricPath-STP的调整"><a href="#3-8-关于FabricPath-STP的调整" class="headerlink" title="3.8 关于FabricPath STP的调整"></a>3.8 关于FabricPath STP的调整</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">N5K-1(config)# spanning-tree<span class="built_in"> vlan </span>10 priority 8192</span><br><span class="line">N5K-1(config)# spanning-tree domain 55</span><br><span class="line">N5K-2(config)# spanning-tree<span class="built_in"> vlan </span>10 priority 8192</span><br><span class="line">N5K-2(config)# spanning-tree domain 55</span><br></pre></td></tr></table></figure>
+
+<p><strong>在一个vPC+ 环境应该使用一个Domain ID</strong><br><strong>不同的Gateway Switch 使用不同的Domian ID</strong></p>
+<p><img src="https://s3.ax1x.com/2021/03/17/6cFswF.png" alt="image-20210317161528188"></p>
+<h2 id="4-配置N7K路由与HSRP"><a href="#4-配置N7K路由与HSRP" class="headerlink" title="4 配置N7K路由与HSRP"></a>4 配置N7K路由与HSRP</h2><h3 id="4-1-R4路由配置"><a href="#4-1-R4路由配置" class="headerlink" title="4.1 R4路由配置"></a>4.1 R4路由配置</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R4(config)#interface lo 0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> address </span>202.100.1.1 255.255.255.0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> ospf </span>1<span class="built_in"> area </span>0</span><br><span class="line"></span><br><span class="line">R4(config)#interface gigabitEthernet 0/0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> address </span>61.128.1.10 255.255.255.0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> ospf </span>1<span class="built_in"> area </span>0</span><br><span class="line">R4(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">R4(config)#interface gigabitEthernet 0/1</span><br><span class="line">R4(config-if)#ip<span class="built_in"> address </span>61.128.2.10 255.255.255.0</span><br><span class="line">R4(config-if)#ip<span class="built_in"> ospf </span>1<span class="built_in"> area </span>0</span><br><span class="line">R4(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">R4(config)#router<span class="built_in"> ospf </span>1</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-N7K-3路由配置"><a href="#4-2-N7K-3路由配置" class="headerlink" title="4.2 N7K-3路由配置"></a>4.2 N7K-3路由配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-3(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#vlan 20</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#name R4-N7K3</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/17</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#switchport access vlan 20</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#vlan 20</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#name R4-N7K3</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e3/17</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#switchport access vlan 20</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface vlan 20</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip address 61.128.1.3 255.255.255.0</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#vlan 40</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#name N7K3-N7K4</span></span><br><span class="line">DC1-N7K-3(config-vlan)<span class="comment">#mode fabricpath</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface vlan 40</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip address 61.128.4.3/24</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-N7K-4路由配置"><a href="#4-3-N7K-4路由配置" class="headerlink" title="4.3 N7K-4路由配置"></a>4.3 N7K-4路由配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vlan 30</span></span><br><span class="line">DC1-N7K-4(config-vlan)<span class="comment">#name R4-N7K4</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface e3/27</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#switchport access vlan 30</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface vlan 30</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip address 61.128.2.4/24</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vlan 40</span></span><br><span class="line">DC1-N7K-4(config-vlan)<span class="comment">#name N7K3-N7K4</span></span><br><span class="line">DC1-N7K-4(config-vlan)<span class="comment">#mode fabricpath</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface vlan 40</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip address 61.128.4.4/24</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-N7K-3-HSRP配置"><a href="#4-4-N7K-3-HSRP配置" class="headerlink" title="4.4 N7K-3 HSRP配置"></a>4.4 N7K-3 HSRP配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-3(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip address 10.1.1.254/24</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip ospf passive-interface</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC1-N7K-3(config-if-hsrp)<span class="comment">#ip 10.1.1.100</span></span><br><span class="line">DC1-N7K-3(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line">DC1-N7K-3(config-if-hsrp)<span class="comment">#priority 105</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-N7K-4-HSRP配置"><a href="#4-5-N7K-4-HSRP配置" class="headerlink" title="4.5 N7K-4 HSRP配置"></a>4.5 N7K-4 HSRP配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip address 10.1.1.253/24</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip ospf passive-interface</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC1-N7K-4(config-if-hsrp)<span class="comment">#ip 10.1.1.100</span></span><br><span class="line">DC1-N7K-4(config-if-hsrp)<span class="comment">#preempt</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-6-C1921测试"><a href="#4-6-C1921测试" class="headerlink" title="4.6 C1921测试"></a>4.6 C1921测试</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C1921(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 10.1.1.100</span></span><br><span class="line">C1921<span class="comment">#ping 202.100.1.1</span></span><br><span class="line">Type escape sequence to abort.</span><br><span class="line">Sending 5, 100-byte ICMP Echos to 202.100.1.1, timeout is 2 seconds:</span><br><span class="line">!!!!!</span><br><span class="line">Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/4 ms</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-配置N7K的vPC"><a href="#5-配置N7K的vPC" class="headerlink" title="5 配置N7K的vPC+"></a>5 配置N7K的vPC+</h2><h3 id="5-1-配置Peer-Keepalive链路"><a href="#5-1-配置Peer-Keepalive链路" class="headerlink" title="5.1 配置Peer Keepalive链路"></a>5.1 配置Peer Keepalive链路</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-3(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC1-N7K-3(config)<span class="comment">#interface e4/18</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#ip address 192.168.1.3/24</span></span><br><span class="line">DC1-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface ethernet 4/26</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#ip address 192.168.1.4/24</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#确认链路连通性:</span></span><br><span class="line">DC1-N7K-3<span class="comment">#ping 192.168.1.4 vrf P-K-L</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-配置N7K-3-vPC-Domain"><a href="#5-2-配置N7K-3-vPC-Domain" class="headerlink" title="5.2 配置N7K-3 vPC Domain"></a>5.2 配置N7K-3 vPC Domain</h3><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="number">#fea</span>ture vpc</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="selector-id">#vpc</span> domain <span class="number">7</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#role</span> priority <span class="number">73</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#peer-keepalive</span> destination <span class="number">192.168</span>.<span class="number">1.4</span> source <span class="number">192.168</span>.<span class="number">1.3</span> vrf P-K-L</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="selector-id">#dual-active</span> exclude interface-vlan <span class="number">10</span>,<span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-vpc-domain)</span></span><span class="number">#fab</span>ricpath switch-id <span class="number">77</span></span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> port-channel1</span><br><span class="line"><span class="function"><span class="title">DC1-N7K-3</span><span class="params">(config-if)</span></span><span class="selector-id">#vpc</span> peer-link</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-配置N7K-4-vPC-Domain"><a href="#5-3-配置N7K-4-vPC-Domain" class="headerlink" title="5.3 配置N7K-4 vPC Domain"></a>5.3 配置N7K-4 vPC Domain</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">DC1-N7K-4(config)<span class="comment">#feature vpc</span></span><br><span class="line"></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#role priority 74</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.3 source 192.168.1.4 vrf P-K-L</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#dual-active exclude interface-vlan 10,30</span></span><br><span class="line">DC1-N7K-4(config-vpc-domain)<span class="comment">#fabricpath switch-id 77</span></span><br><span class="line">DC1-N7K-4(config)<span class="comment">#interface port-channel1</span></span><br><span class="line">DC1-N7K-4(config-if)<span class="comment">#vpc peer-link</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Nexus实验</category>
       </categories>
       <tags>
         <tag>Nexus</tag>
@@ -2493,147 +2493,6 @@
       </tags>
   </entry>
   <entry>
-    <title>OSPF特殊区域</title>
-    <url>/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>&emsp;&emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。</p>
-<a id="more"></a>
-
-<p><img src="https://s3.ax1x.com/2020/11/14/DCcRLq.png" alt="无标题"></p>
-<p>&emsp;&emsp;我将以上面这个拓扑图介绍OSPF的特殊区域。拓扑中共有三个区域，骨干区域 area 0为一级行及二级行所运行，三级行运行的是OSPF的常规区域，为了保证网络的畅通，我们将网络中的各个角落都宣告进了OSPF，这感觉没有什么问题。但是随着设备越老越多、网络前缀越来越多，路由条目势必逐渐增多，那么路由器就有些承担不住了，毕竟庞大的路由表及LSA在极大地消耗着路由器的资源。所以我们需要对网络进行优化，在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，除了路由汇总外，我们也可以使用OSPF的特殊区域来减少LSA的泛洪。</p>
-<p>&emsp;&emsp;在这里我们拿area 1举例，当area 1为常规区域时，区域中会有多少种LSA在泛洪呢？1类是必然有的，由于area 1中存在MA网络，因此2类LSA也有。其他区域的3类LSA被ABR也都注入进了本区域。另外，由于area 2的ASBR引入的外部路由（5类LSA）也会被泛洪进area 1，当然4类LSA也跟着来了。那么如此一来，area 1中就有1、2、3、4、5，共计5种类型的LSA。但是仔细一想我们就发现，其实area 1作为“叶”区域，没必要知道外部路由的详细情况，我只需要知道有那么一条路，让我到达域外即可，因此，第一种特殊区域：末梢区域stub area。</p>
-<h2 id="1-末梢区域（stub-area）"><a href="#1-末梢区域（stub-area）" class="headerlink" title="1 末梢区域（stub area）"></a>1 末梢区域（stub area）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcqyR.png" alt="image-20201114133720565"></p>
-<p>&emsp;&emsp;我们可以通过配置，将一个常规区域设置为stub 区域。</p>
-<p>&emsp;&emsp;Stub区域将禁止4、5类LSA进入该区域，同时该区域的ABR将会自动下发一条默认路由（3类LSA）进该区域，以确保数据通路没有问题。这可以形象的理解为：“外面的世界再怎么精彩，你不用告诉我细节，只要让我出去就行了”。这就是stub area的设计思路。当引入大量的外部路由进OSPF，适当的规划某些区域为stub，可以起到不错的网络优化作用。</p>
-<p>&emsp;&emsp;值得注意的是，不能将骨干区域area 0配置为stub区域，同时，让一个区域被指定为stub，区域内将不允许注入外部路由，也就是不能做重发布。</p>
-<p>配置命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 1 stub </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;需要注意的是，该命令要配置在stub区域中的所有路由器上，如果某台路由器没有配置，那么它将无法去其他stub area router建立邻接关系。</p>
-<p>实现效果：</p>
-<p>&emsp;&emsp;Area1中将不会在有4、5类LSA，也就是area 2重发布进来的路由，被ABR过滤掉了，同时area 1中的路由器将获取到一条3类LSA 的默认路由，该默认路由是由area1的ABR自动下发。</p>
-<h2 id="2-完全末梢区域（totally-stub）"><a href="#2-完全末梢区域（totally-stub）" class="headerlink" title="2 完全末梢区域（totally stub）"></a>2 完全末梢区域（totally stub）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcXex.png" alt="image-20201114140049631"></p>
-<p>&emsp;&emsp;通过将区域规划为stub area，可以起到一定的网络优化作用，但是感觉上还不够彻底，除了外部路由，其他区域的路由其实我也没必要知道太多细节，完全用一条默认路由替代也行嘛，那么你可以将area 1配置为完全末梢区域（totally stub area），当一个区域被配置为完全末梢区域，这个区域将：</p>
-<ul>
-<li>阻挡3、4、5类LSA进入本区域</li>
-<li>区域的ABR自动下发一条3类LSA的默认路由进入本区域</li>
-</ul>
-<p>&emsp;&emsp;这么一来，area 1内路由器收到的LSA将进一步减少，在存储LSA及进行SPF算法运算的时候，耗费的资源自然也就减少了，另外当区域外拓扑出现变更的时候，对本区域的影响也将变为最小。<br>&emsp;&emsp;与stub区域类似，你无法将骨干区域area 0配置为totally stub area，当然如果一个区域被指定为totally stub area，你将不能在区域中的路由器上做路由重发布动作。</p>
-<p>配置命令：</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub </span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;在完全末梢区域内的所有路由器，都配置上述命令，与stub区域的区别在于ABR的配置，下面是配置在完全末梢区域的ABR上的。</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub no-summary </span><br></pre></td></tr></table></figure>
-
-<p>实现效果：</p>
-<p>&emsp;&emsp;完成上述配置后，area1内的路由器将只有本区域内的路由（ABR除外），同时都能获取到ABR下发的3类的默认路由。也就是说其他区域的路由以及外部注入的路由都被ABR阻挡在外，取而代之的是一条默认路由。</p>
-<h2 id="4-非完全末梢区域（NSSA）"><a href="#4-非完全末梢区域（NSSA）" class="headerlink" title="4 非完全末梢区域（NSSA）"></a>4 非完全末梢区域（NSSA）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCWG7t.png" alt="image-20201114142231423"></p>
-<p>&emsp;&emsp;在前面的知识基础上，我们已经了解到，在保证网络连通性的情况下，减少LSA的泛洪以及精简路由表，我们可以将特定区域配置为末梢区域或完全末梢区域。看上面的拓扑，我们将area 2配置为stub，那么，这个区域一来将阻挡来自其他区域的4、5类LSA，同时区域内的路由器禁止重发布外部路由，那么如果此时我期望这个区域保持“阻挡其他区域过来的4、5类LSA”这个特性，同时允许我在区域本地重发布路由呢？<br>&emsp;&emsp;例如，假设area 2原先是作为一个末梢区域运行的，但突然有一个外部网络，需要接入到我们这个OSPF网络中，并且连接在area 2中，那么这个时候，为了保证路由的可达，就必须向area 2中注入外部路由了，而这又违法了stub area的规则。</p>
-<p><img src="https://s3.ax1x.com/2020/11/14/DCWCpF.png" alt="image-20201114142308257"></p>
-<p>&emsp;&emsp;这里就引入NSSA（not-so-stubby-area）的概念，中文翻译过来，可以理解为非完全末梢区域，当你将一个区域配置为NSSA，那么这个区域一来将阻挡骨干区域过来的4、5类LSA，同时允许区域本地注入外部路由，这些外部路由以一种特殊的LSA类型——7类LSA在NSSA中泛洪并且7类LSA不允许进入骨干区域或常规区域，NSSA的ABR会负责将7类LSA“转换”成5类LSA，从而在常规区域中进一步泛洪。上面的“允许区域本地注入”的意思是，NSSA这个区域的路由器配置重发布。</p>
-<p>&emsp;&emsp;值得注意的是与stub area及totally stub area不同的是如果你将一个区域配置为NSSA、默认情况下NSSA的ABR不会自动下发默认路由进NSSA，因此在NSSA环境下，需留意网络连通性问题。</p>
-<p>配置命令∶</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 2 nssa </span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;上述命令需配置在NSSA内的所有路由器上。</p>
-<p>实现效果：</p>
-<p>&emsp;&emsp;将area 2配置为NSSA后，从骨干区域过来的4、5类LSA将无法进入NSSA，也就是说如果area 1做了重发布，那么这些重发布的外部路由将无法进入NSSA（这是因为NSSA中不允许出现5类LSA），与此同时，area 2允许本地的路由器做重发布动作，重发布进来的路由，以LSA7在NSSA中泛洪，大家在路由表中看到的这些外部路由，标记为“O N”，而这些7类LSA在“穿越”NSSA的ABR进入骨干区域之前，由ABR负责将7类LSA“转换”成5类LSA。最终area 0及area 1也都能学习到这些外部路由，只不过，他们路由表中呈现的是“O E”标记。</p>
-<h2 id="5-Totally-NSSA"><a href="#5-Totally-NSSA" class="headerlink" title="5 Totally NSSA"></a>5 Totally NSSA</h2><p><img src="https://s3.ax1x.com/2020/11/14/DChzkt.png" alt="image-20201114142500409"></p>
-<p>&emsp;&emsp;Totally NSSA，这是一个不太好用中文翻译的词汇，完全非完全末梢区域？显得有点尴尬，不过这个概念的理解并不像其名字那么唬人，Totally NSSA是在NSSA区域的基础之上，进一步阻挡NSSA区域外的其他区域过来的3类LSA，同时ABR自动下发一条3类的默认路由进 NSSA 区域。<br>配置命令∶</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;上述命令需配置在NSSA中的所有路由器上，ABR的配置有所不同，如下∶</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa no-summary</span></span><br></pre></td></tr></table></figure>
-
-<p>实现效果：</p>
-<p>&emsp;&emsp;Area2之外的其他OSPF area过来的3、4、5类LSA，都会被阻挡在NSSA之外，同时ABR会自动下发默认路由进NSSA，另外，NSSA内的路由器做重发布动作，区域内的其他路由器将会学习到7类的外部LSA，这些外部LSA会被ABR转成5类LSA并注入进骨干区域。</p>
-<h2 id="6-特殊区域总结"><a href="#6-特殊区域总结" class="headerlink" title="6 特殊区域总结"></a>6 特殊区域总结</h2><ul>
-<li><p><strong>骨干区域 Backbone Area 0</strong></p>
-<p>本身是一个标准区域，负责连接非骨干区域，其它区域(非骨干区域）必须保证和骨干区域有直接的物理连接，因为区域之间的LSA必须经过骨干区域中转</p>
-</li>
-<li><p><strong>常规（标准）区域 Standard Area</strong></p>
-<p>一个区域缺省是常规区域</p>
-</li>
-<li><p><strong>末梢区域 Stub Area</strong></p>
-<p>把一个区域配成存根区域的好处是，阻挡LSA4、LSA5外部路由进入本地区域，从而精简路由表;同时ABR会自动产生3类的默认路由LSA注入进该区域。</p>
-</li>
-<li><p><strong>完全末梢区域 Totally Stubby Area</strong></p>
-<p>完全末梢区域是一种对末梢区域的改进，进一步精简路由表;阻挡LSA3、4、5进入该区域，同时ABR自动下发3类默认路由。</p>
-</li>
-<li><p><strong>非完全末梢区域 Not-so-stubby Area</strong></p>
-<p>即想阻挡LSA5，自身又想引入外部路由，stub的变种；</p>
-<p>NSSA既阻挡外部LSA5的进入，同时区域内的路由器又可以引入外部路由LSA7 ;LSA7在NSSA内洪泛，通过ABR时转换为LSA5并被注入进骨干区域。</p>
-<p>ABR不会缺省生成0/O默认路由进入本地区域，需手工配置</p>
-</li>
-<li><p><strong>完全NSSA totally Not-so-stubby Area</strong></p>
-<p>在NSSA的基础上进一步阻挡骨干区域过来的3,4,5类LSA 并且ABR自动下发3类的默认路由进NSSA。</p>
-</li>
-</ul>
-<p>&emsp;&emsp;<strong>各区域内所允许出现LSA总结如下：</strong></p>
-<ul>
-<li><p>骨干区域：1、2、3、4、5</p>
-</li>
-<li><p>标准区域：1、2、3、4、5</p>
-</li>
-<li><p>Stub区域：1、2、3、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
-</li>
-<li><p>完全Stub区域： 1、2、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
-</li>
-<li><p>NSSA 区域：1、2、3、7</p>
-</li>
-<li><p>完全NSSA区域:1、2、7、3类0.0.0.0/0 (ABR向区域内发起的一条3类缺省路由LSA )</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>OSPF</tag>
-        <tag>路由协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OSPF路由优选规则</title>
-    <url>/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/</url>
-    <content><![CDATA[<p>&emsp;&emsp;在路由表中我们可以看到通过OSPF路由协议学习到的路由是哪一种类型（如O、O IA、O E1、O E2、O N1、O N2）的。当路由器学习到不同类型的同一路由时是如何选择的呢？本篇文章主要介绍OSPF路由的优先选择原则。</p>
-<a id="more"></a>
-
-<h2 id="1-基本优选规则"><a href="#1-基本优选规则" class="headerlink" title="1 基本优选规则"></a>1 基本优选规则</h2><ol>
-<li><p>直连路由：本路由器发起的LSA1、2 ；</p>
-</li>
-<li><p>区域内路由：O： LSA1、2；</p>
-</li>
-<li><p>区域间路由：O IA： LSA 3 ；</p>
-</li>
-<li><p>1类外部路由：O E1： LSA5类型1；</p>
-</li>
-<li><p>2类外部路由：O E2： LSA5类型2；</p>
-</li>
-<li><p>1类NSSA路由：O N1： LSA7类型1；</p>
-</li>
-<li><p>2类NSSA路由∶O N2：LSA7类型2。</p>
-</li>
-</ol>
-<p>&emsp;&emsp;注意：O E1绝对优于O E2，O N1绝对优于O N2。而E1之间、E2之间的比较，则需要另做讨论。另外，O E及O N的优选，要看厂商，不同的厂商，优选方式不同。</p>
-<h3 id="1-1-O-及O-IA的比较"><a href="#1-1-O-及O-IA的比较" class="headerlink" title="1.1 O 及O IA的比较"></a>1.1 O 及O IA的比较</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEUHj1.png" alt="image-20201115215555698"></p>
-<p>&emsp;&emsp;在这个图中，R1同时从R2及R3学习到3.3.3.0的路由，一条是О，一条是OIA，R1将绝对优选R3作为前往3.3.3.0的下一跳，而不看metric。</p>
-<h3 id="1-2-O-IA之间的比较"><a href="#1-2-O-IA之间的比较" class="headerlink" title="1.2 O IA之间的比较"></a>1.2 O IA之间的比较</h3><p>&emsp;&emsp;一般来说，O IA之间比较metric，谁小取谁，但是也有特例，如下：</p>
-<p><img src="https://s3.ax1x.com/2020/11/16/DEUOHK.png" alt="image-20201115215940616"></p>
-<p>&emsp;&emsp;上图中，R2上，能学习到由ABRR1及R3发出的关于路由1.1.1.0的3类LSA，两条路由都是О IA，但是R2将恒定优选R1作为去往1.1.1.0的下一跳，而不管这条路由的metric多大。</p>
-<h3 id="1-3-多进程OSPF问题1"><a href="#1-3-多进程OSPF问题1" class="headerlink" title="1.3 多进程OSPF问题1"></a>1.3 多进程OSPF问题1</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEUvND.png" alt="image-20201115220045832"></p>
-<p>&emsp;&emsp;同一台路由器，本地如果跑两个OSPF进程，则各自独立，路由信息不会自动相互注入；另外如果同时从两个进程学习到同一条路由，则不管metric如何，先到先用，而不会负载均衡。</p>
-<h3 id="1-4-多进程OSPF问题2"><a href="#1-4-多进程OSPF问题2" class="headerlink" title="1.4 多进程OSPF问题2"></a>1.4 多进程OSPF问题2</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEaS9H.png" alt="image-20201115220146896"></p>
-<p>&emsp;&emsp;由于是两个OSPF进程，因此依然是先到先得，R1上，如果率先与R2建立邻居关系，那么4.4.4.0的路由在路由表中，仍然是О IA的。即使通过R3过来的是О，但是由于是不同的进程，因此只看谁先来不管metric也不管什么O&gt;O IA&gt;O E1&gt;O E2。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>OSPF</tag>
-        <tag>路由协议</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OSPF协议详解</title>
     <url>/2020/10/01/OSPF%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<p>&emsp;&emsp;OSPF(Open Shortest Path First开放式最短路径优先）是一个内部网关协议(Interior Gateway Protocol，简称IGP），用于在单一自治系统（autonomous system,AS）内决策路由。是对链路状态路由协议的一种实现，隶属内部网关协议（IGP），故运作于自治系统内部。著名的Dijkstra算法被用来计算最短路径树。OSPF支持负载均衡和基于服务类型的选路，也支持多种路由形式，如特定主机路由和子网路由等。</p>
@@ -2825,6 +2684,147 @@
       </tags>
   </entry>
   <entry>
+    <title>OSPF特殊区域</title>
+    <url>/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/</url>
+    <content><![CDATA[<p>&emsp;&emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。</p>
+<a id="more"></a>
+
+<p><img src="https://s3.ax1x.com/2020/11/14/DCcRLq.png" alt="无标题"></p>
+<p>&emsp;&emsp;我将以上面这个拓扑图介绍OSPF的特殊区域。拓扑中共有三个区域，骨干区域 area 0为一级行及二级行所运行，三级行运行的是OSPF的常规区域，为了保证网络的畅通，我们将网络中的各个角落都宣告进了OSPF，这感觉没有什么问题。但是随着设备越老越多、网络前缀越来越多，路由条目势必逐渐增多，那么路由器就有些承担不住了，毕竟庞大的路由表及LSA在极大地消耗着路由器的资源。所以我们需要对网络进行优化，在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，除了路由汇总外，我们也可以使用OSPF的特殊区域来减少LSA的泛洪。</p>
+<p>&emsp;&emsp;在这里我们拿area 1举例，当area 1为常规区域时，区域中会有多少种LSA在泛洪呢？1类是必然有的，由于area 1中存在MA网络，因此2类LSA也有。其他区域的3类LSA被ABR也都注入进了本区域。另外，由于area 2的ASBR引入的外部路由（5类LSA）也会被泛洪进area 1，当然4类LSA也跟着来了。那么如此一来，area 1中就有1、2、3、4、5，共计5种类型的LSA。但是仔细一想我们就发现，其实area 1作为“叶”区域，没必要知道外部路由的详细情况，我只需要知道有那么一条路，让我到达域外即可，因此，第一种特殊区域：末梢区域stub area。</p>
+<h2 id="1-末梢区域（stub-area）"><a href="#1-末梢区域（stub-area）" class="headerlink" title="1 末梢区域（stub area）"></a>1 末梢区域（stub area）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcqyR.png" alt="image-20201114133720565"></p>
+<p>&emsp;&emsp;我们可以通过配置，将一个常规区域设置为stub 区域。</p>
+<p>&emsp;&emsp;Stub区域将禁止4、5类LSA进入该区域，同时该区域的ABR将会自动下发一条默认路由（3类LSA）进该区域，以确保数据通路没有问题。这可以形象的理解为：“外面的世界再怎么精彩，你不用告诉我细节，只要让我出去就行了”。这就是stub area的设计思路。当引入大量的外部路由进OSPF，适当的规划某些区域为stub，可以起到不错的网络优化作用。</p>
+<p>&emsp;&emsp;值得注意的是，不能将骨干区域area 0配置为stub区域，同时，让一个区域被指定为stub，区域内将不允许注入外部路由，也就是不能做重发布。</p>
+<p>配置命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 1 stub </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;需要注意的是，该命令要配置在stub区域中的所有路由器上，如果某台路由器没有配置，那么它将无法去其他stub area router建立邻接关系。</p>
+<p>实现效果：</p>
+<p>&emsp;&emsp;Area1中将不会在有4、5类LSA，也就是area 2重发布进来的路由，被ABR过滤掉了，同时area 1中的路由器将获取到一条3类LSA 的默认路由，该默认路由是由area1的ABR自动下发。</p>
+<h2 id="2-完全末梢区域（totally-stub）"><a href="#2-完全末梢区域（totally-stub）" class="headerlink" title="2 完全末梢区域（totally stub）"></a>2 完全末梢区域（totally stub）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcXex.png" alt="image-20201114140049631"></p>
+<p>&emsp;&emsp;通过将区域规划为stub area，可以起到一定的网络优化作用，但是感觉上还不够彻底，除了外部路由，其他区域的路由其实我也没必要知道太多细节，完全用一条默认路由替代也行嘛，那么你可以将area 1配置为完全末梢区域（totally stub area），当一个区域被配置为完全末梢区域，这个区域将：</p>
+<ul>
+<li>阻挡3、4、5类LSA进入本区域</li>
+<li>区域的ABR自动下发一条3类LSA的默认路由进入本区域</li>
+</ul>
+<p>&emsp;&emsp;这么一来，area 1内路由器收到的LSA将进一步减少，在存储LSA及进行SPF算法运算的时候，耗费的资源自然也就减少了，另外当区域外拓扑出现变更的时候，对本区域的影响也将变为最小。<br>&emsp;&emsp;与stub区域类似，你无法将骨干区域area 0配置为totally stub area，当然如果一个区域被指定为totally stub area，你将不能在区域中的路由器上做路由重发布动作。</p>
+<p>配置命令：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;在完全末梢区域内的所有路由器，都配置上述命令，与stub区域的区别在于ABR的配置，下面是配置在完全末梢区域的ABR上的。</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub no-summary </span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p>&emsp;&emsp;完成上述配置后，area1内的路由器将只有本区域内的路由（ABR除外），同时都能获取到ABR下发的3类的默认路由。也就是说其他区域的路由以及外部注入的路由都被ABR阻挡在外，取而代之的是一条默认路由。</p>
+<h2 id="4-非完全末梢区域（NSSA）"><a href="#4-非完全末梢区域（NSSA）" class="headerlink" title="4 非完全末梢区域（NSSA）"></a>4 非完全末梢区域（NSSA）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCWG7t.png" alt="image-20201114142231423"></p>
+<p>&emsp;&emsp;在前面的知识基础上，我们已经了解到，在保证网络连通性的情况下，减少LSA的泛洪以及精简路由表，我们可以将特定区域配置为末梢区域或完全末梢区域。看上面的拓扑，我们将area 2配置为stub，那么，这个区域一来将阻挡来自其他区域的4、5类LSA，同时区域内的路由器禁止重发布外部路由，那么如果此时我期望这个区域保持“阻挡其他区域过来的4、5类LSA”这个特性，同时允许我在区域本地重发布路由呢？<br>&emsp;&emsp;例如，假设area 2原先是作为一个末梢区域运行的，但突然有一个外部网络，需要接入到我们这个OSPF网络中，并且连接在area 2中，那么这个时候，为了保证路由的可达，就必须向area 2中注入外部路由了，而这又违法了stub area的规则。</p>
+<p><img src="https://s3.ax1x.com/2020/11/14/DCWCpF.png" alt="image-20201114142308257"></p>
+<p>&emsp;&emsp;这里就引入NSSA（not-so-stubby-area）的概念，中文翻译过来，可以理解为非完全末梢区域，当你将一个区域配置为NSSA，那么这个区域一来将阻挡骨干区域过来的4、5类LSA，同时允许区域本地注入外部路由，这些外部路由以一种特殊的LSA类型——7类LSA在NSSA中泛洪并且7类LSA不允许进入骨干区域或常规区域，NSSA的ABR会负责将7类LSA“转换”成5类LSA，从而在常规区域中进一步泛洪。上面的“允许区域本地注入”的意思是，NSSA这个区域的路由器配置重发布。</p>
+<p>&emsp;&emsp;值得注意的是与stub area及totally stub area不同的是如果你将一个区域配置为NSSA、默认情况下NSSA的ABR不会自动下发默认路由进NSSA，因此在NSSA环境下，需留意网络连通性问题。</p>
+<p>配置命令∶</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 2 nssa </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;上述命令需配置在NSSA内的所有路由器上。</p>
+<p>实现效果：</p>
+<p>&emsp;&emsp;将area 2配置为NSSA后，从骨干区域过来的4、5类LSA将无法进入NSSA，也就是说如果area 1做了重发布，那么这些重发布的外部路由将无法进入NSSA（这是因为NSSA中不允许出现5类LSA），与此同时，area 2允许本地的路由器做重发布动作，重发布进来的路由，以LSA7在NSSA中泛洪，大家在路由表中看到的这些外部路由，标记为“O N”，而这些7类LSA在“穿越”NSSA的ABR进入骨干区域之前，由ABR负责将7类LSA“转换”成5类LSA。最终area 0及area 1也都能学习到这些外部路由，只不过，他们路由表中呈现的是“O E”标记。</p>
+<h2 id="5-Totally-NSSA"><a href="#5-Totally-NSSA" class="headerlink" title="5 Totally NSSA"></a>5 Totally NSSA</h2><p><img src="https://s3.ax1x.com/2020/11/14/DChzkt.png" alt="image-20201114142500409"></p>
+<p>&emsp;&emsp;Totally NSSA，这是一个不太好用中文翻译的词汇，完全非完全末梢区域？显得有点尴尬，不过这个概念的理解并不像其名字那么唬人，Totally NSSA是在NSSA区域的基础之上，进一步阻挡NSSA区域外的其他区域过来的3类LSA，同时ABR自动下发一条3类的默认路由进 NSSA 区域。<br>配置命令∶</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;上述命令需配置在NSSA中的所有路由器上，ABR的配置有所不同，如下∶</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa no-summary</span></span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p>&emsp;&emsp;Area2之外的其他OSPF area过来的3、4、5类LSA，都会被阻挡在NSSA之外，同时ABR会自动下发默认路由进NSSA，另外，NSSA内的路由器做重发布动作，区域内的其他路由器将会学习到7类的外部LSA，这些外部LSA会被ABR转成5类LSA并注入进骨干区域。</p>
+<h2 id="6-特殊区域总结"><a href="#6-特殊区域总结" class="headerlink" title="6 特殊区域总结"></a>6 特殊区域总结</h2><ul>
+<li><p><strong>骨干区域 Backbone Area 0</strong></p>
+<p>本身是一个标准区域，负责连接非骨干区域，其它区域(非骨干区域）必须保证和骨干区域有直接的物理连接，因为区域之间的LSA必须经过骨干区域中转</p>
+</li>
+<li><p><strong>常规（标准）区域 Standard Area</strong></p>
+<p>一个区域缺省是常规区域</p>
+</li>
+<li><p><strong>末梢区域 Stub Area</strong></p>
+<p>把一个区域配成存根区域的好处是，阻挡LSA4、LSA5外部路由进入本地区域，从而精简路由表;同时ABR会自动产生3类的默认路由LSA注入进该区域。</p>
+</li>
+<li><p><strong>完全末梢区域 Totally Stubby Area</strong></p>
+<p>完全末梢区域是一种对末梢区域的改进，进一步精简路由表;阻挡LSA3、4、5进入该区域，同时ABR自动下发3类默认路由。</p>
+</li>
+<li><p><strong>非完全末梢区域 Not-so-stubby Area</strong></p>
+<p>即想阻挡LSA5，自身又想引入外部路由，stub的变种；</p>
+<p>NSSA既阻挡外部LSA5的进入，同时区域内的路由器又可以引入外部路由LSA7 ;LSA7在NSSA内洪泛，通过ABR时转换为LSA5并被注入进骨干区域。</p>
+<p>ABR不会缺省生成0/O默认路由进入本地区域，需手工配置</p>
+</li>
+<li><p><strong>完全NSSA totally Not-so-stubby Area</strong></p>
+<p>在NSSA的基础上进一步阻挡骨干区域过来的3,4,5类LSA 并且ABR自动下发3类的默认路由进NSSA。</p>
+</li>
+</ul>
+<p>&emsp;&emsp;<strong>各区域内所允许出现LSA总结如下：</strong></p>
+<ul>
+<li><p>骨干区域：1、2、3、4、5</p>
+</li>
+<li><p>标准区域：1、2、3、4、5</p>
+</li>
+<li><p>Stub区域：1、2、3、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
+</li>
+<li><p>完全Stub区域： 1、2、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
+</li>
+<li><p>NSSA 区域：1、2、3、7</p>
+</li>
+<li><p>完全NSSA区域:1、2、7、3类0.0.0.0/0 (ABR向区域内发起的一条3类缺省路由LSA )</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+        <tag>路由协议</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OSPF路由优选规则</title>
+    <url>/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/</url>
+    <content><![CDATA[<p>&emsp;&emsp;在路由表中我们可以看到通过OSPF路由协议学习到的路由是哪一种类型（如O、O IA、O E1、O E2、O N1、O N2）的。当路由器学习到不同类型的同一路由时是如何选择的呢？本篇文章主要介绍OSPF路由的优先选择原则。</p>
+<a id="more"></a>
+
+<h2 id="1-基本优选规则"><a href="#1-基本优选规则" class="headerlink" title="1 基本优选规则"></a>1 基本优选规则</h2><ol>
+<li><p>直连路由：本路由器发起的LSA1、2 ；</p>
+</li>
+<li><p>区域内路由：O： LSA1、2；</p>
+</li>
+<li><p>区域间路由：O IA： LSA 3 ；</p>
+</li>
+<li><p>1类外部路由：O E1： LSA5类型1；</p>
+</li>
+<li><p>2类外部路由：O E2： LSA5类型2；</p>
+</li>
+<li><p>1类NSSA路由：O N1： LSA7类型1；</p>
+</li>
+<li><p>2类NSSA路由∶O N2：LSA7类型2。</p>
+</li>
+</ol>
+<p>&emsp;&emsp;注意：O E1绝对优于O E2，O N1绝对优于O N2。而E1之间、E2之间的比较，则需要另做讨论。另外，O E及O N的优选，要看厂商，不同的厂商，优选方式不同。</p>
+<h3 id="1-1-O-及O-IA的比较"><a href="#1-1-O-及O-IA的比较" class="headerlink" title="1.1 O 及O IA的比较"></a>1.1 O 及O IA的比较</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEUHj1.png" alt="image-20201115215555698"></p>
+<p>&emsp;&emsp;在这个图中，R1同时从R2及R3学习到3.3.3.0的路由，一条是О，一条是OIA，R1将绝对优选R3作为前往3.3.3.0的下一跳，而不看metric。</p>
+<h3 id="1-2-O-IA之间的比较"><a href="#1-2-O-IA之间的比较" class="headerlink" title="1.2 O IA之间的比较"></a>1.2 O IA之间的比较</h3><p>&emsp;&emsp;一般来说，O IA之间比较metric，谁小取谁，但是也有特例，如下：</p>
+<p><img src="https://s3.ax1x.com/2020/11/16/DEUOHK.png" alt="image-20201115215940616"></p>
+<p>&emsp;&emsp;上图中，R2上，能学习到由ABRR1及R3发出的关于路由1.1.1.0的3类LSA，两条路由都是О IA，但是R2将恒定优选R1作为去往1.1.1.0的下一跳，而不管这条路由的metric多大。</p>
+<h3 id="1-3-多进程OSPF问题1"><a href="#1-3-多进程OSPF问题1" class="headerlink" title="1.3 多进程OSPF问题1"></a>1.3 多进程OSPF问题1</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEUvND.png" alt="image-20201115220045832"></p>
+<p>&emsp;&emsp;同一台路由器，本地如果跑两个OSPF进程，则各自独立，路由信息不会自动相互注入；另外如果同时从两个进程学习到同一条路由，则不管metric如何，先到先用，而不会负载均衡。</p>
+<h3 id="1-4-多进程OSPF问题2"><a href="#1-4-多进程OSPF问题2" class="headerlink" title="1.4 多进程OSPF问题2"></a>1.4 多进程OSPF问题2</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEaS9H.png" alt="image-20201115220146896"></p>
+<p>&emsp;&emsp;由于是两个OSPF进程，因此依然是先到先得，R1上，如果率先与R2建立邻居关系，那么4.4.4.0的路由在路由表中，仍然是О IA的。即使通过R3过来的是О，但是由于是不同的进程，因此只看谁先来不管metric也不管什么O&gt;O IA&gt;O E1&gt;O E2。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+        <tag>路由协议</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OSPF邻居关系建立及维护</title>
     <url>/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/</url>
     <content><![CDATA[<p>&emsp;&emsp;OSPF邻居关系的建立是经历了七个不同的状态逐步建立起来的，状态之间的转换以及邻居关系建立后的维护主要通过OSPF的五个报文进行数据的传输。 本篇文章详细介绍了OSPF邻居关系的建立与维护。</p>
@@ -2882,44 +2882,6 @@
       <tags>
         <tag>OSPF</tag>
         <tag>路由协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安恒杯四月月赛misc——Writeup</title>
-    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
-    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
-<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
-<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
-<p>​        将what_you_want.7z导出，发现需要密码。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
-<p>​        根据文件名的提示找到pin，解压获得flag。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
-<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
-<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
-<p>​        首先获取该内存的配置文件</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
-<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
-<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
-<p>​        将其导出</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
-<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
-<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
-<p>​        用winhex打开即可找到flag。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
-]]></content>
-      <categories>
-        <category>Writeup</category>
-      </categories>
-      <tags>
-        <tag>ctf</tag>
-        <tag>网络安全</tag>
       </tags>
   </entry>
   <entry>
@@ -3050,6 +3012,44 @@
       <tags>
         <tag>Nexus</tag>
         <tag>vPC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安恒杯四月月赛misc——Writeup</title>
+    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
+    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
+<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
+<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
+<p>​        将what_you_want.7z导出，发现需要密码。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
+<p>​        根据文件名的提示找到pin，解压获得flag。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
+<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
+<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
+<p>​        首先获取该内存的配置文件</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
+<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
+<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
+<p>​        将其导出</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
+<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
+<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
+<p>​        用winhex打开即可找到flag。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
+]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>ctf</tag>
+        <tag>网络安全</tag>
       </tags>
   </entry>
   <entry>
