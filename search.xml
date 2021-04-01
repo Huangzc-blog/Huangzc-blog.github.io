@@ -317,6 +317,104 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验九——NAT 和 PPP 的应用</title>
+    <url>/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 NAT 的作用；不同 NAT 的特点及配置；不同 NAT 的使用场合； PPP 的 PAP 和 CHAP 验证；辅助地址的作用； NAT 的验证和查看命令。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li>理解 NAT 的作用</li>
+<li>理解不同 NAT 的特点及配置</li>
+<li>理解不同 NAT 的使用场合</li>
+<li>掌握 PPP 的 PAP 和 CHAP 验证</li>
+<li>理解辅助地址的作用</li>
+<li>掌握 NAT 的验证和查看命令</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0QEqhV.png" alt="图片1"></p>
+<center>NAT 和 PPP 的应用拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>公司 COM1 和 COM2 内部网段都为 192.168.1.0/24，其中 COM1 的 SRV地址为 192.168.1.100/24，COM2 的 user 地址为 192.168.1.10/24，COM1内部的其他主机地址自己规划，并且这些主机地址用辅助地址模拟</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">COM1(config)<span class="comment">#int e0/0</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">COM1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">Srv(config)<span class="comment">#int e0/0</span></span><br><span class="line">Srv(config-if)<span class="comment">#ip address 192.168.1.100 255.255.255.0</span></span><br><span class="line">Srv(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"><span class="comment">#为Srv指定网关</span></span><br><span class="line">Srv(config)<span class="comment">#ip default-gateway 192.168.1.254</span></span><br><span class="line"><span class="comment">#因为此处的服务器是用路由器进行模拟的，故关闭路由功能</span></span><br><span class="line">Srv(config)<span class="comment">#no ip routing </span></span><br><span class="line"></span><br><span class="line">COM2(config)<span class="comment">#int e0/1</span></span><br><span class="line">COM2(config-if)<span class="comment">#ip address 192.168.1.200 255.255.255.0</span></span><br><span class="line">COM2(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">COM2_user(config)<span class="comment">#int e0/0</span></span><br><span class="line">COM2_user(config-if)<span class="comment">#ip address 192.168.1.10 255.255.255.0</span></span><br><span class="line">COM2_user(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#其余主机地址如拓扑所示</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>ISP 上的 Web Server 地址为 211.1.1.1/24，ISP1 与 COM2 之间的地址段为 202.101.12.0/24，ISP1 与 COM1 之间的地址段为 202.101.23.0/24,其中 COM2 连接 ISP1 的接口地址为 202.101.12.1/24,COM1 连接 ISP1 的接口地址为 202.101.23.3/24</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Web_Server(config)<span class="comment">#int e0/0</span></span><br><span class="line">Web_Server(config-if)<span class="comment">#ip address 211.1.1.1 255.255.255.0</span></span><br><span class="line">Web_Server(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">Web_Server(config)<span class="comment">#ip default-gateway 211.1.1.254</span></span><br><span class="line">Web_Server(config)<span class="comment">#no ip routing </span></span><br><span class="line">ISP(config)<span class="comment">#int e0/0</span></span><br><span class="line">ISP(config-if)<span class="comment">#ip address 211.1.1.254 255.255.255.0</span></span><br><span class="line">ISP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">COM2(config)<span class="comment">#int e0/0</span></span><br><span class="line">COM2(config-if)<span class="comment">#ip address 202.101.12.1 255.255.255.0</span></span><br><span class="line">COM2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">ISP(config)<span class="comment">#int e0/1</span></span><br><span class="line">ISP(config-if)<span class="comment">#ip address 202.101.12.2 255.255.255.0</span></span><br><span class="line">ISP(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>要求COM1与ISP1之间的PPP链路采用CHAP验证，用户名为huangzc，密码为 123456</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ISP(config)<span class="comment">#int s2/0</span></span><br><span class="line">ISP(config-if)<span class="comment">#ip address 202.101.23.2 255.255.255.0</span></span><br><span class="line">ISP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"><span class="comment">#封装PPP协议</span></span><br><span class="line">ISP(config-if)<span class="comment">#encapsulation ppp</span></span><br><span class="line"><span class="comment">#开启CHAP认证</span></span><br><span class="line">ISP(config-if)<span class="comment">#ppp authentication chap </span></span><br><span class="line"><span class="comment">#分配给对方的IP为202.101.23.3</span></span><br><span class="line">ISP(config-if)<span class="comment">#peer default ip address 202.101.23.3</span></span><br><span class="line">ISP(config-if)<span class="comment">#exit </span></span><br><span class="line"><span class="comment">#设置用户名与密码</span></span><br><span class="line">ISP(config)<span class="comment">#username huangzc password 123456</span></span><br><span class="line"></span><br><span class="line">COM1(config)<span class="comment">#int s2/0</span></span><br><span class="line">COM1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">COM1(config-if)<span class="comment">#encapsulation ppp</span></span><br><span class="line"><span class="comment">#端口s2/0的IP地址通过协商产生</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip address negotiated </span></span><br><span class="line"><span class="comment">#发送用户名与密码</span></span><br><span class="line">COM1(config-if)<span class="comment">#ppp chap hostname huangzc</span></span><br><span class="line">COM1(config-if)<span class="comment">#ppp chap password 123456</span></span><br><span class="line"><span class="comment">#产生一条指向ISP的默认路由</span></span><br><span class="line">COM1(config-if)<span class="comment">#ppp ipcp route default</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/02/0QEvX4.png" alt="image-20201001154354765"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVSB9.png" alt="image-20201001154655748"></p>
+<p>&emsp;&emsp;配置完成后，查看COM1端口地址，可以发现COM1与ISP1之间的PPP链路CHAP验证成功，并通过IPCP协议获得IP地址，且COM1的路由表存在一条指向ISP的默认路由。</p>
+<ol start="4">
+<li>在 COM1 上使用静态 NAT 实现 SRV 可以访问 ISP 上的 Web Server，分别使用 ping 和 debug ip nat 进行验证和测试</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在COM1上启用一个loopback接口，用于静态NAT的映射</span></span><br><span class="line">COM1(config)<span class="comment">#interface loopback 1</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip address 200.100.10.1 255.255.255.0</span></span><br><span class="line">COM1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"><span class="comment">#配置静态NAT，将Srv的IP地址192.168.1.100映射为COM1 loopback 1接口的IP地址</span></span><br><span class="line">COM1(config)<span class="comment">#ip nat inside source static 192.168.1.100 200.100.10.1</span></span><br><span class="line"><span class="comment">#指定内外接口</span></span><br><span class="line">COM1(config)<span class="comment">#int s2/0</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">COM1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip nat inside</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在ISP上配置一条静态路由，确保Srv与Web_Server的通信</span></span><br><span class="line">ISP(config)<span class="comment">#ip route 200.100.10.0 255.255.255.0 s2/0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVk9K.png" alt="image-20201001162703515"></p>
+<p>&emsp;&emsp;Srv 可以成功访问 ISP 上的 Web Server。</p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVA1O.png" alt="image-20201001162746131"></p>
+<p>&emsp;&emsp;查看COM1上的NAT地址转换表，可以观察到192.168.1.100被转换为了200.100.10.1。</p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVih6.png" alt="image-20201001162816179"></p>
+<p>&emsp;&emsp;由于是静态的一对一转换，因此Web_Server也可以访问到Srv。</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">COM1#debug ip nat</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.852</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">55</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.861</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">55</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.862</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">56</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.871</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">56</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.872</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">57</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.878</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">57</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.879</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">58</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.888</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">58</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.889</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">59</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.900</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">59</span>]</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>在 COM1 上使用动态 NAT 实现 COM1 内部的其他用户可以访问 ISP 上的 Web Server，其中动态 NAT 的地址池范围为 202.101.23.10-202.101.23.12，分别使用 ping 和 debug ip nat 进行验证和测试</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置动态NAT的地址池</span></span><br><span class="line">COM1(config)<span class="comment">#ip nat pool huangzc 202.101.23.10 202.101.23.12 netmask 255.255.255.0</span></span><br><span class="line"><span class="comment">#匹配感兴趣流量</span></span><br><span class="line">COM1(config)<span class="comment">#access-list 1 permit 192.168.1.0 0.0.0.255 </span></span><br><span class="line"><span class="comment">#配置静态NAT，将COM1内部的主机映射为公网地址，并进行端口复用（overload）</span></span><br><span class="line">COM1(config)<span class="comment">#ip nat inside source list 1 pool huangzc overload </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVmBd.png" alt="image-20201001163844595"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVnHA.png" alt="image-20201001163823189"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">COM1<span class="comment">#show ip nat translations </span></span><br><span class="line">Pro Inside global      Inside <span class="built_in">local</span>       Outside <span class="built_in">local</span>      Outside global</span><br><span class="line">icmp 202.101.23.10:3222 192.168.1.1:3222  211.1.1.1:3222     211.1.1.1:3222</span><br><span class="line">icmp 202.101.23.10:3478 192.168.1.1:3478  211.1.1.1:3478     211.1.1.1:3478</span><br><span class="line">icmp 202.101.23.10:3734 192.168.1.1:3734  211.1.1.1:3734     211.1.1.1:3734</span><br><span class="line">icmp 202.101.23.10:3990 192.168.1.1:3990  211.1.1.1:3990     211.1.1.1:3990</span><br><span class="line">icmp 202.101.23.10:1032 192.168.1.1:4246  211.1.1.1:4246     211.1.1.1:1032</span><br><span class="line">icmp 202.101.23.10:1027 192.168.1.2:3478  211.1.1.1:3478     211.1.1.1:1027</span><br><span class="line">icmp 202.101.23.10:1028 192.168.1.2:3734  211.1.1.1:3734     211.1.1.1:1028</span><br><span class="line">icmp 202.101.23.10:1030 192.168.1.2:3990  211.1.1.1:3990     211.1.1.1:1030</span><br><span class="line">icmp 202.101.23.10:1033 192.168.1.2:4246  211.1.1.1:4246     211.1.1.1:1033</span><br><span class="line">icmp 202.101.23.10:1035 192.168.1.2:4502  211.1.1.1:4502     211.1.1.1:1035</span><br><span class="line">icmp 202.101.23.10:1029 192.168.1.3:3734  211.1.1.1:3734     211.1.1.1:1029</span><br><span class="line">icmp 202.101.23.10:1031 192.168.1.3:3990  211.1.1.1:3990     211.1.1.1:1031</span><br><span class="line">icmp 202.101.23.10:1034 192.168.1.3:4246  211.1.1.1:4246     211.1.1.1:1034</span><br><span class="line">icmp 202.101.23.10:4758 192.168.1.3:4758  211.1.1.1:4758     211.1.1.1:4758</span><br><span class="line">icmp 202.101.23.10:5014 192.168.1.3:5014  211.1.1.1:5014     211.1.1.1:5014</span><br><span class="line">icmp 202.101.23.10:58773 192.168.1.3:58773 211.1.1.1:58773   211.1.1.1:58773</span><br><span class="line">icmp 202.101.23.10:59029 192.168.1.3:59029 211.1.1.1:59029   211.1.1.1:59029</span><br><span class="line">icmp 202.101.23.10:1024 192.168.1.3:59285 211.1.1.1:59285    211.1.1.1:1024</span><br><span class="line">icmp 202.101.23.10:1025 192.168.1.3:59541 211.1.1.1:59541    211.1.1.1:1025</span><br><span class="line">icmp 202.101.23.10:1026 192.168.1.3:59797 211.1.1.1:59797    211.1.1.1:1026</span><br><span class="line">icmp 202.101.23.10:4246 192.168.1.4:4246  211.1.1.1:4246     211.1.1.1:4246</span><br><span class="line">icmp 202.101.23.10:4502 192.168.1.4:4502  211.1.1.1:4502     211.1.1.1:4502</span><br><span class="line">icmp 202.101.23.10:1036 192.168.1.4:4758  211.1.1.1:4758     211.1.1.1:1036</span><br><span class="line">icmp 202.101.23.10:1037 192.168.1.4:5014  211.1.1.1:5014     211.1.1.1:1037</span><br><span class="line">icmp 202.101.23.10:5270 192.168.1.4:5270  211.1.1.1:5270     211.1.1.1:5270</span><br><span class="line">icmp 202.101.23.10:59285 192.168.1.4:59285 211.1.1.1:59285   211.1.1.1:59285</span><br><span class="line">icmp 202.101.23.10:59541 192.168.1.4:59541 211.1.1.1:59541   211.1.1.1:59541</span><br><span class="line">icmp 202.101.23.10:59797 192.168.1.4:59797 211.1.1.1:59797   211.1.1.1:59797</span><br><span class="line">icmp 202.101.23.10:60053 192.168.1.4:60053 211.1.1.1:60053   211.1.1.1:60053</span><br><span class="line">icmp 202.101.23.10:60309 192.168.1.4:60309 211.1.1.1:60309   211.1.1.1:60309</span><br><span class="line">--- 200.100.10.1       192.168.1.100      ---                ---</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看COM1的NAT地址转换表可以COM1内的IP地址都被转换成为了公网的IP地址。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">COM1<span class="comment">#debug ip nat </span></span><br><span class="line">IP NAT debugging is on</span><br><span class="line">*Oct  1 08:43:08.430: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38556]</span><br><span class="line">*Oct  1 08:43:08.440: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38556]</span><br><span class="line">*Oct  1 08:43:09.441: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38557]</span><br><span class="line">*Oct  1 08:43:09.450: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38557]</span><br><span class="line">*Oct  1 08:43:10.452: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38558]</span><br><span class="line">*Oct  1 08:43:10.462: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38558]</span><br><span class="line">*Oct  1 08:43:11.463: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38559]</span><br><span class="line">*Oct  1 08:43:11.472: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38559]</span><br><span class="line">*Oct  1 08:43:12.473: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38560]</span><br><span class="line">*Oct  1 08:43:12.484: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38560] </span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>在 COM1 和 COM2 上使用 PAT 方式实现 COM1 和 COM2 内部的用户都可以访问 ISP 上的 Web Server</li>
+</ol>
+<ul>
+<li>COM1</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">COM1(config)#ip<span class="built_in"> nat </span>inside source list 1<span class="built_in"> interface </span>serial 2/0 overload </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/02/0QV19f.png" alt="image-20201001165100308"></p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">COM1#debug ip nat    </span><br><span class="line">IP NAT debugging <span class="keyword">is</span> on</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">28.975</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39056</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">28.986</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39056</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">29.989</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39057</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">30.002</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39057</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">31.004</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39058</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">31.015</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39058</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">32.017</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39059</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">32.029</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39059</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">33.031</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39060</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">33.042</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39060</span>]</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/02/0QV8gS.png" alt="image-20201001165214076"></p>
+<ul>
+<li>COM2</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">COM2(config)<span class="comment">#access-list 1 permit 192.168.1.0 0.0.0.255</span></span><br><span class="line">COM2(config)<span class="comment">#ip nat inside source list 1 interface ethernet 0/0 overload </span></span><br><span class="line">COM2(config)<span class="comment">#int e0/0</span></span><br><span class="line">COM2(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">COM2(config-if)<span class="comment">#int e0/1</span></span><br><span class="line">COM2(config-if)<span class="comment">#ip nat inside</span></span><br><span class="line"></span><br><span class="line">COM2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 202.101.12.2</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVtBj.png" alt="image-20201002001858613"></p>
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVaEn.png" alt="image-20201002001929323"></p>
+<ol start="8">
+<li>实现COM2内部的COM2_USER可以远程登录到SRV</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在COM1上配置静态nat，将SRV的地址192.168.1.100的tcp23号端口静态映射成200.100.1.1的1234号端口</span></span><br><span class="line">COM1(config)<span class="comment">#ip nat inside source static tcp 192.168.1.100 23 200.100.1.1 1234</span></span><br><span class="line"></span><br><span class="line">Srv(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Srv(config-line)<span class="comment">#password 123456</span></span><br><span class="line">Srv(config-line)<span class="comment">#transport input telnet</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/02/0QVdNq.png" alt="image-20201002002730757"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>NAT</tag>
+        <tag>PPP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验二——静态路由的应用</title>
     <url>/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
@@ -402,135 +500,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>静态路由</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验八——ACL 的运用</title>
-    <url>/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 ACL 作用；标准和扩展 ACL 的区别；标准和扩展 ACL 的配置； ALC 的验证和查看命令；命名的 ACL 的作用与配置。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li>掌握 ACL 作用</li>
-<li>理解标准和扩展 ACL 的区别</li>
-<li>熟悉标准和扩展 ACL 的配置</li>
-<li>掌握 ALC 的验证和查看命令</li>
-<li>理解命名的 ACL 的作用与配置</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/09/30/0Kuhp6.png" alt="图片2"></p>
-<center>ACL 的运用拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/1</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>192.168.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line">R1(config-if)#int e0/0</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>172.16.1.254 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.12.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R2(config-if)#int s2/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.23.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R3(config)#int e0/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>172.16.3.254 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R3(config-if)#int s2/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>192.168.23.3 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">PC1&gt;<span class="built_in"> ip </span>172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt;<span class="built_in"> ip </span>172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>在 R2 上添加两个 loopback 接口，loopback1 和 loopback2，其中loopback1 地址为 2.2.2.2/24，loopback2 地址为 22.22.22.22/24</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> loopback <span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">2.2</span>.<span class="number">2.2</span> <span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> loopback <span class="number">2</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">22.22</span>.<span class="number">22.22</span> <span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>完成必要的配置实现全网可达</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网开启OSPF协议</span></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 area 0</span></span><br><span class="line">R1(config-router)<span class="comment">#network 172.16.1.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 2.2.2.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 22.22.22.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 172.16.3.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KM7FA.png" alt="image-20200929173916930"></p>
-<ol start="4">
-<li>使用标准 ACL 实现 PC1 不能访问 PC2，并使用 ping 命令验证结果</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#access-list 1 deny 172.16.1.1</span></span><br><span class="line">R3(config)<span class="comment">#access-list 1 permit any </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group 1 out</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/30/0KuqAA.png" alt="image-20200929201524316"></p>
-<ol start="5">
-<li>使用标准 ACL 实现只允许 PC2 远程登录到路由器 R2，并使用 telnet 命令验证结果</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">1</span> permit host <span class="number">172.16</span>.<span class="number">3.1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#line</span> vty <span class="number">0</span> <span class="number">4</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="number">#acc</span>ess-class <span class="number">1</span> <span class="keyword">in</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="selector-id">#password</span> <span class="number">123456</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="selector-id">#transport</span> <span class="selector-tag">input</span> telnet </span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;PC1无法Telnet登入到路由器R2，PC1可以Telnet登入到路由器R2。</p>
-<p><img src="https://s1.ax1x.com/2020/09/30/0KKja9.png" alt="image-20200929213833311"></p>
-<p><img src="https://s1.ax1x.com/2020/09/30/0KKzP1.png" alt="image-20200929213943549"></p>
-<ol start="6">
-<li>使用标准 ACL 实现禁止 loopback2 所在网段的所有主机访问 PC1，对loopback1 所在网段主机的访问不做限制</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#access-list 1 permit 2.2.2.0     </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 deny 22.22.22.0</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit any</span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip access-group 1 out</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KMS8x.png" alt="image-20200929213725215"></p>
-<ol start="7">
-<li>使用命名 ACL 完成上述标准 ACL 的需求</li>
-</ol>
-<ul>
-<li>实现 PC1 不能访问 PC2，并使用 ping 命令验证结果</li>
-</ul>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#ip</span> access-list standard huangzc</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#deny</span> host <span class="number">172.16</span>.<span class="number">1.1</span> </span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> any </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group huangzc out</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KM9xK.png" alt="image-20200929235321690"></p>
-<ul>
-<li>实现只允许 PC2 远程登录到路由器 R2，并使用 telnet 命令验证结果</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip access-list standard huangzc</span></span><br><span class="line">R2(config-std-nacl)<span class="comment">#permit host 172.16.3.1</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">R2(config-line)<span class="comment">#access-class huangzc in</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/30/0KKja9.png" alt="image-20200929213833311"></p>
-<p><img src="https://s1.ax1x.com/2020/09/30/0KKzP1.png" alt="image-20200929213943549"></p>
-<ul>
-<li>实现禁止 loopback2 所在网段的所有主机访问 PC1，对loopback1 所在网段主机的访问不做限制</li>
-</ul>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#ip</span> access-list standard huangzc</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#deny</span> <span class="number">22.22</span>.<span class="number">22.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> <span class="number">2.2</span>.<span class="number">2.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> any</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group huangzc <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KMS8x.png" alt="image-20200929213725215"></p>
-<ol start="8">
-<li>使用扩展 ACL 实现禁止 PC1 远程登入到 R2，对其他访问不做限制</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 192.168.12.2 eq telnet</span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 192.168.23.1 eq telnet </span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 22.22.22.22 eq telnet  </span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 2.2.2.2 eq telnet</span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 permit ip any any</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip access-group 101 in</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;PC1无法远程登入到R2，但是却可以ping通（其他访问不做限制）</p>
-<p><img src="https://s1.ax1x.com/2020/10/01/0KMVIA.png" alt="image-20200930155954315"></p>
-<p><img src="https://s1.ax1x.com/2020/10/01/0KMePI.png" alt="image-20200930160209188"></p>
-<ol start="9">
-<li>使用扩展 ACL 实现 PC2 可以 telnet 到路由器 R1，但不能 ping 路由器 R1，分别使用 ping 和 telnet 验证结果</li>
-</ol>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> deny icmp host <span class="number">172.16</span><span class="number">.3</span><span class="number">.1</span> host <span class="number">192.168</span><span class="number">.12</span><span class="number">.1</span></span><br><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> deny icmp host <span class="number">172.16</span><span class="number">.3</span><span class="number">.1</span> host <span class="number">172.16</span><span class="number">.1</span><span class="number">.254</span></span><br><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> permit ip any any</span><br><span class="line"></span><br><span class="line">R3(config)#int e0/<span class="number">0</span></span><br><span class="line">R3(config-if)#ip access-group <span class="number">101</span> in</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KMdMT.png" alt="20200930171354898"></p>
-<ol start="10">
-<li>使用扩展 ACL 实现 PC1 可以 ping PC2，但禁止 PC2 ping PC1，其他的访问不受限制，使用 ping 验证结果</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过过滤PC2发送给PC1的ICMP echo包来达到禁止PC2 ping PC1</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">102</span> deny icmp host <span class="number">172.16</span>.<span class="number">3.1</span> host <span class="number">172.16</span>.<span class="number">1.1</span> echo</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">102</span> permit ip any any</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group <span class="number">102</span> <span class="keyword">in</span> </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KM8aj.png" alt="image-20200930194642453"></p>
-<p><img src="https://s1.ax1x.com/2020/10/01/0KMGIs.png" alt="image-20200930194656765"></p>
-<ol start="11">
-<li>使用命名 ACL 完成上述扩展 ACL 的需求</li>
-</ol>
-<ul>
-<li>实现禁止 PC1 远程登录到 R2，对其他访问不做限制</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 192.168.12.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 192.168.23.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 2.2.2.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 22.22.22.22 eq telnet </span></span><br><span class="line"></span><br><span class="line">R2(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip access-group huangzc in </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KM2z6.png" alt="image-20200930233004808"></p>
-<ul>
-<li>实现 PC2 可以 telnet 到路由器 R1，但不能 ping 路由器 R1，分别使用 ping 和 telnet 验证结果</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 192.168.12.1</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 172.16.1.254</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#permit ip any any</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group huangzc in    </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KMdMT.png" alt="20200930171354898"></p>
-<ul>
-<li>实现 PC1 可以 ping PC2，但禁止 PC2 ping PC1，其他的访问不受限制，使用 ping 验证结果</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 172.16.1.1</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#permit ip any any</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group huangzc in  </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/01/0KM8aj.png" alt="image-20200930194642453"></p>
-<p><img src="https://s1.ax1x.com/2020/10/01/0KMGIs.png" alt="image-20200930194656765"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>ACL</tag>
       </tags>
   </entry>
   <entry>
@@ -675,6 +644,135 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验八——ACL 的运用</title>
+    <url>/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 ACL 作用；标准和扩展 ACL 的区别；标准和扩展 ACL 的配置； ALC 的验证和查看命令；命名的 ACL 的作用与配置。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li>掌握 ACL 作用</li>
+<li>理解标准和扩展 ACL 的区别</li>
+<li>熟悉标准和扩展 ACL 的配置</li>
+<li>掌握 ALC 的验证和查看命令</li>
+<li>理解命名的 ACL 的作用与配置</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/09/30/0Kuhp6.png" alt="图片2"></p>
+<center>ACL 的运用拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#int e0/1</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>192.168.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line">R1(config-if)#int e0/0</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>172.16.1.254 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.12.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R2(config-if)#int s2/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.23.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R3(config)#int e0/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>172.16.3.254 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R3(config-if)#int s2/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>192.168.23.3 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">PC1&gt;<span class="built_in"> ip </span>172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt;<span class="built_in"> ip </span>172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 R2 上添加两个 loopback 接口，loopback1 和 loopback2，其中loopback1 地址为 2.2.2.2/24，loopback2 地址为 22.22.22.22/24</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> loopback <span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">2.2</span>.<span class="number">2.2</span> <span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#interface</span> loopback <span class="number">2</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">22.22</span>.<span class="number">22.22</span> <span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>完成必要的配置实现全网可达</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网开启OSPF协议</span></span><br><span class="line">R1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 area 0</span></span><br><span class="line">R1(config-router)<span class="comment">#network 172.16.1.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 2.2.2.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 22.22.22.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 172.16.3.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KM7FA.png" alt="image-20200929173916930"></p>
+<ol start="4">
+<li>使用标准 ACL 实现 PC1 不能访问 PC2，并使用 ping 命令验证结果</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#access-list 1 deny 172.16.1.1</span></span><br><span class="line">R3(config)<span class="comment">#access-list 1 permit any </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group 1 out</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/30/0KuqAA.png" alt="image-20200929201524316"></p>
+<ol start="5">
+<li>使用标准 ACL 实现只允许 PC2 远程登录到路由器 R2，并使用 telnet 命令验证结果</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">1</span> permit host <span class="number">172.16</span>.<span class="number">3.1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#line</span> vty <span class="number">0</span> <span class="number">4</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="number">#acc</span>ess-class <span class="number">1</span> <span class="keyword">in</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="selector-id">#password</span> <span class="number">123456</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-line)</span></span><span class="selector-id">#transport</span> <span class="selector-tag">input</span> telnet </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1无法Telnet登入到路由器R2，PC1可以Telnet登入到路由器R2。</p>
+<p><img src="https://s1.ax1x.com/2020/09/30/0KKja9.png" alt="image-20200929213833311"></p>
+<p><img src="https://s1.ax1x.com/2020/09/30/0KKzP1.png" alt="image-20200929213943549"></p>
+<ol start="6">
+<li>使用标准 ACL 实现禁止 loopback2 所在网段的所有主机访问 PC1，对loopback1 所在网段主机的访问不做限制</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#access-list 1 permit 2.2.2.0     </span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 deny 22.22.22.0</span></span><br><span class="line">R1(config)<span class="comment">#access-list 1 permit any</span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip access-group 1 out</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KMS8x.png" alt="image-20200929213725215"></p>
+<ol start="7">
+<li>使用命名 ACL 完成上述标准 ACL 的需求</li>
+</ol>
+<ul>
+<li>实现 PC1 不能访问 PC2，并使用 ping 命令验证结果</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#ip</span> access-list standard huangzc</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#deny</span> host <span class="number">172.16</span>.<span class="number">1.1</span> </span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> any </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group huangzc out</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KM9xK.png" alt="image-20200929235321690"></p>
+<ul>
+<li>实现只允许 PC2 远程登录到路由器 R2，并使用 telnet 命令验证结果</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip access-list standard huangzc</span></span><br><span class="line">R2(config-std-nacl)<span class="comment">#permit host 172.16.3.1</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">R2(config-line)<span class="comment">#access-class huangzc in</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/30/0KKja9.png" alt="image-20200929213833311"></p>
+<p><img src="https://s1.ax1x.com/2020/09/30/0KKzP1.png" alt="image-20200929213943549"></p>
+<ul>
+<li>实现禁止 loopback2 所在网段的所有主机访问 PC1，对loopback1 所在网段主机的访问不做限制</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#ip</span> access-list standard huangzc</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#deny</span> <span class="number">22.22</span>.<span class="number">22.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> <span class="number">2.2</span>.<span class="number">2.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-std-nacl)</span></span><span class="selector-id">#permit</span> any</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group huangzc <span class="keyword">in</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KMS8x.png" alt="image-20200929213725215"></p>
+<ol start="8">
+<li>使用扩展 ACL 实现禁止 PC1 远程登入到 R2，对其他访问不做限制</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 192.168.12.2 eq telnet</span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 192.168.23.1 eq telnet </span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 22.22.22.22 eq telnet  </span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 deny tcp host 172.16.1.1 host 2.2.2.2 eq telnet</span></span><br><span class="line">R2(config)<span class="comment">#access-list 101 permit ip any any</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip access-group 101 in</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1无法远程登入到R2，但是却可以ping通（其他访问不做限制）</p>
+<p><img src="https://s1.ax1x.com/2020/10/01/0KMVIA.png" alt="image-20200930155954315"></p>
+<p><img src="https://s1.ax1x.com/2020/10/01/0KMePI.png" alt="image-20200930160209188"></p>
+<ol start="9">
+<li>使用扩展 ACL 实现 PC2 可以 telnet 到路由器 R1，但不能 ping 路由器 R1，分别使用 ping 和 telnet 验证结果</li>
+</ol>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> deny icmp host <span class="number">172.16</span><span class="number">.3</span><span class="number">.1</span> host <span class="number">192.168</span><span class="number">.12</span><span class="number">.1</span></span><br><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> deny icmp host <span class="number">172.16</span><span class="number">.3</span><span class="number">.1</span> host <span class="number">172.16</span><span class="number">.1</span><span class="number">.254</span></span><br><span class="line">R3(config)#access-<span class="type">list</span> <span class="number">101</span> permit ip any any</span><br><span class="line"></span><br><span class="line">R3(config)#int e0/<span class="number">0</span></span><br><span class="line">R3(config-if)#ip access-group <span class="number">101</span> in</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KMdMT.png" alt="20200930171354898"></p>
+<ol start="10">
+<li>使用扩展 ACL 实现 PC1 可以 ping PC2，但禁止 PC2 ping PC1，其他的访问不受限制，使用 ping 验证结果</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过过滤PC2发送给PC1的ICMP echo包来达到禁止PC2 ping PC1</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">102</span> deny icmp host <span class="number">172.16</span>.<span class="number">3.1</span> host <span class="number">172.16</span>.<span class="number">1.1</span> echo</span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="number">#acc</span>ess-list <span class="number">102</span> permit ip any any</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> access-group <span class="number">102</span> <span class="keyword">in</span> </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KM8aj.png" alt="image-20200930194642453"></p>
+<p><img src="https://s1.ax1x.com/2020/10/01/0KMGIs.png" alt="image-20200930194656765"></p>
+<ol start="11">
+<li>使用命名 ACL 完成上述扩展 ACL 的需求</li>
+</ol>
+<ul>
+<li>实现禁止 PC1 远程登录到 R2，对其他访问不做限制</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 192.168.12.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 192.168.23.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 2.2.2.2 eq telnet </span></span><br><span class="line">R2(config-ext-nacl)<span class="comment">#deny tcp host 192.168.12.1 host 22.22.22.22 eq telnet </span></span><br><span class="line"></span><br><span class="line">R2(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip access-group huangzc in </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KM2z6.png" alt="image-20200930233004808"></p>
+<ul>
+<li>实现 PC2 可以 telnet 到路由器 R1，但不能 ping 路由器 R1，分别使用 ping 和 telnet 验证结果</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 192.168.12.1</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 172.16.1.254</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#permit ip any any</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group huangzc in    </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KMdMT.png" alt="20200930171354898"></p>
+<ul>
+<li>实现 PC1 可以 ping PC2，但禁止 PC2 ping PC1，其他的访问不受限制，使用 ping 验证结果</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip access-list extended huangzc</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#deny icmp host 172.16.3.1 host 172.16.1.1</span></span><br><span class="line">R3(config-ext-nacl)<span class="comment">#permit ip any any</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip access-group huangzc in  </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/01/0KM8aj.png" alt="image-20200930194642453"></p>
+<p><img src="https://s1.ax1x.com/2020/10/01/0KMGIs.png" alt="image-20200930194656765"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>ACL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验六——单臂路由的运用</title>
     <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
@@ -741,104 +839,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>单臂路由</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验九——NAT 和 PPP 的应用</title>
-    <url>/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 NAT 的作用；不同 NAT 的特点及配置；不同 NAT 的使用场合； PPP 的 PAP 和 CHAP 验证；辅助地址的作用； NAT 的验证和查看命令。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li>理解 NAT 的作用</li>
-<li>理解不同 NAT 的特点及配置</li>
-<li>理解不同 NAT 的使用场合</li>
-<li>掌握 PPP 的 PAP 和 CHAP 验证</li>
-<li>理解辅助地址的作用</li>
-<li>掌握 NAT 的验证和查看命令</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/10/02/0QEqhV.png" alt="图片1"></p>
-<center>NAT 和 PPP 的应用拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>公司 COM1 和 COM2 内部网段都为 192.168.1.0/24，其中 COM1 的 SRV地址为 192.168.1.100/24，COM2 的 user 地址为 192.168.1.10/24，COM1内部的其他主机地址自己规划，并且这些主机地址用辅助地址模拟</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">COM1(config)<span class="comment">#int e0/0</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">COM1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">Srv(config)<span class="comment">#int e0/0</span></span><br><span class="line">Srv(config-if)<span class="comment">#ip address 192.168.1.100 255.255.255.0</span></span><br><span class="line">Srv(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"><span class="comment">#为Srv指定网关</span></span><br><span class="line">Srv(config)<span class="comment">#ip default-gateway 192.168.1.254</span></span><br><span class="line"><span class="comment">#因为此处的服务器是用路由器进行模拟的，故关闭路由功能</span></span><br><span class="line">Srv(config)<span class="comment">#no ip routing </span></span><br><span class="line"></span><br><span class="line">COM2(config)<span class="comment">#int e0/1</span></span><br><span class="line">COM2(config-if)<span class="comment">#ip address 192.168.1.200 255.255.255.0</span></span><br><span class="line">COM2(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">COM2_user(config)<span class="comment">#int e0/0</span></span><br><span class="line">COM2_user(config-if)<span class="comment">#ip address 192.168.1.10 255.255.255.0</span></span><br><span class="line">COM2_user(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#其余主机地址如拓扑所示</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>ISP 上的 Web Server 地址为 211.1.1.1/24，ISP1 与 COM2 之间的地址段为 202.101.12.0/24，ISP1 与 COM1 之间的地址段为 202.101.23.0/24,其中 COM2 连接 ISP1 的接口地址为 202.101.12.1/24,COM1 连接 ISP1 的接口地址为 202.101.23.3/24</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Web_Server(config)<span class="comment">#int e0/0</span></span><br><span class="line">Web_Server(config-if)<span class="comment">#ip address 211.1.1.1 255.255.255.0</span></span><br><span class="line">Web_Server(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">Web_Server(config)<span class="comment">#ip default-gateway 211.1.1.254</span></span><br><span class="line">Web_Server(config)<span class="comment">#no ip routing </span></span><br><span class="line">ISP(config)<span class="comment">#int e0/0</span></span><br><span class="line">ISP(config-if)<span class="comment">#ip address 211.1.1.254 255.255.255.0</span></span><br><span class="line">ISP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">COM2(config)<span class="comment">#int e0/0</span></span><br><span class="line">COM2(config-if)<span class="comment">#ip address 202.101.12.1 255.255.255.0</span></span><br><span class="line">COM2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">ISP(config)<span class="comment">#int e0/1</span></span><br><span class="line">ISP(config-if)<span class="comment">#ip address 202.101.12.2 255.255.255.0</span></span><br><span class="line">ISP(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>要求COM1与ISP1之间的PPP链路采用CHAP验证，用户名为huangzc，密码为 123456</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ISP(config)<span class="comment">#int s2/0</span></span><br><span class="line">ISP(config-if)<span class="comment">#ip address 202.101.23.2 255.255.255.0</span></span><br><span class="line">ISP(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"><span class="comment">#封装PPP协议</span></span><br><span class="line">ISP(config-if)<span class="comment">#encapsulation ppp</span></span><br><span class="line"><span class="comment">#开启CHAP认证</span></span><br><span class="line">ISP(config-if)<span class="comment">#ppp authentication chap </span></span><br><span class="line"><span class="comment">#分配给对方的IP为202.101.23.3</span></span><br><span class="line">ISP(config-if)<span class="comment">#peer default ip address 202.101.23.3</span></span><br><span class="line">ISP(config-if)<span class="comment">#exit </span></span><br><span class="line"><span class="comment">#设置用户名与密码</span></span><br><span class="line">ISP(config)<span class="comment">#username huangzc password 123456</span></span><br><span class="line"></span><br><span class="line">COM1(config)<span class="comment">#int s2/0</span></span><br><span class="line">COM1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">COM1(config-if)<span class="comment">#encapsulation ppp</span></span><br><span class="line"><span class="comment">#端口s2/0的IP地址通过协商产生</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip address negotiated </span></span><br><span class="line"><span class="comment">#发送用户名与密码</span></span><br><span class="line">COM1(config-if)<span class="comment">#ppp chap hostname huangzc</span></span><br><span class="line">COM1(config-if)<span class="comment">#ppp chap password 123456</span></span><br><span class="line"><span class="comment">#产生一条指向ISP的默认路由</span></span><br><span class="line">COM1(config-if)<span class="comment">#ppp ipcp route default</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/02/0QEvX4.png" alt="image-20201001154354765"></p>
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVSB9.png" alt="image-20201001154655748"></p>
-<p>&emsp;&emsp;配置完成后，查看COM1端口地址，可以发现COM1与ISP1之间的PPP链路CHAP验证成功，并通过IPCP协议获得IP地址，且COM1的路由表存在一条指向ISP的默认路由。</p>
-<ol start="4">
-<li>在 COM1 上使用静态 NAT 实现 SRV 可以访问 ISP 上的 Web Server，分别使用 ping 和 debug ip nat 进行验证和测试</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在COM1上启用一个loopback接口，用于静态NAT的映射</span></span><br><span class="line">COM1(config)<span class="comment">#interface loopback 1</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip address 200.100.10.1 255.255.255.0</span></span><br><span class="line">COM1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"><span class="comment">#配置静态NAT，将Srv的IP地址192.168.1.100映射为COM1 loopback 1接口的IP地址</span></span><br><span class="line">COM1(config)<span class="comment">#ip nat inside source static 192.168.1.100 200.100.10.1</span></span><br><span class="line"><span class="comment">#指定内外接口</span></span><br><span class="line">COM1(config)<span class="comment">#int s2/0</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">COM1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">COM1(config-if)<span class="comment">#ip nat inside</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在ISP上配置一条静态路由，确保Srv与Web_Server的通信</span></span><br><span class="line">ISP(config)<span class="comment">#ip route 200.100.10.0 255.255.255.0 s2/0</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVk9K.png" alt="image-20201001162703515"></p>
-<p>&emsp;&emsp;Srv 可以成功访问 ISP 上的 Web Server。</p>
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVA1O.png" alt="image-20201001162746131"></p>
-<p>&emsp;&emsp;查看COM1上的NAT地址转换表，可以观察到192.168.1.100被转换为了200.100.10.1。</p>
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVih6.png" alt="image-20201001162816179"></p>
-<p>&emsp;&emsp;由于是静态的一对一转换，因此Web_Server也可以访问到Srv。</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">COM1#debug ip nat</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.852</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">55</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.861</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">55</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.862</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">56</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.871</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">56</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.872</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">57</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.878</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">57</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.879</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">58</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.888</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">58</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.889</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span>-&gt;<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">59</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">44</span>:<span class="number">33.900</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">200.100</span><span class="number">.10</span><span class="number">.1</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.100</span> [<span class="number">59</span>]</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>在 COM1 上使用动态 NAT 实现 COM1 内部的其他用户可以访问 ISP 上的 Web Server，其中动态 NAT 的地址池范围为 202.101.23.10-202.101.23.12，分别使用 ping 和 debug ip nat 进行验证和测试</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置动态NAT的地址池</span></span><br><span class="line">COM1(config)<span class="comment">#ip nat pool huangzc 202.101.23.10 202.101.23.12 netmask 255.255.255.0</span></span><br><span class="line"><span class="comment">#匹配感兴趣流量</span></span><br><span class="line">COM1(config)<span class="comment">#access-list 1 permit 192.168.1.0 0.0.0.255 </span></span><br><span class="line"><span class="comment">#配置静态NAT，将COM1内部的主机映射为公网地址，并进行端口复用（overload）</span></span><br><span class="line">COM1(config)<span class="comment">#ip nat inside source list 1 pool huangzc overload </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVmBd.png" alt="image-20201001163844595"></p>
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVnHA.png" alt="image-20201001163823189"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">COM1<span class="comment">#show ip nat translations </span></span><br><span class="line">Pro Inside global      Inside <span class="built_in">local</span>       Outside <span class="built_in">local</span>      Outside global</span><br><span class="line">icmp 202.101.23.10:3222 192.168.1.1:3222  211.1.1.1:3222     211.1.1.1:3222</span><br><span class="line">icmp 202.101.23.10:3478 192.168.1.1:3478  211.1.1.1:3478     211.1.1.1:3478</span><br><span class="line">icmp 202.101.23.10:3734 192.168.1.1:3734  211.1.1.1:3734     211.1.1.1:3734</span><br><span class="line">icmp 202.101.23.10:3990 192.168.1.1:3990  211.1.1.1:3990     211.1.1.1:3990</span><br><span class="line">icmp 202.101.23.10:1032 192.168.1.1:4246  211.1.1.1:4246     211.1.1.1:1032</span><br><span class="line">icmp 202.101.23.10:1027 192.168.1.2:3478  211.1.1.1:3478     211.1.1.1:1027</span><br><span class="line">icmp 202.101.23.10:1028 192.168.1.2:3734  211.1.1.1:3734     211.1.1.1:1028</span><br><span class="line">icmp 202.101.23.10:1030 192.168.1.2:3990  211.1.1.1:3990     211.1.1.1:1030</span><br><span class="line">icmp 202.101.23.10:1033 192.168.1.2:4246  211.1.1.1:4246     211.1.1.1:1033</span><br><span class="line">icmp 202.101.23.10:1035 192.168.1.2:4502  211.1.1.1:4502     211.1.1.1:1035</span><br><span class="line">icmp 202.101.23.10:1029 192.168.1.3:3734  211.1.1.1:3734     211.1.1.1:1029</span><br><span class="line">icmp 202.101.23.10:1031 192.168.1.3:3990  211.1.1.1:3990     211.1.1.1:1031</span><br><span class="line">icmp 202.101.23.10:1034 192.168.1.3:4246  211.1.1.1:4246     211.1.1.1:1034</span><br><span class="line">icmp 202.101.23.10:4758 192.168.1.3:4758  211.1.1.1:4758     211.1.1.1:4758</span><br><span class="line">icmp 202.101.23.10:5014 192.168.1.3:5014  211.1.1.1:5014     211.1.1.1:5014</span><br><span class="line">icmp 202.101.23.10:58773 192.168.1.3:58773 211.1.1.1:58773   211.1.1.1:58773</span><br><span class="line">icmp 202.101.23.10:59029 192.168.1.3:59029 211.1.1.1:59029   211.1.1.1:59029</span><br><span class="line">icmp 202.101.23.10:1024 192.168.1.3:59285 211.1.1.1:59285    211.1.1.1:1024</span><br><span class="line">icmp 202.101.23.10:1025 192.168.1.3:59541 211.1.1.1:59541    211.1.1.1:1025</span><br><span class="line">icmp 202.101.23.10:1026 192.168.1.3:59797 211.1.1.1:59797    211.1.1.1:1026</span><br><span class="line">icmp 202.101.23.10:4246 192.168.1.4:4246  211.1.1.1:4246     211.1.1.1:4246</span><br><span class="line">icmp 202.101.23.10:4502 192.168.1.4:4502  211.1.1.1:4502     211.1.1.1:4502</span><br><span class="line">icmp 202.101.23.10:1036 192.168.1.4:4758  211.1.1.1:4758     211.1.1.1:1036</span><br><span class="line">icmp 202.101.23.10:1037 192.168.1.4:5014  211.1.1.1:5014     211.1.1.1:1037</span><br><span class="line">icmp 202.101.23.10:5270 192.168.1.4:5270  211.1.1.1:5270     211.1.1.1:5270</span><br><span class="line">icmp 202.101.23.10:59285 192.168.1.4:59285 211.1.1.1:59285   211.1.1.1:59285</span><br><span class="line">icmp 202.101.23.10:59541 192.168.1.4:59541 211.1.1.1:59541   211.1.1.1:59541</span><br><span class="line">icmp 202.101.23.10:59797 192.168.1.4:59797 211.1.1.1:59797   211.1.1.1:59797</span><br><span class="line">icmp 202.101.23.10:60053 192.168.1.4:60053 211.1.1.1:60053   211.1.1.1:60053</span><br><span class="line">icmp 202.101.23.10:60309 192.168.1.4:60309 211.1.1.1:60309   211.1.1.1:60309</span><br><span class="line">--- 200.100.10.1       192.168.1.100      ---                ---</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;查看COM1的NAT地址转换表可以COM1内的IP地址都被转换成为了公网的IP地址。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">COM1<span class="comment">#debug ip nat </span></span><br><span class="line">IP NAT debugging is on</span><br><span class="line">*Oct  1 08:43:08.430: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38556]</span><br><span class="line">*Oct  1 08:43:08.440: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38556]</span><br><span class="line">*Oct  1 08:43:09.441: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38557]</span><br><span class="line">*Oct  1 08:43:09.450: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38557]</span><br><span class="line">*Oct  1 08:43:10.452: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38558]</span><br><span class="line">*Oct  1 08:43:10.462: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38558]</span><br><span class="line">*Oct  1 08:43:11.463: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38559]</span><br><span class="line">*Oct  1 08:43:11.472: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38559]</span><br><span class="line">*Oct  1 08:43:12.473: NAT*: s=192.168.1.1-&gt;202.101.23.10, d=211.1.1.1 [38560]</span><br><span class="line">*Oct  1 08:43:12.484: NAT*: s=211.1.1.1, d=202.101.23.10-&gt;192.168.1.1 [38560] </span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>在 COM1 和 COM2 上使用 PAT 方式实现 COM1 和 COM2 内部的用户都可以访问 ISP 上的 Web Server</li>
-</ol>
-<ul>
-<li>COM1</li>
-</ul>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">COM1(config)#ip<span class="built_in"> nat </span>inside source list 1<span class="built_in"> interface </span>serial 2/0 overload </span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/02/0QV19f.png" alt="image-20201001165100308"></p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">COM1#debug ip nat    </span><br><span class="line">IP NAT debugging <span class="keyword">is</span> on</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">28.975</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39056</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">28.986</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39056</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">29.989</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39057</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">30.002</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39057</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">31.004</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39058</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">31.015</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39058</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">32.017</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39059</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">32.029</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39059</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">33.031</span>: NAT*: s=<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>-&gt;<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>, d=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span> [<span class="number">39060</span>]</span><br><span class="line">*Oct  <span class="number">1</span> <span class="number">08</span>:<span class="number">51</span>:<span class="number">33.042</span>: NAT*: s=<span class="number">211.1</span><span class="number">.1</span><span class="number">.1</span>, d=<span class="number">202.101</span><span class="number">.23</span><span class="number">.3</span>-&gt;<span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span> [<span class="number">39060</span>]</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/02/0QV8gS.png" alt="image-20201001165214076"></p>
-<ul>
-<li>COM2</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">COM2(config)<span class="comment">#access-list 1 permit 192.168.1.0 0.0.0.255</span></span><br><span class="line">COM2(config)<span class="comment">#ip nat inside source list 1 interface ethernet 0/0 overload </span></span><br><span class="line">COM2(config)<span class="comment">#int e0/0</span></span><br><span class="line">COM2(config-if)<span class="comment">#ip nat outside </span></span><br><span class="line">COM2(config-if)<span class="comment">#int e0/1</span></span><br><span class="line">COM2(config-if)<span class="comment">#ip nat inside</span></span><br><span class="line"></span><br><span class="line">COM2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 202.101.12.2</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVtBj.png" alt="image-20201002001858613"></p>
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVaEn.png" alt="image-20201002001929323"></p>
-<ol start="8">
-<li>实现COM2内部的COM2_USER可以远程登录到SRV</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在COM1上配置静态nat，将SRV的地址192.168.1.100的tcp23号端口静态映射成200.100.1.1的1234号端口</span></span><br><span class="line">COM1(config)<span class="comment">#ip nat inside source static tcp 192.168.1.100 23 200.100.1.1 1234</span></span><br><span class="line"></span><br><span class="line">Srv(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Srv(config-line)<span class="comment">#password 123456</span></span><br><span class="line">Srv(config-line)<span class="comment">#transport input telnet</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/02/0QVdNq.png" alt="image-20201002002730757"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>NAT</tag>
-        <tag>PPP</tag>
       </tags>
   </entry>
   <entry>
@@ -1452,73 +1452,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNP路由综合实验五——BGP</title>
-    <url>/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。</p>
-<a id="more"></a>
-
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/10/16/0qSzf1.png" alt="image-20201016220418903"></p>
-<center>BGP综合实验拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>大型企业需要承担起因特网互连任务，其AS号为2。内网使用OSPF协议来保证内部通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在大型企业内部启用OSPF协议，并通告内部网段</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.35.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.45.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>大型企业和ISP1及ISP2之间运行EBGP协议，在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#建立大型企业与ISP1之间的EBGP邻居关系</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#neighbor 202.101.12.2 remote-as 2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 202.101.12.1 remote-as 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#建立大型企业与ISP2之间的EBGP邻居关系</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.45.4 remote-as 2</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.35.3 remote-as 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</span></span><br><span class="line">R1(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R6(config-if)<span class="comment"># ip address 6.6.6.6 255.255.255.0</span></span><br><span class="line">R6(config-if)<span class="comment">#no shutdown  </span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>IP地址自行规划，内部使用私有地址，连着ISP的接口使用公有地址</li>
-</ol>
-<p>&emsp;&emsp;该拓扑中各设备的IP地址如拓扑图所示，此处不再做过多的赘述。</p>
-<ol start="4">
-<li>大型企业内部运行全互联的IBGP，要求避免物理接口故障引起的 BGP 邻居关系DOWN</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#由于需要避免物理接口故障引起的 BGP 邻居关系DOWN，所以我们建立基于回环端口的BGP邻居关系</span></span><br><span class="line"><span class="comment">#在大型企业中的各路由配置回环口</span></span><br><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 2.2.2.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 3.3.3.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R4(config-if)<span class="comment">#ip address 4.4.4.4 255.255.255.0</span></span><br><span class="line">R4(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在大型企业内部建立全互联的IBGP</span></span><br><span class="line">R2(config)<span class="comment">#router bgp 2                         </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#R5与R6也建立IBGP邻居关系</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 update-source Loopback1</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 update-source Loopback1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#在R1、R6上通告路由</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R6(config-router)<span class="comment">#network 6.6.6.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R5上对特定邻居（6.6.6.6）下发默认路由</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/2</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/1</span></span><br><span class="line"><span class="comment">#ps：由于大型企业的内部的IP地址为私有地址，故不能在互联网上通告。可在边界网关处配置NAT。但此处为了方便使用了默认路由</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 default-originate </span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>要求大型企业访问ISP2上的服务器是通过R3前往的（只允许在大型企业设备上配置）</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改本地优先级，使R3的本地优先级大于R4。从而让大型企业访问ISP2时是通过R3前往的</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#bgp default local-preference 200</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/10/16/0qpFmD.png" alt="image-20201016214158132"></p>
-<p>&emsp;&emsp;当然，也可以针对ISP2特定的路由条目设置本地优先级，或者使用别的BGP选路原则。此处过多赘述，详细的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>，可以点击查看我的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">另一篇博客</a>。</p>
-<ol start="6">
-<li>要求ISP3访问ISP1上的服务器是通过R4访问的（只允许在大型企业设备上配置）</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将R3的metric值更改为20</span></span><br><span class="line">R3(config)<span class="comment">#route-map MED</span></span><br><span class="line">R3(config-route-map)<span class="comment">#set metric 20 </span></span><br><span class="line">R3(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2 </span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 route-map MED out </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将R4的metric值更改为10</span></span><br><span class="line">R4(config)<span class="comment">#route-map MED </span></span><br><span class="line">R4(config-route-map)<span class="comment">#set metric 10 </span></span><br><span class="line">R4(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 route-map MED out </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;更改MED前：</p>
-<p><img src="https://s1.ax1x.com/2020/10/16/0qpPOO.png" alt="image-20201016214115339"></p>
-<p>&emsp;&emsp;更改MED后：</p>
-<p><img src="https://s1.ax1x.com/2020/10/16/0qpVkd.png" alt="image-20201016215215388"></p>
-<p><img src="https://s1.ax1x.com/2020/10/16/0qpMX8.png" alt="image-20201016215845533"></p>
-<p>&emsp;&emsp;此处是通过更改MED值来选择路由，其他<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>请点击查看。</p>
-<ol start="7">
-<li>要求IBGP邻居关系安全建立</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>测试下ISP1与ISP3上的服务器能正常通信</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/10/16/0qplnS.png" alt="image-20201016193315698"></p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>BGP</tag>
-        <tag>CCNP</tag>
-        <tag>路由</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNP路由综合实验三</title>
     <url>/2019/04/12/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 IS-IS 的基本配置； IS-IS 路由器等级； IS-IS 的路由汇总； IS-IS 的基本查看和验证； IS-IS 的报文类型及报文的作用。</p>
@@ -1724,178 +1657,70 @@
       </tags>
   </entry>
   <entry>
-    <title>Nexus交换机FabricPath</title>
-    <url>/2021/03/15/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/</url>
-    <content><![CDATA[<p>&emsp;&emsp;FabricPath是Cisco Nexus交换机上的一项技术特性，这个技术做到了以下几点：实现两点间多条路径同时转发流量EMCP(Equal Cost Multi Pathing)；类似IP网络的平滑扩展；快速收敛；防止广播风暴；保持原有二层网络配置的简洁性。FabricPath摆脱传统二层“交换”的弊端，在二层环境中实现类似三层IP的“路由”行为。</p>
+    <title>CCNP路由综合实验五——BGP</title>
+    <url>/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。</p>
 <a id="more"></a>
 
-<h2 id="1-FabricPath简介"><a href="#1-FabricPath简介" class="headerlink" title="1 FabricPath简介"></a>1 FabricPath简介</h2><h3 id="1-1-智能二层网络的革命"><a href="#1-1-智能二层网络的革命" class="headerlink" title="1.1 智能二层网络的革命"></a>1.1 智能二层网络的革命</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOC8J.png" alt="image-20210315164725657"></p>
-<h3 id="1-2-当前数据中心设计"><a href="#1-2-当前数据中心设计" class="headerlink" title="1.2 当前数据中心设计"></a>1.2 当前数据中心设计</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOP29.png" alt="image-20210315164605993"></p>
-<h3 id="1-3-经典二层网络的限制"><a href="#1-3-经典二层网络的限制" class="headerlink" title="1.3 经典二层网络的限制"></a>1.3 经典二层网络的限制</h3><ol>
-<li>本地的STP问题将会影响整个网络，排错难度增大。</li>
-<li>STP技术提供了限制的带宽（不能实现负载均衡）。</li>
-<li>STP的收敛是混乱的。</li>
-<li>树状接口引入了不优化的路径。</li>
-<li>MAC地址表没有很好的扩展性。</li>
-<li>泛洪流量将会影响整个网络。</li>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/10/16/0qSzf1.png" alt="image-20201016220418903"></p>
+<center>BGP综合实验拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>大型企业需要承担起因特网互连任务，其AS号为2。内网使用OSPF协议来保证内部通信</li>
 </ol>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOivR.png" alt="image-20210315165236704"></p>
-<h3 id="1-4-Cisco-FabricPath的目标"><a href="#1-4-Cisco-FabricPath的目标" class="headerlink" title="1.4 Cisco FabricPath的目标"></a>1.4 Cisco FabricPath的目标</h3><p>&emsp;&emsp;FabricPath技术融合了路由与交换的优势，实现一个端到端的大二层网络。</p>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOkK1.png" alt="image-20210315165321194"></p>
-<h3 id="1-5-FabricPath-A-Ethernet-Fabric"><a href="#1-5-FabricPath-A-Ethernet-Fabric" class="headerlink" title="1.5 FabricPath : A Ethernet Fabric"></a>1.5 FabricPath : A Ethernet Fabric</h3><ol>
-<li><p>使用任意的拓扑，连接一组的交换机</p>
-</li>
-<li><p>使用一个简单的CLI命令，汇聚交换机到一个Fabric</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N7K(config)<span class="comment">#interface ethernet 1/1</span></span><br><span class="line">N7K(config-if)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>没有STP技术，是一个基于三层技术的开放协议，提供了Fabric范围的智能，并且把所有的组件捆绑到一起。</p>
-</li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在大型企业内部启用OSPF协议，并通告内部网段</span></span><br><span class="line">R2(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.35.0 0.0.0.255 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.24.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.34.0 0.0.0.255 area 0</span></span><br><span class="line">R4(config-router)<span class="comment">#network 192.168.45.0 0.0.0.255 area 0</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>大型企业和ISP1及ISP2之间运行EBGP协议，在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</li>
 </ol>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOADx.png" alt="image-20210315165621259"></p>
-<h3 id="1-6-Fabric的定义"><a href="#1-6-Fabric的定义" class="headerlink" title="1. 6 Fabric的定义"></a>1. 6 Fabric的定义</h3><p>&emsp;&emsp;从外部看，一个Fabric就像一个交换机。从内部看，一个协议提供了整个Fabric范围的智能，并且把所有组件绑定在一起。这个协议提供了即插即用的特性：</p>
-<ul>
-<li>优化的任意到任意的低延时连接</li>
-<li>高带宽，高弹性</li>
-<li>开放的管理和排错功能</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOeUO.png" alt="image-20210315164521167"></p>
-<h4 id="1-6-1-优化的低延时交换"><a href="#1-6-1-优化的低延时交换" class="headerlink" title="1.6.1 优化的低延时交换"></a>1.6.1 优化的低延时交换</h4><p>&emsp;&emsp;Shortest Path Any-to-Any（任意到任意最短路径）</p>
-<ul>
-<li>在包进入Fabric的边界设备执行简单的地址查询。</li>
-<li>流量使用可用的最短路劲来转发。</li>
-<li>可靠的二层和三层任意到任意的连接（就像在一个交换机内部一样，没有STP技术）</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOJVf.png" alt="image-20210315165750821"></p>
-<h4 id="1-6-2-高带宽，高弹性"><a href="#1-6-2-高带宽，高弹性" class="headerlink" title="1.6.2 高带宽，高弹性"></a>1.6.2 高带宽，高弹性</h4><p>&emsp;&emsp;Equal Cost Multi-pathing（等价多路径）</p>
-<ul>
-<li>多路径（Multi-pathing），在两个设备间，最多256个活动路径。</li>
-<li>如果出现故障，流量将会在剩余的链路中被分布，提供快速的收敛。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOtIS.png" alt="image-20210315165845703"></p>
-<h4 id="1-6-3-高扩展性"><a href="#1-6-3-高扩展性" class="headerlink" title="1.6.3 高扩展性"></a>1.6.3 高扩展性</h4><p>&emsp;&emsp;Conversational Learning（会话的MAC地址学习）</p>
-<ul>
-<li>每端口的MAC地址表，仅仅只学习那些可以通过Fabric抵达的对等体的MAC地址。</li>
-<li>一个虚拟的无限数量的主机，能够被加入这个Fabric。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOd2j.png" alt="image-20210315165858185"></p>
-<h3 id="1-7-二层的整合"><a href="#1-7-二层的整合" class="headerlink" title="1.7 二层的整合"></a>1.7 二层的整合</h3><p>&emsp;&emsp;vPC+</p>
-<ul>
-<li>允许无限制的延伸VLANs，不用担心出现环路。</li>
-<li>设备可以使用IEEE标准的Port Channel技术，通过Active/Active链路接入到Fabric，不需要使用STP技术。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sORG4.png" alt="image-20210315170429015"></p>
-<h3 id="1-8-边界设备的整合"><a href="#1-8-边界设备的整合" class="headerlink" title="1.8 边界设备的整合"></a>1.8 边界设备的整合</h3><p>&emsp;&emsp;主机可以利用多个三层默认网关</p>
-<ul>
-<li>主机只看到一个默认网关。</li>
-<li>Fabric提供了多个透明的同时Active的默认网关。</li>
-<li>允许从Fabric内部到外部三层网络的的多路径。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sO4MR.png" alt="image-20210315170527144"></p>
-<h3 id="1-9-三层的整合"><a href="#1-9-三层的整合" class="headerlink" title="1.9 三层的整合"></a>1.9 三层的整合</h3><p>&emsp;&emsp;XL Tables，SVIs Anywhere</p>
-<ul>
-<li>Fabric提供了无缝的三层整合。</li>
-<li>任意数量的路由接口，可以在边界或Fabric内部创建。</li>
-<li>连接的三层设备可以使用这些接口连建立连接。</li>
-<li>硬件有能力来处理这些百万级的路由。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6sOIqx.png" alt="image-20210315170641079"></p>
-<h2 id="2-FabricPath理论介绍"><a href="#2-FabricPath理论介绍" class="headerlink" title="2 FabricPath理论介绍"></a>2 FabricPath理论介绍</h2><h3 id="2-1-新的控制层面"><a href="#2-1-新的控制层面" class="headerlink" title="2.1 新的控制层面"></a>2.1 新的控制层面</h3><p>&emsp;&emsp;即插即用的由IS-IS管理的发送拓扑：</p>
-<ul>
-<li>IS-IS自动为所有的FabricPath交换机指派地址。</li>
-<li>计算最短路径。</li>
-<li>在任意的FabricPath交换机之间支持等价多路径。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6y9t3T.png" alt="image-20210315171114341"></p>
-<h3 id="2-2-新的数据层面"><a href="#2-2-新的数据层面" class="headerlink" title="2.2 新的数据层面"></a>2.2 新的数据层面</h3><ul>
-<li>在边界设备上维护MAC地址与Switch-ID之间的关联。</li>
-<li>流量被封装穿越整个Fabric</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6y9rU1.png" alt="image-20210315171137880"></p>
-<h3 id="2-2-FabricPath术语"><a href="#2-2-FabricPath术语" class="headerlink" title="2.2 FabricPath术语"></a>2.2 FabricPath术语</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9c8K.png" alt="image-20210315171241755"></p>
-<h4 id="2-2-1-FP-Core-Port"><a href="#2-2-1-FP-Core-Port" class="headerlink" title="2.2.1 FP Core Port"></a>2.2.1 FP Core Port</h4><ul>
-<li>接口被连接到其它FabricPath设备</li>
-<li>发送和接收有FabricPath头部的流量</li>
-<li>不运行STP</li>
-<li>不执行MAC地址学习</li>
-<li>通过二层的IS-IS邻居，交换拓扑信息</li>
-<li>基于Switch-ID表转发数据</li>
-</ul>
-<h4 id="2-2-2-CE-Edge-Port"><a href="#2-2-2-CE-Edge-Port" class="headerlink" title="2.2.2 CE Edge Port"></a>2.2.2 CE Edge Port</h4><ul>
-<li>接口被连接到传统网络设备</li>
-<li>发送和接收标准802.3以太网格式的帧</li>
-<li>参与到一个STP域</li>
-<li>基于MAC地址表转发流量</li>
-</ul>
-<h3 id="2-3-Unknown-Unicast"><a href="#2-3-Unknown-Unicast" class="headerlink" title="2.3 Unknown Unicast"></a>2.3 Unknown Unicast</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y92vD.png" alt="image-20210315172739563"></p>
-<h3 id="2-4-known-Unicast，Conversation-Learning"><a href="#2-4-known-Unicast，Conversation-Learning" class="headerlink" title="2.4 known Unicast，Conversation Learning"></a>2.4 known Unicast，Conversation Learning</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9H8f.png" alt="image-20210315172802054"></p>
-<h3 id="2-5-vPC"><a href="#2-5-vPC" class="headerlink" title="2.5 vPC+"></a>2.5 vPC+</h3><h4 id="2-5-1-vPC-简介"><a href="#2-5-1-vPC-简介" class="headerlink" title="2.5.1 vPC+简介"></a>2.5.1 vPC+简介</h4><ul>
-<li>允许边界端口到FabricPath域的“Dual-Homed”连接，实现Active/Active的转发。</li>
-<li>连接经典以太网交换机，三层路由器，负载均衡器，Dual-homed服务器，等等。</li>
-<li>仅仅只需要这些设备支持port-channel。</li>
-<li>可以提供Active/Active的HSRP。</li>
-<li>配置与标准的vPC几乎完全一样。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6y9XrQ.png" alt="image-20210315172908170"></p>
-<h4 id="2-5-2-vPC-详细介绍"><a href="#2-5-2-vPC-详细介绍" class="headerlink" title="2.5.2 vPC+详细介绍"></a>2.5.2 vPC+详细介绍</h4><ul>
-<li>vPC+对等体交换机，共享一个虚拟的FabricPath Switch-ID。</li>
-<li>在vPC+ Port-Channels身后的MAC地址，就好像被连接到这个虚拟的交换机上一样，而不是连接到这两个vPC对等体交换机上。</li>
-<li>允许在FabricPath域中，负载均衡的发送流量到这个vPC+虚拟交换机。</li>
-<li>vPC+技术需要配置F模块并且激活FabricPath技术的VDC。</li>
-<li>Peer-Link和所有的vPC+链路必须使用F端口。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6y9xVs.png" alt="image-20210315172946990"></p>
-<h4 id="2-5-3-vPC-vs-vPC"><a href="#2-5-3-vPC-vs-vPC" class="headerlink" title="2.5.3 vPC vs. vPC+"></a>2.5.3 vPC vs. vPC+</h4><ul>
-<li>一个特定的VDC，要么是一个vPC域的一部分，要么是一个vPC+域的一部分，不能同时属于两个域。</li>
-<li>vPC+只能工作在，配置F模块，并且激活FabricPath特性的VDC中。</li>
-<li>vPC与vPC+之间的转换，会造成流量的中断。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yC9P0.png" alt="image-20210315173022058"></p>
-<h3 id="2-6-TRILL技术"><a href="#2-6-TRILL技术" class="headerlink" title="2.6 TRILL技术"></a>2.6 TRILL技术</h3><p>&emsp;&emsp;TRILL（Transparent Interconnection of Lots of Links）技术简介：</p>
-<ul>
-<li>IETF标准的二层多路径技术。</li>
-<li>被Cisco在内的多个厂商所发起。</li>
-<li>TRILL技术已经从一个草案成为了一个被提议的标准。</li>
-<li>被提议的标准状态，意味着各个厂商可以开始开发与TRILL兼容的软件运用。</li>
-<li>Cisco支持FabricPath的硬件也同时支持TRILL技术。</li>
-</ul>
-<h3 id="2-7-FabricPath-vs-TRILL"><a href="#2-7-FabricPath-vs-TRILL" class="headerlink" title="2.7 FabricPath vs. TRILL"></a>2.7 FabricPath vs. TRILL</h3><ul>
-<li>FabricPath可以通过软件的升级，支持TRILL模式（硬件已经拥有TRILL能力）。</li>
-<li>Cisco将会推送FabricPath的特性到TRILL。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCCGV.png" alt="image-20210315173711478"></p>
-<h3 id="2-8-FabricPath-vs-TRILL-封装"><a href="#2-8-FabricPath-vs-TRILL-封装" class="headerlink" title="2.8 FabricPath vs. TRILL:封装"></a>2.8 FabricPath vs. TRILL:封装</h3><ul>
-<li>TRILL设备能够和在一个共享网络中的多个对等体进行通讯。</li>
-<li>FabricPath使用了一个更加紧凑的帧格式（简化硬件，低延时），只能使用点对点链路。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCAr4.png" alt="image-20210316161037508"></p>
-<h3 id="2-9-FabricPath-vs-TRILL-多路径"><a href="#2-9-FabricPath-vs-TRILL-多路径" class="headerlink" title="2.9 FabricPath vs. TRILL:多路径"></a>2.9 FabricPath vs. TRILL:多路径</h3><ul>
-<li>端到端的多路径（二层边界，Fabric，三层边界）提供弹性和快速的收敛。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCmI1.png" alt="image-20210316161119567"></p>
-<h3 id="2-10-FabricPath-vs-TRILL-多拓扑"><a href="#2-10-FabricPath-vs-TRILL-多拓扑" class="headerlink" title="2.10 FabricPath vs. TRILL:多拓扑"></a>2.10 FabricPath vs. TRILL:多拓扑</h3><ul>
-<li>Topology（拓扑）：在一个Fabric中的一组链路。</li>
-<li>默认所有的链路都属于Topology 0。</li>
-<li>其它的拓扑可以被创建，并且把一部分链路关联到这些拓扑中去。</li>
-<li>一个链路可以同时属于一系列拓扑。</li>
-<li>一个VLAN只能映射到一个唯一的Topology</li>
-<li>拓扑用于VLAN修剪，安全，流量工程，等等。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCYdA.png" alt="image-20210316161206963"></p>
-<h3 id="2-11-FabricPath-vs-TRILL-简化STP的交互"><a href="#2-11-FabricPath-vs-TRILL-简化STP的交互" class="headerlink" title="2.11 FabricPath vs. TRILL:简化STP的交互"></a>2.11 FabricPath vs. TRILL:简化STP的交互</h3><ul>
-<li>Fabric看上去就像一个单一的交换机。</li>
-<li>发送相同的STP信息到所有的边界端口。</li>
-<li>希望成为STP的Root（边界端口将会被阻止，如果收到更加优化的信息）</li>
-<li>没有BPDU信息在Fabric中被发送。</li>
-<li>一个可选的机制，如果需要允许传播TCN。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/16/6yCtII.png" alt="image-20210316162730054"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#建立大型企业与ISP1之间的EBGP邻居关系</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#neighbor 202.101.12.2 remote-as 2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 202.101.12.1 remote-as 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#建立大型企业与ISP2之间的EBGP邻居关系</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 remote-as 3</span></span><br><span class="line"></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.45.4 remote-as 2</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 202.101.35.3 remote-as 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R1以及R6各起个回环口模拟ISP1及ISP2上的服务器</span></span><br><span class="line">R1(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#int loopback 1 </span></span><br><span class="line">R6(config-if)<span class="comment"># ip address 6.6.6.6 255.255.255.0</span></span><br><span class="line">R6(config-if)<span class="comment">#no shutdown  </span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>IP地址自行规划，内部使用私有地址，连着ISP的接口使用公有地址</li>
+</ol>
+<p>&emsp;&emsp;该拓扑中各设备的IP地址如拓扑图所示，此处不再做过多的赘述。</p>
+<ol start="4">
+<li>大型企业内部运行全互联的IBGP，要求避免物理接口故障引起的 BGP 邻居关系DOWN</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#由于需要避免物理接口故障引起的 BGP 邻居关系DOWN，所以我们建立基于回环端口的BGP邻居关系</span></span><br><span class="line"><span class="comment">#在大型企业中的各路由配置回环口</span></span><br><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 2.2.2.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 3.3.3.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R3(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R4(config-if)<span class="comment">#ip address 4.4.4.4 255.255.255.0</span></span><br><span class="line">R4(config-if)<span class="comment">#no shutdown  </span></span><br><span class="line">R4(config-if)<span class="comment">#ip ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在大型企业内部建立全互联的IBGP</span></span><br><span class="line">R2(config)<span class="comment">#router bgp 2                         </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self </span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 remote-as 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 update-source Loopback1</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 next-hop-self</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 remote-as 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 update-source Loopback1</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 next-hop-self</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#R5与R6也建立IBGP邻居关系</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 update-source Loopback1</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 next-hop-self</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 remote-as 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 5.5.5.5 update-source Loopback1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#在R1、R6上通告路由</span></span><br><span class="line">R1(config)<span class="comment">#router bgp 1</span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R6(config-router)<span class="comment">#network 6.6.6.0 mask 255.255.255.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在R5上对特定邻居（6.6.6.6）下发默认路由</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/2</span></span><br><span class="line">R5(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 s2/1</span></span><br><span class="line"><span class="comment">#ps：由于大型企业的内部的IP地址为私有地址，故不能在互联网上通告。可在边界网关处配置NAT。但此处为了方便使用了默认路由</span></span><br><span class="line">R5(config)<span class="comment">#router bgp 3</span></span><br><span class="line">R5(config-router)<span class="comment">#neighbor 6.6.6.6 default-originate </span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>要求大型企业访问ISP2上的服务器是通过R3前往的（只允许在大型企业设备上配置）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改本地优先级，使R3的本地优先级大于R4。从而让大型企业访问ISP2时是通过R3前往的</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#bgp default local-preference 200</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/10/16/0qpFmD.png" alt="image-20201016214158132"></p>
+<p>&emsp;&emsp;当然，也可以针对ISP2特定的路由条目设置本地优先级，或者使用别的BGP选路原则。此处过多赘述，详细的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>，可以点击查看我的<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">另一篇博客</a>。</p>
+<ol start="6">
+<li>要求ISP3访问ISP1上的服务器是通过R4访问的（只允许在大型企业设备上配置）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将R3的metric值更改为20</span></span><br><span class="line">R3(config)<span class="comment">#route-map MED</span></span><br><span class="line">R3(config-route-map)<span class="comment">#set metric 20 </span></span><br><span class="line">R3(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#router bgp 2 </span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 202.101.35.5 route-map MED out </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将R4的metric值更改为10</span></span><br><span class="line">R4(config)<span class="comment">#route-map MED </span></span><br><span class="line">R4(config-route-map)<span class="comment">#set metric 10 </span></span><br><span class="line">R4(config-route-map)<span class="comment">#exit</span></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 202.101.45.5 route-map MED out </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;更改MED前：</p>
+<p><img src="https://s1.ax1x.com/2020/10/16/0qpPOO.png" alt="image-20201016214115339"></p>
+<p>&emsp;&emsp;更改MED后：</p>
+<p><img src="https://s1.ax1x.com/2020/10/16/0qpVkd.png" alt="image-20201016215215388"></p>
+<p><img src="https://s1.ax1x.com/2020/10/16/0qpMX8.png" alt="image-20201016215845533"></p>
+<p>&emsp;&emsp;此处是通过更改MED值来选择路由，其他<a href="https://huangzc.site/2020/10/15/BGP%E7%9A%84%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99/">BGP选路原则</a>请点击查看。</p>
+<ol start="7">
+<li>要求IBGP邻居关系安全建立</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br><span class="line">R2(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R3(config-router)<span class="comment">#neighbor 4.4.4.4 password huangzc</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router bgp 2</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 2.2.2.2 password huangzc</span></span><br><span class="line">R4(config-router)<span class="comment">#neighbor 3.3.3.3 password huangzc</span></span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>测试下ISP1与ISP3上的服务器能正常通信</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/10/16/0qplnS.png" alt="image-20201016193315698"></p>
 ]]></content>
       <categories>
-        <category>学习笔记</category>
+        <category>CCNP实验</category>
       </categories>
       <tags>
-        <tag>Nexus</tag>
-        <tag>FabricPath</tag>
+        <tag>BGP</tag>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
       </tags>
   </entry>
   <entry>
@@ -2085,6 +1910,181 @@
       <tags>
         <tag>Nexus</tag>
         <tag>FEX</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nexus交换机FabricPath</title>
+    <url>/2021/03/15/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/</url>
+    <content><![CDATA[<p>&emsp;&emsp;FabricPath是Cisco Nexus交换机上的一项技术特性，这个技术做到了以下几点：实现两点间多条路径同时转发流量EMCP(Equal Cost Multi Pathing)；类似IP网络的平滑扩展；快速收敛；防止广播风暴；保持原有二层网络配置的简洁性。FabricPath摆脱传统二层“交换”的弊端，在二层环境中实现类似三层IP的“路由”行为。</p>
+<a id="more"></a>
+
+<h2 id="1-FabricPath简介"><a href="#1-FabricPath简介" class="headerlink" title="1 FabricPath简介"></a>1 FabricPath简介</h2><h3 id="1-1-智能二层网络的革命"><a href="#1-1-智能二层网络的革命" class="headerlink" title="1.1 智能二层网络的革命"></a>1.1 智能二层网络的革命</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOC8J.png" alt="image-20210315164725657"></p>
+<h3 id="1-2-当前数据中心设计"><a href="#1-2-当前数据中心设计" class="headerlink" title="1.2 当前数据中心设计"></a>1.2 当前数据中心设计</h3><p><img src="https://s3.ax1x.com/2021/03/16/6sOP29.png" alt="image-20210315164605993"></p>
+<h3 id="1-3-经典二层网络的限制"><a href="#1-3-经典二层网络的限制" class="headerlink" title="1.3 经典二层网络的限制"></a>1.3 经典二层网络的限制</h3><ol>
+<li>本地的STP问题将会影响整个网络，排错难度增大。</li>
+<li>STP技术提供了限制的带宽（不能实现负载均衡）。</li>
+<li>STP的收敛是混乱的。</li>
+<li>树状接口引入了不优化的路径。</li>
+<li>MAC地址表没有很好的扩展性。</li>
+<li>泛洪流量将会影响整个网络。</li>
+</ol>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOivR.png" alt="image-20210315165236704"></p>
+<h3 id="1-4-Cisco-FabricPath的目标"><a href="#1-4-Cisco-FabricPath的目标" class="headerlink" title="1.4 Cisco FabricPath的目标"></a>1.4 Cisco FabricPath的目标</h3><p>&emsp;&emsp;FabricPath技术融合了路由与交换的优势，实现一个端到端的大二层网络。</p>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOkK1.png" alt="image-20210315165321194"></p>
+<h3 id="1-5-FabricPath-A-Ethernet-Fabric"><a href="#1-5-FabricPath-A-Ethernet-Fabric" class="headerlink" title="1.5 FabricPath : A Ethernet Fabric"></a>1.5 FabricPath : A Ethernet Fabric</h3><ol>
+<li><p>使用任意的拓扑，连接一组的交换机</p>
+</li>
+<li><p>使用一个简单的CLI命令，汇聚交换机到一个Fabric</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">N7K(config)<span class="comment">#interface ethernet 1/1</span></span><br><span class="line">N7K(config-if)<span class="comment">#switchport mode fabricpath</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>没有STP技术，是一个基于三层技术的开放协议，提供了Fabric范围的智能，并且把所有的组件捆绑到一起。</p>
+</li>
+</ol>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOADx.png" alt="image-20210315165621259"></p>
+<h3 id="1-6-Fabric的定义"><a href="#1-6-Fabric的定义" class="headerlink" title="1. 6 Fabric的定义"></a>1. 6 Fabric的定义</h3><p>&emsp;&emsp;从外部看，一个Fabric就像一个交换机。从内部看，一个协议提供了整个Fabric范围的智能，并且把所有组件绑定在一起。这个协议提供了即插即用的特性：</p>
+<ul>
+<li>优化的任意到任意的低延时连接</li>
+<li>高带宽，高弹性</li>
+<li>开放的管理和排错功能</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOeUO.png" alt="image-20210315164521167"></p>
+<h4 id="1-6-1-优化的低延时交换"><a href="#1-6-1-优化的低延时交换" class="headerlink" title="1.6.1 优化的低延时交换"></a>1.6.1 优化的低延时交换</h4><p>&emsp;&emsp;Shortest Path Any-to-Any（任意到任意最短路径）</p>
+<ul>
+<li>在包进入Fabric的边界设备执行简单的地址查询。</li>
+<li>流量使用可用的最短路劲来转发。</li>
+<li>可靠的二层和三层任意到任意的连接（就像在一个交换机内部一样，没有STP技术）</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOJVf.png" alt="image-20210315165750821"></p>
+<h4 id="1-6-2-高带宽，高弹性"><a href="#1-6-2-高带宽，高弹性" class="headerlink" title="1.6.2 高带宽，高弹性"></a>1.6.2 高带宽，高弹性</h4><p>&emsp;&emsp;Equal Cost Multi-pathing（等价多路径）</p>
+<ul>
+<li>多路径（Multi-pathing），在两个设备间，最多256个活动路径。</li>
+<li>如果出现故障，流量将会在剩余的链路中被分布，提供快速的收敛。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOtIS.png" alt="image-20210315165845703"></p>
+<h4 id="1-6-3-高扩展性"><a href="#1-6-3-高扩展性" class="headerlink" title="1.6.3 高扩展性"></a>1.6.3 高扩展性</h4><p>&emsp;&emsp;Conversational Learning（会话的MAC地址学习）</p>
+<ul>
+<li>每端口的MAC地址表，仅仅只学习那些可以通过Fabric抵达的对等体的MAC地址。</li>
+<li>一个虚拟的无限数量的主机，能够被加入这个Fabric。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOd2j.png" alt="image-20210315165858185"></p>
+<h3 id="1-7-二层的整合"><a href="#1-7-二层的整合" class="headerlink" title="1.7 二层的整合"></a>1.7 二层的整合</h3><p>&emsp;&emsp;vPC+</p>
+<ul>
+<li>允许无限制的延伸VLANs，不用担心出现环路。</li>
+<li>设备可以使用IEEE标准的Port Channel技术，通过Active/Active链路接入到Fabric，不需要使用STP技术。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sORG4.png" alt="image-20210315170429015"></p>
+<h3 id="1-8-边界设备的整合"><a href="#1-8-边界设备的整合" class="headerlink" title="1.8 边界设备的整合"></a>1.8 边界设备的整合</h3><p>&emsp;&emsp;主机可以利用多个三层默认网关</p>
+<ul>
+<li>主机只看到一个默认网关。</li>
+<li>Fabric提供了多个透明的同时Active的默认网关。</li>
+<li>允许从Fabric内部到外部三层网络的的多路径。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sO4MR.png" alt="image-20210315170527144"></p>
+<h3 id="1-9-三层的整合"><a href="#1-9-三层的整合" class="headerlink" title="1.9 三层的整合"></a>1.9 三层的整合</h3><p>&emsp;&emsp;XL Tables，SVIs Anywhere</p>
+<ul>
+<li>Fabric提供了无缝的三层整合。</li>
+<li>任意数量的路由接口，可以在边界或Fabric内部创建。</li>
+<li>连接的三层设备可以使用这些接口连建立连接。</li>
+<li>硬件有能力来处理这些百万级的路由。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6sOIqx.png" alt="image-20210315170641079"></p>
+<h2 id="2-FabricPath理论介绍"><a href="#2-FabricPath理论介绍" class="headerlink" title="2 FabricPath理论介绍"></a>2 FabricPath理论介绍</h2><h3 id="2-1-新的控制层面"><a href="#2-1-新的控制层面" class="headerlink" title="2.1 新的控制层面"></a>2.1 新的控制层面</h3><p>&emsp;&emsp;即插即用的由IS-IS管理的发送拓扑：</p>
+<ul>
+<li>IS-IS自动为所有的FabricPath交换机指派地址。</li>
+<li>计算最短路径。</li>
+<li>在任意的FabricPath交换机之间支持等价多路径。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9t3T.png" alt="image-20210315171114341"></p>
+<h3 id="2-2-新的数据层面"><a href="#2-2-新的数据层面" class="headerlink" title="2.2 新的数据层面"></a>2.2 新的数据层面</h3><ul>
+<li>在边界设备上维护MAC地址与Switch-ID之间的关联。</li>
+<li>流量被封装穿越整个Fabric</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9rU1.png" alt="image-20210315171137880"></p>
+<h3 id="2-2-FabricPath术语"><a href="#2-2-FabricPath术语" class="headerlink" title="2.2 FabricPath术语"></a>2.2 FabricPath术语</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9c8K.png" alt="image-20210315171241755"></p>
+<h4 id="2-2-1-FP-Core-Port"><a href="#2-2-1-FP-Core-Port" class="headerlink" title="2.2.1 FP Core Port"></a>2.2.1 FP Core Port</h4><ul>
+<li>接口被连接到其它FabricPath设备</li>
+<li>发送和接收有FabricPath头部的流量</li>
+<li>不运行STP</li>
+<li>不执行MAC地址学习</li>
+<li>通过二层的IS-IS邻居，交换拓扑信息</li>
+<li>基于Switch-ID表转发数据</li>
+</ul>
+<h4 id="2-2-2-CE-Edge-Port"><a href="#2-2-2-CE-Edge-Port" class="headerlink" title="2.2.2 CE Edge Port"></a>2.2.2 CE Edge Port</h4><ul>
+<li>接口被连接到传统网络设备</li>
+<li>发送和接收标准802.3以太网格式的帧</li>
+<li>参与到一个STP域</li>
+<li>基于MAC地址表转发流量</li>
+</ul>
+<h3 id="2-3-Unknown-Unicast"><a href="#2-3-Unknown-Unicast" class="headerlink" title="2.3 Unknown Unicast"></a>2.3 Unknown Unicast</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y92vD.png" alt="image-20210315172739563"></p>
+<h3 id="2-4-known-Unicast，Conversation-Learning"><a href="#2-4-known-Unicast，Conversation-Learning" class="headerlink" title="2.4 known Unicast，Conversation Learning"></a>2.4 known Unicast，Conversation Learning</h3><p><img src="https://s3.ax1x.com/2021/03/16/6y9H8f.png" alt="image-20210315172802054"></p>
+<h3 id="2-5-vPC"><a href="#2-5-vPC" class="headerlink" title="2.5 vPC+"></a>2.5 vPC+</h3><h4 id="2-5-1-vPC-简介"><a href="#2-5-1-vPC-简介" class="headerlink" title="2.5.1 vPC+简介"></a>2.5.1 vPC+简介</h4><ul>
+<li>允许边界端口到FabricPath域的“Dual-Homed”连接，实现Active/Active的转发。</li>
+<li>连接经典以太网交换机，三层路由器，负载均衡器，Dual-homed服务器，等等。</li>
+<li>仅仅只需要这些设备支持port-channel。</li>
+<li>可以提供Active/Active的HSRP。</li>
+<li>配置与标准的vPC几乎完全一样。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9XrQ.png" alt="image-20210315172908170"></p>
+<h4 id="2-5-2-vPC-详细介绍"><a href="#2-5-2-vPC-详细介绍" class="headerlink" title="2.5.2 vPC+详细介绍"></a>2.5.2 vPC+详细介绍</h4><ul>
+<li>vPC+对等体交换机，共享一个虚拟的FabricPath Switch-ID。</li>
+<li>在vPC+ Port-Channels身后的MAC地址，就好像被连接到这个虚拟的交换机上一样，而不是连接到这两个vPC对等体交换机上。</li>
+<li>允许在FabricPath域中，负载均衡的发送流量到这个vPC+虚拟交换机。</li>
+<li>vPC+技术需要配置F模块并且激活FabricPath技术的VDC。</li>
+<li>Peer-Link和所有的vPC+链路必须使用F端口。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6y9xVs.png" alt="image-20210315172946990"></p>
+<h4 id="2-5-3-vPC-vs-vPC"><a href="#2-5-3-vPC-vs-vPC" class="headerlink" title="2.5.3 vPC vs. vPC+"></a>2.5.3 vPC vs. vPC+</h4><ul>
+<li>一个特定的VDC，要么是一个vPC域的一部分，要么是一个vPC+域的一部分，不能同时属于两个域。</li>
+<li>vPC+只能工作在，配置F模块，并且激活FabricPath特性的VDC中。</li>
+<li>vPC与vPC+之间的转换，会造成流量的中断。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yC9P0.png" alt="image-20210315173022058"></p>
+<h3 id="2-6-TRILL技术"><a href="#2-6-TRILL技术" class="headerlink" title="2.6 TRILL技术"></a>2.6 TRILL技术</h3><p>&emsp;&emsp;TRILL（Transparent Interconnection of Lots of Links）技术简介：</p>
+<ul>
+<li>IETF标准的二层多路径技术。</li>
+<li>被Cisco在内的多个厂商所发起。</li>
+<li>TRILL技术已经从一个草案成为了一个被提议的标准。</li>
+<li>被提议的标准状态，意味着各个厂商可以开始开发与TRILL兼容的软件运用。</li>
+<li>Cisco支持FabricPath的硬件也同时支持TRILL技术。</li>
+</ul>
+<h3 id="2-7-FabricPath-vs-TRILL"><a href="#2-7-FabricPath-vs-TRILL" class="headerlink" title="2.7 FabricPath vs. TRILL"></a>2.7 FabricPath vs. TRILL</h3><ul>
+<li>FabricPath可以通过软件的升级，支持TRILL模式（硬件已经拥有TRILL能力）。</li>
+<li>Cisco将会推送FabricPath的特性到TRILL。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCCGV.png" alt="image-20210315173711478"></p>
+<h3 id="2-8-FabricPath-vs-TRILL-封装"><a href="#2-8-FabricPath-vs-TRILL-封装" class="headerlink" title="2.8 FabricPath vs. TRILL:封装"></a>2.8 FabricPath vs. TRILL:封装</h3><ul>
+<li>TRILL设备能够和在一个共享网络中的多个对等体进行通讯。</li>
+<li>FabricPath使用了一个更加紧凑的帧格式（简化硬件，低延时），只能使用点对点链路。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCAr4.png" alt="image-20210316161037508"></p>
+<h3 id="2-9-FabricPath-vs-TRILL-多路径"><a href="#2-9-FabricPath-vs-TRILL-多路径" class="headerlink" title="2.9 FabricPath vs. TRILL:多路径"></a>2.9 FabricPath vs. TRILL:多路径</h3><ul>
+<li>端到端的多路径（二层边界，Fabric，三层边界）提供弹性和快速的收敛。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCmI1.png" alt="image-20210316161119567"></p>
+<h3 id="2-10-FabricPath-vs-TRILL-多拓扑"><a href="#2-10-FabricPath-vs-TRILL-多拓扑" class="headerlink" title="2.10 FabricPath vs. TRILL:多拓扑"></a>2.10 FabricPath vs. TRILL:多拓扑</h3><ul>
+<li>Topology（拓扑）：在一个Fabric中的一组链路。</li>
+<li>默认所有的链路都属于Topology 0。</li>
+<li>其它的拓扑可以被创建，并且把一部分链路关联到这些拓扑中去。</li>
+<li>一个链路可以同时属于一系列拓扑。</li>
+<li>一个VLAN只能映射到一个唯一的Topology</li>
+<li>拓扑用于VLAN修剪，安全，流量工程，等等。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCYdA.png" alt="image-20210316161206963"></p>
+<h3 id="2-11-FabricPath-vs-TRILL-简化STP的交互"><a href="#2-11-FabricPath-vs-TRILL-简化STP的交互" class="headerlink" title="2.11 FabricPath vs. TRILL:简化STP的交互"></a>2.11 FabricPath vs. TRILL:简化STP的交互</h3><ul>
+<li>Fabric看上去就像一个单一的交换机。</li>
+<li>发送相同的STP信息到所有的边界端口。</li>
+<li>希望成为STP的Root（边界端口将会被阻止，如果收到更加优化的信息）</li>
+<li>没有BPDU信息在Fabric中被发送。</li>
+<li>一个可选的机制，如果需要允许传播TCN。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/16/6yCtII.png" alt="image-20210316162730054"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Nexus</tag>
+        <tag>FabricPath</tag>
       </tags>
   </entry>
   <entry>
@@ -2475,103 +2475,21 @@
       </tags>
   </entry>
   <entry>
-    <title>OSPF特殊区域</title>
-    <url>/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>&emsp;&emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。</p>
+    <title>Nexus交换机vPC配置</title>
+    <url>/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>&emsp;&emsp;Nexus交换机vPC配置。</p>
 <a id="more"></a>
 
-<p><img src="https://s3.ax1x.com/2020/11/14/DCcRLq.png" alt="无标题"></p>
-<p>&emsp;&emsp;我将以上面这个拓扑图介绍OSPF的特殊区域。拓扑中共有三个区域，骨干区域 area 0为一级行及二级行所运行，三级行运行的是OSPF的常规区域，为了保证网络的畅通，我们将网络中的各个角落都宣告进了OSPF，这感觉没有什么问题。但是随着设备越老越多、网络前缀越来越多，路由条目势必逐渐增多，那么路由器就有些承担不住了，毕竟庞大的路由表及LSA在极大地消耗着路由器的资源。所以我们需要对网络进行优化，在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，除了路由汇总外，我们也可以使用OSPF的特殊区域来减少LSA的泛洪。</p>
-<p>&emsp;&emsp;在这里我们拿area 1举例，当area 1为常规区域时，区域中会有多少种LSA在泛洪呢？1类是必然有的，由于area 1中存在MA网络，因此2类LSA也有。其他区域的3类LSA被ABR也都注入进了本区域。另外，由于area 2的ASBR引入的外部路由（5类LSA）也会被泛洪进area 1，当然4类LSA也跟着来了。那么如此一来，area 1中就有1、2、3、4、5，共计5种类型的LSA。但是仔细一想我们就发现，其实area 1作为“叶”区域，没必要知道外部路由的详细情况，我只需要知道有那么一条路，让我到达域外即可，因此，第一种特殊区域：末梢区域stub area。</p>
-<h2 id="1-末梢区域（stub-area）"><a href="#1-末梢区域（stub-area）" class="headerlink" title="1 末梢区域（stub area）"></a>1 末梢区域（stub area）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcqyR.png" alt="image-20201114133720565"></p>
-<p>&emsp;&emsp;我们可以通过配置，将一个常规区域设置为stub 区域。</p>
-<p>&emsp;&emsp;Stub区域将禁止4、5类LSA进入该区域，同时该区域的ABR将会自动下发一条默认路由（3类LSA）进该区域，以确保数据通路没有问题。这可以形象的理解为：“外面的世界再怎么精彩，你不用告诉我细节，只要让我出去就行了”。这就是stub area的设计思路。当引入大量的外部路由进OSPF，适当的规划某些区域为stub，可以起到不错的网络优化作用。</p>
-<p>&emsp;&emsp;值得注意的是，不能将骨干区域area 0配置为stub区域，同时，让一个区域被指定为stub，区域内将不允许注入外部路由，也就是不能做重发布。</p>
-<p>配置命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 1 stub </span></span><br></pre></td></tr></table></figure>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UMRwd.png" alt="image-20210312130934319"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用Feature</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature vpc </span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature lacp </span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature vpc</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature lacp</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Peer Keepalive Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e4/16-17</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 10 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 192.168.1.1/24</span></span><br><span class="line">DC2-N7K-3( config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e4/18-19</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 10 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 192.168.1.2/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置vPC Domain与Peer Keepalive Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#role priority 73</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#system-priority 2500</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.2 source 192.168.1.1 vrf P-K-L</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#role priority 74</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#system-priority 2500</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.1 source 192.168.1.2 vrf P-K-L</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Peer Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e3/18-19</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 20 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config-if-range )<span class="comment">#exit</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 20</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vpc peer-link</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e3/26-27</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 20 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#exit</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 20</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vpc peer-link</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置vPC</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e3/21-22</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vpc 30</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e3/31-32</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vpc 30</span></span><br><span class="line"></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#feature lacp</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface e1/21-22,e1/27-28</span></span><br><span class="line">DC2-N5K-1(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N5K-1(config-if-range)<span class="comment">#exit</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Interface—Vlan</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N7K-3(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.1.252/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N7K-4(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.1.253/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置OSPF</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-1(config-router)<span class="comment">#router-id 1.1.1.1</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfacee4/15</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 202.100.13.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfacee4/2</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 202.100.14.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfaceloopback 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 61.128.1.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf area 0</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfaceloopback 1</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 128.6.7.6/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-3(config-router)<span class="comment">#router-id 3.3.3.3</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interfacee4/34</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.13.3/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interfacee4/26</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.34.3/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#ip prefix-list D2O permit 202.100.1.0/24</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#route-map D2O</span></span><br><span class="line">DC2-N7K-3(config-route-map)<span class="comment">#match ip address prefix-list D2O</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-3(config-router)<span class="comment">#redistribute direct route-map D2O</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-4(config-router)<span class="comment">#router-id 4.4.4.4</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interfacee4/4</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.14.4/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interfacee4/27</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.34.4/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#ip prefix-list D20 permit 202.100.1.0/24</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#route-map D2O</span></span><br><span class="line">DC2-N7K-4(config-route-map)<span class="comment">#match ip address prefix-list D2O</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-4(config-router)<span class="comment">#redistribute direct route-map D2O</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置HSRP</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#ip 202.100.1.254</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#priority 105</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC2-N7K-4(config-if-hsrp)<span class="comment">#ip 202.100.1.254</span></span><br><span class="line">DC2-N7K-4(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line"></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N5K-1(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface e1/26</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line"></span><br><span class="line">Router(config)<span class="comment">#interface fa0/0</span></span><br><span class="line">Router(config-if)<span class="comment">#ip address 202.100.1.2 255.255.255.0</span></span><br><span class="line">Router(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">Router(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 202.100.1.254</span></span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;需要注意的是，该命令要配置在stub区域中的所有路由器上，如果某台路由器没有配置，那么它将无法去其他stub area router建立邻接关系。</p>
-<p>实现效果：</p>
-<p>&emsp;&emsp;Area1中将不会在有4、5类LSA，也就是area 2重发布进来的路由，被ABR过滤掉了，同时area 1中的路由器将获取到一条3类LSA 的默认路由，该默认路由是由area1的ABR自动下发。</p>
-<h2 id="2-完全末梢区域（totally-stub）"><a href="#2-完全末梢区域（totally-stub）" class="headerlink" title="2 完全末梢区域（totally stub）"></a>2 完全末梢区域（totally stub）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcXex.png" alt="image-20201114140049631"></p>
-<p>&emsp;&emsp;通过将区域规划为stub area，可以起到一定的网络优化作用，但是感觉上还不够彻底，除了外部路由，其他区域的路由其实我也没必要知道太多细节，完全用一条默认路由替代也行嘛，那么你可以将area 1配置为完全末梢区域（totally stub area），当一个区域被配置为完全末梢区域，这个区域将：</p>
-<ul>
-<li>阻挡3、4、5类LSA进入本区域</li>
-<li>区域的ABR自动下发一条3类LSA的默认路由进入本区域</li>
-</ul>
-<p>&emsp;&emsp;这么一来，area 1内路由器收到的LSA将进一步减少，在存储LSA及进行SPF算法运算的时候，耗费的资源自然也就减少了，另外当区域外拓扑出现变更的时候，对本区域的影响也将变为最小。<br>&emsp;&emsp;与stub区域类似，你无法将骨干区域area 0配置为totally stub area，当然如果一个区域被指定为totally stub area，你将不能在区域中的路由器上做路由重发布动作。</p>
-<p>配置命令：</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub </span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;在完全末梢区域内的所有路由器，都配置上述命令，与stub区域的区别在于ABR的配置，下面是配置在完全末梢区域的ABR上的。</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub no-summary </span><br></pre></td></tr></table></figure>
-
-<p>实现效果：</p>
-<p>&emsp;&emsp;完成上述配置后，area1内的路由器将只有本区域内的路由（ABR除外），同时都能获取到ABR下发的3类的默认路由。也就是说其他区域的路由以及外部注入的路由都被ABR阻挡在外，取而代之的是一条默认路由。</p>
-<h2 id="4-非完全末梢区域（NSSA）"><a href="#4-非完全末梢区域（NSSA）" class="headerlink" title="4 非完全末梢区域（NSSA）"></a>4 非完全末梢区域（NSSA）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCWG7t.png" alt="image-20201114142231423"></p>
-<p>&emsp;&emsp;在前面的知识基础上，我们已经了解到，在保证网络连通性的情况下，减少LSA的泛洪以及精简路由表，我们可以将特定区域配置为末梢区域或完全末梢区域。看上面的拓扑，我们将area 2配置为stub，那么，这个区域一来将阻挡来自其他区域的4、5类LSA，同时区域内的路由器禁止重发布外部路由，那么如果此时我期望这个区域保持“阻挡其他区域过来的4、5类LSA”这个特性，同时允许我在区域本地重发布路由呢？<br>&emsp;&emsp;例如，假设area 2原先是作为一个末梢区域运行的，但突然有一个外部网络，需要接入到我们这个OSPF网络中，并且连接在area 2中，那么这个时候，为了保证路由的可达，就必须向area 2中注入外部路由了，而这又违法了stub area的规则。</p>
-<p><img src="https://s3.ax1x.com/2020/11/14/DCWCpF.png" alt="image-20201114142308257"></p>
-<p>&emsp;&emsp;这里就引入NSSA（not-so-stubby-area）的概念，中文翻译过来，可以理解为非完全末梢区域，当你将一个区域配置为NSSA，那么这个区域一来将阻挡骨干区域过来的4、5类LSA，同时允许区域本地注入外部路由，这些外部路由以一种特殊的LSA类型——7类LSA在NSSA中泛洪并且7类LSA不允许进入骨干区域或常规区域，NSSA的ABR会负责将7类LSA“转换”成5类LSA，从而在常规区域中进一步泛洪。上面的“允许区域本地注入”的意思是，NSSA这个区域的路由器配置重发布。</p>
-<p>&emsp;&emsp;值得注意的是与stub area及totally stub area不同的是如果你将一个区域配置为NSSA、默认情况下NSSA的ABR不会自动下发默认路由进NSSA，因此在NSSA环境下，需留意网络连通性问题。</p>
-<p>配置命令∶</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 2 nssa </span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;上述命令需配置在NSSA内的所有路由器上。</p>
-<p>实现效果：</p>
-<p>&emsp;&emsp;将area 2配置为NSSA后，从骨干区域过来的4、5类LSA将无法进入NSSA，也就是说如果area 1做了重发布，那么这些重发布的外部路由将无法进入NSSA（这是因为NSSA中不允许出现5类LSA），与此同时，area 2允许本地的路由器做重发布动作，重发布进来的路由，以LSA7在NSSA中泛洪，大家在路由表中看到的这些外部路由，标记为“O N”，而这些7类LSA在“穿越”NSSA的ABR进入骨干区域之前，由ABR负责将7类LSA“转换”成5类LSA。最终area 0及area 1也都能学习到这些外部路由，只不过，他们路由表中呈现的是“O E”标记。</p>
-<h2 id="5-Totally-NSSA"><a href="#5-Totally-NSSA" class="headerlink" title="5 Totally NSSA"></a>5 Totally NSSA</h2><p><img src="https://s3.ax1x.com/2020/11/14/DChzkt.png" alt="image-20201114142500409"></p>
-<p>&emsp;&emsp;Totally NSSA，这是一个不太好用中文翻译的词汇，完全非完全末梢区域？显得有点尴尬，不过这个概念的理解并不像其名字那么唬人，Totally NSSA是在NSSA区域的基础之上，进一步阻挡NSSA区域外的其他区域过来的3类LSA，同时ABR自动下发一条3类的默认路由进 NSSA 区域。<br>配置命令∶</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;上述命令需配置在NSSA中的所有路由器上，ABR的配置有所不同，如下∶</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa no-summary</span></span><br></pre></td></tr></table></figure>
-
-<p>实现效果：</p>
-<p>&emsp;&emsp;Area2之外的其他OSPF area过来的3、4、5类LSA，都会被阻挡在NSSA之外，同时ABR会自动下发默认路由进NSSA，另外，NSSA内的路由器做重发布动作，区域内的其他路由器将会学习到7类的外部LSA，这些外部LSA会被ABR转成5类LSA并注入进骨干区域。</p>
-<h2 id="6-特殊区域总结"><a href="#6-特殊区域总结" class="headerlink" title="6 特殊区域总结"></a>6 特殊区域总结</h2><ul>
-<li><p><strong>骨干区域 Backbone Area 0</strong></p>
-<p>本身是一个标准区域，负责连接非骨干区域，其它区域(非骨干区域）必须保证和骨干区域有直接的物理连接，因为区域之间的LSA必须经过骨干区域中转</p>
-</li>
-<li><p><strong>常规（标准）区域 Standard Area</strong></p>
-<p>一个区域缺省是常规区域</p>
-</li>
-<li><p><strong>末梢区域 Stub Area</strong></p>
-<p>把一个区域配成存根区域的好处是，阻挡LSA4、LSA5外部路由进入本地区域，从而精简路由表;同时ABR会自动产生3类的默认路由LSA注入进该区域。</p>
-</li>
-<li><p><strong>完全末梢区域 Totally Stubby Area</strong></p>
-<p>完全末梢区域是一种对末梢区域的改进，进一步精简路由表;阻挡LSA3、4、5进入该区域，同时ABR自动下发3类默认路由。</p>
-</li>
-<li><p><strong>非完全末梢区域 Not-so-stubby Area</strong></p>
-<p>即想阻挡LSA5，自身又想引入外部路由，stub的变种；</p>
-<p>NSSA既阻挡外部LSA5的进入，同时区域内的路由器又可以引入外部路由LSA7 ;LSA7在NSSA内洪泛，通过ABR时转换为LSA5并被注入进骨干区域。</p>
-<p>ABR不会缺省生成0/O默认路由进入本地区域，需手工配置</p>
-</li>
-<li><p><strong>完全NSSA totally Not-so-stubby Area</strong></p>
-<p>在NSSA的基础上进一步阻挡骨干区域过来的3,4,5类LSA 并且ABR自动下发3类的默认路由进NSSA。</p>
-</li>
-</ul>
-<p>&emsp;&emsp;<strong>各区域内所允许出现LSA总结如下：</strong></p>
-<ul>
-<li><p>骨干区域：1、2、3、4、5</p>
-</li>
-<li><p>标准区域：1、2、3、4、5</p>
-</li>
-<li><p>Stub区域：1、2、3、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
-</li>
-<li><p>完全Stub区域： 1、2、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
-</li>
-<li><p>NSSA 区域：1、2、3、7</p>
-</li>
-<li><p>完全NSSA区域:1、2、7、3类0.0.0.0/0 (ABR向区域内发起的一条3类缺省路由LSA )</p>
-</li>
-</ul>
 ]]></content>
       <categories>
-        <category>学习笔记</category>
+        <category>Nexus实验</category>
       </categories>
       <tags>
-        <tag>OSPF</tag>
-        <tag>路由协议</tag>
+        <tag>Nexus</tag>
+        <tag>vPC</tag>
       </tags>
   </entry>
   <entry>
@@ -2766,6 +2684,106 @@
       </tags>
   </entry>
   <entry>
+    <title>OSPF特殊区域</title>
+    <url>/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/</url>
+    <content><![CDATA[<p>&emsp;&emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。</p>
+<a id="more"></a>
+
+<p><img src="https://s3.ax1x.com/2020/11/14/DCcRLq.png" alt="无标题"></p>
+<p>&emsp;&emsp;我将以上面这个拓扑图介绍OSPF的特殊区域。拓扑中共有三个区域，骨干区域 area 0为一级行及二级行所运行，三级行运行的是OSPF的常规区域，为了保证网络的畅通，我们将网络中的各个角落都宣告进了OSPF，这感觉没有什么问题。但是随着设备越老越多、网络前缀越来越多，路由条目势必逐渐增多，那么路由器就有些承担不住了，毕竟庞大的路由表及LSA在极大地消耗着路由器的资源。所以我们需要对网络进行优化，在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，除了路由汇总外，我们也可以使用OSPF的特殊区域来减少LSA的泛洪。</p>
+<p>&emsp;&emsp;在这里我们拿area 1举例，当area 1为常规区域时，区域中会有多少种LSA在泛洪呢？1类是必然有的，由于area 1中存在MA网络，因此2类LSA也有。其他区域的3类LSA被ABR也都注入进了本区域。另外，由于area 2的ASBR引入的外部路由（5类LSA）也会被泛洪进area 1，当然4类LSA也跟着来了。那么如此一来，area 1中就有1、2、3、4、5，共计5种类型的LSA。但是仔细一想我们就发现，其实area 1作为“叶”区域，没必要知道外部路由的详细情况，我只需要知道有那么一条路，让我到达域外即可，因此，第一种特殊区域：末梢区域stub area。</p>
+<h2 id="1-末梢区域（stub-area）"><a href="#1-末梢区域（stub-area）" class="headerlink" title="1 末梢区域（stub area）"></a>1 末梢区域（stub area）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcqyR.png" alt="image-20201114133720565"></p>
+<p>&emsp;&emsp;我们可以通过配置，将一个常规区域设置为stub 区域。</p>
+<p>&emsp;&emsp;Stub区域将禁止4、5类LSA进入该区域，同时该区域的ABR将会自动下发一条默认路由（3类LSA）进该区域，以确保数据通路没有问题。这可以形象的理解为：“外面的世界再怎么精彩，你不用告诉我细节，只要让我出去就行了”。这就是stub area的设计思路。当引入大量的外部路由进OSPF，适当的规划某些区域为stub，可以起到不错的网络优化作用。</p>
+<p>&emsp;&emsp;值得注意的是，不能将骨干区域area 0配置为stub区域，同时，让一个区域被指定为stub，区域内将不允许注入外部路由，也就是不能做重发布。</p>
+<p>配置命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 1 stub </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;需要注意的是，该命令要配置在stub区域中的所有路由器上，如果某台路由器没有配置，那么它将无法去其他stub area router建立邻接关系。</p>
+<p>实现效果：</p>
+<p>&emsp;&emsp;Area1中将不会在有4、5类LSA，也就是area 2重发布进来的路由，被ABR过滤掉了，同时area 1中的路由器将获取到一条3类LSA 的默认路由，该默认路由是由area1的ABR自动下发。</p>
+<h2 id="2-完全末梢区域（totally-stub）"><a href="#2-完全末梢区域（totally-stub）" class="headerlink" title="2 完全末梢区域（totally stub）"></a>2 完全末梢区域（totally stub）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcXex.png" alt="image-20201114140049631"></p>
+<p>&emsp;&emsp;通过将区域规划为stub area，可以起到一定的网络优化作用，但是感觉上还不够彻底，除了外部路由，其他区域的路由其实我也没必要知道太多细节，完全用一条默认路由替代也行嘛，那么你可以将area 1配置为完全末梢区域（totally stub area），当一个区域被配置为完全末梢区域，这个区域将：</p>
+<ul>
+<li>阻挡3、4、5类LSA进入本区域</li>
+<li>区域的ABR自动下发一条3类LSA的默认路由进入本区域</li>
+</ul>
+<p>&emsp;&emsp;这么一来，area 1内路由器收到的LSA将进一步减少，在存储LSA及进行SPF算法运算的时候，耗费的资源自然也就减少了，另外当区域外拓扑出现变更的时候，对本区域的影响也将变为最小。<br>&emsp;&emsp;与stub区域类似，你无法将骨干区域area 0配置为totally stub area，当然如果一个区域被指定为totally stub area，你将不能在区域中的路由器上做路由重发布动作。</p>
+<p>配置命令：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;在完全末梢区域内的所有路由器，都配置上述命令，与stub区域的区别在于ABR的配置，下面是配置在完全末梢区域的ABR上的。</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub no-summary </span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p>&emsp;&emsp;完成上述配置后，area1内的路由器将只有本区域内的路由（ABR除外），同时都能获取到ABR下发的3类的默认路由。也就是说其他区域的路由以及外部注入的路由都被ABR阻挡在外，取而代之的是一条默认路由。</p>
+<h2 id="4-非完全末梢区域（NSSA）"><a href="#4-非完全末梢区域（NSSA）" class="headerlink" title="4 非完全末梢区域（NSSA）"></a>4 非完全末梢区域（NSSA）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCWG7t.png" alt="image-20201114142231423"></p>
+<p>&emsp;&emsp;在前面的知识基础上，我们已经了解到，在保证网络连通性的情况下，减少LSA的泛洪以及精简路由表，我们可以将特定区域配置为末梢区域或完全末梢区域。看上面的拓扑，我们将area 2配置为stub，那么，这个区域一来将阻挡来自其他区域的4、5类LSA，同时区域内的路由器禁止重发布外部路由，那么如果此时我期望这个区域保持“阻挡其他区域过来的4、5类LSA”这个特性，同时允许我在区域本地重发布路由呢？<br>&emsp;&emsp;例如，假设area 2原先是作为一个末梢区域运行的，但突然有一个外部网络，需要接入到我们这个OSPF网络中，并且连接在area 2中，那么这个时候，为了保证路由的可达，就必须向area 2中注入外部路由了，而这又违法了stub area的规则。</p>
+<p><img src="https://s3.ax1x.com/2020/11/14/DCWCpF.png" alt="image-20201114142308257"></p>
+<p>&emsp;&emsp;这里就引入NSSA（not-so-stubby-area）的概念，中文翻译过来，可以理解为非完全末梢区域，当你将一个区域配置为NSSA，那么这个区域一来将阻挡骨干区域过来的4、5类LSA，同时允许区域本地注入外部路由，这些外部路由以一种特殊的LSA类型——7类LSA在NSSA中泛洪并且7类LSA不允许进入骨干区域或常规区域，NSSA的ABR会负责将7类LSA“转换”成5类LSA，从而在常规区域中进一步泛洪。上面的“允许区域本地注入”的意思是，NSSA这个区域的路由器配置重发布。</p>
+<p>&emsp;&emsp;值得注意的是与stub area及totally stub area不同的是如果你将一个区域配置为NSSA、默认情况下NSSA的ABR不会自动下发默认路由进NSSA，因此在NSSA环境下，需留意网络连通性问题。</p>
+<p>配置命令∶</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 2 nssa </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;上述命令需配置在NSSA内的所有路由器上。</p>
+<p>实现效果：</p>
+<p>&emsp;&emsp;将area 2配置为NSSA后，从骨干区域过来的4、5类LSA将无法进入NSSA，也就是说如果area 1做了重发布，那么这些重发布的外部路由将无法进入NSSA（这是因为NSSA中不允许出现5类LSA），与此同时，area 2允许本地的路由器做重发布动作，重发布进来的路由，以LSA7在NSSA中泛洪，大家在路由表中看到的这些外部路由，标记为“O N”，而这些7类LSA在“穿越”NSSA的ABR进入骨干区域之前，由ABR负责将7类LSA“转换”成5类LSA。最终area 0及area 1也都能学习到这些外部路由，只不过，他们路由表中呈现的是“O E”标记。</p>
+<h2 id="5-Totally-NSSA"><a href="#5-Totally-NSSA" class="headerlink" title="5 Totally NSSA"></a>5 Totally NSSA</h2><p><img src="https://s3.ax1x.com/2020/11/14/DChzkt.png" alt="image-20201114142500409"></p>
+<p>&emsp;&emsp;Totally NSSA，这是一个不太好用中文翻译的词汇，完全非完全末梢区域？显得有点尴尬，不过这个概念的理解并不像其名字那么唬人，Totally NSSA是在NSSA区域的基础之上，进一步阻挡NSSA区域外的其他区域过来的3类LSA，同时ABR自动下发一条3类的默认路由进 NSSA 区域。<br>配置命令∶</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;上述命令需配置在NSSA中的所有路由器上，ABR的配置有所不同，如下∶</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa no-summary</span></span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p>&emsp;&emsp;Area2之外的其他OSPF area过来的3、4、5类LSA，都会被阻挡在NSSA之外，同时ABR会自动下发默认路由进NSSA，另外，NSSA内的路由器做重发布动作，区域内的其他路由器将会学习到7类的外部LSA，这些外部LSA会被ABR转成5类LSA并注入进骨干区域。</p>
+<h2 id="6-特殊区域总结"><a href="#6-特殊区域总结" class="headerlink" title="6 特殊区域总结"></a>6 特殊区域总结</h2><ul>
+<li><p><strong>骨干区域 Backbone Area 0</strong></p>
+<p>本身是一个标准区域，负责连接非骨干区域，其它区域(非骨干区域）必须保证和骨干区域有直接的物理连接，因为区域之间的LSA必须经过骨干区域中转</p>
+</li>
+<li><p><strong>常规（标准）区域 Standard Area</strong></p>
+<p>一个区域缺省是常规区域</p>
+</li>
+<li><p><strong>末梢区域 Stub Area</strong></p>
+<p>把一个区域配成存根区域的好处是，阻挡LSA4、LSA5外部路由进入本地区域，从而精简路由表;同时ABR会自动产生3类的默认路由LSA注入进该区域。</p>
+</li>
+<li><p><strong>完全末梢区域 Totally Stubby Area</strong></p>
+<p>完全末梢区域是一种对末梢区域的改进，进一步精简路由表;阻挡LSA3、4、5进入该区域，同时ABR自动下发3类默认路由。</p>
+</li>
+<li><p><strong>非完全末梢区域 Not-so-stubby Area</strong></p>
+<p>即想阻挡LSA5，自身又想引入外部路由，stub的变种；</p>
+<p>NSSA既阻挡外部LSA5的进入，同时区域内的路由器又可以引入外部路由LSA7 ;LSA7在NSSA内洪泛，通过ABR时转换为LSA5并被注入进骨干区域。</p>
+<p>ABR不会缺省生成0/O默认路由进入本地区域，需手工配置</p>
+</li>
+<li><p><strong>完全NSSA totally Not-so-stubby Area</strong></p>
+<p>在NSSA的基础上进一步阻挡骨干区域过来的3,4,5类LSA 并且ABR自动下发3类的默认路由进NSSA。</p>
+</li>
+</ul>
+<p>&emsp;&emsp;<strong>各区域内所允许出现LSA总结如下：</strong></p>
+<ul>
+<li><p>骨干区域：1、2、3、4、5</p>
+</li>
+<li><p>标准区域：1、2、3、4、5</p>
+</li>
+<li><p>Stub区域：1、2、3、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
+</li>
+<li><p>完全Stub区域： 1、2、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
+</li>
+<li><p>NSSA 区域：1、2、3、7</p>
+</li>
+<li><p>完全NSSA区域:1、2、7、3类0.0.0.0/0 (ABR向区域内发起的一条3类缺省路由LSA )</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+        <tag>路由协议</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OSPF路由优选规则</title>
     <url>/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/</url>
     <content><![CDATA[<p>&emsp;&emsp;在路由表中我们可以看到通过OSPF路由协议学习到的路由是哪一种类型（如O、O IA、O E1、O E2、O N1、O N2）的。当路由器学习到不同类型的同一路由时是如何选择的呢？本篇文章主要介绍OSPF路由的优先选择原则。</p>
@@ -2804,24 +2822,6 @@
       <tags>
         <tag>OSPF</tag>
         <tag>路由协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nexus交换机vPC配置</title>
-    <url>/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>&emsp;&emsp;Nexus交换机vPC配置。</p>
-<a id="more"></a>
-
-<p><img src="https://s3.ax1x.com/2021/03/12/6UMRwd.png" alt="image-20210312130934319"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用Feature</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature vpc </span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature lacp </span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature vpc</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature lacp</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Peer Keepalive Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e4/16-17</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 10 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 192.168.1.1/24</span></span><br><span class="line">DC2-N7K-3( config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e4/18-19</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 10 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 192.168.1.2/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置vPC Domain与Peer Keepalive Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#role priority 73</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#system-priority 2500</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.2 source 192.168.1.1 vrf P-K-L</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#role priority 74</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#system-priority 2500</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.1 source 192.168.1.2 vrf P-K-L</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Peer Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e3/18-19</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 20 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config-if-range )<span class="comment">#exit</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 20</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vpc peer-link</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e3/26-27</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 20 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#exit</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 20</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vpc peer-link</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置vPC</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e3/21-22</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vpc 30</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e3/31-32</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vpc 30</span></span><br><span class="line"></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#feature lacp</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface e1/21-22,e1/27-28</span></span><br><span class="line">DC2-N5K-1(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N5K-1(config-if-range)<span class="comment">#exit</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Interface—Vlan</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N7K-3(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.1.252/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N7K-4(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.1.253/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置OSPF</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-1(config-router)<span class="comment">#router-id 1.1.1.1</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfacee4/15</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 202.100.13.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfacee4/2</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 202.100.14.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfaceloopback 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 61.128.1.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf area 0</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfaceloopback 1</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 128.6.7.6/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-3(config-router)<span class="comment">#router-id 3.3.3.3</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interfacee4/34</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.13.3/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interfacee4/26</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.34.3/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#ip prefix-list D2O permit 202.100.1.0/24</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#route-map D2O</span></span><br><span class="line">DC2-N7K-3(config-route-map)<span class="comment">#match ip address prefix-list D2O</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-3(config-router)<span class="comment">#redistribute direct route-map D2O</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-4(config-router)<span class="comment">#router-id 4.4.4.4</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interfacee4/4</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.14.4/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interfacee4/27</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.34.4/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#ip prefix-list D20 permit 202.100.1.0/24</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#route-map D2O</span></span><br><span class="line">DC2-N7K-4(config-route-map)<span class="comment">#match ip address prefix-list D2O</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-4(config-router)<span class="comment">#redistribute direct route-map D2O</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置HSRP</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#ip 202.100.1.254</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#priority 105</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC2-N7K-4(config-if-hsrp)<span class="comment">#ip 202.100.1.254</span></span><br><span class="line">DC2-N7K-4(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line"></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N5K-1(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface e1/26</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line"></span><br><span class="line">Router(config)<span class="comment">#interface fa0/0</span></span><br><span class="line">Router(config-if)<span class="comment">#ip address 202.100.1.2 255.255.255.0</span></span><br><span class="line">Router(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">Router(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 202.100.1.254</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Nexus实验</category>
-      </categories>
-      <tags>
-        <tag>Nexus</tag>
-        <tag>vPC</tag>
       </tags>
   </entry>
   <entry>
