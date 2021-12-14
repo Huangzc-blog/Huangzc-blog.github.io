@@ -430,6 +430,94 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验二——静态路由的应用</title>
+    <url>/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li>理解路由的作用</li>
+<li>掌握静态路由的配置</li>
+<li>理解路由表的含义</li>
+<li>理解默认路由的作用与配置</li>
+<li>理解默认路由的使用场合</li>
+<li>理解 traceroute 和 ping 命令的使用</li>
+<li>理解 loopback 接口的作用</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/09/22/wXSEGD.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li><p>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</p>
+<p><img src="https://s1.ax1x.com/2020/09/23/wvabTg.png"></p>
+</li>
+<li><p>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.10.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.10.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.20.1 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.20.2 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.2.254 255.255.255.0                             </span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0 192.168.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0 gateway 192.168.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.2.1 255.255.255.0 192.168.2.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC2 : 192.168.2.1 255.255.255.0 gateway 192.168.2.254</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>测试 PC1 与 PC2 两主机之间的连通性</li>
+</ol>
+<p>&emsp;&emsp;PC1与PC2之间不可达，因为PC1的网关R1处没有去往192.168.2.0/24网段的路由。</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1LfP.png"></p>
+<ol start="4">
+<li>在 R1 上创建一条到达对端主机 PC2 所在网络的静态路由，要求使用下一跳方式实现</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.10.2</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>在 R3 上创建一条到达对端主机 PC1 所在网络的静态路由，要求使用出接口方式实现</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>观察 R1 和 R3 上的路由表，仔细观察使用出接口与使用下一跳方式的静态路由表项的不同</li>
+</ol>
+<p>&emsp;&emsp;R1为下一跳：</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1v6S.png"></p>
+<p>&emsp;&emsp;R2为出接口：</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz1xOg.png"></p>
+<ol start="6">
+<li>添加合适的配置，实现 PC1 与 PC2 之间的连通性，使用 ping 进行测试</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 192.168.10.1</span></span><br><span class="line">R2(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.20.2</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3SmQ.png"></p>
+<ol start="6">
+<li>分别在 PC1 和 PC2 上使用 tracert 观察两主机通信过程的传输路径</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz39Ts.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3iYq.png"></p>
+<ol start="6">
+<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.255</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 192.168.10.2</span><br><span class="line"></span><br><span class="line">R3(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 s2/1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3Ff0.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3n0J.png"></p>
+<ol start="6">
+<li>删除 R1 和 R3 上的静态路由条目，使用默认路由实现 PC1 与 PC2 之间的连通性</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 192.168.10.2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/24/wz3mm4.png"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>静态路由</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验九——NAT 和 PPP 的应用</title>
     <url>/2018/10/17/CCNA%E5%AE%9E%E9%AA%8C%E4%B9%9D/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 NAT 的作用；不同 NAT 的特点及配置；不同 NAT 的使用场合； PPP 的 PAP 和 CHAP 验证；辅助地址的作用； NAT 的验证和查看命令。</p>
@@ -525,94 +613,6 @@
         <tag>CCNA</tag>
         <tag>NAT</tag>
         <tag>PPP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验二——静态路由的应用</title>
-    <url>/2018/10/03/CCNA%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍路由的作用；静态路由的配置；路由表的含义；默认路由的作用与配置；默认路由的使用场合； traceroute 和 ping 命令的使用； loopback 接口的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li>理解路由的作用</li>
-<li>掌握静态路由的配置</li>
-<li>理解路由表的含义</li>
-<li>理解默认路由的作用与配置</li>
-<li>理解默认路由的使用场合</li>
-<li>理解 traceroute 和 ping 命令的使用</li>
-<li>理解 loopback 接口的作用</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/09/22/wXSEGD.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li><p>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</p>
-<p><img src="https://s1.ax1x.com/2020/09/23/wvabTg.png"></p>
-</li>
-<li><p>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，主机和路由器接口的地址自己规划</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.10.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.10.2 255.255.255.0 </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.20.1 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.20.2 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.2.254 255.255.255.0                             </span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">PC1&gt; ip 192.168.1.1 255.255.255.0 192.168.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.1.1 255.255.255.0 gateway 192.168.1.254</span><br><span class="line"></span><br><span class="line">PC2&gt; ip 192.168.2.1 255.255.255.0 192.168.2.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC2 : 192.168.2.1 255.255.255.0 gateway 192.168.2.254</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>测试 PC1 与 PC2 两主机之间的连通性</li>
-</ol>
-<p>&emsp;&emsp;PC1与PC2之间不可达，因为PC1的网关R1处没有去往192.168.2.0/24网段的路由。</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1LfP.png"></p>
-<ol start="4">
-<li>在 R1 上创建一条到达对端主机 PC2 所在网络的静态路由，要求使用下一跳方式实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.10.2</span></span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>在 R3 上创建一条到达对端主机 PC1 所在网络的静态路由，要求使用出接口方式实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>观察 R1 和 R3 上的路由表，仔细观察使用出接口与使用下一跳方式的静态路由表项的不同</li>
-</ol>
-<p>&emsp;&emsp;R1为下一跳：</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1v6S.png"></p>
-<p>&emsp;&emsp;R2为出接口：</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz1xOg.png"></p>
-<ol start="6">
-<li>添加合适的配置，实现 PC1 与 PC2 之间的连通性，使用 ping 进行测试</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#ip route 192.168.1.0 255.255.255.0 192.168.10.1</span></span><br><span class="line">R2(config)<span class="comment">#ip route 192.168.2.0 255.255.255.0 192.168.20.2</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3SmQ.png"></p>
-<ol start="6">
-<li>分别在 PC1 和 PC2 上使用 tracert 观察两主机通信过程的传输路径</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz39Ts.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3iYq.png"></p>
-<ol start="6">
-<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.255</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 192.168.10.2</span><br><span class="line"></span><br><span class="line">R3(config)#ip<span class="built_in"> route </span>1.1.1.1 255.255.255.255 s2/1</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3Ff0.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3n0J.png"></p>
-<ol start="6">
-<li>删除 R1 和 R3 上的静态路由条目，使用默认路由实现 PC1 与 PC2 之间的连通性</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 192.168.10.2</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 serial 2/1</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/wz3mm4.png"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>静态路由</tag>
       </tags>
   </entry>
   <entry>
@@ -754,6 +754,104 @@
       <tags>
         <tag>CCNA</tag>
         <tag>OSPF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNP交换综合实验一</title>
+    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
+</li>
+<li><p>掌握 DTP 的作用和配置</p>
+</li>
+<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
+</li>
+<li><p>掌握以太通道技术的作用和配置</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
+<ol start="2">
+<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
+</ol>
+<p>&emsp;①网关地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
+<p>&emsp;②各主机通过DHCP获取IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
+<ol start="3">
+<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
+<ol start="4">
+<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
+</ol>
+<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
+<p>&emsp;&emsp;SW2的VLAN信息：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
+<ol start="5">
+<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
+</ol>
+<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
+<ol start="6">
+<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
+</ol>
+<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
+<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
+<p>FTP_Srv用DHCP获取IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
+<ol start="7">
+<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
+</ol>
+<p>&emsp;①启用OSPF实现内网全网可达：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
+<p>&emsp;②实现外网可达：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
+<p>③  配置NAT：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
+<p>④  用R1给邻居下发默认路由：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
+<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
+<p>【实验中用到的代码】</p>
+<p><strong>VTP：</strong></p>
+<p>vtp mode server———————————————将VTP的模式该为server模式</p>
+<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
+<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
+<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
+<p>当域名与密码相同时才能进行同步</p>
+<p>NAT：</p>
+<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
+<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
+<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
+<p>捆绑链路：</p>
+<p>int range e0/1-2</p>
+<p>switchport truck encapsulation do1q</p>
+<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
+<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
+<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
+<p>下发默认路由：</p>
+<p>router ospf 1</p>
+<p>default-information originate—————————–给邻居下发默认路由</p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
       </tags>
   </entry>
   <entry>
@@ -952,231 +1050,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>单臂路由</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验四——EIGRP 的简单应用</title>
-    <url>/2018/10/07/CCNA%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 EIGRP 的基本配置； EIGRP 的邻居表、拓扑表以及路由表的含义；查看 EIGRP 路由协议的相关信息； FD、AD、S、FS 以及 FC 的含义； EIGRP 的 hello 报文作用；路由快速收敛的含义； EIGRP 的不等价负载均衡。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li>掌握 EIGRP 的基本配置</li>
-<li>理解 EIGRP 的邻居表、拓扑表以及路由表的含义</li>
-<li>掌握查看 EIGRP 路由协议的相关信息</li>
-<li>掌握 FD、AD、S、FS 以及 FC 的含义</li>
-<li>理解 EIGRP 的 hello 报文作用</li>
-<li>理解路由快速收敛的含义</li>
-<li>理解 EIGRP 的不等价负载均衡</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0Pj8Gn.png" alt="图片1"></p>
-<center>EIGRP 的简单应用拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PjtMV.png" alt="图片4"></p>
-<ol start="2">
-<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，要求PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为 172.16.1.254，PC2 的IP 地址设置为 172.16.3.1/24，网关设置为 172.16.3.254，各路由器接口间的地址自己规划</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config-if)#int e0/0</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>192.168.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line">R1(config)#int e0/1</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>172.16.1.254 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.12.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R2(config)#int s2/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.23.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R3(config)#int e0/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>172.16.3.254 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R3(config)#int s2/1</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>192.168.23.3 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">VPCS&gt;<span class="built_in"> ip </span>172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">VPCS&gt;<span class="built_in"> ip </span>172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>全网启用 EIGRP，通告各自的直连网络路由，并关闭自动汇总</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R1(config-router)<span class="comment">#network 172.16.1.0 0.0.0.255 </span></span><br><span class="line">R1(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 </span></span><br><span class="line">R1(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255</span></span><br><span class="line">R2(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255  </span></span><br><span class="line">R3(config-router)<span class="comment">#network 172.16.3.0 0.0.0.255</span></span><br><span class="line">R3(config-router)<span class="comment">#no auto-summary</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>在 R1 上使用 show ip protocols 命令，观察并理解该命令的输出信息</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#sh ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;eigrp 90&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Default networks flagged <span class="keyword">in</span> outgoing updates</span><br><span class="line">  Default networks accepted from incoming updates</span><br><span class="line">  EIGRP-IPv4 Protocol <span class="keyword">for</span> AS(90)</span><br><span class="line">    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0</span><br><span class="line">    NSF-aware route hold timer is 240</span><br><span class="line">    Router-ID: 192.168.12.1</span><br><span class="line">    Topology : 0 (base) </span><br><span class="line">      Active Timer: 3 min</span><br><span class="line">      Distance: internal 90 external 170</span><br><span class="line">      Maximum path: 4</span><br><span class="line">      Maximum hopcount 100</span><br><span class="line">      Maximum metric variance 1</span><br><span class="line"></span><br><span class="line">  Automatic Summarization: disabled</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    172.16.1.0/24</span><br><span class="line">    192.168.12.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.12.2          90      00:00:44</span><br><span class="line">  Distance: internal 90 external 170</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;从该命令的输出信息中，可以查看到该路由器使用了EIGRP协议，AS号为90；Metric weight k1=1 k2=0 k3=1 k4=0 k5=0；RID:192.168.12.1；内部的AD值为，90 外部的AD值为170；最大的等价负载均衡条数为4条；最大的条数为100；Variance为1；通告的网段为172.16.1.0/24、192.168.12.0/24。</p>
-<ol start="5">
-<li>查看各路由器的邻居表、拓扑表以及路由表，分别找出 FD、AD 以及 S等重要信息</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#邻居表</span></span><br><span class="line">R1<span class="comment">#show ip eigrp neighbors </span></span><br><span class="line">EIGRP-IPv4 Neighbors <span class="keyword">for</span> AS(90)</span><br><span class="line">H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq</span><br><span class="line">                                                   (sec)         (ms)       Cnt Num</span><br><span class="line">0   192.168.12.2            Et0/1                    13 00:05:46   10   100  0  8</span><br><span class="line"></span><br><span class="line">R2<span class="comment">#show ip eigrp neighbors </span></span><br><span class="line">EIGRP-IPv4 Neighbors <span class="keyword">for</span> AS(90)</span><br><span class="line">H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq</span><br><span class="line">                                                   (sec)         (ms)       Cnt Num</span><br><span class="line">1   192.168.23.3            Se1/0                    12 00:05:43   20   120  0  4</span><br><span class="line">0   192.168.12.1            Et0/0                    12 00:06:25   12   100  0  4</span><br><span class="line"></span><br><span class="line">R3<span class="comment">#show ip eigrp neighbors</span></span><br><span class="line">EIGRP-IPv4 Neighbors <span class="keyword">for</span> AS(90)</span><br><span class="line">H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq</span><br><span class="line">                                                   (sec)         (ms)       Cnt Num</span><br><span class="line">0   192.168.23.2            Se1/1                    14 00:05:57   27   162  0  7</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;eigrp 90&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Default networks flagged <span class="keyword">in</span> outgoing updates</span><br><span class="line">  Default networks accepted from incoming updates</span><br><span class="line">  EIGRP-IPv4 Protocol <span class="keyword">for</span> AS(90)</span><br><span class="line">    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0</span><br><span class="line">    NSF-aware route hold timer is 240</span><br><span class="line">    Router-ID: 192.168.12.1</span><br><span class="line">    Topology : 0 (base) </span><br><span class="line">      Active Timer: 3 min</span><br><span class="line">      Distance: internal 90 external 170</span><br><span class="line">      Maximum path: 4</span><br><span class="line">      Maximum hopcount 100</span><br><span class="line">      Maximum metric variance 1</span><br><span class="line"></span><br><span class="line">  Automatic Summarization: disabled</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    172.16.1.0/24</span><br><span class="line">    192.168.12.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.12.2          90      00:06:25</span><br><span class="line">  Distance: internal 90 external 170</span><br><span class="line">  </span><br><span class="line">R2<span class="comment">#show ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;eigrp 90&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Default networks flagged <span class="keyword">in</span> outgoing updates</span><br><span class="line">  Default networks accepted from incoming updates</span><br><span class="line">  EIGRP-IPv4 Protocol <span class="keyword">for</span> AS(90)</span><br><span class="line">    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0</span><br><span class="line">    NSF-aware route hold timer is 240</span><br><span class="line">    Router-ID: 2.2.2.2</span><br><span class="line">    Topology : 0 (base) </span><br><span class="line">      Active Timer: 3 min</span><br><span class="line">      Distance: internal 90 external 170</span><br><span class="line">      Maximum path: 4</span><br><span class="line">      Maximum hopcount 100</span><br><span class="line">      Maximum metric variance 1</span><br><span class="line"></span><br><span class="line">  Automatic Summarization: disabled</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    192.168.12.0</span><br><span class="line">    192.168.23.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.12.1          90      00:07:13</span><br><span class="line">    192.168.23.3          90      00:07:13</span><br><span class="line">  Distance: internal 90 external 170</span><br><span class="line">  </span><br><span class="line">R3<span class="comment">#show ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;eigrp 90&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Default networks flagged <span class="keyword">in</span> outgoing updates</span><br><span class="line">  Default networks accepted from incoming updates</span><br><span class="line">  EIGRP-IPv4 Protocol <span class="keyword">for</span> AS(90)</span><br><span class="line">    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0</span><br><span class="line">    NSF-aware route hold timer is 240</span><br><span class="line">    Router-ID: 192.168.23.3</span><br><span class="line">    Topology : 0 (base) </span><br><span class="line">      Active Timer: 3 min</span><br><span class="line">      Distance: internal 90 external 170</span><br><span class="line">      Maximum path: 4</span><br><span class="line">      Maximum hopcount 100</span><br><span class="line">      Maximum metric variance 1</span><br><span class="line"></span><br><span class="line">  Automatic Summarization: disabled</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    172.16.3.0/24</span><br><span class="line">    192.168.23.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.23.2          90      00:07:34</span><br><span class="line">  Distance: internal 90 external 170</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        172.16.1.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.1.254/32 is directly connected, Ethernet0/0</span><br><span class="line">D        172.16.3.0/24 [90/2221056] via 192.168.12.2, 00:09:00, Ethernet0/1</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/1</span><br><span class="line">L        192.168.12.1/32 is directly connected, Ethernet0/1</span><br><span class="line">D     192.168.23.0/24 [90/2195456] via 192.168.12.2, 00:09:42, Ethernet0/1</span><br><span class="line"></span><br><span class="line">R2<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      2.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        2.2.2.0/24 is directly connected, Loopback1</span><br><span class="line">L        2.2.2.2/32 is directly connected, Loopback1</span><br><span class="line">      172.16.0.0/24 is subnetted, 2 subnets</span><br><span class="line">D        172.16.1.0 [90/307200] via 192.168.12.1, 00:10:18, Ethernet0/0</span><br><span class="line">D        172.16.3.0 [90/2195456] via 192.168.23.3, 00:09:29, Serial1/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial1/0</span><br><span class="line"></span><br><span class="line">R3<span class="comment">#sh ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line">D        172.16.1.0/24 [90/2221056] via 192.168.23.2, 00:09:45, Serial1/1</span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">D     192.168.12.0/24 [90/2195456] via 192.168.23.2, 00:09:45, Serial1/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial1/1</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>测试 PC1 与 PC2 之间的连通性</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PjDi9.png" alt="image-20200924235948555"></p>
-<ol start="7">
-<li>在 R2 上添加一个 loopback1 接口，地址为 200.200.200.200/24，然后在EIGRP 中通告，观察 R1 和 R3 是否能马上学习到 R2 上新增的 loopback1网段，并测试各主机与该 loopback1 之间的连通性</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#int</span> loopback <span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">200.200</span>.<span class="number">200.200</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">200.200</span>.<span class="number">200.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/26/0PjOeS.png" alt="image-20200925000531964"></p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PvSWn.png" alt="image-20200925000608975"></p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PjHQP.png" alt="image-20200925000444998"></p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0Pj5id.png" alt="image-20200925000502718"></p>
-<p>&emsp;&emsp;R1和R3能马上学习到 R2 上新增的 loopback1 网段，且连通性良好。</p>
-<ol start="8">
-<li>使用 wireshark 抓取 EIGRP 的报文，理解 EIGRP 报文各字段的含义</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PvAwF.png" alt="dTKTh9"></p>
-<p>&emsp;&emsp;每隔5s发送一个hello包，保持时间为15s，即超过3个hello时间未收到hello则认为对端Down，断开连接。</p>
-<ol start="9">
-<li>在 R1 上添加一个 loopback1 接口，地址为 100.100.100.100/24，然后在EIGRP 中通告</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 100.100.100.100 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#router eigrp 90 </span></span><br><span class="line">R1(config-router)<span class="comment">#network 100.100.100.0</span></span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="10">
-<li>断开 R1 和 R3 与各主机之间的连接，连接 R1 与 R3 之间的以太网接口，完成必要配置，实现 200.200.200.200 访问 100.100.100.100 的不等价负载均衡</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PveY9.png" alt="dTM0jx"></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">192.168</span>.<span class="number">13.1</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">192.168</span>.<span class="number">13.3</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">192.168</span>.<span class="number">13.0</span> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">100.100</span>.<span class="number">100.0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span> </span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">192.168</span>.<span class="number">13.0</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/26/0PvKQx.png" alt="image-20200926124818738"></p>
-<p>&emsp;&emsp;由于此时R2的路由表中只存在一条路径到达100.100.100.100，所以不存在负载均衡。</p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PvMy6.png" alt="image-20200926125126158"></p>
-<p>&emsp;&emsp;EIGRP在默认情况下仅支持等价负载均衡，并且在默认情况下最多同时存在4条的等价负载均衡。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router eigrp 90</span></span><br><span class="line"><span class="comment">#将等价负载均衡的条数改为8条</span></span><br><span class="line">R2(config-router)<span class="comment">#maximum-paths 8</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>FD    可行距离     当前路由器到到达目的网络距离</p>
-<p>AD    通告距离    下一跳路由器到达目的网络距离</p>
-</blockquote>
-<p>&emsp;&emsp;当然EIGRP也支持不等价的负载均衡，但需满足条件：</p>
-<p>①次优路径的AD值要小于最优路径的FD值（称为FC条件，只有满足了该条件，才会存在FS）。</p>
-<p>②当存在FS之后，EIGRP拓扑表会存在两个下一跳，但是只会选择最优的添加进路由表。此时如果要保证路由表也有两条路径，必须手动修改V值(variance)，使得满足”最优路径的FD*V值&gt;次优路径的FD值”（默认情况下，v值为1）</p>
-<p>&emsp;&emsp;在本实验中，最优路径为R2→R1到达100.100.100.100，次优路径为经过R2→R3→R1到达100.100.100.100。</p>
-<p>&emsp;&emsp;由R2的路由表我们可以得到200.200.200.200→100.100.100.100路由条目的FD值为409600。</p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0Pv3wD.png" alt="image-20200926131633249"></p>
-<p>&emsp;&emsp;次优路径为R2→R3→R1，因此R3路由表中的200.200.200.200→100.100.100.100路由条目的FD值为R2→R1的AD值为409600。</p>
-<p>&emsp;&emsp;因此不满足FC条件，所以可以选择更改AD值（在R3上更改开销）或者FD值（在R2上更改开销）。此处选择将R2中e0/0接口的延迟更改为3000（默认为1000）。</p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PvykQ.png" alt="image-20200926134145060"></p>
-<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"><span class="constructor">R2(<span class="params">config</span>)</span>#<span class="built_in">int</span> e0/<span class="number">0</span></span><br><span class="line">#此处的数值为<span class="number">10</span>倍的关系</span><br><span class="line"><span class="constructor">R2(<span class="params">config</span>-<span class="params">if</span>)</span>#delay ?  </span><br><span class="line">  &lt;<span class="number">1</span>-<span class="number">16777215</span>&gt;  Throughput delay (tens <span class="keyword">of</span> microseconds)</span><br><span class="line"><span class="constructor">R2(<span class="params">config</span>-<span class="params">if</span>)</span>#delay <span class="number">300</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/26/0PvRlq.png" alt="image-20200926134337682"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#重启e0/0端口</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/26/0Pv4mT.png" alt="image-20200926134602566"></p>
-<p>&emsp;&emsp;查看R2的路由表可以得知，此时满足FC条件，次优路径的AD值小于最优路径的FD值，在拓扑表中存在两条路径。此时的FS为R3</p>
-<p>&emsp;&emsp;但是此时路由表中到达100.100.100.100仍然只存在一条最优路径；若想让次优路径加表，则需满足最优路径的FD*v值 &gt; 次优路径的FD才能加入到路由表；修改V值为6，此时满足条件，路由表中到达100.100.100.0网段存在两个下一跳。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R2(config-router)<span class="comment">#variance 6</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/26/0PvTk4.png" alt="image-20200926135326740"></p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0Px9tH.png" alt="image-20200926135524300"></p>
-<p>&emsp;&emsp;查看该路由条目的详细信息，可以知道该不等价负载均衡满足1:5的关系。</p>
-<p><img src="https://s1.ax1x.com/2020/09/26/0PxF1I.png" alt="image-20200926135704965"></p>
-<blockquote>
-<p>该实验效果不明显，当查看路由的详细信息时能得到1：5的关系即为实验成功。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>EIGRP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP交换综合实验一</title>
-    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
-</li>
-<li><p>掌握 DTP 的作用和配置</p>
-</li>
-<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
-</li>
-<li><p>掌握以太通道技术的作用和配置</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建。</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
-<ol start="2">
-<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
-</ol>
-<p>&emsp;①网关地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
-<p>&emsp;②各主机通过DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
-<ol start="3">
-<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
-<ol start="4">
-<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
-</ol>
-<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
-<p>&emsp;&emsp;SW2的VLAN信息：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
-<ol start="5">
-<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
-</ol>
-<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
-<ol start="6">
-<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
-</ol>
-<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
-<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
-<p>FTP_Srv用DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
-<ol start="7">
-<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
-</ol>
-<p>&emsp;①启用OSPF实现内网全网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
-<p>&emsp;②实现外网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
-<p>③  配置NAT：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
-<p>④  用R1给邻居下发默认路由：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
-<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
-<p>【实验中用到的代码】</p>
-<p><strong>VTP：</strong></p>
-<p>vtp mode server———————————————将VTP的模式该为server模式</p>
-<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
-<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
-<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
-<p>当域名与密码相同时才能进行同步</p>
-<p>NAT：</p>
-<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
-<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
-<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
-<p>捆绑链路：</p>
-<p>int range e0/1-2</p>
-<p>switchport truck encapsulation do1q</p>
-<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
-<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
-<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
-<p>下发默认路由：</p>
-<p>router ospf 1</p>
-<p>default-information originate—————————–给邻居下发默认路由</p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
       </tags>
   </entry>
   <entry>
@@ -1587,6 +1460,133 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验四——EIGRP 的简单应用</title>
+    <url>/2018/10/07/CCNA%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 EIGRP 的基本配置； EIGRP 的邻居表、拓扑表以及路由表的含义；查看 EIGRP 路由协议的相关信息； FD、AD、S、FS 以及 FC 的含义； EIGRP 的 hello 报文作用；路由快速收敛的含义； EIGRP 的不等价负载均衡。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li>掌握 EIGRP 的基本配置</li>
+<li>理解 EIGRP 的邻居表、拓扑表以及路由表的含义</li>
+<li>掌握查看 EIGRP 路由协议的相关信息</li>
+<li>掌握 FD、AD、S、FS 以及 FC 的含义</li>
+<li>理解 EIGRP 的 hello 报文作用</li>
+<li>理解路由快速收敛的含义</li>
+<li>理解 EIGRP 的不等价负载均衡</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Pj8Gn.png" alt="图片1"></p>
+<center>EIGRP 的简单应用拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PjtMV.png" alt="图片4"></p>
+<ol start="2">
+<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，要求PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为 172.16.1.254，PC2 的IP 地址设置为 172.16.3.1/24，网关设置为 172.16.3.254，各路由器接口间的地址自己规划</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R1(config-if)#int e0/0</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>192.168.12.1 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line">R1(config)#int e0/1</span><br><span class="line">R1(config-if)#ip<span class="built_in"> address </span>172.16.1.254 255.255.255.0</span><br><span class="line">R1(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R2(config)#int e0/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.12.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R2(config)#int s2/0</span><br><span class="line">R2(config-if)#ip<span class="built_in"> address </span>192.168.23.2 255.255.255.0</span><br><span class="line">R2(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line"></span><br><span class="line">R3(config)#int e0/0</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>172.16.3.254 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown </span><br><span class="line">R3(config)#int s2/1</span><br><span class="line">R3(config-if)#ip<span class="built_in"> address </span>192.168.23.3 255.255.255.0</span><br><span class="line">R3(config-if)#<span class="literal">no</span> shutdown</span><br><span class="line"></span><br><span class="line">VPCS&gt;<span class="built_in"> ip </span>172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">VPCS&gt;<span class="built_in"> ip </span>172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address<span class="built_in">..</span>.</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>全网启用 EIGRP，通告各自的直连网络路由，并关闭自动汇总</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R1(config-router)<span class="comment">#network 172.16.1.0 0.0.0.255 </span></span><br><span class="line">R1(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255 </span></span><br><span class="line">R1(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.12.0 0.0.0.255</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255</span></span><br><span class="line">R2(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0 0.0.0.255  </span></span><br><span class="line">R3(config-router)<span class="comment">#network 172.16.3.0 0.0.0.255</span></span><br><span class="line">R3(config-router)<span class="comment">#no auto-summary</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>在 R1 上使用 show ip protocols 命令，观察并理解该命令的输出信息</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#sh ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;eigrp 90&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Default networks flagged <span class="keyword">in</span> outgoing updates</span><br><span class="line">  Default networks accepted from incoming updates</span><br><span class="line">  EIGRP-IPv4 Protocol <span class="keyword">for</span> AS(90)</span><br><span class="line">    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0</span><br><span class="line">    NSF-aware route hold timer is 240</span><br><span class="line">    Router-ID: 192.168.12.1</span><br><span class="line">    Topology : 0 (base) </span><br><span class="line">      Active Timer: 3 min</span><br><span class="line">      Distance: internal 90 external 170</span><br><span class="line">      Maximum path: 4</span><br><span class="line">      Maximum hopcount 100</span><br><span class="line">      Maximum metric variance 1</span><br><span class="line"></span><br><span class="line">  Automatic Summarization: disabled</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    172.16.1.0/24</span><br><span class="line">    192.168.12.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.12.2          90      00:00:44</span><br><span class="line">  Distance: internal 90 external 170</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;从该命令的输出信息中，可以查看到该路由器使用了EIGRP协议，AS号为90；Metric weight k1=1 k2=0 k3=1 k4=0 k5=0；RID:192.168.12.1；内部的AD值为，90 外部的AD值为170；最大的等价负载均衡条数为4条；最大的条数为100；Variance为1；通告的网段为172.16.1.0/24、192.168.12.0/24。</p>
+<ol start="5">
+<li>查看各路由器的邻居表、拓扑表以及路由表，分别找出 FD、AD 以及 S等重要信息</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#邻居表</span></span><br><span class="line">R1<span class="comment">#show ip eigrp neighbors </span></span><br><span class="line">EIGRP-IPv4 Neighbors <span class="keyword">for</span> AS(90)</span><br><span class="line">H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq</span><br><span class="line">                                                   (sec)         (ms)       Cnt Num</span><br><span class="line">0   192.168.12.2            Et0/1                    13 00:05:46   10   100  0  8</span><br><span class="line"></span><br><span class="line">R2<span class="comment">#show ip eigrp neighbors </span></span><br><span class="line">EIGRP-IPv4 Neighbors <span class="keyword">for</span> AS(90)</span><br><span class="line">H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq</span><br><span class="line">                                                   (sec)         (ms)       Cnt Num</span><br><span class="line">1   192.168.23.3            Se1/0                    12 00:05:43   20   120  0  4</span><br><span class="line">0   192.168.12.1            Et0/0                    12 00:06:25   12   100  0  4</span><br><span class="line"></span><br><span class="line">R3<span class="comment">#show ip eigrp neighbors</span></span><br><span class="line">EIGRP-IPv4 Neighbors <span class="keyword">for</span> AS(90)</span><br><span class="line">H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq</span><br><span class="line">                                                   (sec)         (ms)       Cnt Num</span><br><span class="line">0   192.168.23.2            Se1/1                    14 00:05:57   27   162  0  7</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;eigrp 90&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Default networks flagged <span class="keyword">in</span> outgoing updates</span><br><span class="line">  Default networks accepted from incoming updates</span><br><span class="line">  EIGRP-IPv4 Protocol <span class="keyword">for</span> AS(90)</span><br><span class="line">    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0</span><br><span class="line">    NSF-aware route hold timer is 240</span><br><span class="line">    Router-ID: 192.168.12.1</span><br><span class="line">    Topology : 0 (base) </span><br><span class="line">      Active Timer: 3 min</span><br><span class="line">      Distance: internal 90 external 170</span><br><span class="line">      Maximum path: 4</span><br><span class="line">      Maximum hopcount 100</span><br><span class="line">      Maximum metric variance 1</span><br><span class="line"></span><br><span class="line">  Automatic Summarization: disabled</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    172.16.1.0/24</span><br><span class="line">    192.168.12.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.12.2          90      00:06:25</span><br><span class="line">  Distance: internal 90 external 170</span><br><span class="line">  </span><br><span class="line">R2<span class="comment">#show ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;eigrp 90&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Default networks flagged <span class="keyword">in</span> outgoing updates</span><br><span class="line">  Default networks accepted from incoming updates</span><br><span class="line">  EIGRP-IPv4 Protocol <span class="keyword">for</span> AS(90)</span><br><span class="line">    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0</span><br><span class="line">    NSF-aware route hold timer is 240</span><br><span class="line">    Router-ID: 2.2.2.2</span><br><span class="line">    Topology : 0 (base) </span><br><span class="line">      Active Timer: 3 min</span><br><span class="line">      Distance: internal 90 external 170</span><br><span class="line">      Maximum path: 4</span><br><span class="line">      Maximum hopcount 100</span><br><span class="line">      Maximum metric variance 1</span><br><span class="line"></span><br><span class="line">  Automatic Summarization: disabled</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    192.168.12.0</span><br><span class="line">    192.168.23.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.12.1          90      00:07:13</span><br><span class="line">    192.168.23.3          90      00:07:13</span><br><span class="line">  Distance: internal 90 external 170</span><br><span class="line">  </span><br><span class="line">R3<span class="comment">#show ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;eigrp 90&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Default networks flagged <span class="keyword">in</span> outgoing updates</span><br><span class="line">  Default networks accepted from incoming updates</span><br><span class="line">  EIGRP-IPv4 Protocol <span class="keyword">for</span> AS(90)</span><br><span class="line">    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0</span><br><span class="line">    NSF-aware route hold timer is 240</span><br><span class="line">    Router-ID: 192.168.23.3</span><br><span class="line">    Topology : 0 (base) </span><br><span class="line">      Active Timer: 3 min</span><br><span class="line">      Distance: internal 90 external 170</span><br><span class="line">      Maximum path: 4</span><br><span class="line">      Maximum hopcount 100</span><br><span class="line">      Maximum metric variance 1</span><br><span class="line"></span><br><span class="line">  Automatic Summarization: disabled</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    172.16.3.0/24</span><br><span class="line">    192.168.23.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.23.2          90      00:07:34</span><br><span class="line">  Distance: internal 90 external 170</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        172.16.1.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.1.254/32 is directly connected, Ethernet0/0</span><br><span class="line">D        172.16.3.0/24 [90/2221056] via 192.168.12.2, 00:09:00, Ethernet0/1</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/1</span><br><span class="line">L        192.168.12.1/32 is directly connected, Ethernet0/1</span><br><span class="line">D     192.168.23.0/24 [90/2195456] via 192.168.12.2, 00:09:42, Ethernet0/1</span><br><span class="line"></span><br><span class="line">R2<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      2.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        2.2.2.0/24 is directly connected, Loopback1</span><br><span class="line">L        2.2.2.2/32 is directly connected, Loopback1</span><br><span class="line">      172.16.0.0/24 is subnetted, 2 subnets</span><br><span class="line">D        172.16.1.0 [90/307200] via 192.168.12.1, 00:10:18, Ethernet0/0</span><br><span class="line">D        172.16.3.0 [90/2195456] via 192.168.23.3, 00:09:29, Serial1/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial1/0</span><br><span class="line"></span><br><span class="line">R3<span class="comment">#sh ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line">D        172.16.1.0/24 [90/2221056] via 192.168.23.2, 00:09:45, Serial1/1</span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">D     192.168.12.0/24 [90/2195456] via 192.168.23.2, 00:09:45, Serial1/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial1/1</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>测试 PC1 与 PC2 之间的连通性</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PjDi9.png" alt="image-20200924235948555"></p>
+<ol start="7">
+<li>在 R2 上添加一个 loopback1 接口，地址为 200.200.200.200/24，然后在EIGRP 中通告，观察 R1 和 R3 是否能马上学习到 R2 上新增的 loopback1网段，并测试各主机与该 loopback1 之间的连通性</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#int</span> loopback <span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">200.200</span>.<span class="number">200.200</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span></span><br><span class="line"><span class="function"><span class="title">R2</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">200.200</span>.<span class="number">200.0</span> <span class="number">0.0</span>.<span class="number">0.255</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/26/0PjOeS.png" alt="image-20200925000531964"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvSWn.png" alt="image-20200925000608975"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PjHQP.png" alt="image-20200925000444998"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Pj5id.png" alt="image-20200925000502718"></p>
+<p>&emsp;&emsp;R1和R3能马上学习到 R2 上新增的 loopback1 网段，且连通性良好。</p>
+<ol start="8">
+<li>使用 wireshark 抓取 EIGRP 的报文，理解 EIGRP 报文各字段的含义</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvAwF.png" alt="dTKTh9"></p>
+<p>&emsp;&emsp;每隔5s发送一个hello包，保持时间为15s，即超过3个hello时间未收到hello则认为对端Down，断开连接。</p>
+<ol start="9">
+<li>在 R1 上添加一个 loopback1 接口，地址为 100.100.100.100/24，然后在EIGRP 中通告</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#int loopback 1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 100.100.100.100 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#router eigrp 90 </span></span><br><span class="line">R1(config-router)<span class="comment">#network 100.100.100.0</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="10">
+<li>断开 R1 和 R3 与各主机之间的连接，连接 R1 与 R3 之间的以太网接口，完成必要配置，实现 200.200.200.200 访问 100.100.100.100 的不等价负载均衡</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PveY9.png" alt="dTM0jx"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">192.168</span>.<span class="number">13.1</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#int</span> e0/<span class="number">0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#ip</span> <span class="selector-tag">address</span> <span class="number">192.168</span>.<span class="number">13.3</span> <span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-if)</span></span><span class="selector-id">#no</span> shutdown </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">192.168</span>.<span class="number">13.0</span> </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">100.100</span>.<span class="number">100.0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config)</span></span><span class="selector-id">#router</span> eigrp <span class="number">90</span> </span><br><span class="line"><span class="function"><span class="title">R3</span><span class="params">(config-router)</span></span><span class="selector-id">#network</span> <span class="number">192.168</span>.<span class="number">13.0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvKQx.png" alt="image-20200926124818738"></p>
+<p>&emsp;&emsp;由于此时R2的路由表中只存在一条路径到达100.100.100.100，所以不存在负载均衡。</p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvMy6.png" alt="image-20200926125126158"></p>
+<p>&emsp;&emsp;EIGRP在默认情况下仅支持等价负载均衡，并且在默认情况下最多同时存在4条的等价负载均衡。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router eigrp 90</span></span><br><span class="line"><span class="comment">#将等价负载均衡的条数改为8条</span></span><br><span class="line">R2(config-router)<span class="comment">#maximum-paths 8</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>FD    可行距离     当前路由器到到达目的网络距离</p>
+<p>AD    通告距离    下一跳路由器到达目的网络距离</p>
+</blockquote>
+<p>&emsp;&emsp;当然EIGRP也支持不等价的负载均衡，但需满足条件：</p>
+<p>①次优路径的AD值要小于最优路径的FD值（称为FC条件，只有满足了该条件，才会存在FS）。</p>
+<p>②当存在FS之后，EIGRP拓扑表会存在两个下一跳，但是只会选择最优的添加进路由表。此时如果要保证路由表也有两条路径，必须手动修改V值(variance)，使得满足”最优路径的FD*V值&gt;次优路径的FD值”（默认情况下，v值为1）</p>
+<p>&emsp;&emsp;在本实验中，最优路径为R2→R1到达100.100.100.100，次优路径为经过R2→R3→R1到达100.100.100.100。</p>
+<p>&emsp;&emsp;由R2的路由表我们可以得到200.200.200.200→100.100.100.100路由条目的FD值为409600。</p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Pv3wD.png" alt="image-20200926131633249"></p>
+<p>&emsp;&emsp;次优路径为R2→R3→R1，因此R3路由表中的200.200.200.200→100.100.100.100路由条目的FD值为R2→R1的AD值为409600。</p>
+<p>&emsp;&emsp;因此不满足FC条件，所以可以选择更改AD值（在R3上更改开销）或者FD值（在R2上更改开销）。此处选择将R2中e0/0接口的延迟更改为3000（默认为1000）。</p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvykQ.png" alt="image-20200926134145060"></p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"><span class="constructor">R2(<span class="params">config</span>)</span>#<span class="built_in">int</span> e0/<span class="number">0</span></span><br><span class="line">#此处的数值为<span class="number">10</span>倍的关系</span><br><span class="line"><span class="constructor">R2(<span class="params">config</span>-<span class="params">if</span>)</span>#delay ?  </span><br><span class="line">  &lt;<span class="number">1</span>-<span class="number">16777215</span>&gt;  Throughput delay (tens <span class="keyword">of</span> microseconds)</span><br><span class="line"><span class="constructor">R2(<span class="params">config</span>-<span class="params">if</span>)</span>#delay <span class="number">300</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvRlq.png" alt="image-20200926134337682"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#重启e0/0端口</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#shutdown </span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/26/0Pv4mT.png" alt="image-20200926134602566"></p>
+<p>&emsp;&emsp;查看R2的路由表可以得知，此时满足FC条件，次优路径的AD值小于最优路径的FD值，在拓扑表中存在两条路径。此时的FS为R3</p>
+<p>&emsp;&emsp;但是此时路由表中到达100.100.100.100仍然只存在一条最优路径；若想让次优路径加表，则需满足最优路径的FD*v值 &gt; 次优路径的FD才能加入到路由表；修改V值为6，此时满足条件，路由表中到达100.100.100.0网段存在两个下一跳。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router eigrp 90</span></span><br><span class="line">R2(config-router)<span class="comment">#variance 6</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/26/0PvTk4.png" alt="image-20200926135326740"></p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0Px9tH.png" alt="image-20200926135524300"></p>
+<p>&emsp;&emsp;查看该路由条目的详细信息，可以知道该不等价负载均衡满足1:5的关系。</p>
+<p><img src="https://s1.ax1x.com/2020/09/26/0PxF1I.png" alt="image-20200926135704965"></p>
+<blockquote>
+<p>该实验效果不明显，当查看路由的详细信息时能得到1：5的关系即为实验成功。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>EIGRP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP路由综合实验一</title>
     <url>/2019/03/28/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF 的基本配置；OSPF 网络类型的应用；不连续区域的网络环境及不连续区域对 OSPF 路由选择的影响； OSPF 不连续区域的几种解决方案； OSPF 区域间和外部路由的汇总； OSPF 默认路由的配置及控制。</p>
@@ -1897,6 +1897,30 @@
       </tags>
   </entry>
   <entry>
+    <title>CSS中“#”与“.”的区别</title>
+    <url>/2021/12/14/CSS%E4%B8%AD%E2%80%9C#%E2%80%9D%E4%B8%8E%E2%80%9C.%E2%80%9D%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍CSS中“#”与“.”的区别。</p>
+<a id="more"></a>
+
+<p>&emsp;&emsp;在CSS中用“**#<strong>”定义样式，在调用时必须使用</strong>id<strong>；用“</strong>.<strong>”定义样式，调用时必须使用</strong>class<strong>。用“</strong>#<strong>”定义的样式，一般都是定义结构框架，一些大的容器，且在同一个页面只能出现一次；而“</strong>.<strong>”定义的样式，一般都是起修饰作用或多次重复的样式。</strong>在同一个层里同时出现ID和CLASS样式，ID更优先于CLASS。**</p>
+<p>id：用来定义页面中大的样式，如栏目划分，顶部，正文，底部等；用“**#top**”的形式来定义；</p>
+<p>class：用来定义一些比较细节的样式，如具体的一个菜单，一行文字等，用“**.text**”的形式来定义。</p>
+<p>&emsp;&emsp;在定义HTML中的标签，如ul，img，p等时，直接使用img{}即可。</p>
+<p>&emsp;&emsp;calss是样式组，需用“**.<strong>”定义的样式，调用时必须使用</strong>class**，如class=”style”。“.style”定义样式组，可以被反复调用，即在一个页面里，可以有多个元素用同一个style； </p>
+<p>&emsp;&emsp;id则是固定标签，需用“**#<strong>”定义，调用时必须使用</strong>id<strong>，如id=”style”。与“</strong>.<strong>”不同“</strong>#**”在同一个页面只能出现一次。</p>
+<p>eg:</p>
+<p><strong>“#main”和“.main”有什么区别:</strong></p>
+<p>“#main”的意思是id为”main”这个元素的样式，也只定义了id为“main”这个元素的样式。<br>“.main”的意思是新建一个名为”main”的样式，“.main”一但定义以后，可以让其他的元素来调用，方法为class=”main”</p>
+<p>&emsp;&emsp;简单来说：“#main”是定义具体对象”main”的专有属性；“.main”是定义抽象对象的共有属性”main”。比较广泛的用途是“**#<strong>”用于定义网页框架；“</strong>.**”用于定义各个网页元素。“#main”中的”main”只能在网页中出现一次，而“.main”中的”main”可以出现无数次。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNP路由综合实验五——BGP</title>
     <url>/2019/04/26/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%94/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇本章主要介绍了建立 IBGP 邻居的配置；建立 EBGP 邻居的配置；BGP的选路的配置；BGP邻居的安全建立。</p>
@@ -2078,30 +2102,6 @@
         <tag>CCNP</tag>
         <tag>路由</tag>
         <tag>IGP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSS中“#”与“.”的区别</title>
-    <url>/2021/12/14/CSS%E4%B8%AD%E2%80%9C#%E2%80%9D%E4%B8%8E%E2%80%9C.%E2%80%9D%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍CSS中“#”与“.”的区别。</p>
-<a id="more"></a>
-
-<p>&emsp;&emsp;在CSS中用“**#<strong>”定义样式，在调用时必须使用</strong>id<strong>；用“</strong>.<strong>”定义样式，调用时必须使用</strong>class<strong>。用“</strong>#<strong>”定义的样式，一般都是定义结构框架，一些大的容器，且在同一个页面只能出现一次；而“</strong>.<strong>”定义的样式，一般都是起修饰作用或多次重复的样式。</strong>在同一个层里同时出现ID和CLASS样式，ID更优先于CLASS。**</p>
-<p>id：用来定义页面中大的样式，如栏目划分，顶部，正文，底部等；用“**#top**”的形式来定义；</p>
-<p>class：用来定义一些比较细节的样式，如具体的一个菜单，一行文字等，用“**.text**”的形式来定义。</p>
-<p>&emsp;&emsp;在定义HTML中的标签，如ul，img，p等时，直接使用img{}即可。</p>
-<p>&emsp;&emsp;calss是样式组，需用“**.<strong>”定义的样式，调用时必须使用</strong>class**，如class=”style”。“.style”定义样式组，可以被反复调用，即在一个页面里，可以有多个元素用同一个style； </p>
-<p>&emsp;&emsp;id则是固定标签，需用“**#<strong>”定义，调用时必须使用</strong>id<strong>，如id=”style”。与“</strong>.<strong>”不同“</strong>#**”在同一个页面只能出现一次。</p>
-<p>eg:</p>
-<p><strong>“#main”和“.main”有什么区别:</strong></p>
-<p>“#main”的意思是id为”main”这个元素的样式，也只定义了id为“main”这个元素的样式。<br>“.main”的意思是新建一个名为”main”的样式，“.main”一但定义以后，可以让其他的元素来调用，方法为class=”main”</p>
-<p>&emsp;&emsp;简单来说：“#main”是定义具体对象”main”的专有属性；“.main”是定义抽象对象的共有属性”main”。比较广泛的用途是“**#<strong>”用于定义网页框架；“</strong>.**”用于定义各个网页元素。“#main”中的”main”只能在网页中出现一次，而“.main”中的”main”可以出现无数次。</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>CSS</tag>
       </tags>
   </entry>
   <entry>
@@ -2469,6 +2469,149 @@
       </tags>
   </entry>
   <entry>
+    <title>Nexus交换机vPC</title>
+    <url>/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/</url>
+    <content><![CDATA[<p>&emsp;&emsp;Port Channel是将多个端口，可以是同一块板卡，也可以使不同板卡上的端口，捆绑在一起，增大级联带宽和冗余性。同时，port-channel中的所有端口完全负载均衡。而vPC技术是一种虚拟捆绑的技术，相较于直接使用port-channel来讲，他可以实现将不同的线路进行捆绑。</p>
+<a id="more"></a>
+
+<h2 id="1-Port-Channel"><a href="#1-Port-Channel" class="headerlink" title="1 Port Channel"></a>1 Port Channel</h2><h3 id="1-1-基本概念"><a href="#1-1-基本概念" class="headerlink" title="1.1 基本概念"></a>1.1 基本概念</h3><ul>
+<li><p>绑定多个物理链路到一个单一的逻辑链路，在两个物理设备之间。</p>
+</li>
+<li><p>每一个物理端口只能被放入一个port-channel中。</p>
+</li>
+<li><p>在一个port-channel中的所有的端口必须兼容，并且需要有相同的速率和双工模式。</p>
+</li>
+<li><p>2 层和3层都可以配置port-channel 。</p>
+</li>
+<li><p>不能把2层和3层的接口放入相同的port-channel。</p>
+</li>
+<li><p>Port-Channel分为如下两种类型：</p>
+<p>‒Access port - Routed interface</p>
+<p>‒Trunk port - Routed with sub interfaces</p>
+</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UuT4P.png" alt="image-20210310170612367"></p>
+<h3 id="1-2-Port-Channel模式"><a href="#1-2-Port-Channel模式" class="headerlink" title="1.2 Port Channel模式"></a>1.2 Port Channel模式</h3><ul>
+<li>如果希望创建没有聚合协议的静态的port channels ，配置channel 模式为“on ”</li>
+<li>如果希望使用LACP 作为聚合协议，需要全局激活LACP </li>
+<li>为每一个Channel 启用LACP ，通过为每一个接口设置channel“ 模式为“active ”或者“passive ”</li>
+<li>不支持PAgP 协议</li>
+</ul>
+<h3 id="1-3-散列选项（Hash-Options）"><a href="#1-3-散列选项（Hash-Options）" class="headerlink" title="1.3 散列选项（Hash Options）"></a>1.3 散列选项（Hash Options）</h3><ul>
+<li>头部散列为了负载均衡，分布流量穿越多条链路</li>
+<li>如下的方式可以被用来做散列<ul>
+<li>source-destination-ip &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination IP address (Default)</li>
+<li>source-ip   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source IP address</li>
+<li>destination-ip   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination IP address</li>
+<li>source-destination-port &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination TCP/UDP port</li>
+<li>source-port   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source TCP/UDP port</li>
+<li>destination-port  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination TCP/UDP port</li>
+<li>source-destination-mac    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination MAC address</li>
+<li>source-mac  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source MAC address</li>
+<li>destination-mac  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination MAC address</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-4-Port-Channel-配置简介"><a href="#1-4-Port-Channel-配置简介" class="headerlink" title="1.4 Port Channel 配置简介"></a>1.4 Port Channel 配置简介</h3><h4 id="1-4-1-Switchport-Access"><a href="#1-4-1-Switchport-Access" class="headerlink" title="1.4.1 Switchport Access"></a>1.4.1 Switchport Access</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line">  switchport</span><br><span class="line">  switchport access<span class="built_in"> vlan </span>200</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-2-Switchport-Trunk"><a href="#1-4-2-Switchport-Trunk" class="headerlink" title="1.4.2 Switchport Trunk"></a>1.4.2 Switchport Trunk</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line">  switchport</span><br><span class="line">  switchport mode trunk</span><br><span class="line">  switchport trunk allowed<span class="built_in"> vlan </span>10-20</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-3-Routed-Interface"><a href="#1-4-3-Routed-Interface" class="headerlink" title="1.4.3 Routed Interface"></a>1.4.3 Routed Interface</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line"> <span class="built_in"> ip address </span>10.0.0.1/24</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-4-Routed-Subinterfaces"><a href="#1-4-4-Routed-Subinterfaces" class="headerlink" title="1.4.4 Routed Subinterfaces"></a>1.4.4 Routed Subinterfaces</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">channel-group 1 mode active</span><br><span class="line"> <span class="built_in"> interface </span>port-channel 1.10</span><br><span class="line"> <span class="built_in"> ip address </span>10.0.10.1/24</span><br><span class="line">  encapsulation dot1q 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-vPC"><a href="#2-vPC" class="headerlink" title="2 vPC"></a>2 vPC</h2><h3 id="2-1-vPC简介"><a href="#2-1-vPC简介" class="headerlink" title="2.1 vPC简介"></a>2.1 vPC简介</h3><ul>
+<li>允许一个设备使用有两个上游设备的port channel </li>
+<li>消除STP阻止端口</li>
+<li>提供一个无环的拓扑</li>
+<li>使用所有可用的上联带宽</li>
+<li>在链路或者设备出现故障时，提供最快的收敛</li>
+<li>提供链路级的冗余</li>
+<li>确保高可用性</li>
+<li>第三方设备可以是一个服务器，一个交换机或者任何网络持设备，只要这些设备支持channel Group技术</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6Uub38.png" alt="image-20210310172206731"></p>
+<h3 id="2-2-STP-vs-vPC"><a href="#2-2-STP-vs-vPC" class="headerlink" title="2.2 STP vs vPC"></a>2.2 STP vs vPC</h3><p><img src="https://s3.ax1x.com/2021/03/12/6UuLjg.png" alt="image-20210310173413831"></p>
+<h3 id="2-3-使用vPC创建无环的网络"><a href="#2-3-使用vPC创建无环的网络" class="headerlink" title="2.3 使用vPC创建无环的网络"></a>2.3 使用vPC创建无环的网络</h3><p>&emsp;&emsp;可以在现有的架构上使用vPC创建无环的网络</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UuXuQ.png" alt="image-20210310173524474"></p>
+<h3 id="2-4-最多32路Port-Channel（Double-Sided-vPC）"><a href="#2-4-最多32路Port-Channel（Double-Sided-vPC）" class="headerlink" title="2.4 最多32路Port-Channel（Double-Sided vPC）"></a>2.4 最多32路Port-Channel（Double-Sided vPC）</h3><ul>
+<li>多层vPC能够加入一个有8个active成员端口的port-channel到一个16路的port-channel中。</li>
+<li>vPC对等体的负载均衡方式是由这个对等体设备本地判断的。</li>
+<li>在M系列模块中，每一个vPC对等体只有8个active链路，两个vPC对等体加在一起一共提供16路active的负载均衡的链路。</li>
+<li>F系列模块，支持16路active的port-channel，因此提供一个32路的vPC。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UujBj.png" alt="image-20210310173657117"></p>
+<h3 id="2-5-配置流程"><a href="#2-5-配置流程" class="headerlink" title="2.5 配置流程"></a>2.5 配置流程</h3><ol>
+<li>在配置vPC 之前需要先激活vPC 特性</li>
+<li>先配置Peer-keepalive 链路，然后配置Peer-link 链路，最后设置vPC domain</li>
+<li>必须手动配置两个vPC 设备，配置不会从一个设备发送到另外一个设备上</li>
+<li>检查在vPC Peer 链路的两端，需要配置的参数是一致的</li>
+<li>当配置vPCs 时，可能会经历短暂的流量中断</li>
+<li>推荐所有vPC 的port channel 使用LACP </li>
+</ol>
+<h3 id="2-6-vPC-架构的组件"><a href="#2-6-vPC-架构的组件" class="headerlink" title="2.6 vPC 架构的组件"></a>2.6 vPC 架构的组件</h3><ul>
+<li>vPC Peers：一对vPC激活的交换机。</li>
+<li>vPC Domain：一对vPC对等体，和相关的vPC组件。</li>
+<li>vPC Peer Keepalive Link：路由链路，承载心跳数据包，进行双Active的检测。</li>
+<li>vPC Peer Link：在两个vPC对等体设备间，承载控制层面流量。</li>
+<li>vPC：在vPC对等体和有port-channel 能力的下的游设备之间的port channel 。</li>
+<li>vPC Member Port：形成vPC 的一系列端口中的一个。</li>
+<li>Orphan Device：一个设备使用非vPC 链路连接到一个vPC对等体。</li>
+<li>Orphan Port：一个vPC 对等体连接一个Orphan设备的端口。</li>
+<li>Cisco Fabric Services：在vPC 对等体设备间，用于状态同步和配置确认的协议。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UuzEn.png" alt="image-20210310174406528"></p>
+<h3 id="2-7-vPC与N7K模块设计图"><a href="#2-7-vPC与N7K模块设计图" class="headerlink" title="2.7 vPC与N7K模块设计图"></a>2.7 vPC与N7K模块设计图</h3><p><img src="https://s3.ax1x.com/2021/03/12/6UKSNq.png" alt="image-20210310175147498"></p>
+<h3 id="2-8-vPC控制层面操作"><a href="#2-8-vPC控制层面操作" class="headerlink" title="2.8 vPC控制层面操作"></a>2.8 vPC控制层面操作</h3><ul>
+<li><p>CFS用于同步vPC的控制层面信息</p>
+<ul>
+<li>MAC地址学习</li>
+<li>IGMP snooping</li>
+<li>配置一致性检查</li>
+<li>vPC成员端口状态</li>
+<li>ARP缓存</li>
+</ul>
+</li>
+<li><p>一个交换机被选举成为Primary，另外一端被选举为Secondary </p>
+<ul>
+<li>角色决定当Peer Link失效时的行为</li>
+<li>Primary交换机主导在vPC中的STP </li>
+<li>不支持抢占选举</li>
+</ul>
+</li>
+<li><p>vPC对等体对于连接到vPC对等体对于连接到vPC的邻居设备而言，表现为一个单一交换机</p>
+</li>
+<li><p>vPC Peer Link只承载如下流量</p>
+<ul>
+<li>vPC控制层流量</li>
+<li>泛洪流量</li>
+<li>Orphan端口的流量</li>
+</ul>
+</li>
+<li><p>普通交换机的MAC地址学习被替换为为vPC于设计的基于CFS的MAC地址学习</p>
+</li>
+<li><p>从Peer Link进入vPC对等体的帧不过会通过vPC成员端口转发</p>
+</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKP3T.png" alt="image-20210312121006088"></p>
+<h3 id="2-9-数据层防环"><a href="#2-9-数据层防环" class="headerlink" title="2.9 数据层防环"></a>2.9 数据层防环</h3><p>&emsp;&emsp;来至于Peer-Link 的流量将会被标记，并且不允许从vPC成员端口发出</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKEDJ.png" alt="image-20210312121040388"></p>
+<p>&emsp;&emsp;如果一端的vPC出现故障，Peer-Link可以作为备用链路来实现冗余</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKmU1.png" alt="image-20210312121059301"></p>
+<h3 id="2-10-vPC-Peer-Link-Device-Failure"><a href="#2-10-vPC-Peer-Link-Device-Failure" class="headerlink" title="2.10 vPC Peer Link Device Failure"></a>2.10 vPC Peer Link Device Failure</h3><p>&emsp;&emsp;交换机A的vPC Peer Link失效，交换机A则会通过Peer-Keepalive链路检查远端vPC Peer B的状态，如果vPC Peer B是Up的，Secondary vPC B将会禁用所有的vPC端口，从而阻止环路，黑洞和泛洪流量。数据依然在port channel中剩余的Active 链路上被发送。</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKKC6.png" alt="image-20210312121253248"></p>
+<h3 id="2-11-vPC-Peer-Failure-—-Peer-keepalive-Link"><a href="#2-11-vPC-Peer-Failure-—-Peer-keepalive-Link" class="headerlink" title="2.11 vPC Peer Failure — Peer-keepalive Link"></a>2.11 vPC Peer Failure — Peer-keepalive Link</h3><p>&emsp;&emsp;当没有通过对等keepalive Link返回keepalive消息时，软件将了解vPC对等设备故障。可以使用单独的链接（vPC Peerkeepalive Link）在vPC对等设备之间发送可配置的keepalive消息。vPC对等keepalive Link上的keepalive消息确定故障是仅在vPC对等链路上还是在vPC对等设备上。只有当对等链接中的所有链接都失败时，才使用keepalive消息。</p>
+<p><img src="https://s3.ax1x.com/2021/03/12/6UKM8K.png" alt="image-20210312125741363"></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Nexus</tag>
+        <tag>vPC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Nexus交换机FabricPath配置</title>
     <url>/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍在Nexus交换机上FabricPath的配步骤。</p>
@@ -2713,149 +2856,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Nexus交换机vPC</title>
-    <url>/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/</url>
-    <content><![CDATA[<p>&emsp;&emsp;Port Channel是将多个端口，可以是同一块板卡，也可以使不同板卡上的端口，捆绑在一起，增大级联带宽和冗余性。同时，port-channel中的所有端口完全负载均衡。而vPC技术是一种虚拟捆绑的技术，相较于直接使用port-channel来讲，他可以实现将不同的线路进行捆绑。</p>
-<a id="more"></a>
-
-<h2 id="1-Port-Channel"><a href="#1-Port-Channel" class="headerlink" title="1 Port Channel"></a>1 Port Channel</h2><h3 id="1-1-基本概念"><a href="#1-1-基本概念" class="headerlink" title="1.1 基本概念"></a>1.1 基本概念</h3><ul>
-<li><p>绑定多个物理链路到一个单一的逻辑链路，在两个物理设备之间。</p>
-</li>
-<li><p>每一个物理端口只能被放入一个port-channel中。</p>
-</li>
-<li><p>在一个port-channel中的所有的端口必须兼容，并且需要有相同的速率和双工模式。</p>
-</li>
-<li><p>2 层和3层都可以配置port-channel 。</p>
-</li>
-<li><p>不能把2层和3层的接口放入相同的port-channel。</p>
-</li>
-<li><p>Port-Channel分为如下两种类型：</p>
-<p>‒Access port - Routed interface</p>
-<p>‒Trunk port - Routed with sub interfaces</p>
-</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UuT4P.png" alt="image-20210310170612367"></p>
-<h3 id="1-2-Port-Channel模式"><a href="#1-2-Port-Channel模式" class="headerlink" title="1.2 Port Channel模式"></a>1.2 Port Channel模式</h3><ul>
-<li>如果希望创建没有聚合协议的静态的port channels ，配置channel 模式为“on ”</li>
-<li>如果希望使用LACP 作为聚合协议，需要全局激活LACP </li>
-<li>为每一个Channel 启用LACP ，通过为每一个接口设置channel“ 模式为“active ”或者“passive ”</li>
-<li>不支持PAgP 协议</li>
-</ul>
-<h3 id="1-3-散列选项（Hash-Options）"><a href="#1-3-散列选项（Hash-Options）" class="headerlink" title="1.3 散列选项（Hash Options）"></a>1.3 散列选项（Hash Options）</h3><ul>
-<li>头部散列为了负载均衡，分布流量穿越多条链路</li>
-<li>如下的方式可以被用来做散列<ul>
-<li>source-destination-ip &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination IP address (Default)</li>
-<li>source-ip   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source IP address</li>
-<li>destination-ip   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination IP address</li>
-<li>source-destination-port &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination TCP/UDP port</li>
-<li>source-port   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source TCP/UDP port</li>
-<li>destination-port  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination TCP/UDP port</li>
-<li>source-destination-mac    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source &amp; Destination MAC address</li>
-<li>source-mac  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Source MAC address</li>
-<li>destination-mac  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Destination MAC address</li>
-</ul>
-</li>
-</ul>
-<h3 id="1-4-Port-Channel-配置简介"><a href="#1-4-Port-Channel-配置简介" class="headerlink" title="1.4 Port Channel 配置简介"></a>1.4 Port Channel 配置简介</h3><h4 id="1-4-1-Switchport-Access"><a href="#1-4-1-Switchport-Access" class="headerlink" title="1.4.1 Switchport Access"></a>1.4.1 Switchport Access</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line">  switchport</span><br><span class="line">  switchport access<span class="built_in"> vlan </span>200</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-4-2-Switchport-Trunk"><a href="#1-4-2-Switchport-Trunk" class="headerlink" title="1.4.2 Switchport Trunk"></a>1.4.2 Switchport Trunk</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line">  switchport</span><br><span class="line">  switchport mode trunk</span><br><span class="line">  switchport trunk allowed<span class="built_in"> vlan </span>10-20</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-4-3-Routed-Interface"><a href="#1-4-3-Routed-Interface" class="headerlink" title="1.4.3 Routed Interface"></a>1.4.3 Routed Interface</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface port-channel 1</span><br><span class="line"> <span class="built_in"> ip address </span>10.0.0.1/24</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-4-4-Routed-Subinterfaces"><a href="#1-4-4-Routed-Subinterfaces" class="headerlink" title="1.4.4 Routed Subinterfaces"></a>1.4.4 Routed Subinterfaces</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">interface<span class="built_in"> ethernet </span>1/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">  channel-group 1 mode active</span><br><span class="line">interface<span class="built_in"> ethernet </span>2/4</span><br><span class="line">  <span class="literal">no</span> switchport</span><br><span class="line">channel-group 1 mode active</span><br><span class="line"> <span class="built_in"> interface </span>port-channel 1.10</span><br><span class="line"> <span class="built_in"> ip address </span>10.0.10.1/24</span><br><span class="line">  encapsulation dot1q 10</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-vPC"><a href="#2-vPC" class="headerlink" title="2 vPC"></a>2 vPC</h2><h3 id="2-1-vPC简介"><a href="#2-1-vPC简介" class="headerlink" title="2.1 vPC简介"></a>2.1 vPC简介</h3><ul>
-<li>允许一个设备使用有两个上游设备的port channel </li>
-<li>消除STP阻止端口</li>
-<li>提供一个无环的拓扑</li>
-<li>使用所有可用的上联带宽</li>
-<li>在链路或者设备出现故障时，提供最快的收敛</li>
-<li>提供链路级的冗余</li>
-<li>确保高可用性</li>
-<li>第三方设备可以是一个服务器，一个交换机或者任何网络持设备，只要这些设备支持channel Group技术</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/12/6Uub38.png" alt="image-20210310172206731"></p>
-<h3 id="2-2-STP-vs-vPC"><a href="#2-2-STP-vs-vPC" class="headerlink" title="2.2 STP vs vPC"></a>2.2 STP vs vPC</h3><p><img src="https://s3.ax1x.com/2021/03/12/6UuLjg.png" alt="image-20210310173413831"></p>
-<h3 id="2-3-使用vPC创建无环的网络"><a href="#2-3-使用vPC创建无环的网络" class="headerlink" title="2.3 使用vPC创建无环的网络"></a>2.3 使用vPC创建无环的网络</h3><p>&emsp;&emsp;可以在现有的架构上使用vPC创建无环的网络</p>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UuXuQ.png" alt="image-20210310173524474"></p>
-<h3 id="2-4-最多32路Port-Channel（Double-Sided-vPC）"><a href="#2-4-最多32路Port-Channel（Double-Sided-vPC）" class="headerlink" title="2.4 最多32路Port-Channel（Double-Sided vPC）"></a>2.4 最多32路Port-Channel（Double-Sided vPC）</h3><ul>
-<li>多层vPC能够加入一个有8个active成员端口的port-channel到一个16路的port-channel中。</li>
-<li>vPC对等体的负载均衡方式是由这个对等体设备本地判断的。</li>
-<li>在M系列模块中，每一个vPC对等体只有8个active链路，两个vPC对等体加在一起一共提供16路active的负载均衡的链路。</li>
-<li>F系列模块，支持16路active的port-channel，因此提供一个32路的vPC。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UujBj.png" alt="image-20210310173657117"></p>
-<h3 id="2-5-配置流程"><a href="#2-5-配置流程" class="headerlink" title="2.5 配置流程"></a>2.5 配置流程</h3><ol>
-<li>在配置vPC 之前需要先激活vPC 特性</li>
-<li>先配置Peer-keepalive 链路，然后配置Peer-link 链路，最后设置vPC domain</li>
-<li>必须手动配置两个vPC 设备，配置不会从一个设备发送到另外一个设备上</li>
-<li>检查在vPC Peer 链路的两端，需要配置的参数是一致的</li>
-<li>当配置vPCs 时，可能会经历短暂的流量中断</li>
-<li>推荐所有vPC 的port channel 使用LACP </li>
-</ol>
-<h3 id="2-6-vPC-架构的组件"><a href="#2-6-vPC-架构的组件" class="headerlink" title="2.6 vPC 架构的组件"></a>2.6 vPC 架构的组件</h3><ul>
-<li>vPC Peers：一对vPC激活的交换机。</li>
-<li>vPC Domain：一对vPC对等体，和相关的vPC组件。</li>
-<li>vPC Peer Keepalive Link：路由链路，承载心跳数据包，进行双Active的检测。</li>
-<li>vPC Peer Link：在两个vPC对等体设备间，承载控制层面流量。</li>
-<li>vPC：在vPC对等体和有port-channel 能力的下的游设备之间的port channel 。</li>
-<li>vPC Member Port：形成vPC 的一系列端口中的一个。</li>
-<li>Orphan Device：一个设备使用非vPC 链路连接到一个vPC对等体。</li>
-<li>Orphan Port：一个vPC 对等体连接一个Orphan设备的端口。</li>
-<li>Cisco Fabric Services：在vPC 对等体设备间，用于状态同步和配置确认的协议。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UuzEn.png" alt="image-20210310174406528"></p>
-<h3 id="2-7-vPC与N7K模块设计图"><a href="#2-7-vPC与N7K模块设计图" class="headerlink" title="2.7 vPC与N7K模块设计图"></a>2.7 vPC与N7K模块设计图</h3><p><img src="https://s3.ax1x.com/2021/03/12/6UKSNq.png" alt="image-20210310175147498"></p>
-<h3 id="2-8-vPC控制层面操作"><a href="#2-8-vPC控制层面操作" class="headerlink" title="2.8 vPC控制层面操作"></a>2.8 vPC控制层面操作</h3><ul>
-<li><p>CFS用于同步vPC的控制层面信息</p>
-<ul>
-<li>MAC地址学习</li>
-<li>IGMP snooping</li>
-<li>配置一致性检查</li>
-<li>vPC成员端口状态</li>
-<li>ARP缓存</li>
-</ul>
-</li>
-<li><p>一个交换机被选举成为Primary，另外一端被选举为Secondary </p>
-<ul>
-<li>角色决定当Peer Link失效时的行为</li>
-<li>Primary交换机主导在vPC中的STP </li>
-<li>不支持抢占选举</li>
-</ul>
-</li>
-<li><p>vPC对等体对于连接到vPC对等体对于连接到vPC的邻居设备而言，表现为一个单一交换机</p>
-</li>
-<li><p>vPC Peer Link只承载如下流量</p>
-<ul>
-<li>vPC控制层流量</li>
-<li>泛洪流量</li>
-<li>Orphan端口的流量</li>
-</ul>
-</li>
-<li><p>普通交换机的MAC地址学习被替换为为vPC于设计的基于CFS的MAC地址学习</p>
-</li>
-<li><p>从Peer Link进入vPC对等体的帧不过会通过vPC成员端口转发</p>
-</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UKP3T.png" alt="image-20210312121006088"></p>
-<h3 id="2-9-数据层防环"><a href="#2-9-数据层防环" class="headerlink" title="2.9 数据层防环"></a>2.9 数据层防环</h3><p>&emsp;&emsp;来至于Peer-Link 的流量将会被标记，并且不允许从vPC成员端口发出</p>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UKEDJ.png" alt="image-20210312121040388"></p>
-<p>&emsp;&emsp;如果一端的vPC出现故障，Peer-Link可以作为备用链路来实现冗余</p>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UKmU1.png" alt="image-20210312121059301"></p>
-<h3 id="2-10-vPC-Peer-Link-Device-Failure"><a href="#2-10-vPC-Peer-Link-Device-Failure" class="headerlink" title="2.10 vPC Peer Link Device Failure"></a>2.10 vPC Peer Link Device Failure</h3><p>&emsp;&emsp;交换机A的vPC Peer Link失效，交换机A则会通过Peer-Keepalive链路检查远端vPC Peer B的状态，如果vPC Peer B是Up的，Secondary vPC B将会禁用所有的vPC端口，从而阻止环路，黑洞和泛洪流量。数据依然在port channel中剩余的Active 链路上被发送。</p>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UKKC6.png" alt="image-20210312121253248"></p>
-<h3 id="2-11-vPC-Peer-Failure-—-Peer-keepalive-Link"><a href="#2-11-vPC-Peer-Failure-—-Peer-keepalive-Link" class="headerlink" title="2.11 vPC Peer Failure — Peer-keepalive Link"></a>2.11 vPC Peer Failure — Peer-keepalive Link</h3><p>&emsp;&emsp;当没有通过对等keepalive Link返回keepalive消息时，软件将了解vPC对等设备故障。可以使用单独的链接（vPC Peerkeepalive Link）在vPC对等设备之间发送可配置的keepalive消息。vPC对等keepalive Link上的keepalive消息确定故障是仅在vPC对等链路上还是在vPC对等设备上。只有当对等链接中的所有链接都失败时，才使用keepalive消息。</p>
-<p><img src="https://s3.ax1x.com/2021/03/12/6UKM8K.png" alt="image-20210312125741363"></p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Nexus</tag>
-        <tag>vPC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Nexus交换机vPC配置</title>
     <url>/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>&emsp;&emsp;Nexus交换机vPC配置。</p>
@@ -2871,6 +2871,147 @@
       <tags>
         <tag>Nexus</tag>
         <tag>vPC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OSPF特殊区域</title>
+    <url>/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/</url>
+    <content><![CDATA[<p>&emsp;&emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。</p>
+<a id="more"></a>
+
+<p><img src="https://s3.ax1x.com/2020/11/14/DCcRLq.png" alt="无标题"></p>
+<p>&emsp;&emsp;我将以上面这个拓扑图介绍OSPF的特殊区域。拓扑中共有三个区域，骨干区域 area 0为一级行及二级行所运行，三级行运行的是OSPF的常规区域，为了保证网络的畅通，我们将网络中的各个角落都宣告进了OSPF，这感觉没有什么问题。但是随着设备越老越多、网络前缀越来越多，路由条目势必逐渐增多，那么路由器就有些承担不住了，毕竟庞大的路由表及LSA在极大地消耗着路由器的资源。所以我们需要对网络进行优化，在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，除了路由汇总外，我们也可以使用OSPF的特殊区域来减少LSA的泛洪。</p>
+<p>&emsp;&emsp;在这里我们拿area 1举例，当area 1为常规区域时，区域中会有多少种LSA在泛洪呢？1类是必然有的，由于area 1中存在MA网络，因此2类LSA也有。其他区域的3类LSA被ABR也都注入进了本区域。另外，由于area 2的ASBR引入的外部路由（5类LSA）也会被泛洪进area 1，当然4类LSA也跟着来了。那么如此一来，area 1中就有1、2、3、4、5，共计5种类型的LSA。但是仔细一想我们就发现，其实area 1作为“叶”区域，没必要知道外部路由的详细情况，我只需要知道有那么一条路，让我到达域外即可，因此，第一种特殊区域：末梢区域stub area。</p>
+<h2 id="1-末梢区域（stub-area）"><a href="#1-末梢区域（stub-area）" class="headerlink" title="1 末梢区域（stub area）"></a>1 末梢区域（stub area）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcqyR.png" alt="image-20201114133720565"></p>
+<p>&emsp;&emsp;我们可以通过配置，将一个常规区域设置为stub 区域。</p>
+<p>&emsp;&emsp;Stub区域将禁止4、5类LSA进入该区域，同时该区域的ABR将会自动下发一条默认路由（3类LSA）进该区域，以确保数据通路没有问题。这可以形象的理解为：“外面的世界再怎么精彩，你不用告诉我细节，只要让我出去就行了”。这就是stub area的设计思路。当引入大量的外部路由进OSPF，适当的规划某些区域为stub，可以起到不错的网络优化作用。</p>
+<p>&emsp;&emsp;值得注意的是，不能将骨干区域area 0配置为stub区域，同时，让一个区域被指定为stub，区域内将不允许注入外部路由，也就是不能做重发布。</p>
+<p>配置命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 1 stub </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;需要注意的是，该命令要配置在stub区域中的所有路由器上，如果某台路由器没有配置，那么它将无法去其他stub area router建立邻接关系。</p>
+<p>实现效果：</p>
+<p>&emsp;&emsp;Area1中将不会在有4、5类LSA，也就是area 2重发布进来的路由，被ABR过滤掉了，同时area 1中的路由器将获取到一条3类LSA 的默认路由，该默认路由是由area1的ABR自动下发。</p>
+<h2 id="2-完全末梢区域（totally-stub）"><a href="#2-完全末梢区域（totally-stub）" class="headerlink" title="2 完全末梢区域（totally stub）"></a>2 完全末梢区域（totally stub）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcXex.png" alt="image-20201114140049631"></p>
+<p>&emsp;&emsp;通过将区域规划为stub area，可以起到一定的网络优化作用，但是感觉上还不够彻底，除了外部路由，其他区域的路由其实我也没必要知道太多细节，完全用一条默认路由替代也行嘛，那么你可以将area 1配置为完全末梢区域（totally stub area），当一个区域被配置为完全末梢区域，这个区域将：</p>
+<ul>
+<li>阻挡3、4、5类LSA进入本区域</li>
+<li>区域的ABR自动下发一条3类LSA的默认路由进入本区域</li>
+</ul>
+<p>&emsp;&emsp;这么一来，area 1内路由器收到的LSA将进一步减少，在存储LSA及进行SPF算法运算的时候，耗费的资源自然也就减少了，另外当区域外拓扑出现变更的时候，对本区域的影响也将变为最小。<br>&emsp;&emsp;与stub区域类似，你无法将骨干区域area 0配置为totally stub area，当然如果一个区域被指定为totally stub area，你将不能在区域中的路由器上做路由重发布动作。</p>
+<p>配置命令：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;在完全末梢区域内的所有路由器，都配置上述命令，与stub区域的区别在于ABR的配置，下面是配置在完全末梢区域的ABR上的。</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub no-summary </span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p>&emsp;&emsp;完成上述配置后，area1内的路由器将只有本区域内的路由（ABR除外），同时都能获取到ABR下发的3类的默认路由。也就是说其他区域的路由以及外部注入的路由都被ABR阻挡在外，取而代之的是一条默认路由。</p>
+<h2 id="4-非完全末梢区域（NSSA）"><a href="#4-非完全末梢区域（NSSA）" class="headerlink" title="4 非完全末梢区域（NSSA）"></a>4 非完全末梢区域（NSSA）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCWG7t.png" alt="image-20201114142231423"></p>
+<p>&emsp;&emsp;在前面的知识基础上，我们已经了解到，在保证网络连通性的情况下，减少LSA的泛洪以及精简路由表，我们可以将特定区域配置为末梢区域或完全末梢区域。看上面的拓扑，我们将area 2配置为stub，那么，这个区域一来将阻挡来自其他区域的4、5类LSA，同时区域内的路由器禁止重发布外部路由，那么如果此时我期望这个区域保持“阻挡其他区域过来的4、5类LSA”这个特性，同时允许我在区域本地重发布路由呢？<br>&emsp;&emsp;例如，假设area 2原先是作为一个末梢区域运行的，但突然有一个外部网络，需要接入到我们这个OSPF网络中，并且连接在area 2中，那么这个时候，为了保证路由的可达，就必须向area 2中注入外部路由了，而这又违法了stub area的规则。</p>
+<p><img src="https://s3.ax1x.com/2020/11/14/DCWCpF.png" alt="image-20201114142308257"></p>
+<p>&emsp;&emsp;这里就引入NSSA（not-so-stubby-area）的概念，中文翻译过来，可以理解为非完全末梢区域，当你将一个区域配置为NSSA，那么这个区域一来将阻挡骨干区域过来的4、5类LSA，同时允许区域本地注入外部路由，这些外部路由以一种特殊的LSA类型——7类LSA在NSSA中泛洪并且7类LSA不允许进入骨干区域或常规区域，NSSA的ABR会负责将7类LSA“转换”成5类LSA，从而在常规区域中进一步泛洪。上面的“允许区域本地注入”的意思是，NSSA这个区域的路由器配置重发布。</p>
+<p>&emsp;&emsp;值得注意的是与stub area及totally stub area不同的是如果你将一个区域配置为NSSA、默认情况下NSSA的ABR不会自动下发默认路由进NSSA，因此在NSSA环境下，需留意网络连通性问题。</p>
+<p>配置命令∶</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 2 nssa </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;上述命令需配置在NSSA内的所有路由器上。</p>
+<p>实现效果：</p>
+<p>&emsp;&emsp;将area 2配置为NSSA后，从骨干区域过来的4、5类LSA将无法进入NSSA，也就是说如果area 1做了重发布，那么这些重发布的外部路由将无法进入NSSA（这是因为NSSA中不允许出现5类LSA），与此同时，area 2允许本地的路由器做重发布动作，重发布进来的路由，以LSA7在NSSA中泛洪，大家在路由表中看到的这些外部路由，标记为“O N”，而这些7类LSA在“穿越”NSSA的ABR进入骨干区域之前，由ABR负责将7类LSA“转换”成5类LSA。最终area 0及area 1也都能学习到这些外部路由，只不过，他们路由表中呈现的是“O E”标记。</p>
+<h2 id="5-Totally-NSSA"><a href="#5-Totally-NSSA" class="headerlink" title="5 Totally NSSA"></a>5 Totally NSSA</h2><p><img src="https://s3.ax1x.com/2020/11/14/DChzkt.png" alt="image-20201114142500409"></p>
+<p>&emsp;&emsp;Totally NSSA，这是一个不太好用中文翻译的词汇，完全非完全末梢区域？显得有点尴尬，不过这个概念的理解并不像其名字那么唬人，Totally NSSA是在NSSA区域的基础之上，进一步阻挡NSSA区域外的其他区域过来的3类LSA，同时ABR自动下发一条3类的默认路由进 NSSA 区域。<br>配置命令∶</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa </span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;上述命令需配置在NSSA中的所有路由器上，ABR的配置有所不同，如下∶</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa no-summary</span></span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p>&emsp;&emsp;Area2之外的其他OSPF area过来的3、4、5类LSA，都会被阻挡在NSSA之外，同时ABR会自动下发默认路由进NSSA，另外，NSSA内的路由器做重发布动作，区域内的其他路由器将会学习到7类的外部LSA，这些外部LSA会被ABR转成5类LSA并注入进骨干区域。</p>
+<h2 id="6-特殊区域总结"><a href="#6-特殊区域总结" class="headerlink" title="6 特殊区域总结"></a>6 特殊区域总结</h2><ul>
+<li><p><strong>骨干区域 Backbone Area 0</strong></p>
+<p>本身是一个标准区域，负责连接非骨干区域，其它区域(非骨干区域）必须保证和骨干区域有直接的物理连接，因为区域之间的LSA必须经过骨干区域中转</p>
+</li>
+<li><p><strong>常规（标准）区域 Standard Area</strong></p>
+<p>一个区域缺省是常规区域</p>
+</li>
+<li><p><strong>末梢区域 Stub Area</strong></p>
+<p>把一个区域配成存根区域的好处是，阻挡LSA4、LSA5外部路由进入本地区域，从而精简路由表;同时ABR会自动产生3类的默认路由LSA注入进该区域。</p>
+</li>
+<li><p><strong>完全末梢区域 Totally Stubby Area</strong></p>
+<p>完全末梢区域是一种对末梢区域的改进，进一步精简路由表;阻挡LSA3、4、5进入该区域，同时ABR自动下发3类默认路由。</p>
+</li>
+<li><p><strong>非完全末梢区域 Not-so-stubby Area</strong></p>
+<p>即想阻挡LSA5，自身又想引入外部路由，stub的变种；</p>
+<p>NSSA既阻挡外部LSA5的进入，同时区域内的路由器又可以引入外部路由LSA7 ;LSA7在NSSA内洪泛，通过ABR时转换为LSA5并被注入进骨干区域。</p>
+<p>ABR不会缺省生成0/O默认路由进入本地区域，需手工配置</p>
+</li>
+<li><p><strong>完全NSSA totally Not-so-stubby Area</strong></p>
+<p>在NSSA的基础上进一步阻挡骨干区域过来的3,4,5类LSA 并且ABR自动下发3类的默认路由进NSSA。</p>
+</li>
+</ul>
+<p>&emsp;&emsp;<strong>各区域内所允许出现LSA总结如下：</strong></p>
+<ul>
+<li><p>骨干区域：1、2、3、4、5</p>
+</li>
+<li><p>标准区域：1、2、3、4、5</p>
+</li>
+<li><p>Stub区域：1、2、3、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
+</li>
+<li><p>完全Stub区域： 1、2、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
+</li>
+<li><p>NSSA 区域：1、2、3、7</p>
+</li>
+<li><p>完全NSSA区域:1、2、7、3类0.0.0.0/0 (ABR向区域内发起的一条3类缺省路由LSA )</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+        <tag>路由协议</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OSPF路由优选规则</title>
+    <url>/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/</url>
+    <content><![CDATA[<p>&emsp;&emsp;在路由表中我们可以看到通过OSPF路由协议学习到的路由是哪一种类型（如O、O IA、O E1、O E2、O N1、O N2）的。当路由器学习到不同类型的同一路由时是如何选择的呢？本篇文章主要介绍OSPF路由的优先选择原则。</p>
+<a id="more"></a>
+
+<h2 id="1-基本优选规则"><a href="#1-基本优选规则" class="headerlink" title="1 基本优选规则"></a>1 基本优选规则</h2><ol>
+<li><p>直连路由：本路由器发起的LSA1、2 ；</p>
+</li>
+<li><p>区域内路由：O： LSA1、2；</p>
+</li>
+<li><p>区域间路由：O IA： LSA 3 ；</p>
+</li>
+<li><p>1类外部路由：O E1： LSA5类型1；</p>
+</li>
+<li><p>2类外部路由：O E2： LSA5类型2；</p>
+</li>
+<li><p>1类NSSA路由：O N1： LSA7类型1；</p>
+</li>
+<li><p>2类NSSA路由∶O N2：LSA7类型2。</p>
+</li>
+</ol>
+<p>&emsp;&emsp;注意：O E1绝对优于O E2，O N1绝对优于O N2。而E1之间、E2之间的比较，则需要另做讨论。另外，O E及O N的优选，要看厂商，不同的厂商，优选方式不同。</p>
+<h3 id="1-1-O-及O-IA的比较"><a href="#1-1-O-及O-IA的比较" class="headerlink" title="1.1 O 及O IA的比较"></a>1.1 O 及O IA的比较</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEUHj1.png" alt="image-20201115215555698"></p>
+<p>&emsp;&emsp;在这个图中，R1同时从R2及R3学习到3.3.3.0的路由，一条是О，一条是OIA，R1将绝对优选R3作为前往3.3.3.0的下一跳，而不看metric。</p>
+<h3 id="1-2-O-IA之间的比较"><a href="#1-2-O-IA之间的比较" class="headerlink" title="1.2 O IA之间的比较"></a>1.2 O IA之间的比较</h3><p>&emsp;&emsp;一般来说，O IA之间比较metric，谁小取谁，但是也有特例，如下：</p>
+<p><img src="https://s3.ax1x.com/2020/11/16/DEUOHK.png" alt="image-20201115215940616"></p>
+<p>&emsp;&emsp;上图中，R2上，能学习到由ABRR1及R3发出的关于路由1.1.1.0的3类LSA，两条路由都是О IA，但是R2将恒定优选R1作为去往1.1.1.0的下一跳，而不管这条路由的metric多大。</p>
+<h3 id="1-3-多进程OSPF问题1"><a href="#1-3-多进程OSPF问题1" class="headerlink" title="1.3 多进程OSPF问题1"></a>1.3 多进程OSPF问题1</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEUvND.png" alt="image-20201115220045832"></p>
+<p>&emsp;&emsp;同一台路由器，本地如果跑两个OSPF进程，则各自独立，路由信息不会自动相互注入；另外如果同时从两个进程学习到同一条路由，则不管metric如何，先到先用，而不会负载均衡。</p>
+<h3 id="1-4-多进程OSPF问题2"><a href="#1-4-多进程OSPF问题2" class="headerlink" title="1.4 多进程OSPF问题2"></a>1.4 多进程OSPF问题2</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEaS9H.png" alt="image-20201115220146896"></p>
+<p>&emsp;&emsp;由于是两个OSPF进程，因此依然是先到先得，R1上，如果率先与R2建立邻居关系，那么4.4.4.0的路由在路由表中，仍然是О IA的。即使通过R3过来的是О，但是由于是不同的进程，因此只看谁先来不管metric也不管什么O&gt;O IA&gt;O E1&gt;O E2。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+        <tag>路由协议</tag>
       </tags>
   </entry>
   <entry>
@@ -3065,137 +3206,56 @@
       </tags>
   </entry>
   <entry>
-    <title>OSPF特殊区域</title>
-    <url>/2020/11/13/OSPF%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>&emsp;&emsp;从网络优化的角度，我们一直在试图在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，路由汇总就是一种很好的方式，当然，从 OSPF的设计规划角度，我们还有特殊区域可供我们灵活运用，下面来看看OSPF特殊区域是如何帮助我们减少LSA泛洪的。</p>
+    <title>OSPF邻居关系建立及维护</title>
+    <url>/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/</url>
+    <content><![CDATA[<p>&emsp;&emsp;OSPF邻居关系的建立是经历了七个不同的状态逐步建立起来的，状态之间的转换以及邻居关系建立后的维护主要通过OSPF的五个报文进行数据的传输。 本篇文章详细介绍了OSPF邻居关系的建立与维护。</p>
 <a id="more"></a>
 
-<p><img src="https://s3.ax1x.com/2020/11/14/DCcRLq.png" alt="无标题"></p>
-<p>&emsp;&emsp;我将以上面这个拓扑图介绍OSPF的特殊区域。拓扑中共有三个区域，骨干区域 area 0为一级行及二级行所运行，三级行运行的是OSPF的常规区域，为了保证网络的畅通，我们将网络中的各个角落都宣告进了OSPF，这感觉没有什么问题。但是随着设备越老越多、网络前缀越来越多，路由条目势必逐渐增多，那么路由器就有些承担不住了，毕竟庞大的路由表及LSA在极大地消耗着路由器的资源。所以我们需要对网络进行优化，在保证网络通畅的情况下减少网络中传递的路由条目及LSA的数量，除了路由汇总外，我们也可以使用OSPF的特殊区域来减少LSA的泛洪。</p>
-<p>&emsp;&emsp;在这里我们拿area 1举例，当area 1为常规区域时，区域中会有多少种LSA在泛洪呢？1类是必然有的，由于area 1中存在MA网络，因此2类LSA也有。其他区域的3类LSA被ABR也都注入进了本区域。另外，由于area 2的ASBR引入的外部路由（5类LSA）也会被泛洪进area 1，当然4类LSA也跟着来了。那么如此一来，area 1中就有1、2、3、4、5，共计5种类型的LSA。但是仔细一想我们就发现，其实area 1作为“叶”区域，没必要知道外部路由的详细情况，我只需要知道有那么一条路，让我到达域外即可，因此，第一种特殊区域：末梢区域stub area。</p>
-<h2 id="1-末梢区域（stub-area）"><a href="#1-末梢区域（stub-area）" class="headerlink" title="1 末梢区域（stub area）"></a>1 末梢区域（stub area）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcqyR.png" alt="image-20201114133720565"></p>
-<p>&emsp;&emsp;我们可以通过配置，将一个常规区域设置为stub 区域。</p>
-<p>&emsp;&emsp;Stub区域将禁止4、5类LSA进入该区域，同时该区域的ABR将会自动下发一条默认路由（3类LSA）进该区域，以确保数据通路没有问题。这可以形象的理解为：“外面的世界再怎么精彩，你不用告诉我细节，只要让我出去就行了”。这就是stub area的设计思路。当引入大量的外部路由进OSPF，适当的规划某些区域为stub，可以起到不错的网络优化作用。</p>
-<p>&emsp;&emsp;值得注意的是，不能将骨干区域area 0配置为stub区域，同时，让一个区域被指定为stub，区域内将不允许注入外部路由，也就是不能做重发布。</p>
-<p>配置命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 1 stub </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;需要注意的是，该命令要配置在stub区域中的所有路由器上，如果某台路由器没有配置，那么它将无法去其他stub area router建立邻接关系。</p>
-<p>实现效果：</p>
-<p>&emsp;&emsp;Area1中将不会在有4、5类LSA，也就是area 2重发布进来的路由，被ABR过滤掉了，同时area 1中的路由器将获取到一条3类LSA 的默认路由，该默认路由是由area1的ABR自动下发。</p>
-<h2 id="2-完全末梢区域（totally-stub）"><a href="#2-完全末梢区域（totally-stub）" class="headerlink" title="2 完全末梢区域（totally stub）"></a>2 完全末梢区域（totally stub）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCcXex.png" alt="image-20201114140049631"></p>
-<p>&emsp;&emsp;通过将区域规划为stub area，可以起到一定的网络优化作用，但是感觉上还不够彻底，除了外部路由，其他区域的路由其实我也没必要知道太多细节，完全用一条默认路由替代也行嘛，那么你可以将area 1配置为完全末梢区域（totally stub area），当一个区域被配置为完全末梢区域，这个区域将：</p>
+<h2 id="1-邻居建立过程"><a href="#1-邻居建立过程" class="headerlink" title="1 邻居建立过程"></a>1 邻居建立过程</h2><p><img src="https://s3.ax1x.com/2020/11/11/BvWneO.png" alt="image-20201111201619205"></p>
+<p>&emsp;&emsp;在初始情况下，A、B 在某个接口激活了OSPF后，都会开始在这个接口上去发组播的Hello包，目的是发现OSPF邻居。Hello包里，有个active neighbor字段，用来存储路由器在某个OSPF接口上发现的邻居。当然，初始情况下，这个Hello包里是不包含任何活跃的邻居的(也就没有active neighbor字段)，因为它谁也没发现。<br>&emsp;&emsp;当OSPF路由器（B）在某个OSPF 接口上收到邻居发来的Hello包（里面没有装active neighbor ），它会记录下A（在自己的OSPF接口数据结构中）并且将 A 的状态视为Init ，然后将A的Router lD存储在自己将要发送的Hello包的active neighbor字段里发送出去，这样 A 就会收到这个Hello包，并且在这个Hello包当中找到自己的Router lD，那么 A 会认为，与 B 已经完成了双边关系的建立，因此 A 会将 B 的邻居状态置为two-way。<br>&emsp;&emsp;与此同时，A 也会继续发送Hello包，并且将B的Router lD放置于Hello包中，而B收到这个Hello包并看见了自己的Router lD后，B 也会将 A 的状态置为Two-way，至此OSPF的第一个稳态就达到了。</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWKTe.png" alt="image-20201111202300693"></p>
+<p>&emsp;&emsp;接下去A、B会进入Ex-start 状态并开始进行master、slave的协商，协商MIS的目的是为了决定在后续的LSA交互中，谁来决定DD的序列号，而Router lD 大的那个OSPF路由器的接口将会成为master，由它来决定DD seq，对端成为slave。这里要注意master不是DR，要注意与DR的概念进行区分。这个协商过程，是由交互DBD包实现的，注意这里使用的是空的DBD包，也就是不包含任何LSA头部的DBD包，这个包当中，有三个位非常关键：I、M、MS。用于Ex-start阶段协商master、slave的DBD包，I 位（或叫做 Init 位）都是置0的；另外MS位如果置1，表示DBD报文始发路由器认为自己的master，当然起初大家都这么认为，在一系列DBD交换后，就会得到选举结果，被选举为slave的OSPF接口，会将发送的DBD包MS位置为0；另外M位表示more，如果一个OSPF接口发送的DBD包M位置1，在表示这不是最后一个DBD，后续还有DBD包待发送。<br>&emsp;&emsp;当OSPF接口收到一个DBD包且其中 I 位置0的时候，它就知道与该邻居的Ex-start阶段已经过去了，于是将邻居的状态置为Exchange，并存储对端发来的DBD包所包含的LSA头部，当然，他自己也发送关于自己OSPF DB的摘要给邻居。如此一来，双方都能通过DBD的交互，了解到对方OSPF DB中的摘要情况。在这个过程中，可能交互数个DBD报文，并要注意，这些报文的 I 位都置0，且M位一般也置0，除非这是某个OSPF接口发送的最后一个DBD包。</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWlYd.png" alt="image-20201111203911471"></p>
+<p>&emsp;&emsp;当Router A收到一个M位置0的DBD包的时候，它就知道，这是邻居发来的最后一个DBD包了，如果它搜集完这个邻居（假设是B）发来的DBD并且发现，这些DBD里有它感兴趣的LSA，它期望更详细的LSA信息时，它将B置为 Loading 状态，并且开始发送LSR报文去请求特定LSA的详细信息。B收到这个LSR后，会以LSU进行回应，其中就包含了对方请求的LSA详细信息，因此，只有在LSU报文中，才能看到LSA的完整信息。收到LSU后，A将LSU中所包含的LSA放进自己的LSDB，并且给B发一个LSACK进行确认。当OSPF接口上所有的待请求的LSA全部收到更新后，它会将邻居置为FULL。至此，OSPF邻接关系的建立达到全毗邻。<br>&emsp;&emsp;在这里我们有个地方需要留意，我们通常说，OSPF 路由器A与B进入了xx状态，其实这句话并不严谨，原因之一，是因为OSPF 是接口敏感型协议，许多的操作都是以OSPF 接口作为立足点去考虑的，譬如邻居关系的建立，再如DR和BDR，我们不能说一台路由器是DR，准确的说，应该是某路由器的某个接口是DR；再者，说两台路由器之间是xx状态，这个也不严谨，所谓的邻居状态，必须是以某台路由器为观察点，在其某个接口上观察到的某个邻居的状态，因此可能出现的一个情况是，在A上，看到的B的状态为Loading，但是在B上，A的状态已经是FULL了。</p>
+<h2 id="2-状态机"><a href="#2-状态机" class="headerlink" title="2 状态机"></a>2 状态机</h2><p><strong>1. Down</strong></p>
+<p>&emsp;&emsp;在DOWN状态下，OSPF 接口仍然有尝试发现邻居的意愿，因此会不断的发送组播hello包。</p>
+<p><strong>2. Init</strong></p>
+<p>&emsp;&emsp;当OSPF 接口收到链路上某个邻居发来的第一个Hello包的时候，它会在接口上将该邻居置为 Init 状态，注意这个Hello包中可能并未包含任何的邻居信息。但是这至少证明，我这个OSPF接口在这个链路上，至少有个活跃的邻居。</p>
+<p>&emsp;&emsp;下面是一个没有发现任何active neighbor的Hello包：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvW1fA.png" alt="image-20201111205235674"></p>
+<p><strong>3. Two-way</strong></p>
+<p>&emsp;&emsp;当OSPF路由器在某个链路上发现了邻居后，它自己发送的Hello包里就会增加active neighbor字段，用于存储在该链路上发现的OSPF邻居。当一台OSPF Router看到自己（的Router lD）出现在邻居发过来的的Hello 分组中，它就会将该邻居置为Two-way。该状态是OSPF 邻居之间可以具有的最基本的关系，也是第一个稳态，但是此时两者还不能共享路由信息。</p>
+<p>&emsp;&emsp;下面是一个已经在链路上发现了邻居1.1.1.1的Hello：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWJ6P.png" alt="image-20201111205414612"></p>
+<p><strong>4. Ex-Start</strong></p>
+<p>&emsp;&emsp;一台OSPF路由器在将某个邻居置为Two-way状态后，就开始发送空的DBD包，用于协商master/slave。这个就是 Ex-start 状态。两台Router 间用空的BDB分组确定master和slave关系（注意不是DR和BDR），在DBD包中有3个标记位用来管理邻接关系的建立过程：</p>
 <ul>
-<li>阻挡3、4、5类LSA进入本区域</li>
-<li>区域的ABR自动下发一条3类LSA的默认路由进入本区域</li>
+<li>l位         或称为初始位（Initial bit ）用于Ex-start协商主从关系的初始化协商的DBD包，该位置1</li>
+<li>M位       或称为后继位（More bit）如果这不是OSPF Router 发送的最后一个DBD，该位置1</li>
+<li>MS位     或称为主/从位（Master / slave bit）如果始发路由器是Master，则该位置1</li>
 </ul>
-<p>&emsp;&emsp;这么一来，area 1内路由器收到的LSA将进一步减少，在存储LSA及进行SPF算法运算的时候，耗费的资源自然也就减少了，另外当区域外拓扑出现变更的时候，对本区域的影响也将变为最小。<br>&emsp;&emsp;与stub区域类似，你无法将骨干区域area 0配置为totally stub area，当然如果一个区域被指定为totally stub area，你将不能在区域中的路由器上做路由重发布动作。</p>
-<p>配置命令：</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub </span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;如果某台OSPF Router收到邻居发来的DBD I 位也就是Init位置0则意味着Ex-start状态结束并且master/slave已经选出来了那么该路由器会将邻居置为Exchange状态开始用包含LSA头部的DBD交换各自的LSBD。下面是一个用于初始化协商的DBD消息：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWYOf.png" alt="image-20201111205948163"></p>
+<p><strong>5. Exchange</strong></p>
+<p>&emsp;&emsp;这个过程，双方使用包含自己LSA头部的DBD报文进行交互，并且将对方发过来的LSA头部、并且自己感兴趣的LSA（或自己没有的LSA）存储在一个本地OSPF 接口的队列里，以便在下一个阶段进行LSA详细信息的请求。当某个OSPF接口收到邻居发来的DBD，M位置0 ，则表示对方已经发完DBD了，与此同时如果该路由器的这个OSPF接口上存在待请求的LSA，那么它会将这个邻居置为Loading状态。</p>
+<p>&emsp;&emsp;下面是一个装载了LSA头部的DBD消息：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWNm8.png" alt="image-20201111210116338"></p>
+<p><strong>6. Loading</strong></p>
+<p>&emsp;&emsp;OSPF Router使用LSR去请求LSA的详细信息，对方使用LSU发来更新，因此只有LSU里才有LSA的完整信息。在收到LSU后，一方面本地使用LSACK进行确认，另一方面将LSU 中包含的LSA装载进自己的LSDB。</p>
+<p>&emsp;&emsp;以下是一个LSR消息，非常的简单：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvW0Yj.png" alt="image-20201111210243739"></p>
+<p><strong>7. FULL</strong></p>
+<p>&emsp;&emsp;Loading 状态结束后，也就是本地OSPF接口上再没有待更新的LSA队列后，将邻居置为FULL。</p>
+<p><strong>8. Attempt</strong></p>
+<p>&emsp;&emsp;如果一个路由器，它邻居处于这种状态，则表示它从邻居没有收到任何信息，但是做了努力来与邻居联系。仅在NBMA网络上存在，当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效（Active）时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器将会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用Hello interval时间代替Poll interval的时间来作为向邻居发送Hello数据包的时间间隔。</p>
+<h2 id="3-OSPF邻居关系建立中的问题"><a href="#3-OSPF邻居关系建立中的问题" class="headerlink" title="3 OSPF邻居关系建立中的问题"></a>3 OSPF邻居关系建立中的问题</h2><p><strong>1. MTU问题</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#ip ospf mtu-ignore</span></span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;在完全末梢区域内的所有路由器，都配置上述命令，与stub区域的区别在于ABR的配置，下面是配置在完全末梢区域的ABR上的。</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 1 stub no-summary </span><br></pre></td></tr></table></figure>
-
-<p>实现效果：</p>
-<p>&emsp;&emsp;完成上述配置后，area1内的路由器将只有本区域内的路由（ABR除外），同时都能获取到ABR下发的3类的默认路由。也就是说其他区域的路由以及外部注入的路由都被ABR阻挡在外，取而代之的是一条默认路由。</p>
-<h2 id="4-非完全末梢区域（NSSA）"><a href="#4-非完全末梢区域（NSSA）" class="headerlink" title="4 非完全末梢区域（NSSA）"></a>4 非完全末梢区域（NSSA）</h2><p><img src="https://s3.ax1x.com/2020/11/14/DCWG7t.png" alt="image-20201114142231423"></p>
-<p>&emsp;&emsp;在前面的知识基础上，我们已经了解到，在保证网络连通性的情况下，减少LSA的泛洪以及精简路由表，我们可以将特定区域配置为末梢区域或完全末梢区域。看上面的拓扑，我们将area 2配置为stub，那么，这个区域一来将阻挡来自其他区域的4、5类LSA，同时区域内的路由器禁止重发布外部路由，那么如果此时我期望这个区域保持“阻挡其他区域过来的4、5类LSA”这个特性，同时允许我在区域本地重发布路由呢？<br>&emsp;&emsp;例如，假设area 2原先是作为一个末梢区域运行的，但突然有一个外部网络，需要接入到我们这个OSPF网络中，并且连接在area 2中，那么这个时候，为了保证路由的可达，就必须向area 2中注入外部路由了，而这又违法了stub area的规则。</p>
-<p><img src="https://s3.ax1x.com/2020/11/14/DCWCpF.png" alt="image-20201114142308257"></p>
-<p>&emsp;&emsp;这里就引入NSSA（not-so-stubby-area）的概念，中文翻译过来，可以理解为非完全末梢区域，当你将一个区域配置为NSSA，那么这个区域一来将阻挡骨干区域过来的4、5类LSA，同时允许区域本地注入外部路由，这些外部路由以一种特殊的LSA类型——7类LSA在NSSA中泛洪并且7类LSA不允许进入骨干区域或常规区域，NSSA的ABR会负责将7类LSA“转换”成5类LSA，从而在常规区域中进一步泛洪。上面的“允许区域本地注入”的意思是，NSSA这个区域的路由器配置重发布。</p>
-<p>&emsp;&emsp;值得注意的是与stub area及totally stub area不同的是如果你将一个区域配置为NSSA、默认情况下NSSA的ABR不会自动下发默认路由进NSSA，因此在NSSA环境下，需留意网络连通性问题。</p>
-<p>配置命令∶</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Router(config)#router<span class="built_in"> ospf </span>1</span><br><span class="line">Router(config-router)#area 2 nssa </span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;上述命令需配置在NSSA内的所有路由器上。</p>
-<p>实现效果：</p>
-<p>&emsp;&emsp;将area 2配置为NSSA后，从骨干区域过来的4、5类LSA将无法进入NSSA，也就是说如果area 1做了重发布，那么这些重发布的外部路由将无法进入NSSA（这是因为NSSA中不允许出现5类LSA），与此同时，area 2允许本地的路由器做重发布动作，重发布进来的路由，以LSA7在NSSA中泛洪，大家在路由表中看到的这些外部路由，标记为“O N”，而这些7类LSA在“穿越”NSSA的ABR进入骨干区域之前，由ABR负责将7类LSA“转换”成5类LSA。最终area 0及area 1也都能学习到这些外部路由，只不过，他们路由表中呈现的是“O E”标记。</p>
-<h2 id="5-Totally-NSSA"><a href="#5-Totally-NSSA" class="headerlink" title="5 Totally NSSA"></a>5 Totally NSSA</h2><p><img src="https://s3.ax1x.com/2020/11/14/DChzkt.png" alt="image-20201114142500409"></p>
-<p>&emsp;&emsp;Totally NSSA，这是一个不太好用中文翻译的词汇，完全非完全末梢区域？显得有点尴尬，不过这个概念的理解并不像其名字那么唬人，Totally NSSA是在NSSA区域的基础之上，进一步阻挡NSSA区域外的其他区域过来的3类LSA，同时ABR自动下发一条3类的默认路由进 NSSA 区域。<br>配置命令∶</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa </span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;上述命令需配置在NSSA中的所有路由器上，ABR的配置有所不同，如下∶</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Router(config)<span class="comment">#router ospf 1</span></span><br><span class="line">Router(config-router)<span class="comment">#area 2 nssa no-summary</span></span><br></pre></td></tr></table></figure>
-
-<p>实现效果：</p>
-<p>&emsp;&emsp;Area2之外的其他OSPF area过来的3、4、5类LSA，都会被阻挡在NSSA之外，同时ABR会自动下发默认路由进NSSA，另外，NSSA内的路由器做重发布动作，区域内的其他路由器将会学习到7类的外部LSA，这些外部LSA会被ABR转成5类LSA并注入进骨干区域。</p>
-<h2 id="6-特殊区域总结"><a href="#6-特殊区域总结" class="headerlink" title="6 特殊区域总结"></a>6 特殊区域总结</h2><ul>
-<li><p><strong>骨干区域 Backbone Area 0</strong></p>
-<p>本身是一个标准区域，负责连接非骨干区域，其它区域(非骨干区域）必须保证和骨干区域有直接的物理连接，因为区域之间的LSA必须经过骨干区域中转</p>
-</li>
-<li><p><strong>常规（标准）区域 Standard Area</strong></p>
-<p>一个区域缺省是常规区域</p>
-</li>
-<li><p><strong>末梢区域 Stub Area</strong></p>
-<p>把一个区域配成存根区域的好处是，阻挡LSA4、LSA5外部路由进入本地区域，从而精简路由表;同时ABR会自动产生3类的默认路由LSA注入进该区域。</p>
-</li>
-<li><p><strong>完全末梢区域 Totally Stubby Area</strong></p>
-<p>完全末梢区域是一种对末梢区域的改进，进一步精简路由表;阻挡LSA3、4、5进入该区域，同时ABR自动下发3类默认路由。</p>
-</li>
-<li><p><strong>非完全末梢区域 Not-so-stubby Area</strong></p>
-<p>即想阻挡LSA5，自身又想引入外部路由，stub的变种；</p>
-<p>NSSA既阻挡外部LSA5的进入，同时区域内的路由器又可以引入外部路由LSA7 ;LSA7在NSSA内洪泛，通过ABR时转换为LSA5并被注入进骨干区域。</p>
-<p>ABR不会缺省生成0/O默认路由进入本地区域，需手工配置</p>
-</li>
-<li><p><strong>完全NSSA totally Not-so-stubby Area</strong></p>
-<p>在NSSA的基础上进一步阻挡骨干区域过来的3,4,5类LSA 并且ABR自动下发3类的默认路由进NSSA。</p>
-</li>
-</ul>
-<p>&emsp;&emsp;<strong>各区域内所允许出现LSA总结如下：</strong></p>
-<ul>
-<li><p>骨干区域：1、2、3、4、5</p>
-</li>
-<li><p>标准区域：1、2、3、4、5</p>
-</li>
-<li><p>Stub区域：1、2、3、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
-</li>
-<li><p>完全Stub区域： 1、2、3类0.0.0.0/0（ABR向区域内发起的一条3类缺省路由LSA）</p>
-</li>
-<li><p>NSSA 区域：1、2、3、7</p>
-</li>
-<li><p>完全NSSA区域:1、2、7、3类0.0.0.0/0 (ABR向区域内发起的一条3类缺省路由LSA )</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>OSPF</tag>
-        <tag>路由协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OSPF路由优选规则</title>
-    <url>/2020/11/15/OSPF%E8%B7%AF%E7%94%B1%E4%BC%98%E9%80%89%E8%A7%84%E5%88%99/</url>
-    <content><![CDATA[<p>&emsp;&emsp;在路由表中我们可以看到通过OSPF路由协议学习到的路由是哪一种类型（如O、O IA、O E1、O E2、O N1、O N2）的。当路由器学习到不同类型的同一路由时是如何选择的呢？本篇文章主要介绍OSPF路由的优先选择原则。</p>
-<a id="more"></a>
-
-<h2 id="1-基本优选规则"><a href="#1-基本优选规则" class="headerlink" title="1 基本优选规则"></a>1 基本优选规则</h2><ol>
-<li><p>直连路由：本路由器发起的LSA1、2 ；</p>
-</li>
-<li><p>区域内路由：O： LSA1、2；</p>
-</li>
-<li><p>区域间路由：O IA： LSA 3 ；</p>
-</li>
-<li><p>1类外部路由：O E1： LSA5类型1；</p>
-</li>
-<li><p>2类外部路由：O E2： LSA5类型2；</p>
-</li>
-<li><p>1类NSSA路由：O N1： LSA7类型1；</p>
-</li>
-<li><p>2类NSSA路由∶O N2：LSA7类型2。</p>
-</li>
-</ol>
-<p>&emsp;&emsp;注意：O E1绝对优于O E2，O N1绝对优于O N2。而E1之间、E2之间的比较，则需要另做讨论。另外，O E及O N的优选，要看厂商，不同的厂商，优选方式不同。</p>
-<h3 id="1-1-O-及O-IA的比较"><a href="#1-1-O-及O-IA的比较" class="headerlink" title="1.1 O 及O IA的比较"></a>1.1 O 及O IA的比较</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEUHj1.png" alt="image-20201115215555698"></p>
-<p>&emsp;&emsp;在这个图中，R1同时从R2及R3学习到3.3.3.0的路由，一条是О，一条是OIA，R1将绝对优选R3作为前往3.3.3.0的下一跳，而不看metric。</p>
-<h3 id="1-2-O-IA之间的比较"><a href="#1-2-O-IA之间的比较" class="headerlink" title="1.2 O IA之间的比较"></a>1.2 O IA之间的比较</h3><p>&emsp;&emsp;一般来说，O IA之间比较metric，谁小取谁，但是也有特例，如下：</p>
-<p><img src="https://s3.ax1x.com/2020/11/16/DEUOHK.png" alt="image-20201115215940616"></p>
-<p>&emsp;&emsp;上图中，R2上，能学习到由ABRR1及R3发出的关于路由1.1.1.0的3类LSA，两条路由都是О IA，但是R2将恒定优选R1作为去往1.1.1.0的下一跳，而不管这条路由的metric多大。</p>
-<h3 id="1-3-多进程OSPF问题1"><a href="#1-3-多进程OSPF问题1" class="headerlink" title="1.3 多进程OSPF问题1"></a>1.3 多进程OSPF问题1</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEUvND.png" alt="image-20201115220045832"></p>
-<p>&emsp;&emsp;同一台路由器，本地如果跑两个OSPF进程，则各自独立，路由信息不会自动相互注入；另外如果同时从两个进程学习到同一条路由，则不管metric如何，先到先用，而不会负载均衡。</p>
-<h3 id="1-4-多进程OSPF问题2"><a href="#1-4-多进程OSPF问题2" class="headerlink" title="1.4 多进程OSPF问题2"></a>1.4 多进程OSPF问题2</h3><p><img src="https://s3.ax1x.com/2020/11/16/DEaS9H.png" alt="image-20201115220146896"></p>
-<p>&emsp;&emsp;由于是两个OSPF进程，因此依然是先到先得，R1上，如果率先与R2建立邻居关系，那么4.4.4.0的路由在路由表中，仍然是О IA的。即使通过R3过来的是О，但是由于是不同的进程，因此只看谁先来不管metric也不管什么O&gt;O IA&gt;O E1&gt;O E2。</p>
+<p>&emsp;&emsp;在接口模式下配置可以忽略MTU，注意是在MTU小的那一个OSPF 路由器接口上（如果两端MTU不一样）</p>
+<p><strong>2. 接口掩码问题</strong></p>
+<p>&emsp;&emsp;<strong>a)在一个MA网络中，如果邻居两端接口掩码不一致，则邻居建立不起来。</strong></p>
+<p><strong>&emsp;&emsp;b)在p2p的网络中，如果邻居两端接口掩码不一致，邻居能建立，并且路由也能学习到。</strong></p>
+<p><strong>3. 网络类型问题</strong><br>&emsp;&emsp;两端如果OSPF网络类型不同,那么邻居关系能建立起来，路由器甚至能收到对方的LSA ,但是路由学不到。</p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -3333,66 +3393,6 @@
       <tags>
         <tag>Nexus</tag>
         <tag>vPC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OSPF邻居关系建立及维护</title>
-    <url>/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/</url>
-    <content><![CDATA[<p>&emsp;&emsp;OSPF邻居关系的建立是经历了七个不同的状态逐步建立起来的，状态之间的转换以及邻居关系建立后的维护主要通过OSPF的五个报文进行数据的传输。 本篇文章详细介绍了OSPF邻居关系的建立与维护。</p>
-<a id="more"></a>
-
-<h2 id="1-邻居建立过程"><a href="#1-邻居建立过程" class="headerlink" title="1 邻居建立过程"></a>1 邻居建立过程</h2><p><img src="https://s3.ax1x.com/2020/11/11/BvWneO.png" alt="image-20201111201619205"></p>
-<p>&emsp;&emsp;在初始情况下，A、B 在某个接口激活了OSPF后，都会开始在这个接口上去发组播的Hello包，目的是发现OSPF邻居。Hello包里，有个active neighbor字段，用来存储路由器在某个OSPF接口上发现的邻居。当然，初始情况下，这个Hello包里是不包含任何活跃的邻居的(也就没有active neighbor字段)，因为它谁也没发现。<br>&emsp;&emsp;当OSPF路由器（B）在某个OSPF 接口上收到邻居发来的Hello包（里面没有装active neighbor ），它会记录下A（在自己的OSPF接口数据结构中）并且将 A 的状态视为Init ，然后将A的Router lD存储在自己将要发送的Hello包的active neighbor字段里发送出去，这样 A 就会收到这个Hello包，并且在这个Hello包当中找到自己的Router lD，那么 A 会认为，与 B 已经完成了双边关系的建立，因此 A 会将 B 的邻居状态置为two-way。<br>&emsp;&emsp;与此同时，A 也会继续发送Hello包，并且将B的Router lD放置于Hello包中，而B收到这个Hello包并看见了自己的Router lD后，B 也会将 A 的状态置为Two-way，至此OSPF的第一个稳态就达到了。</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWKTe.png" alt="image-20201111202300693"></p>
-<p>&emsp;&emsp;接下去A、B会进入Ex-start 状态并开始进行master、slave的协商，协商MIS的目的是为了决定在后续的LSA交互中，谁来决定DD的序列号，而Router lD 大的那个OSPF路由器的接口将会成为master，由它来决定DD seq，对端成为slave。这里要注意master不是DR，要注意与DR的概念进行区分。这个协商过程，是由交互DBD包实现的，注意这里使用的是空的DBD包，也就是不包含任何LSA头部的DBD包，这个包当中，有三个位非常关键：I、M、MS。用于Ex-start阶段协商master、slave的DBD包，I 位（或叫做 Init 位）都是置0的；另外MS位如果置1，表示DBD报文始发路由器认为自己的master，当然起初大家都这么认为，在一系列DBD交换后，就会得到选举结果，被选举为slave的OSPF接口，会将发送的DBD包MS位置为0；另外M位表示more，如果一个OSPF接口发送的DBD包M位置1，在表示这不是最后一个DBD，后续还有DBD包待发送。<br>&emsp;&emsp;当OSPF接口收到一个DBD包且其中 I 位置0的时候，它就知道与该邻居的Ex-start阶段已经过去了，于是将邻居的状态置为Exchange，并存储对端发来的DBD包所包含的LSA头部，当然，他自己也发送关于自己OSPF DB的摘要给邻居。如此一来，双方都能通过DBD的交互，了解到对方OSPF DB中的摘要情况。在这个过程中，可能交互数个DBD报文，并要注意，这些报文的 I 位都置0，且M位一般也置0，除非这是某个OSPF接口发送的最后一个DBD包。</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWlYd.png" alt="image-20201111203911471"></p>
-<p>&emsp;&emsp;当Router A收到一个M位置0的DBD包的时候，它就知道，这是邻居发来的最后一个DBD包了，如果它搜集完这个邻居（假设是B）发来的DBD并且发现，这些DBD里有它感兴趣的LSA，它期望更详细的LSA信息时，它将B置为 Loading 状态，并且开始发送LSR报文去请求特定LSA的详细信息。B收到这个LSR后，会以LSU进行回应，其中就包含了对方请求的LSA详细信息，因此，只有在LSU报文中，才能看到LSA的完整信息。收到LSU后，A将LSU中所包含的LSA放进自己的LSDB，并且给B发一个LSACK进行确认。当OSPF接口上所有的待请求的LSA全部收到更新后，它会将邻居置为FULL。至此，OSPF邻接关系的建立达到全毗邻。<br>&emsp;&emsp;在这里我们有个地方需要留意，我们通常说，OSPF 路由器A与B进入了xx状态，其实这句话并不严谨，原因之一，是因为OSPF 是接口敏感型协议，许多的操作都是以OSPF 接口作为立足点去考虑的，譬如邻居关系的建立，再如DR和BDR，我们不能说一台路由器是DR，准确的说，应该是某路由器的某个接口是DR；再者，说两台路由器之间是xx状态，这个也不严谨，所谓的邻居状态，必须是以某台路由器为观察点，在其某个接口上观察到的某个邻居的状态，因此可能出现的一个情况是，在A上，看到的B的状态为Loading，但是在B上，A的状态已经是FULL了。</p>
-<h2 id="2-状态机"><a href="#2-状态机" class="headerlink" title="2 状态机"></a>2 状态机</h2><p><strong>1. Down</strong></p>
-<p>&emsp;&emsp;在DOWN状态下，OSPF 接口仍然有尝试发现邻居的意愿，因此会不断的发送组播hello包。</p>
-<p><strong>2. Init</strong></p>
-<p>&emsp;&emsp;当OSPF 接口收到链路上某个邻居发来的第一个Hello包的时候，它会在接口上将该邻居置为 Init 状态，注意这个Hello包中可能并未包含任何的邻居信息。但是这至少证明，我这个OSPF接口在这个链路上，至少有个活跃的邻居。</p>
-<p>&emsp;&emsp;下面是一个没有发现任何active neighbor的Hello包：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvW1fA.png" alt="image-20201111205235674"></p>
-<p><strong>3. Two-way</strong></p>
-<p>&emsp;&emsp;当OSPF路由器在某个链路上发现了邻居后，它自己发送的Hello包里就会增加active neighbor字段，用于存储在该链路上发现的OSPF邻居。当一台OSPF Router看到自己（的Router lD）出现在邻居发过来的的Hello 分组中，它就会将该邻居置为Two-way。该状态是OSPF 邻居之间可以具有的最基本的关系，也是第一个稳态，但是此时两者还不能共享路由信息。</p>
-<p>&emsp;&emsp;下面是一个已经在链路上发现了邻居1.1.1.1的Hello：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWJ6P.png" alt="image-20201111205414612"></p>
-<p><strong>4. Ex-Start</strong></p>
-<p>&emsp;&emsp;一台OSPF路由器在将某个邻居置为Two-way状态后，就开始发送空的DBD包，用于协商master/slave。这个就是 Ex-start 状态。两台Router 间用空的BDB分组确定master和slave关系（注意不是DR和BDR），在DBD包中有3个标记位用来管理邻接关系的建立过程：</p>
-<ul>
-<li>l位         或称为初始位（Initial bit ）用于Ex-start协商主从关系的初始化协商的DBD包，该位置1</li>
-<li>M位       或称为后继位（More bit）如果这不是OSPF Router 发送的最后一个DBD，该位置1</li>
-<li>MS位     或称为主/从位（Master / slave bit）如果始发路由器是Master，则该位置1</li>
-</ul>
-<p>&emsp;&emsp;如果某台OSPF Router收到邻居发来的DBD I 位也就是Init位置0则意味着Ex-start状态结束并且master/slave已经选出来了那么该路由器会将邻居置为Exchange状态开始用包含LSA头部的DBD交换各自的LSBD。下面是一个用于初始化协商的DBD消息：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWYOf.png" alt="image-20201111205948163"></p>
-<p><strong>5. Exchange</strong></p>
-<p>&emsp;&emsp;这个过程，双方使用包含自己LSA头部的DBD报文进行交互，并且将对方发过来的LSA头部、并且自己感兴趣的LSA（或自己没有的LSA）存储在一个本地OSPF 接口的队列里，以便在下一个阶段进行LSA详细信息的请求。当某个OSPF接口收到邻居发来的DBD，M位置0 ，则表示对方已经发完DBD了，与此同时如果该路由器的这个OSPF接口上存在待请求的LSA，那么它会将这个邻居置为Loading状态。</p>
-<p>&emsp;&emsp;下面是一个装载了LSA头部的DBD消息：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWNm8.png" alt="image-20201111210116338"></p>
-<p><strong>6. Loading</strong></p>
-<p>&emsp;&emsp;OSPF Router使用LSR去请求LSA的详细信息，对方使用LSU发来更新，因此只有LSU里才有LSA的完整信息。在收到LSU后，一方面本地使用LSACK进行确认，另一方面将LSU 中包含的LSA装载进自己的LSDB。</p>
-<p>&emsp;&emsp;以下是一个LSR消息，非常的简单：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvW0Yj.png" alt="image-20201111210243739"></p>
-<p><strong>7. FULL</strong></p>
-<p>&emsp;&emsp;Loading 状态结束后，也就是本地OSPF接口上再没有待更新的LSA队列后，将邻居置为FULL。</p>
-<p><strong>8. Attempt</strong></p>
-<p>&emsp;&emsp;如果一个路由器，它邻居处于这种状态，则表示它从邻居没有收到任何信息，但是做了努力来与邻居联系。仅在NBMA网络上存在，当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效（Active）时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器将会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用Hello interval时间代替Poll interval的时间来作为向邻居发送Hello数据包的时间间隔。</p>
-<h2 id="3-OSPF邻居关系建立中的问题"><a href="#3-OSPF邻居关系建立中的问题" class="headerlink" title="3 OSPF邻居关系建立中的问题"></a>3 OSPF邻居关系建立中的问题</h2><p><strong>1. MTU问题</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#ip ospf mtu-ignore</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;在接口模式下配置可以忽略MTU，注意是在MTU小的那一个OSPF 路由器接口上（如果两端MTU不一样）</p>
-<p><strong>2. 接口掩码问题</strong></p>
-<p>&emsp;&emsp;<strong>a)在一个MA网络中，如果邻居两端接口掩码不一致，则邻居建立不起来。</strong></p>
-<p><strong>&emsp;&emsp;b)在p2p的网络中，如果邻居两端接口掩码不一致，邻居能建立，并且路由也能学习到。</strong></p>
-<p><strong>3. 网络类型问题</strong><br>&emsp;&emsp;两端如果OSPF网络类型不同,那么邻居关系能建立起来，路由器甚至能收到对方的LSA ,但是路由学不到。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>OSPF</tag>
-        <tag>路由协议</tag>
       </tags>
   </entry>
   <entry>
