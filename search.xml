@@ -757,75 +757,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNA实验六——单臂路由的运用</title>
-    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】 </p>
-<ol>
-<li><p>掌握交换机上 VLAN 的创建和划分</p>
-</li>
-<li><p>掌握 Trunk 的作用</p>
-</li>
-<li><p>掌握 VTP 的作用与配置</p>
-</li>
-<li><p>掌握单臂路由原理与配置</p>
-</li>
-<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
-</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
-<center>单臂路由的实现拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
-</ol>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
-<ol start="2">
-<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
-<ol start="3">
-<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
-<p><img src="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
-<ol start="5">
-<li>测试各主机之间的连通性</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
-<p><img src="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
-<ol start="6">
-<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
-<p><img src="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
-<p>&emsp;&emsp;PC2与PC3的连通性：</p>
-<p><img src="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>单臂路由</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNA实验八——ACL 的运用</title>
     <url>/2018/10/15/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AB/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 ACL 作用；标准和扩展 ACL 的区别；标准和扩展 ACL 的配置； ALC 的验证和查看命令；命名的 ACL 的作用与配置。</p>
@@ -952,6 +883,75 @@
       <tags>
         <tag>CCNA</tag>
         <tag>ACL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNA实验六——单臂路由的运用</title>
+    <url>/2018/10/11/CCNA%E5%AE%9E%E9%AA%8C%E5%85%AD/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍交换机上 VLAN 的创建和划分； Trunk 的作用； VTP 的作用与配置；单臂路由原理与配置； Trunk 链路 上的 802.1Q 标记的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】 </p>
+<ol>
+<li><p>掌握交换机上 VLAN 的创建和划分</p>
+</li>
+<li><p>掌握 Trunk 的作用</p>
+</li>
+<li><p>掌握 VTP 的作用与配置</p>
+</li>
+<li><p>掌握单臂路由原理与配置</p>
+</li>
+<li><p>理解 Trunk 链路 上的 802.1Q 标记的作用</p>
+</li>
+</ol>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/09/27/0AevwD.png" alt="图片2"></p>
+<center>单臂路由的实现拓扑</center>
+
+<p>【实验需求】</p>
+<ol>
+<li>在 Switch1 上创建两个 VLAN，VLAN10 和 VLAN20，并将 VLAN10 命名为 sales，将 VLAN20 命名为 engineers</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">10</span> </span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> sales</span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config)</span></span><span class="selector-id">#vlan</span> <span class="number">20</span></span><br><span class="line"><span class="function"><span class="title">SW1</span><span class="params">(config-vlan)</span></span><span class="selector-id">#name</span> engineers</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/27/0AmkOf.png" alt="image-20200927163641463"></p>
+<ol start="2">
+<li>完成必要的配置，实现两交换的 VLAN 数据库同步，并使用相关命令验证和查看 VLAN 数据库的信息</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用VTP，将SW1配置为server模式</span></span><br><span class="line">SW1(config)<span class="comment">#vtp mode server </span></span><br><span class="line">Device mode already VTP Server <span class="keyword">for</span> VLANS.</span><br><span class="line"><span class="comment">#将SW1加入huangzc域</span></span><br><span class="line">SW1(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line"><span class="comment">#开启VTP的认证模式，密码为123456</span></span><br><span class="line">SW1(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line"><span class="comment">#将SW1与SW2连接的端口配置为Trunk模式</span></span><br><span class="line">SW1(config)<span class="comment">#int e0/3</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用VTP，将SW2配置为server模式</span></span><br><span class="line">SW2(config)<span class="comment">#vtp mode client </span></span><br><span class="line">Setting device to VTP Client mode <span class="keyword">for</span> VLANS.</span><br><span class="line">SW2(config)<span class="comment">#vtp domain huangzc</span></span><br><span class="line">Changing VTP domain name from NULL to huangzc</span><br><span class="line">SW2(config)<span class="comment">#vtp password 123456</span></span><br><span class="line">Setting device VTP password to 123456</span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/0</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport trunk encapsulation dot1q </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode trunk</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/27/0AmEm8.png" alt="image-20200927163600475"></p>
+<ol start="3">
+<li>将连接 PC1 和 PC3 的交换端口划分进 VLAN10，将连接 PC2 的交换端口划分进 VLAN20 中，并为各 PC 配置合适的 IP 地址和网关</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SW1(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line">SW1(config-if)<span class="comment">#int e0/2                  </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport mode access    </span></span><br><span class="line">SW1(config-if)<span class="comment">#switchport access vlan 20 </span></span><br><span class="line"></span><br><span class="line">SW2(config)<span class="comment">#int e0/1</span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport mode access </span></span><br><span class="line">SW2(config-if)<span class="comment">#switchport access vlan 10 </span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.1 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.1 255.255.255.0 gateway 192.168.10.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.20.1 255.255.255.0 192.168.20.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.20.1 255.255.255.0 gateway 192.168.20.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 192.168.10.2 255.255.255.0 192.168.10.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 192.168.10.2 255.255.255.0 gateway 192.168.10.254</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用 show vlan brief 查看各交换机的 VLAN 接口信息</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/27/0AmZTg.png" alt="image-20200927202926050"></p>
+<p><img src="https://s1.ax1x.com/2020/09/27/0AmnYj.png" alt="image-20200927203024123"></p>
+<ol start="5">
+<li>测试各主机之间的连通性</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/27/0AmQlq.png" alt="image-20200927204333845"></p>
+<p><img src="https://s1.ax1x.com/2020/09/27/0Aml60.png" alt="image-20200927211745826"></p>
+<ol start="6">
+<li>在交换机和路由器上完成必要的配置，实现各主机间可以互相通信</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R1上配置单臂路由</span></span><br><span class="line"><span class="comment">#进入子接口</span></span><br><span class="line">R1(config)<span class="comment">#int e0/0.1</span></span><br><span class="line"><span class="comment">#将子接口封装进Vlan 10</span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 10</span></span><br><span class="line"><span class="comment">#配置子接口的IP地址</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.10.254 255.255.255.0  </span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown </span></span><br><span class="line">R1(config-subif)<span class="comment">#int e0/0.2  </span></span><br><span class="line">R1(config-subif)<span class="comment">#encapsulation dot1Q 20</span></span><br><span class="line">R1(config-subif)<span class="comment">#ip address 192.168.20.254 255.255.255.0</span></span><br><span class="line">R1(config-subif)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;PC1与PC2、PC3之间的连通性：</p>
+<p><img src="https://s1.ax1x.com/2020/09/27/0Am1XV.png" alt="image-20200927203631922"></p>
+<p>&emsp;&emsp;PC2与PC3的连通性：</p>
+<p><img src="https://s1.ax1x.com/2020/09/27/0AmdpR.png" alt="image-20200927203931818"></p>
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>单臂路由</tag>
       </tags>
   </entry>
   <entry>
@@ -2185,91 +2185,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Nexus交换机FEX</title>
-    <url>/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/</url>
-    <content><![CDATA[<p>&emsp;&emsp;FEX（Fabric Extenders），Cisco Nexus 2000 可以通过FEX技术成为N5K和N7K的一个远程线卡，被Cisco Nexus交换机管理和配置。</p>
-<a id="more"></a>
-
-<h2 id="1-FEX技术介绍"><a href="#1-FEX技术介绍" class="headerlink" title="1 FEX技术介绍"></a>1 FEX技术介绍</h2><h3 id="1-1-Cisco-Nexus交换机使用Fabric-Extenders"><a href="#1-1-Cisco-Nexus交换机使用Fabric-Extenders" class="headerlink" title="1.1 Cisco Nexus交换机使用Fabric Extenders"></a>1.1 Cisco Nexus交换机使用Fabric Extenders</h3><ul>
-<li>Cisco Nexus 2000 FEX作为N5K和N7K的一个远程线卡<ul>
-<li>被Cisco Nexus交换机管理和配置</li>
-</ul>
-</li>
-<li>Cisco Nexus交换机和Cisco Nexus 2000 FEX合并在一起实现了最好的Top-of-rack的接线和end-of-row的管理。</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/10/6GALjK.png" alt="image-20210308094611223"></p>
-<h3 id="1-2-FEX术语"><a href="#1-2-FEX术语" class="headerlink" title="1.2 FEX术语"></a>1.2 FEX术语</h3><p><img src="https://s3.ax1x.com/2021/03/10/6GAXnO.png" alt="image-20210308094638383"></p>
-<h3 id="1-3-NIV（Network-Interface-Virtualization）架构"><a href="#1-3-NIV（Network-Interface-Virtualization）架构" class="headerlink" title="1.3 NIV（Network Interface Virtualization）架构"></a>1.3 NIV（Network Interface Virtualization）架构</h3><ul>
-<li>网络接口虚拟化（NIV）架构扩展了交换机的接口到下游设备</li>
-<li>NIV关联逻辑接口（LIF）到一个虚拟接口（VIF）</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/10/6GEKCn.png" alt="image-20210308095045210"></p>
-<h3 id="1-4-VN-Tag端口扩展"><a href="#1-4-VN-Tag端口扩展" class="headerlink" title="1.4 VN-Tag端口扩展"></a>1.4 VN-Tag端口扩展</h3><ul>
-<li>Nexus 2000 Fabric Extender作为一个远程线卡使用，不支持本地交换。</li>
-<li>所有的转发任务都在N5K或者N7K上被执行。</li>
-<li>VNTag是一个网络接口虚拟化（NIV）技术，扩展N5K/N7K的端口（逻辑接口LIF）到下游N2K的虚拟接口（VIF），就和一个普通的主机接口（Host Interface=HIF）一样。<ul>
-<li>VNTag被添加到N5K/N7K和Fabric Extender之间的包上。</li>
-<li>当这个包被发送到主机时，VN-Tag被剥除。</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/10/6GEQg0.png" alt="image-20210308095235357"></p>
-<ul>
-<li>Nexus 5K/7K在Fabric Ports上执行入方向处理。</li>
-<li>UPC提取VNTag，这个VN-Tag表示一个逻辑接口（LIF）关联到一个N2K上的一个物理HIF。</li>
-<li>入方向的策略基于在N5K/N7K物理端口和逻辑接口上的策略。<ul>
-<li>访问控制和发送策略，根据帧内的字段和虚拟接口策略。</li>
-<li>物理层的属性（例如：MACSec）根据N5K/N7K上的设置。</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/10/6GElvV.png" alt="image-20210308095401782"></p>
-<h3 id="1-5-包发送过程简介"><a href="#1-5-包发送过程简介" class="headerlink" title="1.5 包发送过程简介"></a>1.5 包发送过程简介</h3><p><img src="https://s3.ax1x.com/2021/03/10/6GE3uT.png" alt="image-20210308095459210"></p>
-<h3 id="1-6-Cisco-N7K-FEX与VDC"><a href="#1-6-Cisco-N7K-FEX与VDC" class="headerlink" title="1.6 Cisco N7K FEX与VDC"></a>1.6 Cisco N7K FEX与VDC</h3><ul>
-<li>所有的FEX Fabric Link必须在一个相同的VDC</li>
-<li>所有的FEX主机端口属于相同的VDC</li>
-</ul>
-<p><img src="https://s3.ax1x.com/2021/03/10/6GEGbF.png" alt="image-20210308095532633"></p>
-<h3 id="1-7-连接模式"><a href="#1-7-连接模式" class="headerlink" title="1.7 连接模式"></a>1.7 连接模式</h3><h4 id="1-7-1-Static-Pinning"><a href="#1-7-1-Static-Pinning" class="headerlink" title="1.7.1 Static Pinning"></a>1.7.1 Static Pinning</h4><p><img src="https://s3.ax1x.com/2021/03/10/6GEYE4.png" alt="image-20210308095650529"></p>
-<ul>
-<li>当启动Fabric Extender时，它的主机接口在可用的结构接口之间平均分布。</li>
-<li>如果某个fabric接口出现故障，则其所有相关的主机接口都将失效，直到fabric接口恢复。</li>
-<li>必须使用pinning max-links命令创建固定的fabric接口连接数，以便父级交换机可以确定主机接口的分布。主机接口数除以最大链接数和相应地分配。默认值为max-links 1。</li>
-<li>更改max-links的值会造成中断；所有主机Fabric Extender上的接口被关闭和备份，当父开关重新分配其static pinning。</li>
-</ul>
-<h4 id="1-7-2-EtherChannel"><a href="#1-7-2-EtherChannel" class="headerlink" title="1.7.2 EtherChannel"></a>1.7.2 EtherChannel</h4><p><img src="https://s3.ax1x.com/2021/03/10/6GEtUJ.png" alt="image-20210308095655503"></p>
-<ul>
-<li>将Fabric Extender配置为使用EtherChannel时连接到其父交换机的fabric接口，交换机使用负载均衡的方式连接主机的流量，并使用以下负载均衡的标准来创建链接：<ul>
-<li>对于第2层帧，交换机使用源和目标MAC地址。</li>
-<li>对于第3层帧，交换机使用源和目标MAC地址以及源和目标IP地址。</li>
-</ul>
-</li>
-</ul>
-<h3 id="1-8-端口命令的规则"><a href="#1-8-端口命令的规则" class="headerlink" title="1.8 端口命令的规则"></a>1.8 端口命令的规则</h3><p>interface ethernet chassis/slot/port (e101/1/25)</p>
-<ul>
-<li>chassis由管理员配置。Fabric Extender必须通过单个交换机直接连接到其父交换机via individual<br>fabric interfaces或EtherChannel fabric interface。您可以在交换机上的物理以太网接口或以太网通道上配置chassis ID，以标识通过这些接口发现的Fabric Extender。<ul>
-<li>chassis ID的范围从100到199。</li>
-<li>注意：只有访问上的主机接口时才需要chassis ID Fabric Extender。值小于100表示父交换机上的插槽。</li>
-</ul>
-</li>
-<li>slot标识结构扩展器上的插槽号。</li>
-<li>port标识特定插槽上的端口号和机箱ID。</li>
-</ul>
-<h3 id="1-9-Host-Interface问题"><a href="#1-9-Host-Interface问题" class="headerlink" title="1.9 Host Interface问题"></a>1.9 Host Interface问题</h3><ul>
-<li>Host Interface不能连接交换机，这种接口设计来只用于提供主机和服务器的连接。</li>
-<li>默认在所有的Host Interface上激活了BPDU Guard，如果连接交换机到Host Interface，一旦从这个接口收到BPDU，这个接口将被置为“error-disable”状态。</li>
-<li>不能在Fabric Extender的Host Interface上禁用BPDU Guard功能。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Nexus</tag>
-        <tag>FEX</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Nexus交换机FabricPath</title>
     <url>/2021/03/15/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath/</url>
     <content><![CDATA[<p>&emsp;&emsp;FabricPath是Cisco Nexus交换机上的一项技术特性，这个技术做到了以下几点：实现两点间多条路径同时转发流量EMCP(Equal Cost Multi Pathing)；类似IP网络的平滑扩展；快速收敛；防止广播风暴；保持原有二层网络配置的简洁性。FabricPath摆脱传统二层“交换”的弊端，在二层环境中实现类似三层IP的“路由”行为。</p>
@@ -2445,6 +2360,91 @@
       </tags>
   </entry>
   <entry>
+    <title>Nexus交换机FEX</title>
+    <url>/2021/03/08/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFEX/</url>
+    <content><![CDATA[<p>&emsp;&emsp;FEX（Fabric Extenders），Cisco Nexus 2000 可以通过FEX技术成为N5K和N7K的一个远程线卡，被Cisco Nexus交换机管理和配置。</p>
+<a id="more"></a>
+
+<h2 id="1-FEX技术介绍"><a href="#1-FEX技术介绍" class="headerlink" title="1 FEX技术介绍"></a>1 FEX技术介绍</h2><h3 id="1-1-Cisco-Nexus交换机使用Fabric-Extenders"><a href="#1-1-Cisco-Nexus交换机使用Fabric-Extenders" class="headerlink" title="1.1 Cisco Nexus交换机使用Fabric Extenders"></a>1.1 Cisco Nexus交换机使用Fabric Extenders</h3><ul>
+<li>Cisco Nexus 2000 FEX作为N5K和N7K的一个远程线卡<ul>
+<li>被Cisco Nexus交换机管理和配置</li>
+</ul>
+</li>
+<li>Cisco Nexus交换机和Cisco Nexus 2000 FEX合并在一起实现了最好的Top-of-rack的接线和end-of-row的管理。</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/10/6GALjK.png" alt="image-20210308094611223"></p>
+<h3 id="1-2-FEX术语"><a href="#1-2-FEX术语" class="headerlink" title="1.2 FEX术语"></a>1.2 FEX术语</h3><p><img src="https://s3.ax1x.com/2021/03/10/6GAXnO.png" alt="image-20210308094638383"></p>
+<h3 id="1-3-NIV（Network-Interface-Virtualization）架构"><a href="#1-3-NIV（Network-Interface-Virtualization）架构" class="headerlink" title="1.3 NIV（Network Interface Virtualization）架构"></a>1.3 NIV（Network Interface Virtualization）架构</h3><ul>
+<li>网络接口虚拟化（NIV）架构扩展了交换机的接口到下游设备</li>
+<li>NIV关联逻辑接口（LIF）到一个虚拟接口（VIF）</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/10/6GEKCn.png" alt="image-20210308095045210"></p>
+<h3 id="1-4-VN-Tag端口扩展"><a href="#1-4-VN-Tag端口扩展" class="headerlink" title="1.4 VN-Tag端口扩展"></a>1.4 VN-Tag端口扩展</h3><ul>
+<li>Nexus 2000 Fabric Extender作为一个远程线卡使用，不支持本地交换。</li>
+<li>所有的转发任务都在N5K或者N7K上被执行。</li>
+<li>VNTag是一个网络接口虚拟化（NIV）技术，扩展N5K/N7K的端口（逻辑接口LIF）到下游N2K的虚拟接口（VIF），就和一个普通的主机接口（Host Interface=HIF）一样。<ul>
+<li>VNTag被添加到N5K/N7K和Fabric Extender之间的包上。</li>
+<li>当这个包被发送到主机时，VN-Tag被剥除。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/10/6GEQg0.png" alt="image-20210308095235357"></p>
+<ul>
+<li>Nexus 5K/7K在Fabric Ports上执行入方向处理。</li>
+<li>UPC提取VNTag，这个VN-Tag表示一个逻辑接口（LIF）关联到一个N2K上的一个物理HIF。</li>
+<li>入方向的策略基于在N5K/N7K物理端口和逻辑接口上的策略。<ul>
+<li>访问控制和发送策略，根据帧内的字段和虚拟接口策略。</li>
+<li>物理层的属性（例如：MACSec）根据N5K/N7K上的设置。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/10/6GElvV.png" alt="image-20210308095401782"></p>
+<h3 id="1-5-包发送过程简介"><a href="#1-5-包发送过程简介" class="headerlink" title="1.5 包发送过程简介"></a>1.5 包发送过程简介</h3><p><img src="https://s3.ax1x.com/2021/03/10/6GE3uT.png" alt="image-20210308095459210"></p>
+<h3 id="1-6-Cisco-N7K-FEX与VDC"><a href="#1-6-Cisco-N7K-FEX与VDC" class="headerlink" title="1.6 Cisco N7K FEX与VDC"></a>1.6 Cisco N7K FEX与VDC</h3><ul>
+<li>所有的FEX Fabric Link必须在一个相同的VDC</li>
+<li>所有的FEX主机端口属于相同的VDC</li>
+</ul>
+<p><img src="https://s3.ax1x.com/2021/03/10/6GEGbF.png" alt="image-20210308095532633"></p>
+<h3 id="1-7-连接模式"><a href="#1-7-连接模式" class="headerlink" title="1.7 连接模式"></a>1.7 连接模式</h3><h4 id="1-7-1-Static-Pinning"><a href="#1-7-1-Static-Pinning" class="headerlink" title="1.7.1 Static Pinning"></a>1.7.1 Static Pinning</h4><p><img src="https://s3.ax1x.com/2021/03/10/6GEYE4.png" alt="image-20210308095650529"></p>
+<ul>
+<li>当启动Fabric Extender时，它的主机接口在可用的结构接口之间平均分布。</li>
+<li>如果某个fabric接口出现故障，则其所有相关的主机接口都将失效，直到fabric接口恢复。</li>
+<li>必须使用pinning max-links命令创建固定的fabric接口连接数，以便父级交换机可以确定主机接口的分布。主机接口数除以最大链接数和相应地分配。默认值为max-links 1。</li>
+<li>更改max-links的值会造成中断；所有主机Fabric Extender上的接口被关闭和备份，当父开关重新分配其static pinning。</li>
+</ul>
+<h4 id="1-7-2-EtherChannel"><a href="#1-7-2-EtherChannel" class="headerlink" title="1.7.2 EtherChannel"></a>1.7.2 EtherChannel</h4><p><img src="https://s3.ax1x.com/2021/03/10/6GEtUJ.png" alt="image-20210308095655503"></p>
+<ul>
+<li>将Fabric Extender配置为使用EtherChannel时连接到其父交换机的fabric接口，交换机使用负载均衡的方式连接主机的流量，并使用以下负载均衡的标准来创建链接：<ul>
+<li>对于第2层帧，交换机使用源和目标MAC地址。</li>
+<li>对于第3层帧，交换机使用源和目标MAC地址以及源和目标IP地址。</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-8-端口命令的规则"><a href="#1-8-端口命令的规则" class="headerlink" title="1.8 端口命令的规则"></a>1.8 端口命令的规则</h3><p>interface ethernet chassis/slot/port (e101/1/25)</p>
+<ul>
+<li>chassis由管理员配置。Fabric Extender必须通过单个交换机直接连接到其父交换机via individual<br>fabric interfaces或EtherChannel fabric interface。您可以在交换机上的物理以太网接口或以太网通道上配置chassis ID，以标识通过这些接口发现的Fabric Extender。<ul>
+<li>chassis ID的范围从100到199。</li>
+<li>注意：只有访问上的主机接口时才需要chassis ID Fabric Extender。值小于100表示父交换机上的插槽。</li>
+</ul>
+</li>
+<li>slot标识结构扩展器上的插槽号。</li>
+<li>port标识特定插槽上的端口号和机箱ID。</li>
+</ul>
+<h3 id="1-9-Host-Interface问题"><a href="#1-9-Host-Interface问题" class="headerlink" title="1.9 Host Interface问题"></a>1.9 Host Interface问题</h3><ul>
+<li>Host Interface不能连接交换机，这种接口设计来只用于提供主机和服务器的连接。</li>
+<li>默认在所有的Host Interface上激活了BPDU Guard，如果连接交换机到Host Interface，一旦从这个接口收到BPDU，这个接口将被置为“error-disable”状态。</li>
+<li>不能在Fabric Extender的Host Interface上禁用BPDU Guard功能。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Nexus</tag>
+        <tag>FEX</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Nexus交换机FabricPath配置</title>
     <url>/2021/03/16/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAFabricPath%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍在Nexus交换机上FabricPath的配步骤。</p>
@@ -2524,6 +2524,24 @@
       <tags>
         <tag>Nexus</tag>
         <tag>FabricPath</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nexus交换机vPC配置</title>
+    <url>/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>&emsp;&emsp;Nexus交换机vPC配置。</p>
+<a id="more"></a>
+
+<p><img src="https://s3.ax1x.com/2021/03/12/6UMRwd.png" alt="image-20210312130934319"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用Feature</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature vpc </span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature lacp </span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature vpc</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature lacp</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Peer Keepalive Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e4/16-17</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 10 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 192.168.1.1/24</span></span><br><span class="line">DC2-N7K-3( config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e4/18-19</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 10 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 192.168.1.2/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置vPC Domain与Peer Keepalive Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#role priority 73</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#system-priority 2500</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.2 source 192.168.1.1 vrf P-K-L</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#role priority 74</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#system-priority 2500</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.1 source 192.168.1.2 vrf P-K-L</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Peer Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e3/18-19</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 20 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config-if-range )<span class="comment">#exit</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 20</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vpc peer-link</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e3/26-27</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 20 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#exit</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 20</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vpc peer-link</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置vPC</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e3/21-22</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vpc 30</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e3/31-32</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vpc 30</span></span><br><span class="line"></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#feature lacp</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface e1/21-22,e1/27-28</span></span><br><span class="line">DC2-N5K-1(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N5K-1(config-if-range)<span class="comment">#exit</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Interface—Vlan</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N7K-3(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.1.252/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N7K-4(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.1.253/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置OSPF</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-1(config-router)<span class="comment">#router-id 1.1.1.1</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfacee4/15</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 202.100.13.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfacee4/2</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 202.100.14.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfaceloopback 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 61.128.1.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf area 0</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfaceloopback 1</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 128.6.7.6/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-3(config-router)<span class="comment">#router-id 3.3.3.3</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interfacee4/34</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.13.3/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interfacee4/26</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.34.3/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#ip prefix-list D2O permit 202.100.1.0/24</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#route-map D2O</span></span><br><span class="line">DC2-N7K-3(config-route-map)<span class="comment">#match ip address prefix-list D2O</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-3(config-router)<span class="comment">#redistribute direct route-map D2O</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-4(config-router)<span class="comment">#router-id 4.4.4.4</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interfacee4/4</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.14.4/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interfacee4/27</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.34.4/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#ip prefix-list D20 permit 202.100.1.0/24</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#route-map D2O</span></span><br><span class="line">DC2-N7K-4(config-route-map)<span class="comment">#match ip address prefix-list D2O</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-4(config-router)<span class="comment">#redistribute direct route-map D2O</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置HSRP</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#ip 202.100.1.254</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#priority 105</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC2-N7K-4(config-if-hsrp)<span class="comment">#ip 202.100.1.254</span></span><br><span class="line">DC2-N7K-4(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line"></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N5K-1(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface e1/26</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line"></span><br><span class="line">Router(config)<span class="comment">#interface fa0/0</span></span><br><span class="line">Router(config-if)<span class="comment">#ip address 202.100.1.2 255.255.255.0</span></span><br><span class="line">Router(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">Router(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 202.100.1.254</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Nexus实验</category>
+      </categories>
+      <tags>
+        <tag>Nexus</tag>
+        <tag>vPC</tag>
       </tags>
   </entry>
   <entry>
@@ -2825,24 +2843,6 @@
 ]]></content>
       <categories>
         <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>Nexus</tag>
-        <tag>vPC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nexus交换机vPC配置</title>
-    <url>/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>&emsp;&emsp;Nexus交换机vPC配置。</p>
-<a id="more"></a>
-
-<p><img src="https://s3.ax1x.com/2021/03/12/6UMRwd.png" alt="image-20210312130934319"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#启用Feature</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature vpc </span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature lacp </span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature vpc</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature lacp</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Peer Keepalive Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e4/16-17</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 10 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 192.168.1.1/24</span></span><br><span class="line">DC2-N7K-3( config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vrf context P-K-L</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e4/18-19</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 10 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vrf member P-K-L</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 192.168.1.2/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置vPC Domain与Peer Keepalive Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#role priority 73</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#system-priority 2500</span></span><br><span class="line">DC2-N7K-3(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.2 source 192.168.1.1 vrf P-K-L</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vpc domain 7</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#role priority 74</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#system-priority 2500</span></span><br><span class="line">DC2-N7K-4(config-vpc-domain)<span class="comment">#peer-keepalive destination 192.168.1.1 source 192.168.1.2 vrf P-K-L</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Peer Link</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e3/18-19</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 20 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config-if-range )<span class="comment">#exit</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 20</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vpc peer-link</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e3/26-27</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 20 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#exit</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 20</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vpc peer-link</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置vPC</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface e3/21-22</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N7K-3(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#vpc 30</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface e3/31-32</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N7K-4(config-if-range)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#vpc 30</span></span><br><span class="line"></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#feature lacp</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface e1/21-22,e1/27-28</span></span><br><span class="line">DC2-N5K-1(config-if-range)<span class="comment">#channel-group 30 mode active</span></span><br><span class="line">DC2-N5K-1(config-if-range)<span class="comment">#exit</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface port-channel 30</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport mode trunk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置Interface—Vlan</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N7K-3(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.1.252/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature interface-vlan</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N7K-4(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.1.253/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置OSPF</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-1(config-router)<span class="comment">#router-id 1.1.1.1</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfacee4/15</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 202.100.13.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfacee4/2</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 202.100.14.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfaceloopback 0</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 61.128.1.1/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf area 0</span></span><br><span class="line">DC2-N7K-1(config)<span class="comment">#interfaceloopback 1</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip address 128.6.7.6/24</span></span><br><span class="line">DC2-N7K-1(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-3(config-router)<span class="comment">#router-id 3.3.3.3</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interfacee4/34</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.13.3/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interfacee4/26</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip address 202.100.34.3/24</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#ip prefix-list D2O permit 202.100.1.0/24</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#route-map D2O</span></span><br><span class="line">DC2-N7K-3(config-route-map)<span class="comment">#match ip address prefix-list D2O</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-3(config-router)<span class="comment">#redistribute direct route-map D2O</span></span><br><span class="line"></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature ospf</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-4(config-router)<span class="comment">#router-id 4.4.4.4</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interfacee4/4</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.14.4/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interfacee4/27</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip address 202.100.34.4/24</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#ip router ospf 1 area 0</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#ip prefix-list D20 permit 202.100.1.0/24</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#route-map D2O</span></span><br><span class="line">DC2-N7K-4(config-route-map)<span class="comment">#match ip address prefix-list D2O</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#router ospf 1</span></span><br><span class="line">DC2-N7K-4(config-router)<span class="comment">#redistribute direct route-map D2O</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置HSRP</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC2-N7K-3(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-3(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#ip 202.100.1.254</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line">DC2-N7K-3(config-if-hsrp)<span class="comment">#priority 105</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#feature hsrp</span></span><br><span class="line">DC2-N7K-4(config)<span class="comment">#interface vlan 10</span></span><br><span class="line">DC2-N7K-4(config-if)<span class="comment">#hsrp 1</span></span><br><span class="line">DC2-N7K-4(config-if-hsrp)<span class="comment">#ip 202.100.1.254</span></span><br><span class="line">DC2-N7K-4(config-if-hsrp)<span class="comment">#preempt</span></span><br><span class="line"></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#vlan 10</span></span><br><span class="line">DC2-N5K-1(config-vlan)<span class="comment">#name QYT-Test</span></span><br><span class="line">DC2-N5K-1(config)<span class="comment">#interface e1/26</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#speed 1000</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport mode access</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#switchport access vlan 10</span></span><br><span class="line">DC2-N5K-1(config-if)<span class="comment">#spanning-tree port type edge</span></span><br><span class="line"></span><br><span class="line">Router(config)<span class="comment">#interface fa0/0</span></span><br><span class="line">Router(config-if)<span class="comment">#ip address 202.100.1.2 255.255.255.0</span></span><br><span class="line">Router(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">Router(config)<span class="comment">#ip route 0.0.0.0 0.0.0.0 202.100.1.254</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Nexus实验</category>
       </categories>
       <tags>
         <tag>Nexus</tag>
@@ -3182,6 +3182,66 @@
       </tags>
   </entry>
   <entry>
+    <title>OSPF邻居关系建立及维护</title>
+    <url>/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/</url>
+    <content><![CDATA[<p>&emsp;&emsp;OSPF邻居关系的建立是经历了七个不同的状态逐步建立起来的，状态之间的转换以及邻居关系建立后的维护主要通过OSPF的五个报文进行数据的传输。 本篇文章详细介绍了OSPF邻居关系的建立与维护。</p>
+<a id="more"></a>
+
+<h2 id="1-邻居建立过程"><a href="#1-邻居建立过程" class="headerlink" title="1 邻居建立过程"></a>1 邻居建立过程</h2><p><img src="https://s3.ax1x.com/2020/11/11/BvWneO.png" alt="image-20201111201619205"></p>
+<p>&emsp;&emsp;在初始情况下，A、B 在某个接口激活了OSPF后，都会开始在这个接口上去发组播的Hello包，目的是发现OSPF邻居。Hello包里，有个active neighbor字段，用来存储路由器在某个OSPF接口上发现的邻居。当然，初始情况下，这个Hello包里是不包含任何活跃的邻居的(也就没有active neighbor字段)，因为它谁也没发现。<br>&emsp;&emsp;当OSPF路由器（B）在某个OSPF 接口上收到邻居发来的Hello包（里面没有装active neighbor ），它会记录下A（在自己的OSPF接口数据结构中）并且将 A 的状态视为Init ，然后将A的Router lD存储在自己将要发送的Hello包的active neighbor字段里发送出去，这样 A 就会收到这个Hello包，并且在这个Hello包当中找到自己的Router lD，那么 A 会认为，与 B 已经完成了双边关系的建立，因此 A 会将 B 的邻居状态置为two-way。<br>&emsp;&emsp;与此同时，A 也会继续发送Hello包，并且将B的Router lD放置于Hello包中，而B收到这个Hello包并看见了自己的Router lD后，B 也会将 A 的状态置为Two-way，至此OSPF的第一个稳态就达到了。</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWKTe.png" alt="image-20201111202300693"></p>
+<p>&emsp;&emsp;接下去A、B会进入Ex-start 状态并开始进行master、slave的协商，协商MIS的目的是为了决定在后续的LSA交互中，谁来决定DD的序列号，而Router lD 大的那个OSPF路由器的接口将会成为master，由它来决定DD seq，对端成为slave。这里要注意master不是DR，要注意与DR的概念进行区分。这个协商过程，是由交互DBD包实现的，注意这里使用的是空的DBD包，也就是不包含任何LSA头部的DBD包，这个包当中，有三个位非常关键：I、M、MS。用于Ex-start阶段协商master、slave的DBD包，I 位（或叫做 Init 位）都是置0的；另外MS位如果置1，表示DBD报文始发路由器认为自己的master，当然起初大家都这么认为，在一系列DBD交换后，就会得到选举结果，被选举为slave的OSPF接口，会将发送的DBD包MS位置为0；另外M位表示more，如果一个OSPF接口发送的DBD包M位置1，在表示这不是最后一个DBD，后续还有DBD包待发送。<br>&emsp;&emsp;当OSPF接口收到一个DBD包且其中 I 位置0的时候，它就知道与该邻居的Ex-start阶段已经过去了，于是将邻居的状态置为Exchange，并存储对端发来的DBD包所包含的LSA头部，当然，他自己也发送关于自己OSPF DB的摘要给邻居。如此一来，双方都能通过DBD的交互，了解到对方OSPF DB中的摘要情况。在这个过程中，可能交互数个DBD报文，并要注意，这些报文的 I 位都置0，且M位一般也置0，除非这是某个OSPF接口发送的最后一个DBD包。</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWlYd.png" alt="image-20201111203911471"></p>
+<p>&emsp;&emsp;当Router A收到一个M位置0的DBD包的时候，它就知道，这是邻居发来的最后一个DBD包了，如果它搜集完这个邻居（假设是B）发来的DBD并且发现，这些DBD里有它感兴趣的LSA，它期望更详细的LSA信息时，它将B置为 Loading 状态，并且开始发送LSR报文去请求特定LSA的详细信息。B收到这个LSR后，会以LSU进行回应，其中就包含了对方请求的LSA详细信息，因此，只有在LSU报文中，才能看到LSA的完整信息。收到LSU后，A将LSU中所包含的LSA放进自己的LSDB，并且给B发一个LSACK进行确认。当OSPF接口上所有的待请求的LSA全部收到更新后，它会将邻居置为FULL。至此，OSPF邻接关系的建立达到全毗邻。<br>&emsp;&emsp;在这里我们有个地方需要留意，我们通常说，OSPF 路由器A与B进入了xx状态，其实这句话并不严谨，原因之一，是因为OSPF 是接口敏感型协议，许多的操作都是以OSPF 接口作为立足点去考虑的，譬如邻居关系的建立，再如DR和BDR，我们不能说一台路由器是DR，准确的说，应该是某路由器的某个接口是DR；再者，说两台路由器之间是xx状态，这个也不严谨，所谓的邻居状态，必须是以某台路由器为观察点，在其某个接口上观察到的某个邻居的状态，因此可能出现的一个情况是，在A上，看到的B的状态为Loading，但是在B上，A的状态已经是FULL了。</p>
+<h2 id="2-状态机"><a href="#2-状态机" class="headerlink" title="2 状态机"></a>2 状态机</h2><p><strong>1. Down</strong></p>
+<p>&emsp;&emsp;在DOWN状态下，OSPF 接口仍然有尝试发现邻居的意愿，因此会不断的发送组播hello包。</p>
+<p><strong>2. Init</strong></p>
+<p>&emsp;&emsp;当OSPF 接口收到链路上某个邻居发来的第一个Hello包的时候，它会在接口上将该邻居置为 Init 状态，注意这个Hello包中可能并未包含任何的邻居信息。但是这至少证明，我这个OSPF接口在这个链路上，至少有个活跃的邻居。</p>
+<p>&emsp;&emsp;下面是一个没有发现任何active neighbor的Hello包：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvW1fA.png" alt="image-20201111205235674"></p>
+<p><strong>3. Two-way</strong></p>
+<p>&emsp;&emsp;当OSPF路由器在某个链路上发现了邻居后，它自己发送的Hello包里就会增加active neighbor字段，用于存储在该链路上发现的OSPF邻居。当一台OSPF Router看到自己（的Router lD）出现在邻居发过来的的Hello 分组中，它就会将该邻居置为Two-way。该状态是OSPF 邻居之间可以具有的最基本的关系，也是第一个稳态，但是此时两者还不能共享路由信息。</p>
+<p>&emsp;&emsp;下面是一个已经在链路上发现了邻居1.1.1.1的Hello：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWJ6P.png" alt="image-20201111205414612"></p>
+<p><strong>4. Ex-Start</strong></p>
+<p>&emsp;&emsp;一台OSPF路由器在将某个邻居置为Two-way状态后，就开始发送空的DBD包，用于协商master/slave。这个就是 Ex-start 状态。两台Router 间用空的BDB分组确定master和slave关系（注意不是DR和BDR），在DBD包中有3个标记位用来管理邻接关系的建立过程：</p>
+<ul>
+<li>l位         或称为初始位（Initial bit ）用于Ex-start协商主从关系的初始化协商的DBD包，该位置1</li>
+<li>M位       或称为后继位（More bit）如果这不是OSPF Router 发送的最后一个DBD，该位置1</li>
+<li>MS位     或称为主/从位（Master / slave bit）如果始发路由器是Master，则该位置1</li>
+</ul>
+<p>&emsp;&emsp;如果某台OSPF Router收到邻居发来的DBD I 位也就是Init位置0则意味着Ex-start状态结束并且master/slave已经选出来了那么该路由器会将邻居置为Exchange状态开始用包含LSA头部的DBD交换各自的LSBD。下面是一个用于初始化协商的DBD消息：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWYOf.png" alt="image-20201111205948163"></p>
+<p><strong>5. Exchange</strong></p>
+<p>&emsp;&emsp;这个过程，双方使用包含自己LSA头部的DBD报文进行交互，并且将对方发过来的LSA头部、并且自己感兴趣的LSA（或自己没有的LSA）存储在一个本地OSPF 接口的队列里，以便在下一个阶段进行LSA详细信息的请求。当某个OSPF接口收到邻居发来的DBD，M位置0 ，则表示对方已经发完DBD了，与此同时如果该路由器的这个OSPF接口上存在待请求的LSA，那么它会将这个邻居置为Loading状态。</p>
+<p>&emsp;&emsp;下面是一个装载了LSA头部的DBD消息：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvWNm8.png" alt="image-20201111210116338"></p>
+<p><strong>6. Loading</strong></p>
+<p>&emsp;&emsp;OSPF Router使用LSR去请求LSA的详细信息，对方使用LSU发来更新，因此只有LSU里才有LSA的完整信息。在收到LSU后，一方面本地使用LSACK进行确认，另一方面将LSU 中包含的LSA装载进自己的LSDB。</p>
+<p>&emsp;&emsp;以下是一个LSR消息，非常的简单：</p>
+<p><img src="https://s3.ax1x.com/2020/11/11/BvW0Yj.png" alt="image-20201111210243739"></p>
+<p><strong>7. FULL</strong></p>
+<p>&emsp;&emsp;Loading 状态结束后，也就是本地OSPF接口上再没有待更新的LSA队列后，将邻居置为FULL。</p>
+<p><strong>8. Attempt</strong></p>
+<p>&emsp;&emsp;如果一个路由器，它邻居处于这种状态，则表示它从邻居没有收到任何信息，但是做了努力来与邻居联系。仅在NBMA网络上存在，当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效（Active）时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器将会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用Hello interval时间代替Poll interval的时间来作为向邻居发送Hello数据包的时间间隔。</p>
+<h2 id="3-OSPF邻居关系建立中的问题"><a href="#3-OSPF邻居关系建立中的问题" class="headerlink" title="3 OSPF邻居关系建立中的问题"></a>3 OSPF邻居关系建立中的问题</h2><p><strong>1. MTU问题</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#ip ospf mtu-ignore</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;在接口模式下配置可以忽略MTU，注意是在MTU小的那一个OSPF 路由器接口上（如果两端MTU不一样）</p>
+<p><strong>2. 接口掩码问题</strong></p>
+<p>&emsp;&emsp;<strong>a)在一个MA网络中，如果邻居两端接口掩码不一致，则邻居建立不起来。</strong></p>
+<p><strong>&emsp;&emsp;b)在p2p的网络中，如果邻居两端接口掩码不一致，邻居能建立，并且路由也能学习到。</strong></p>
+<p><strong>3. 网络类型问题</strong><br>&emsp;&emsp;两端如果OSPF网络类型不同,那么邻居关系能建立起来，路由器甚至能收到对方的LSA ,但是路由学不到。</p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>OSPF</tag>
+        <tag>路由协议</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vPC术语介绍</title>
     <url>/2021/03/12/vPC%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍一些在vPC中常见的一些术语。</p>
@@ -3312,68 +3372,8 @@
       </tags>
   </entry>
   <entry>
-    <title>OSPF邻居关系建立及维护</title>
-    <url>/2020/11/11/OSPF%E9%82%BB%E5%B1%85%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B%E5%8F%8A%E7%BB%B4%E6%8A%A4/</url>
-    <content><![CDATA[<p>&emsp;&emsp;OSPF邻居关系的建立是经历了七个不同的状态逐步建立起来的，状态之间的转换以及邻居关系建立后的维护主要通过OSPF的五个报文进行数据的传输。 本篇文章详细介绍了OSPF邻居关系的建立与维护。</p>
-<a id="more"></a>
-
-<h2 id="1-邻居建立过程"><a href="#1-邻居建立过程" class="headerlink" title="1 邻居建立过程"></a>1 邻居建立过程</h2><p><img src="https://s3.ax1x.com/2020/11/11/BvWneO.png" alt="image-20201111201619205"></p>
-<p>&emsp;&emsp;在初始情况下，A、B 在某个接口激活了OSPF后，都会开始在这个接口上去发组播的Hello包，目的是发现OSPF邻居。Hello包里，有个active neighbor字段，用来存储路由器在某个OSPF接口上发现的邻居。当然，初始情况下，这个Hello包里是不包含任何活跃的邻居的(也就没有active neighbor字段)，因为它谁也没发现。<br>&emsp;&emsp;当OSPF路由器（B）在某个OSPF 接口上收到邻居发来的Hello包（里面没有装active neighbor ），它会记录下A（在自己的OSPF接口数据结构中）并且将 A 的状态视为Init ，然后将A的Router lD存储在自己将要发送的Hello包的active neighbor字段里发送出去，这样 A 就会收到这个Hello包，并且在这个Hello包当中找到自己的Router lD，那么 A 会认为，与 B 已经完成了双边关系的建立，因此 A 会将 B 的邻居状态置为two-way。<br>&emsp;&emsp;与此同时，A 也会继续发送Hello包，并且将B的Router lD放置于Hello包中，而B收到这个Hello包并看见了自己的Router lD后，B 也会将 A 的状态置为Two-way，至此OSPF的第一个稳态就达到了。</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWKTe.png" alt="image-20201111202300693"></p>
-<p>&emsp;&emsp;接下去A、B会进入Ex-start 状态并开始进行master、slave的协商，协商MIS的目的是为了决定在后续的LSA交互中，谁来决定DD的序列号，而Router lD 大的那个OSPF路由器的接口将会成为master，由它来决定DD seq，对端成为slave。这里要注意master不是DR，要注意与DR的概念进行区分。这个协商过程，是由交互DBD包实现的，注意这里使用的是空的DBD包，也就是不包含任何LSA头部的DBD包，这个包当中，有三个位非常关键：I、M、MS。用于Ex-start阶段协商master、slave的DBD包，I 位（或叫做 Init 位）都是置0的；另外MS位如果置1，表示DBD报文始发路由器认为自己的master，当然起初大家都这么认为，在一系列DBD交换后，就会得到选举结果，被选举为slave的OSPF接口，会将发送的DBD包MS位置为0；另外M位表示more，如果一个OSPF接口发送的DBD包M位置1，在表示这不是最后一个DBD，后续还有DBD包待发送。<br>&emsp;&emsp;当OSPF接口收到一个DBD包且其中 I 位置0的时候，它就知道与该邻居的Ex-start阶段已经过去了，于是将邻居的状态置为Exchange，并存储对端发来的DBD包所包含的LSA头部，当然，他自己也发送关于自己OSPF DB的摘要给邻居。如此一来，双方都能通过DBD的交互，了解到对方OSPF DB中的摘要情况。在这个过程中，可能交互数个DBD报文，并要注意，这些报文的 I 位都置0，且M位一般也置0，除非这是某个OSPF接口发送的最后一个DBD包。</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWlYd.png" alt="image-20201111203911471"></p>
-<p>&emsp;&emsp;当Router A收到一个M位置0的DBD包的时候，它就知道，这是邻居发来的最后一个DBD包了，如果它搜集完这个邻居（假设是B）发来的DBD并且发现，这些DBD里有它感兴趣的LSA，它期望更详细的LSA信息时，它将B置为 Loading 状态，并且开始发送LSR报文去请求特定LSA的详细信息。B收到这个LSR后，会以LSU进行回应，其中就包含了对方请求的LSA详细信息，因此，只有在LSU报文中，才能看到LSA的完整信息。收到LSU后，A将LSU中所包含的LSA放进自己的LSDB，并且给B发一个LSACK进行确认。当OSPF接口上所有的待请求的LSA全部收到更新后，它会将邻居置为FULL。至此，OSPF邻接关系的建立达到全毗邻。<br>&emsp;&emsp;在这里我们有个地方需要留意，我们通常说，OSPF 路由器A与B进入了xx状态，其实这句话并不严谨，原因之一，是因为OSPF 是接口敏感型协议，许多的操作都是以OSPF 接口作为立足点去考虑的，譬如邻居关系的建立，再如DR和BDR，我们不能说一台路由器是DR，准确的说，应该是某路由器的某个接口是DR；再者，说两台路由器之间是xx状态，这个也不严谨，所谓的邻居状态，必须是以某台路由器为观察点，在其某个接口上观察到的某个邻居的状态，因此可能出现的一个情况是，在A上，看到的B的状态为Loading，但是在B上，A的状态已经是FULL了。</p>
-<h2 id="2-状态机"><a href="#2-状态机" class="headerlink" title="2 状态机"></a>2 状态机</h2><p><strong>1. Down</strong></p>
-<p>&emsp;&emsp;在DOWN状态下，OSPF 接口仍然有尝试发现邻居的意愿，因此会不断的发送组播hello包。</p>
-<p><strong>2. Init</strong></p>
-<p>&emsp;&emsp;当OSPF 接口收到链路上某个邻居发来的第一个Hello包的时候，它会在接口上将该邻居置为 Init 状态，注意这个Hello包中可能并未包含任何的邻居信息。但是这至少证明，我这个OSPF接口在这个链路上，至少有个活跃的邻居。</p>
-<p>&emsp;&emsp;下面是一个没有发现任何active neighbor的Hello包：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvW1fA.png" alt="image-20201111205235674"></p>
-<p><strong>3. Two-way</strong></p>
-<p>&emsp;&emsp;当OSPF路由器在某个链路上发现了邻居后，它自己发送的Hello包里就会增加active neighbor字段，用于存储在该链路上发现的OSPF邻居。当一台OSPF Router看到自己（的Router lD）出现在邻居发过来的的Hello 分组中，它就会将该邻居置为Two-way。该状态是OSPF 邻居之间可以具有的最基本的关系，也是第一个稳态，但是此时两者还不能共享路由信息。</p>
-<p>&emsp;&emsp;下面是一个已经在链路上发现了邻居1.1.1.1的Hello：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWJ6P.png" alt="image-20201111205414612"></p>
-<p><strong>4. Ex-Start</strong></p>
-<p>&emsp;&emsp;一台OSPF路由器在将某个邻居置为Two-way状态后，就开始发送空的DBD包，用于协商master/slave。这个就是 Ex-start 状态。两台Router 间用空的BDB分组确定master和slave关系（注意不是DR和BDR），在DBD包中有3个标记位用来管理邻接关系的建立过程：</p>
-<ul>
-<li>l位         或称为初始位（Initial bit ）用于Ex-start协商主从关系的初始化协商的DBD包，该位置1</li>
-<li>M位       或称为后继位（More bit）如果这不是OSPF Router 发送的最后一个DBD，该位置1</li>
-<li>MS位     或称为主/从位（Master / slave bit）如果始发路由器是Master，则该位置1</li>
-</ul>
-<p>&emsp;&emsp;如果某台OSPF Router收到邻居发来的DBD I 位也就是Init位置0则意味着Ex-start状态结束并且master/slave已经选出来了那么该路由器会将邻居置为Exchange状态开始用包含LSA头部的DBD交换各自的LSBD。下面是一个用于初始化协商的DBD消息：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWYOf.png" alt="image-20201111205948163"></p>
-<p><strong>5. Exchange</strong></p>
-<p>&emsp;&emsp;这个过程，双方使用包含自己LSA头部的DBD报文进行交互，并且将对方发过来的LSA头部、并且自己感兴趣的LSA（或自己没有的LSA）存储在一个本地OSPF 接口的队列里，以便在下一个阶段进行LSA详细信息的请求。当某个OSPF接口收到邻居发来的DBD，M位置0 ，则表示对方已经发完DBD了，与此同时如果该路由器的这个OSPF接口上存在待请求的LSA，那么它会将这个邻居置为Loading状态。</p>
-<p>&emsp;&emsp;下面是一个装载了LSA头部的DBD消息：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvWNm8.png" alt="image-20201111210116338"></p>
-<p><strong>6. Loading</strong></p>
-<p>&emsp;&emsp;OSPF Router使用LSR去请求LSA的详细信息，对方使用LSU发来更新，因此只有LSU里才有LSA的完整信息。在收到LSU后，一方面本地使用LSACK进行确认，另一方面将LSU 中包含的LSA装载进自己的LSDB。</p>
-<p>&emsp;&emsp;以下是一个LSR消息，非常的简单：</p>
-<p><img src="https://s3.ax1x.com/2020/11/11/BvW0Yj.png" alt="image-20201111210243739"></p>
-<p><strong>7. FULL</strong></p>
-<p>&emsp;&emsp;Loading 状态结束后，也就是本地OSPF接口上再没有待更新的LSA队列后，将邻居置为FULL。</p>
-<p><strong>8. Attempt</strong></p>
-<p>&emsp;&emsp;如果一个路由器，它邻居处于这种状态，则表示它从邻居没有收到任何信息，但是做了努力来与邻居联系。仅在NBMA网络上存在，当NBMA网络上具有DR选取资格的路由器和其邻居路由器相连的接口开始变为有效（Active）时，或者当这台路由器成为DR或BDR时，这台具有DR选取资格的路由器将会把邻居路由器的状态转换到Attempt状态。在Attempt状态下，路由器将使用Hello interval时间代替Poll interval的时间来作为向邻居发送Hello数据包的时间间隔。</p>
-<h2 id="3-OSPF邻居关系建立中的问题"><a href="#3-OSPF邻居关系建立中的问题" class="headerlink" title="3 OSPF邻居关系建立中的问题"></a>3 OSPF邻居关系建立中的问题</h2><p><strong>1. MTU问题</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#ip ospf mtu-ignore</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;在接口模式下配置可以忽略MTU，注意是在MTU小的那一个OSPF 路由器接口上（如果两端MTU不一样）</p>
-<p><strong>2. 接口掩码问题</strong></p>
-<p>&emsp;&emsp;<strong>a)在一个MA网络中，如果邻居两端接口掩码不一致，则邻居建立不起来。</strong></p>
-<p><strong>&emsp;&emsp;b)在p2p的网络中，如果邻居两端接口掩码不一致，邻居能建立，并且路由也能学习到。</strong></p>
-<p><strong>3. 网络类型问题</strong><br>&emsp;&emsp;两端如果OSPF网络类型不同,那么邻居关系能建立起来，路由器甚至能收到对方的LSA ,但是路由学不到。</p>
-]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>OSPF</tag>
-        <tag>路由协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>111</title>
-    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup%20-%20%E5%89%AF%E6%9C%AC/</url>
+    <title>CSS中“#”与“.”的区别</title>
+    <url>/2021/12/14/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup%20-%20%E5%89%AF%E6%9C%AC/</url>
     <content><![CDATA[<p>&emsp;本篇文章主要介绍CSS中“#”与“.”的区别。</p>
 <a id="more"></a>
 
@@ -3389,49 +3389,10 @@
 <p>&emsp;&emsp;简单来说：“#main”是定义具体对象”main”的专有属性；“.main”是定义抽象对象的共有属性”main”。比较广泛的用途是<strong>“#”</strong>用于定义网页框架；<strong>“.”</strong>用于定义各个网页元素。“#main”中的”main”只能在网页中出现一次，而“.main”中的”main”可以出现无数次。</p>
 ]]></content>
       <categories>
-        <category>Writeup</category>
+        <category>前端</category>
       </categories>
       <tags>
-        <tag>ctf</tag>
-        <tag>网络安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安恒杯四月月赛misc——Writeup</title>
-    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
-    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
-<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
-<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
-<p>​        将what_you_want.7z导出，发现需要密码。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
-<p>​        根据文件名的提示找到pin，解压获得flag。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
-<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
-<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
-<p>​        首先获取该内存的配置文件</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
-<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
-<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
-<p>​        将其导出</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
-<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
-<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
-<p>​        用winhex打开即可找到flag。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
-]]></content>
-      <categories>
-        <category>Writeup</category>
-      </categories>
-      <tags>
-        <tag>ctf</tag>
-        <tag>网络安全</tag>
+        <tag>CSS</tag>
       </tags>
   </entry>
   <entry>
@@ -3485,6 +3446,44 @@
       <tags>
         <tag>CCNA</tag>
         <tag>网络与数据通信</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安恒杯四月月赛misc——Writeup</title>
+    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
+    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
+<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
+<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
+<p>​        将what_you_want.7z导出，发现需要密码。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
+<p>​        根据文件名的提示找到pin，解压获得flag。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
+<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
+<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
+<p>​        首先获取该内存的配置文件</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
+<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
+<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
+<p>​        将其导出</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
+<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
+<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
+<p>​        用winhex打开即可找到flag。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
+]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>ctf</tag>
+        <tag>网络安全</tag>
       </tags>
   </entry>
 </search>
