@@ -18,8 +18,8 @@
   
   <entry>
     <title>CSS中“#”与“.”的区别</title>
-    <link href="https://huangzc.site/2021/12/14/CSS%E4%B8%AD%E2%80%9C#%E2%80%9D%E4%B8%8E%E2%80%9C.%E2%80%9D%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
-    <id>https://huangzc.site/2021/12/14/CSS%E4%B8%AD%E2%80%9C#%E2%80%9D%E4%B8%8E%E2%80%9C.%E2%80%9D%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <link href="https://huangzc.site/2021/12/14/CSS/"/>
+    <id>https://huangzc.site/2021/12/14/CSS/</id>
     <published>2021-12-14T07:46:02.000Z</published>
     <updated>2021-12-14T12:08:33.991Z</updated>
     
@@ -99,27 +99,6 @@
   </entry>
   
   <entry>
-    <title>Nexus交换机vPC配置</title>
-    <link href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/"/>
-    <id>https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/</id>
-    <published>2021-03-11T16:00:00.000Z</published>
-    <updated>2021-03-12T05:44:47.823Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;Nexus交换机vPC配置。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Nexus实验" scheme="https://huangzc.site/categories/Nexus%E5%AE%9E%E9%AA%8C/"/>
-    
-    
-    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
-    
-    <category term="vPC" scheme="https://huangzc.site/tags/vPC/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Nexus交换机vPC</title>
     <link href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/"/>
     <id>https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC/</id>
@@ -132,6 +111,27 @@
     
     
     <category term="学习笔记" scheme="https://huangzc.site/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
+    
+    <category term="vPC" scheme="https://huangzc.site/tags/vPC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nexus交换机vPC配置</title>
+    <link href="https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/"/>
+    <id>https://huangzc.site/2021/03/12/Nexus%E4%BA%A4%E6%8D%A2%E6%9C%BAvPC%E9%85%8D%E7%BD%AE/</id>
+    <published>2021-03-11T16:00:00.000Z</published>
+    <updated>2021-03-12T05:44:47.823Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&amp;emsp;&amp;emsp;Nexus交换机vPC配置。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Nexus实验" scheme="https://huangzc.site/categories/Nexus%E5%AE%9E%E9%AA%8C/"/>
     
     
     <category term="Nexus" scheme="https://huangzc.site/tags/Nexus/"/>
