@@ -128,6 +128,97 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNA实验一——简单的基础实验</title>
+    <url>/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>熟练掌握 GNS3 模拟器的安装与使用</p>
+</li>
+<li><p>掌握 GNS3 与 CRT 的关联</p>
+</li>
+<li><p>掌握通过 console 口方式登入设备</p>
+</li>
+<li><p>掌握通过 Telnet 方式远程登入设备</p>
+</li>
+<li><p>熟悉设备命令行界面的三种模式</p>
+</li>
+<li><p>熟悉查看路由器相关信息的基本命令</p>
+</li>
+</ol>
+<p>【实验需求】</p>
+<ol>
+<li>安装并使用 GNS3 模拟器及将 GNS3 与 CRT 关联</li>
+<li>路由器不同模式的转换</li>
+</ol>
+<p>&emsp;&emsp;路由器的三个模式：用户模式**&gt;<strong>、特权模式</strong>#<strong>、全局/配置模式</strong>（config）#**。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#用户模式转换为特权模式</span></span><br><span class="line">R1&gt;<span class="built_in">enable</span></span><br><span class="line"><span class="comment">#特权模式转换为全局/配置模式</span></span><br><span class="line">R1<span class="comment">#configure terminal </span></span><br><span class="line">R1(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>配置关闭域名解析、控制台超时和同步</li>
+</ol>
+<p>&emsp;&emsp;当配置Cisco设备长时间不进行配置时，就会退出用户模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#这是在做实验的时候的优化命令时，往往会由于打错命令，造成路由器会自动去向DNS服务器发送域名解析请求，造成耗损路由器CPU，而且解析时间很长而没法继续其他命令。为了加快命令的执行就关闭域名解析功能。在连入公网的路由器上，不需要关于域名解析，可以直接通过输入www.baidu.com去访问百度网站。输入下行命令可关闭域名解析</span></span><br><span class="line">R1(config)<span class="comment">#no ip domain lookup </span></span><br><span class="line"><span class="comment">#当配置Cisco设备长时间不进行配置时，就会退出用户模式。可以进入console口，将控制台超时的时间置为0（永不超时）</span></span><br><span class="line">R1(config)<span class="comment">#line console 0</span></span><br><span class="line">R1(config-line)<span class="comment">#exec-timeout 0</span></span><br><span class="line"><span class="comment">#在实验过程中控制台尝尝或出现一些提示信息，可以输入下行命令关闭日志同步，</span></span><br><span class="line">R1(config-line)<span class="comment">#logging synchronous </span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>设置设备名称</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#hostname Huangzc</span></span><br><span class="line">Huangzc(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>查看路由器的 IOS 版本，IOS 文件名，flash 大小，flash 可用空间及CPU 的利用率以及接口的简要信息</li>
+</ol>
+<p>&emsp;&emsp;查看路由器的IOS版本，IOS文件名：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show version </span></span><br><span class="line">Cisco IOS Software, 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line">Technical Support: http://www.cisco.com/techsupport</span><br><span class="line">Copyright (c) 1986-2010 by Cisco Systems, Inc.</span><br><span class="line">Compiled Wed 18-Aug-10 08:18 by prod_rel_team</span><br><span class="line"></span><br><span class="line">ROM: ROMMON Emulation Microcode</span><br><span class="line">ROM: 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line"></span><br><span class="line">Huangzc uptime is 21 minutes</span><br><span class="line">System returned to ROM by unknown reload cause - suspect boot_data[BOOT_COUNT] 0x0, BOOT_COUNT 0, BOOTDATA 19</span><br><span class="line">System image file is <span class="string">&quot;tftp://255.255.255.255/unknown&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">This product contains cryptographic features and is subject to United</span><br><span class="line">States and <span class="built_in">local</span> country laws governing import, <span class="built_in">export</span>, transfer and</span><br><span class="line">use. Delivery of Cisco cryptographic products does not imply</span><br><span class="line">third-party authority to import, <span class="built_in">export</span>, distribute or use encryption.</span><br><span class="line">Importers, exporters, distributors and users are responsible <span class="keyword">for</span></span><br><span class="line">compliance with U.S. and <span class="built_in">local</span> country laws. By using this product you</span><br><span class="line">agree to comply with applicable laws and regulations. If you are unable</span><br><span class="line">to comply with U.S. and <span class="built_in">local</span> laws, <span class="built_in">return</span> this product immediately.</span><br><span class="line"></span><br><span class="line">A summary of U.S. laws governing Cisco cryptographic products may be found at:</span><br><span class="line">http://www.cisco.com/wwl/<span class="built_in">export</span>/crypto/tool/stqrg.html</span><br><span class="line"></span><br><span class="line">If you require further assistance please contact us by sending email to</span><br><span class="line"><span class="built_in">export</span>@cisco.com.</span><br><span class="line"></span><br><span class="line">Cisco 3745 (R7000) processor (revision 2.0) with 249856K/12288K bytes of memory.</span><br><span class="line">Processor board ID FTX0945W0MY</span><br><span class="line">R7000 CPU at 350MHz, Implementation 39, Rev 2.1, 256KB L2, 512KB L3 Cache</span><br><span class="line">18 FastEthernet interfaces</span><br><span class="line">8 Serial interfaces</span><br><span class="line">1 Serial(sync/async) interface</span><br><span class="line">DRAM configuration is 64 bits wide with parity enabled.</span><br><span class="line">151K bytes of NVRAM.</span><br><span class="line"></span><br><span class="line">Configuration register is 0x2102</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看CPU 的利用率：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Huangzc#show processes cpu </span><br><span class="line">CPU utilization <span class="keyword">for</span> five seconds: <span class="number">0</span>%/<span class="number">0</span>%; one minute: <span class="number">0</span>%; five minutes: <span class="number">0</span>%</span><br><span class="line"> PID Runtime(ms)   Invoked      uSecs   <span class="number">5</span>Sec   <span class="number">1</span>Min   <span class="number">5</span>Min TTY Process </span><br><span class="line">   <span class="number">1</span>           <span class="number">4</span>         <span class="number">5</span>        <span class="number">800</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Chunk Manager    </span><br><span class="line">   <span class="number">2</span>           <span class="number">4</span>       <span class="number">284</span>         <span class="number">14</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Load Meter       </span><br><span class="line">   <span class="number">3</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> chkpt message ha </span><br><span class="line">   <span class="number">4</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> EDDRI_MAIN       </span><br><span class="line">   <span class="number">5</span>         <span class="number">296</span>       <span class="number">145</span>       <span class="number">2041</span>  <span class="number">0.00</span>%  <span class="number">0.01</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Check heaps      </span><br><span class="line">   <span class="number">6</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Pool Manager     </span><br><span class="line">   <span class="number">7</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Timers           </span><br><span class="line">   <span class="number">8</span>           <span class="number">0</span>        <span class="number">24</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Dynamic Cach </span><br><span class="line">   <span class="number">9</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Zone Manager </span><br><span class="line">  <span class="number">10</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Periodic Tim </span><br><span class="line">  <span class="number">11</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Deferred Por </span><br><span class="line">  <span class="number">12</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Seat Manager </span><br><span class="line">  <span class="number">13</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC BackPressure </span><br><span class="line">  <span class="number">14</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> OIR Handler      </span><br><span class="line">  <span class="number">15</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Crash writer     </span><br><span class="line">  <span class="number">16</span>           <span class="number">4</span>        <span class="number">49</span>         <span class="number">81</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Environmental mo </span><br><span class="line">  <span class="number">17</span>          <span class="number">12</span>        <span class="number">28</span>        <span class="number">428</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ARP Input        </span><br><span class="line">  <span class="number">18</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ATM Idle Timer   </span><br><span class="line">  <span class="number">19</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA high-capacit </span><br><span class="line">  <span class="number">20</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA_SERVER_DEADT </span><br><span class="line">  <span class="number">21</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Policy Manager  </span><br><span class="line">  --more--</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;查看接口的简要信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show ip interface brief </span></span><br><span class="line">Interface                  IP-Address      OK? Method Status                Protocol</span><br><span class="line">FastEthernet0/0            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial0/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet0/1            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet3/0            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/1            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/2            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/3            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/4            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/5            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/6            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/7            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/8            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/9            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/10           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/11           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/12           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/13           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/14           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/15           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">Vlan1                      unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;受实验环境所限，flash信息暂时无法查看</p>
+<ol start="6">
+<li>路由器的安全加固：console 口加密和进入特权模式的加密</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置console口的密码，并应用</span></span><br><span class="line">Huangzc(config)<span class="comment">#line console 0</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#login</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（明文）</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable password 456</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（密文），若两者都启用的话，则明文不生效</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable secret 789</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/22/wOvXwV.png"></p>
+<ol start="7">
+<li>使用 Telnet 远程登入设备</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123456</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#transport input telnet </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/22/wOvjoT.png"></p>
+<ol start="8">
+<li>了解 DTE 和 DCE 的区别以及 DCE 的时钟频率设置</li>
+</ol>
+<p>① 意思不同</p>
+<p>&emsp;&emsp;DCE的意思是数据通信设备或者数据电路终端设备，该设备和其与通信网络的连接构成了网络终端的用户网络接口。DTE的意思是数据终端设备，指的是位于用户网络接口用户端的设备。</p>
+<p>② 作用不同</p>
+<p>&emsp;&emsp;DCE提供了到网络的一条物理连接、转发业务量，并且提供了一个用于同步DCE设备和DTE设备之间数据传输的时钟信号。调制解调器和接口卡都是DCE设备的例子。</p>
+<p>&emsp;&emsp;DTE它能够作为信源、信宿或同时为二者。数据终端设备通过数据通信设备连接到一个数据网络上，并且通常使用数据通信设备产生的时钟信号。</p>
+<p>③用法和功能不同</p>
+<p>&emsp;&emsp;DTE与DCE比较Data Communications Equipment（数据通讯设备）的首字母缩略词DCE，它在DTE和传输线路之间提供信号变换和编码功能，并负责建立、保持和释放链路的连接，如 Modem。DCE设备通常是与DTE对接，因此针脚的分配相反，也就是2是接收，3是发送。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#int s1/0</span></span><br><span class="line">Huangzc(config-if)<span class="comment">#clock rate 1000</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>查看当前的配置信息以及保存配置文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前的配置信息</span></span><br><span class="line">R1<span class="comment">#show running-config </span></span><br><span class="line"><span class="comment">#保存配置文件</span></span><br><span class="line">R1<span class="comment">#write </span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>CCNA实验</category>
+      </categories>
+      <tags>
+        <tag>CCNA</tag>
+        <tag>基础配置</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验七——STP 的运用</title>
     <url>/2018/10/13/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%83/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 STP 的作用； STP 的工作原理； STP 的查看命令。</p>
@@ -226,94 +317,116 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNA实验一——简单的基础实验</title>
-    <url>/2018/10/01/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍通过 console 口方式登入设备；设备命令行界面的三种模式；通过 Telnet 方式远程登入设备；查看路由器相关信息的基本命令。</p>
+    <title>CCNA实验三——RIP 的应用</title>
+    <url>/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。</p>
 <a id="more"></a>
 
 <p>【实验目的】</p>
 <ol>
-<li><p>熟练掌握 GNS3 模拟器的安装与使用</p>
-</li>
-<li><p>掌握 GNS3 与 CRT 的关联</p>
-</li>
-<li><p>掌握通过 console 口方式登入设备</p>
-</li>
-<li><p>掌握通过 Telnet 方式远程登入设备</p>
-</li>
-<li><p>熟悉设备命令行界面的三种模式</p>
-</li>
-<li><p>熟悉查看路由器相关信息的基本命令</p>
-</li>
+<li>掌握 RIPv2 的基本配置</li>
+<li>理解 RIPv2 路由条目的结构含义</li>
+<li>理解自动汇总的含义</li>
+<li>理解和观察周期性更新</li>
+<li>理解 debug ip rip 命令的作用</li>
 </ol>
+<p>【拓扑结构】</p>
+<p><img src="https://s1.ax1x.com/2020/09/24/0pV0UK.png" alt="图片1"></p>
+<center>RIP 的应用拓扑</center>
+
 <p>【实验需求】</p>
 <ol>
-<li>安装并使用 GNS3 模拟器及将 GNS3 与 CRT 关联</li>
-<li>路由器不同模式的转换</li>
+<li>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</li>
 </ol>
-<p>&emsp;&emsp;路由器的三个模式：用户模式**&gt;<strong>、特权模式</strong>#<strong>、全局/配置模式</strong>（config）#**。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#用户模式转换为特权模式</span></span><br><span class="line">R1&gt;<span class="built_in">enable</span></span><br><span class="line"><span class="comment">#特权模式转换为全局/配置模式</span></span><br><span class="line">R1<span class="comment">#configure terminal </span></span><br><span class="line">R1(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/09/24/0pVrCD.png" alt="图片4"></p>
+<ol start="2">
+<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，要求PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254，PC2 的IP 地址设置为 172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.12.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 172.16.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.12.2 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.23.2 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 172.16.3.254 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.23.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
-<li>配置关闭域名解析、控制台超时和同步</li>
+<li>在三台路由器上都启用 RIPv2 协议，通告各自的直连网络路由，并开启自动汇总</li>
 </ol>
-<p>&emsp;&emsp;当配置Cisco设备长时间不进行配置时，就会退出用户模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#这是在做实验的时候的优化命令时，往往会由于打错命令，造成路由器会自动去向DNS服务器发送域名解析请求，造成耗损路由器CPU，而且解析时间很长而没法继续其他命令。为了加快命令的执行就关闭域名解析功能。在连入公网的路由器上，不需要关于域名解析，可以直接通过输入www.baidu.com去访问百度网站。输入下行命令可关闭域名解析</span></span><br><span class="line">R1(config)<span class="comment">#no ip domain lookup </span></span><br><span class="line"><span class="comment">#当配置Cisco设备长时间不进行配置时，就会退出用户模式。可以进入console口，将控制台超时的时间置为0（永不超时）</span></span><br><span class="line">R1(config)<span class="comment">#line console 0</span></span><br><span class="line">R1(config-line)<span class="comment">#exec-timeout 0</span></span><br><span class="line"><span class="comment">#在实验过程中控制台尝尝或出现一些提示信息，可以输入下行命令关闭日志同步，</span></span><br><span class="line">R1(config-line)<span class="comment">#logging synchronous </span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#router rip </span></span><br><span class="line">R1(config-router)<span class="comment">#version 2</span></span><br><span class="line">R1(config-router)<span class="comment">#network 192.168.12.0 </span></span><br><span class="line">R1(config-router)<span class="comment">#network 172.16.1.0   </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router rip                                </span></span><br><span class="line">R2(config-router)<span class="comment">#version 2</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.12.0      </span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router rip </span></span><br><span class="line">R3(config-router)<span class="comment">#version 2</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 172.16.3.0 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在RIP协议中，自动汇总是默认开启的</span></span><br></pre></td></tr></table></figure>
 
 <ol start="4">
-<li>设置设备名称</li>
+<li>在 R1 上使用 show ip protocols 命令，观察并理解该命令的输出信息</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#hostname Huangzc</span></span><br><span class="line">Huangzc(config)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;rip&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Sending updates every 30 seconds, next due <span class="keyword">in</span> 11 seconds</span><br><span class="line">  Invalid after 180 seconds, hold down 180, flushed after 240</span><br><span class="line">  Redistributing: rip</span><br><span class="line">  Default version control: send version 2, receive version 2</span><br><span class="line">    Interface             Send  Recv  Triggered RIP  Key-chain</span><br><span class="line">    Ethernet0/0           2     2                                    </span><br><span class="line">    Ethernet0/1           2     2                                    </span><br><span class="line">  Automatic network summarization is <span class="keyword">in</span> effect</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    172.16.0.0</span><br><span class="line">    192.168.12.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.12.2         120      00:00:16</span><br><span class="line">  Distance: (default is 120)</span><br></pre></td></tr></table></figure>
 
+<p>&emsp;&emsp;从该命令的输出信息中，可以查看到该路由器使用了RIP版本2的协议，端口e0/0、e0/1发送RIPv2接收RIPv2的路由表信息；更新时间30s；无效/抑制时间180s；失效时间240s；发送的路由信息172.16.0.0；192.168.12.0。</p>
 <ol start="5">
-<li>查看路由器的 IOS 版本，IOS 文件名，flash 大小，flash 可用空间及CPU 的利用率以及接口的简要信息</li>
+<li>查看各路由器的路由表，观察 RIP 路由条目的特征</li>
 </ol>
-<p>&emsp;&emsp;查看路由器的IOS版本，IOS文件名：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show version </span></span><br><span class="line">Cisco IOS Software, 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line">Technical Support: http://www.cisco.com/techsupport</span><br><span class="line">Copyright (c) 1986-2010 by Cisco Systems, Inc.</span><br><span class="line">Compiled Wed 18-Aug-10 08:18 by prod_rel_team</span><br><span class="line"></span><br><span class="line">ROM: ROMMON Emulation Microcode</span><br><span class="line">ROM: 3700 Software (C3745-ADVENTERPRISEK9_SNA-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)</span><br><span class="line"></span><br><span class="line">Huangzc uptime is 21 minutes</span><br><span class="line">System returned to ROM by unknown reload cause - suspect boot_data[BOOT_COUNT] 0x0, BOOT_COUNT 0, BOOTDATA 19</span><br><span class="line">System image file is <span class="string">&quot;tftp://255.255.255.255/unknown&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">This product contains cryptographic features and is subject to United</span><br><span class="line">States and <span class="built_in">local</span> country laws governing import, <span class="built_in">export</span>, transfer and</span><br><span class="line">use. Delivery of Cisco cryptographic products does not imply</span><br><span class="line">third-party authority to import, <span class="built_in">export</span>, distribute or use encryption.</span><br><span class="line">Importers, exporters, distributors and users are responsible <span class="keyword">for</span></span><br><span class="line">compliance with U.S. and <span class="built_in">local</span> country laws. By using this product you</span><br><span class="line">agree to comply with applicable laws and regulations. If you are unable</span><br><span class="line">to comply with U.S. and <span class="built_in">local</span> laws, <span class="built_in">return</span> this product immediately.</span><br><span class="line"></span><br><span class="line">A summary of U.S. laws governing Cisco cryptographic products may be found at:</span><br><span class="line">http://www.cisco.com/wwl/<span class="built_in">export</span>/crypto/tool/stqrg.html</span><br><span class="line"></span><br><span class="line">If you require further assistance please contact us by sending email to</span><br><span class="line"><span class="built_in">export</span>@cisco.com.</span><br><span class="line"></span><br><span class="line">Cisco 3745 (R7000) processor (revision 2.0) with 249856K/12288K bytes of memory.</span><br><span class="line">Processor board ID FTX0945W0MY</span><br><span class="line">R7000 CPU at 350MHz, Implementation 39, Rev 2.1, 256KB L2, 512KB L3 Cache</span><br><span class="line">18 FastEthernet interfaces</span><br><span class="line">8 Serial interfaces</span><br><span class="line">1 Serial(sync/async) interface</span><br><span class="line">DRAM configuration is 64 bits wide with parity enabled.</span><br><span class="line">151K bytes of NVRAM.</span><br><span class="line"></span><br><span class="line">Configuration register is 0x2102</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        172.16.1.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.1.254/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/1</span><br><span class="line">L        192.168.12.1/32 is directly connected, Ethernet0/1</span><br><span class="line">R     192.168.23.0/24 [120/1] via 192.168.12.2, 00:00:04, Ethernet0/1</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;查看CPU 的利用率：</p>
-<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Huangzc#show processes cpu </span><br><span class="line">CPU utilization <span class="keyword">for</span> five seconds: <span class="number">0</span>%/<span class="number">0</span>%; one minute: <span class="number">0</span>%; five minutes: <span class="number">0</span>%</span><br><span class="line"> PID Runtime(ms)   Invoked      uSecs   <span class="number">5</span>Sec   <span class="number">1</span>Min   <span class="number">5</span>Min TTY Process </span><br><span class="line">   <span class="number">1</span>           <span class="number">4</span>         <span class="number">5</span>        <span class="number">800</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Chunk Manager    </span><br><span class="line">   <span class="number">2</span>           <span class="number">4</span>       <span class="number">284</span>         <span class="number">14</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Load Meter       </span><br><span class="line">   <span class="number">3</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> chkpt message ha </span><br><span class="line">   <span class="number">4</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> EDDRI_MAIN       </span><br><span class="line">   <span class="number">5</span>         <span class="number">296</span>       <span class="number">145</span>       <span class="number">2041</span>  <span class="number">0.00</span>%  <span class="number">0.01</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Check heaps      </span><br><span class="line">   <span class="number">6</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Pool Manager     </span><br><span class="line">   <span class="number">7</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Timers           </span><br><span class="line">   <span class="number">8</span>           <span class="number">0</span>        <span class="number">24</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Dynamic Cach </span><br><span class="line">   <span class="number">9</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Zone Manager </span><br><span class="line">  <span class="number">10</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Periodic Tim </span><br><span class="line">  <span class="number">11</span>           <span class="number">0</span>      <span class="number">1417</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Deferred Por </span><br><span class="line">  <span class="number">12</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC Seat Manager </span><br><span class="line">  <span class="number">13</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> IPC BackPressure </span><br><span class="line">  <span class="number">14</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> OIR Handler      </span><br><span class="line">  <span class="number">15</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Crash writer     </span><br><span class="line">  <span class="number">16</span>           <span class="number">4</span>        <span class="number">49</span>         <span class="number">81</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Environmental mo </span><br><span class="line">  <span class="number">17</span>          <span class="number">12</span>        <span class="number">28</span>        <span class="number">428</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ARP Input        </span><br><span class="line">  <span class="number">18</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> ATM Idle Timer   </span><br><span class="line">  <span class="number">19</span>           <span class="number">0</span>         <span class="number">2</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA high-capacit </span><br><span class="line">  <span class="number">20</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> AAA_SERVER_DEADT </span><br><span class="line">  <span class="number">21</span>           <span class="number">0</span>         <span class="number">1</span>          <span class="number">0</span>  <span class="number">0.00</span>%  <span class="number">0.00</span>%  <span class="number">0.00</span>%   <span class="number">0</span> Policy Manager  </span><br><span class="line">  --more--</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">R     172.16.0.0/16 [120/1] via 192.168.23.3, 00:00:03, Serial1/0</span><br><span class="line">                    [120/1] via 192.168.12.1, 00:00:09, Ethernet0/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial1/0</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;查看接口的简要信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc<span class="comment">#show ip interface brief </span></span><br><span class="line">Interface                  IP-Address      OK? Method Status                Protocol</span><br><span class="line">FastEthernet0/0            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial0/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet0/1            unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial1/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/0                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/1                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/2                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">Serial2/3                  unassigned      YES <span class="built_in">unset</span>  administratively down down    </span><br><span class="line">FastEthernet3/0            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/1            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/2            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/3            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/4            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/5            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/6            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/7            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/8            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/9            unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/10           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/11           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/12           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/13           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/14           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">FastEthernet3/15           unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br><span class="line">Vlan1                      unassigned      YES <span class="built_in">unset</span>  up                    down    </span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">R     192.168.12.0/24 [120/1] via 192.168.23.2, 00:00:16, Serial1/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial1/1</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;受实验环境所限，flash信息暂时无法查看</p>
 <ol start="6">
-<li>路由器的安全加固：console 口加密和进入特权模式的加密</li>
+<li>分别在 R2 和 PC2 上测试 R2 与 PC1 以及 PC2 与 PC1 之间的连通性</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置console口的密码，并应用</span></span><br><span class="line">Huangzc(config)<span class="comment">#line console 0</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#login</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（明文）</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable password 456</span></span><br><span class="line"><span class="comment">#配置进入特权模式的密码（密文），若两者都启用的话，则明文不生效</span></span><br><span class="line">Huangzc(config)<span class="comment">#enable secret 789</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/22/wOvXwV.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/0pVygH.png" alt="image-20200924184216902"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/0pVXV0.png" alt="image-20200924184319088"></p>
+<p>&emsp;&emsp;R2可以ping通PC1，不可以ping通PC2，PC1也不可以ping通PC2。出现这种情况的原因是开启路由的自动汇总，将172.16.1.0/24、172.16.3.0/24汇总成了一条路由（详细请见5中R2的路由表）。</p>
 <ol start="7">
-<li>使用 Telnet 远程登入设备</li>
+<li>在 R2 上使用 debug ip rip 观察路由的发送情况</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#line vty 0 4</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#password 123456</span></span><br><span class="line">Huangzc(config-line)<span class="comment">#transport input telnet </span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">*Sep 24 10:49:16.772: RIP: sending request on Ethernet0/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:49:16.772: RIP: sending request on Serial2/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:49:16.772: RIP: sending request on Ethernet0/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:49:16.772: RIP: sending request on Serial2/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:49:16.773: RIP: received v2 update from 192.168.12.1 on Ethernet0/0</span><br><span class="line">*Sep 24 10:49:16.773:      172.16.0.0/16 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:49:16.777: RIP: received v2 update from 192.168.23.3 on Serial2/0</span><br><span class="line">*Sep 24 10:49:16.777:      172.16.0.0/16 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:49:18.774: RIP: sending v2 flash update to 224.0.0.9 via Ethernet0/0 (192.168.12.2)</span><br><span class="line">*Sep 24 10:49:18.774: RIP: build flash update entries</span><br><span class="line">*Sep 24 10:49:18.775:   192.168.23.0/24 via 0.0.0.0, metric 1, tag 0</span><br><span class="line">*Sep 24 10:49:18.775: RIP: sending v2 flash update to 224.0.0.9 via Serial2/0 (192.168.23.2)</span><br><span class="line">*Sep 24 10:49:18.775: RIP: build flash update entries</span><br><span class="line">*Sep 24 10:49:18.775:   192.168.12.0/24 via 0.0.0.0, metric 1, tag 0</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s1.ax1x.com/2020/09/22/wOvjoT.png"></p>
 <ol start="8">
-<li>了解 DTE 和 DCE 的区别以及 DCE 的时钟频率设置</li>
+<li>在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试 R2与 PC1 以及 PC2 与 PC1 之间的连通性</li>
 </ol>
-<p>① 意思不同</p>
-<p>&emsp;&emsp;DCE的意思是数据通信设备或者数据电路终端设备，该设备和其与通信网络的连接构成了网络终端的用户网络接口。DTE的意思是数据终端设备，指的是位于用户网络接口用户端的设备。</p>
-<p>② 作用不同</p>
-<p>&emsp;&emsp;DCE提供了到网络的一条物理连接、转发业务量，并且提供了一个用于同步DCE设备和DTE设备之间数据传输的时钟信号。调制解调器和接口卡都是DCE设备的例子。</p>
-<p>&emsp;&emsp;DTE它能够作为信源、信宿或同时为二者。数据终端设备通过数据通信设备连接到一个数据网络上，并且通常使用数据通信设备产生的时钟信号。</p>
-<p>③用法和功能不同</p>
-<p>&emsp;&emsp;DTE与DCE比较Data Communications Equipment（数据通讯设备）的首字母缩略词DCE，它在DTE和传输线路之间提供信号变换和编码功能，并负责建立、保持和释放链路的连接，如 Modem。DCE设备通常是与DTE对接，因此针脚的分配相反，也就是2是接收，3是发送。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Huangzc(config)<span class="comment">#int s1/0</span></span><br><span class="line">Huangzc(config-if)<span class="comment">#clock rate 1000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#router rip </span></span><br><span class="line">R1(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router rip </span></span><br><span class="line">R2(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router rip </span></span><br><span class="line">R3(config-router)<span class="comment">#no auto-summary</span></span><br></pre></td></tr></table></figure>
 
+<p><img src="https://s1.ax1x.com/2020/09/24/0pZGIf.png" alt="image-20200924185654085"></p>
+<p><img src="https://s1.ax1x.com/2020/09/24/0pZ3Zt.png" alt="image-20200924185718576"></p>
 <ol start="9">
-<li>查看当前的配置信息以及保存配置文件</li>
+<li>再次在 R2 上使用 debug ip rip 观察路由的发送情况，比较关闭自动汇总与开启自动汇总 debug 输出信息的不同</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前的配置信息</span></span><br><span class="line">R1<span class="comment">#show running-config </span></span><br><span class="line"><span class="comment">#保存配置文件</span></span><br><span class="line">R1<span class="comment">#write </span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">*Sep 24 10:58:23.882: RIP: sending request on Ethernet0/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:58:23.882: RIP: sending request on Serial2/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:58:23.883: RIP: sending request on Ethernet0/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:58:23.883: RIP: sending request on Serial2/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:58:23.884: RIP: received v2 update from 192.168.12.1 on Ethernet0/0</span><br><span class="line">*Sep 24 10:58:23.884:      172.16.1.0/24 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:58:23.888: RIP: received v2 update from 192.168.23.3 on Serial2/0</span><br><span class="line">*Sep 24 10:58:23.888:      172.16.3.0/24 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:58:23.888: RIP: received v2 update from 192.168.23.3 on Serial2/0</span><br><span class="line">*Sep 24 10:58:23.888:      172.16.3.0/24 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:58:25.888: RIP: sending v2 flash update to 224.0.0.9 via Ethernet0/0 (192.168.12.2)</span><br><span class="line">*Sep 24 10:58:25.888: RIP: build flash update entries</span><br><span class="line">*Sep 24 10:58:25.888:   172.16.3.0/24 via 0.0.0.0, metric 2, tag 0</span><br><span class="line">*Sep 24 10:58:25.888:   192.168.23.0/24 via 0.0.0.0, metric 1, tag 0</span><br><span class="line">*Sep 24 10:58:25.888: RIP: sending v2 flash update to 224.0.0.9 via Serial2/0 (192.168.23.2)</span><br><span class="line">*Sep 24 10:58:25.888: RIP: build flash update entries</span><br><span class="line">*Sep 24 10:58:25.888:   172.16.1.0/24 via 0.0.0.0, metric 2, tag 0</span><br><span class="line">*Sep 24 10:58:25.888:   192.168.12.0/24 via 0.0.0.0, metric 1, tag 0</span><br></pre></td></tr></table></figure>
 
+<p>&emsp;&emsp;开启自动汇总时，172.16.1.0/24、172.16.30./24是汇总成一条路由条目进行传输的；关闭自动汇总后，172.16.1.0/24、172.16.30./24是分开传输的。</p>
+<ol start="10">
+<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config-if)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 2.2.2.2 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router rip </span></span><br><span class="line">R2(config-router)<span class="comment">#network 2.2.2.2</span></span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li>在 R1 上添加一个 loopback1 接口，地址自定，然后在 RIP 中通告，观察R2 和 R3 是否能马上学习到 R1 上新增的 loopback1 网段</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#int loopback 1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#router rip </span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2#show<span class="built_in"> ip route </span></span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      1.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line"></span><br><span class="line">R        1.1.1.0 [120/1] via 192.168.12.1, 00:00:04, Ethernet0/0</span><br><span class="line">      2.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        2.2.2.0/24 is directly connected, Loopback1</span><br><span class="line">L        2.2.2.2/32 is directly connected, Loopback1</span><br><span class="line">      172.16.0.0/24 is subnetted, 2 subnets</span><br><span class="line">R        172.16.1.0 [120/1] via 192.168.12.1, 00:00:04, Ethernet0/0</span><br><span class="line">R        172.16.3.0 [120/1] via 192.168.23.3, 00:00:10, Serial1/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial1/0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R3#show<span class="built_in"> ip route </span></span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      1.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line"></span><br><span class="line">R        1.1.1.0 [120/2] via 192.168.23.2, 00:00:18, Serial1/1</span><br><span class="line">      2.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">R        2.2.2.0 [120/1] via 192.168.23.2, 00:00:18, Serial1/1</span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line">R        172.16.1.0/24 [120/2] via 192.168.23.2, 00:00:18, Serial1/1</span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">R     192.168.12.0/24 [120/1] via 192.168.23.2, 00:00:18, Serial1/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial1/1</span><br><span class="line">R3#</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;R2 和 R3 能马上学习到 R1 上新增的 loopback1 网段</p>
+<ol start="13">
+<li>将 R1 上的 loopback1 接口关闭，观察 R2 和 R3 上是否还存在关于 R1 上的 loopback1 网段的路由条目</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2#sh<span class="built_in"> ip </span>rou </span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      2.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        2.2.2.0/24 is directly connected, Loopback1</span><br><span class="line">L        2.2.2.2/32 is directly connected, Loopback1</span><br><span class="line">      172.16.0.0/24 is subnetted, 2 subnets</span><br><span class="line">R        172.16.1.0 [120/1] via 192.168.12.1, 00:00:15, Ethernet0/0</span><br><span class="line">R        172.16.3.0 [120/1] via 192.168.23.3, 00:00:17, Serial1/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial1/0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3<span class="comment">#sh ip rou </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      2.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line"></span><br><span class="line">R        2.2.2.0 [120/1] via 192.168.23.2, 00:00:13, Serial1/1</span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line">R        172.16.1.0/24 [120/2] via 192.168.23.2, 00:00:13, Serial1/1</span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">R     192.168.12.0/24 [120/1] via 192.168.23.2, 00:00:13, Serial1/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial1/1</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;关闭R1上的loopback接口后，R2、R3的路由表就清除了此接口信息</p>
+<ol start="14">
+<li>使用 wireshark 抓取 RIPv2 的报文，理解 RIPv2 报文各字段的含义</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/24/0pZtJS.png" alt="图片3"></p>
 ]]></content>
       <categories>
         <category>CCNA实验</category>
       </categories>
       <tags>
         <tag>CCNA</tag>
-        <tag>基础配置</tag>
+        <tag>RIP</tag>
       </tags>
   </entry>
   <entry>
@@ -500,119 +613,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>静态路由</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNA实验三——RIP 的应用</title>
-    <url>/2018/10/05/CCNA%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 RIPv2 的基本配置； RIPv2 路由条目的结构含义;自动汇总的含义；和观察周期性更新； debug ip rip 命令的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li>掌握 RIPv2 的基本配置</li>
-<li>理解 RIPv2 路由条目的结构含义</li>
-<li>理解自动汇总的含义</li>
-<li>理解和观察周期性更新</li>
-<li>理解 debug ip rip 命令的作用</li>
-</ol>
-<p>【拓扑结构】</p>
-<p><img src="https://s1.ax1x.com/2020/09/24/0pV0UK.png" alt="图片1"></p>
-<center>RIP 的应用拓扑</center>
-
-<p>【实验需求】</p>
-<ol>
-<li>参照逻辑拓扑，使用合适的线缆完成物理拓扑的搭建</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/24/0pVrCD.png" alt="图片4"></p>
-<ol start="2">
-<li>完成各路由器的基本配置，实现各直连设备之间可以互 ping 对方，要求PC1 的 IP 地址设置为 172.16.1.1/24，网关设置为172.16.1.254，PC2 的IP 地址设置为 172.16.3.1/24，网关设置为172.16.3.254，各路由器接口间的地址自己规划</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#int e0/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 192.168.12.1 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown</span></span><br><span class="line">R1(config)<span class="comment">#int e0/1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 172.16.1.254 255.255.255.0</span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.12.2 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R2(config)<span class="comment">#int s2/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 192.168.23.2 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 172.16.3.254 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown </span></span><br><span class="line">R3(config)<span class="comment">#int s2/1</span></span><br><span class="line">R3(config-if)<span class="comment">#ip address 192.168.23.3 255.255.255.0</span></span><br><span class="line">R3(config-if)<span class="comment">#no shutdown</span></span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 172.16.1.1 255.255.255.0 172.16.1.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 172.16.1.1 255.255.255.0 gateway 172.16.1.254</span><br><span class="line"></span><br><span class="line">VPCS&gt; ip 172.16.3.1 255.255.255.0 172.16.3.254</span><br><span class="line">Checking <span class="keyword">for</span> duplicate address...</span><br><span class="line">PC1 : 172.16.3.1 255.255.255.0 gateway 172.16.3.254</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>在三台路由器上都启用 RIPv2 协议，通告各自的直连网络路由，并开启自动汇总</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#router rip </span></span><br><span class="line">R1(config-router)<span class="comment">#version 2</span></span><br><span class="line">R1(config-router)<span class="comment">#network 192.168.12.0 </span></span><br><span class="line">R1(config-router)<span class="comment">#network 172.16.1.0   </span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router rip                                </span></span><br><span class="line">R2(config-router)<span class="comment">#version 2</span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.12.0      </span></span><br><span class="line">R2(config-router)<span class="comment">#network 192.168.23.0 </span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router rip </span></span><br><span class="line">R3(config-router)<span class="comment">#version 2</span></span><br><span class="line">R3(config-router)<span class="comment">#network 192.168.23.0</span></span><br><span class="line">R3(config-router)<span class="comment">#network 172.16.3.0 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在RIP协议中，自动汇总是默认开启的</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>在 R1 上使用 show ip protocols 命令，观察并理解该命令的输出信息</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip protocols </span></span><br><span class="line">*** IP Routing is NSF aware ***</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;application&quot;</span></span><br><span class="line">  Sending updates every 0 seconds</span><br><span class="line">  Invalid after 0 seconds, hold down 0, flushed after 0</span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Maximum path: 32</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">  Distance: (default is 4)</span><br><span class="line"></span><br><span class="line">Routing Protocol is <span class="string">&quot;rip&quot;</span></span><br><span class="line">  Outgoing update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Incoming update filter list <span class="keyword">for</span> all interfaces is not <span class="built_in">set</span></span><br><span class="line">  Sending updates every 30 seconds, next due <span class="keyword">in</span> 11 seconds</span><br><span class="line">  Invalid after 180 seconds, hold down 180, flushed after 240</span><br><span class="line">  Redistributing: rip</span><br><span class="line">  Default version control: send version 2, receive version 2</span><br><span class="line">    Interface             Send  Recv  Triggered RIP  Key-chain</span><br><span class="line">    Ethernet0/0           2     2                                    </span><br><span class="line">    Ethernet0/1           2     2                                    </span><br><span class="line">  Automatic network summarization is <span class="keyword">in</span> effect</span><br><span class="line">  Maximum path: 4</span><br><span class="line">  Routing <span class="keyword">for</span> Networks:</span><br><span class="line">    172.16.0.0</span><br><span class="line">    192.168.12.0</span><br><span class="line">  Routing Information Sources:</span><br><span class="line">    Gateway         Distance      Last Update</span><br><span class="line">    192.168.12.2         120      00:00:16</span><br><span class="line">  Distance: (default is 120)</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;从该命令的输出信息中，可以查看到该路由器使用了RIP版本2的协议，端口e0/0、e0/1发送RIPv2接收RIPv2的路由表信息；更新时间30s；无效/抑制时间180s；失效时间240s；发送的路由信息172.16.0.0；192.168.12.0。</p>
-<ol start="5">
-<li>查看各路由器的路由表，观察 RIP 路由条目的特征</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        172.16.1.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.1.254/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/1</span><br><span class="line">L        192.168.12.1/32 is directly connected, Ethernet0/1</span><br><span class="line">R     192.168.23.0/24 [120/1] via 192.168.12.2, 00:00:04, Ethernet0/1</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">R     172.16.0.0/16 [120/1] via 192.168.23.3, 00:00:03, Serial1/0</span><br><span class="line">                    [120/1] via 192.168.12.1, 00:00:09, Ethernet0/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial1/0</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3<span class="comment">#show ip route </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      172.16.0.0/16 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">R     192.168.12.0/24 [120/1] via 192.168.23.2, 00:00:16, Serial1/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial1/1</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>分别在 R2 和 PC2 上测试 R2 与 PC1 以及 PC2 与 PC1 之间的连通性</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/24/0pVygH.png" alt="image-20200924184216902"></p>
-<p><img src="https://s1.ax1x.com/2020/09/24/0pVXV0.png" alt="image-20200924184319088"></p>
-<p>&emsp;&emsp;R2可以ping通PC1，不可以ping通PC2，PC1也不可以ping通PC2。出现这种情况的原因是开启路由的自动汇总，将172.16.1.0/24、172.16.3.0/24汇总成了一条路由（详细请见5中R2的路由表）。</p>
-<ol start="7">
-<li>在 R2 上使用 debug ip rip 观察路由的发送情况</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">*Sep 24 10:49:16.772: RIP: sending request on Ethernet0/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:49:16.772: RIP: sending request on Serial2/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:49:16.772: RIP: sending request on Ethernet0/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:49:16.772: RIP: sending request on Serial2/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:49:16.773: RIP: received v2 update from 192.168.12.1 on Ethernet0/0</span><br><span class="line">*Sep 24 10:49:16.773:      172.16.0.0/16 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:49:16.777: RIP: received v2 update from 192.168.23.3 on Serial2/0</span><br><span class="line">*Sep 24 10:49:16.777:      172.16.0.0/16 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:49:18.774: RIP: sending v2 flash update to 224.0.0.9 via Ethernet0/0 (192.168.12.2)</span><br><span class="line">*Sep 24 10:49:18.774: RIP: build flash update entries</span><br><span class="line">*Sep 24 10:49:18.775:   192.168.23.0/24 via 0.0.0.0, metric 1, tag 0</span><br><span class="line">*Sep 24 10:49:18.775: RIP: sending v2 flash update to 224.0.0.9 via Serial2/0 (192.168.23.2)</span><br><span class="line">*Sep 24 10:49:18.775: RIP: build flash update entries</span><br><span class="line">*Sep 24 10:49:18.775:   192.168.12.0/24 via 0.0.0.0, metric 1, tag 0</span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>在三台路由器上都关闭自动汇总，观察各路由表的变化，并再次测试 R2与 PC1 以及 PC2 与 PC1 之间的连通性</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config)<span class="comment">#router rip </span></span><br><span class="line">R1(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router rip </span></span><br><span class="line">R2(config-router)<span class="comment">#no auto-summary</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router rip </span></span><br><span class="line">R3(config-router)<span class="comment">#no auto-summary</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/24/0pZGIf.png" alt="image-20200924185654085"></p>
-<p><img src="https://s1.ax1x.com/2020/09/24/0pZ3Zt.png" alt="image-20200924185718576"></p>
-<ol start="9">
-<li>再次在 R2 上使用 debug ip rip 观察路由的发送情况，比较关闭自动汇总与开启自动汇总 debug 输出信息的不同</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">*Sep 24 10:58:23.882: RIP: sending request on Ethernet0/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:58:23.882: RIP: sending request on Serial2/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:58:23.883: RIP: sending request on Ethernet0/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:58:23.883: RIP: sending request on Serial2/0 to 224.0.0.9</span><br><span class="line">*Sep 24 10:58:23.884: RIP: received v2 update from 192.168.12.1 on Ethernet0/0</span><br><span class="line">*Sep 24 10:58:23.884:      172.16.1.0/24 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:58:23.888: RIP: received v2 update from 192.168.23.3 on Serial2/0</span><br><span class="line">*Sep 24 10:58:23.888:      172.16.3.0/24 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:58:23.888: RIP: received v2 update from 192.168.23.3 on Serial2/0</span><br><span class="line">*Sep 24 10:58:23.888:      172.16.3.0/24 via 0.0.0.0 <span class="keyword">in</span> 1 hops</span><br><span class="line">*Sep 24 10:58:25.888: RIP: sending v2 flash update to 224.0.0.9 via Ethernet0/0 (192.168.12.2)</span><br><span class="line">*Sep 24 10:58:25.888: RIP: build flash update entries</span><br><span class="line">*Sep 24 10:58:25.888:   172.16.3.0/24 via 0.0.0.0, metric 2, tag 0</span><br><span class="line">*Sep 24 10:58:25.888:   192.168.23.0/24 via 0.0.0.0, metric 1, tag 0</span><br><span class="line">*Sep 24 10:58:25.888: RIP: sending v2 flash update to 224.0.0.9 via Serial2/0 (192.168.23.2)</span><br><span class="line">*Sep 24 10:58:25.888: RIP: build flash update entries</span><br><span class="line">*Sep 24 10:58:25.888:   172.16.1.0/24 via 0.0.0.0, metric 2, tag 0</span><br><span class="line">*Sep 24 10:58:25.888:   192.168.12.0/24 via 0.0.0.0, metric 1, tag 0</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;开启自动汇总时，172.16.1.0/24、172.16.30./24是汇总成一条路由条目进行传输的；关闭自动汇总后，172.16.1.0/24、172.16.30./24是分开传输的。</p>
-<ol start="10">
-<li>在 R2 上添加一个 loopback1 接口，地址自定</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config-if)<span class="comment">#int loopback 1</span></span><br><span class="line">R2(config-if)<span class="comment">#ip address 2.2.2.2 255.255.255.0</span></span><br><span class="line">R2(config-if)<span class="comment">#no shutdown</span></span><br></pre></td></tr></table></figure>
-
-<ol start="11">
-<li>添加必要配置，实现 PC1 和 PC2 都能够正常访问在 R2 上的 loopback1</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R2(config)<span class="comment">#router rip </span></span><br><span class="line">R2(config-router)<span class="comment">#network 2.2.2.2</span></span><br></pre></td></tr></table></figure>
-
-<ol start="12">
-<li>在 R1 上添加一个 loopback1 接口，地址自定，然后在 RIP 中通告，观察R2 和 R3 是否能马上学习到 R1 上新增的 loopback1 网段</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R1(config-if)<span class="comment">#int loopback 1</span></span><br><span class="line">R1(config-if)<span class="comment">#ip address 1.1.1.1 255.255.255.0 </span></span><br><span class="line">R1(config-if)<span class="comment">#no shutdown </span></span><br><span class="line"></span><br><span class="line">R1(config)<span class="comment">#router rip </span></span><br><span class="line">R1(config-router)<span class="comment">#network 1.1.1.0</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2#show<span class="built_in"> ip route </span></span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      1.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line"></span><br><span class="line">R        1.1.1.0 [120/1] via 192.168.12.1, 00:00:04, Ethernet0/0</span><br><span class="line">      2.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        2.2.2.0/24 is directly connected, Loopback1</span><br><span class="line">L        2.2.2.2/32 is directly connected, Loopback1</span><br><span class="line">      172.16.0.0/24 is subnetted, 2 subnets</span><br><span class="line">R        172.16.1.0 [120/1] via 192.168.12.1, 00:00:04, Ethernet0/0</span><br><span class="line">R        172.16.3.0 [120/1] via 192.168.23.3, 00:00:10, Serial1/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial1/0</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R3#show<span class="built_in"> ip route </span></span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      1.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line"></span><br><span class="line">R        1.1.1.0 [120/2] via 192.168.23.2, 00:00:18, Serial1/1</span><br><span class="line">      2.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line">R        2.2.2.0 [120/1] via 192.168.23.2, 00:00:18, Serial1/1</span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line">R        172.16.1.0/24 [120/2] via 192.168.23.2, 00:00:18, Serial1/1</span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">R     192.168.12.0/24 [120/1] via 192.168.23.2, 00:00:18, Serial1/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial1/1</span><br><span class="line">R3#</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;R2 和 R3 能马上学习到 R1 上新增的 loopback1 网段</p>
-<ol start="13">
-<li>将 R1 上的 loopback1 接口关闭，观察 R2 和 R3 上是否还存在关于 R1 上的 loopback1 网段的路由条目</li>
-</ol>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">R2#sh<span class="built_in"> ip </span>rou </span><br><span class="line">Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA -<span class="built_in"> OSPF </span>inter<span class="built_in"> area </span></span><br><span class="line">       N1 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>1, N2 -<span class="built_in"> OSPF </span>NSSA external<span class="built_in"> type </span>2</span><br><span class="line">       E1 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>1, E2 -<span class="built_in"> OSPF </span>external<span class="built_in"> type </span>2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is <span class="keyword">not</span> set</span><br><span class="line"></span><br><span class="line">      2.0.0.0/8 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line"></span><br><span class="line">C        2.2.2.0/24 is directly connected, Loopback1</span><br><span class="line">L        2.2.2.2/32 is directly connected, Loopback1</span><br><span class="line">      172.16.0.0/24 is subnetted, 2 subnets</span><br><span class="line">R        172.16.1.0 [120/1] via 192.168.12.1, 00:00:15, Ethernet0/0</span><br><span class="line">R        172.16.3.0 [120/1] via 192.168.23.3, 00:00:17, Serial1/0</span><br><span class="line">      192.168.12.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.12.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        192.168.12.2/32 is directly connected, Ethernet0/0</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/0</span><br><span class="line">L        192.168.23.2/32 is directly connected, Serial1/0</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">R3<span class="comment">#sh ip rou </span></span><br><span class="line">Codes: L - <span class="built_in">local</span>, C - connected, S - static, R - RIP, M - mobile, B - BGP</span><br><span class="line">       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area </span><br><span class="line">       N1 - OSPF NSSA external <span class="built_in">type</span> 1, N2 - OSPF NSSA external <span class="built_in">type</span> 2</span><br><span class="line">       E1 - OSPF external <span class="built_in">type</span> 1, E2 - OSPF external <span class="built_in">type</span> 2</span><br><span class="line">       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2</span><br><span class="line">       ia - IS-IS inter area, * - candidate default, U - per-user static route</span><br><span class="line">       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP</span><br><span class="line">       a - application route</span><br><span class="line">       + - replicated route, % - next hop override</span><br><span class="line"></span><br><span class="line">Gateway of last resort is not <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">      2.0.0.0/24 is subnetted, 1 subnets</span><br><span class="line"></span><br><span class="line">R        2.2.2.0 [120/1] via 192.168.23.2, 00:00:13, Serial1/1</span><br><span class="line">      172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks</span><br><span class="line">R        172.16.1.0/24 [120/2] via 192.168.23.2, 00:00:13, Serial1/1</span><br><span class="line">C        172.16.3.0/24 is directly connected, Ethernet0/0</span><br><span class="line">L        172.16.3.254/32 is directly connected, Ethernet0/0</span><br><span class="line">R     192.168.12.0/24 [120/1] via 192.168.23.2, 00:00:13, Serial1/1</span><br><span class="line">      192.168.23.0/24 is variably subnetted, 2 subnets, 2 masks</span><br><span class="line">C        192.168.23.0/24 is directly connected, Serial1/1</span><br><span class="line">L        192.168.23.3/32 is directly connected, Serial1/1</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;关闭R1上的loopback接口后，R2、R3的路由表就清除了此接口信息</p>
-<ol start="14">
-<li>使用 wireshark 抓取 RIPv2 的报文，理解 RIPv2 报文各字段的含义</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/24/0pZtJS.png" alt="图片3"></p>
-]]></content>
-      <categories>
-        <category>CCNA实验</category>
-      </categories>
-      <tags>
-        <tag>CCNA</tag>
-        <tag>RIP</tag>
       </tags>
   </entry>
   <entry>
@@ -955,104 +955,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNP交换综合实验一</title>
-    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
-</li>
-<li><p>掌握 DTP 的作用和配置</p>
-</li>
-<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
-</li>
-<li><p>掌握以太通道技术的作用和配置</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建。</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
-<ol start="2">
-<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
-</ol>
-<p>&emsp;①网关地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
-<p>&emsp;②各主机通过DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
-<ol start="3">
-<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
-<ol start="4">
-<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
-</ol>
-<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
-<p>&emsp;&emsp;SW2的VLAN信息：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
-<ol start="5">
-<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
-</ol>
-<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
-<ol start="6">
-<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
-</ol>
-<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
-<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
-<p>FTP_Srv用DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
-<ol start="7">
-<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
-</ol>
-<p>&emsp;①启用OSPF实现内网全网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
-<p>&emsp;②实现外网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
-<p>③  配置NAT：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
-<p>④  用R1给邻居下发默认路由：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
-<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
-<p>【实验中用到的代码】</p>
-<p><strong>VTP：</strong></p>
-<p>vtp mode server———————————————将VTP的模式该为server模式</p>
-<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
-<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
-<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
-<p>当域名与密码相同时才能进行同步</p>
-<p>NAT：</p>
-<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
-<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
-<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
-<p>捆绑链路：</p>
-<p>int range e0/1-2</p>
-<p>switchport truck encapsulation do1q</p>
-<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
-<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
-<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
-<p>下发默认路由：</p>
-<p>router ospf 1</p>
-<p>default-information originate—————————–给邻居下发默认路由</p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNA实验四——EIGRP 的简单应用</title>
     <url>/2018/10/07/CCNA%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 EIGRP 的基本配置； EIGRP 的邻居表、拓扑表以及路由表的含义；查看 EIGRP 路由协议的相关信息； FD、AD、S、FS 以及 FC 的含义； EIGRP 的 hello 报文作用；路由快速收敛的含义； EIGRP 的不等价负载均衡。</p>
@@ -1177,6 +1079,104 @@
       <tags>
         <tag>CCNA</tag>
         <tag>EIGRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNP交换综合实验一</title>
+    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
+</li>
+<li><p>掌握 DTP 的作用和配置</p>
+</li>
+<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
+</li>
+<li><p>掌握以太通道技术的作用和配置</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
+<ol start="2">
+<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
+</ol>
+<p>&emsp;①网关地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
+<p>&emsp;②各主机通过DHCP获取IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
+<ol start="3">
+<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
+<ol start="4">
+<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
+</ol>
+<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
+<p>&emsp;&emsp;SW2的VLAN信息：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
+<ol start="5">
+<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
+</ol>
+<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
+<ol start="6">
+<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
+</ol>
+<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
+<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
+<p>FTP_Srv用DHCP获取IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
+<ol start="7">
+<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
+</ol>
+<p>&emsp;①启用OSPF实现内网全网可达：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
+<p>&emsp;②实现外网可达：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
+<p>③  配置NAT：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
+<p>④  用R1给邻居下发默认路由：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
+<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
+<p>【实验中用到的代码】</p>
+<p><strong>VTP：</strong></p>
+<p>vtp mode server———————————————将VTP的模式该为server模式</p>
+<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
+<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
+<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
+<p>当域名与密码相同时才能进行同步</p>
+<p>NAT：</p>
+<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
+<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
+<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
+<p>捆绑链路：</p>
+<p>int range e0/1-2</p>
+<p>switchport truck encapsulation do1q</p>
+<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
+<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
+<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
+<p>下发默认路由：</p>
+<p>router ospf 1</p>
+<p>default-information originate—————————–给邻居下发默认路由</p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
       </tags>
   </entry>
   <entry>
@@ -1692,92 +1692,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CCNP路由综合实验三</title>
-    <url>/2019/04/12/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 IS-IS 的基本配置； IS-IS 路由器等级； IS-IS 的路由汇总； IS-IS 的基本查看和验证； IS-IS 的报文类型及报文的作用。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>熟悉 IS-IS 的基本配置</p>
-</li>
-<li><p>理解 IS-IS 路由器等级</p>
-</li>
-<li><p>理解 IS-IS 的路由汇总</p>
-</li>
-<li><p>掌握 IS-IS 的基本查看和验证</p>
-</li>
-<li><p>理解 IS-IS 的报文类型及报文的作用</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p>​     <img src="https://s1.ax1x.com/2020/09/11/wtxetH.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNSuOP.png"></p>
-<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R1上的11.1.1.1/24、11.1.2.1/24……。以R1、R2的端口配置情况为例。</p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNp7UU.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNpTET.png"></p>
-<ol start="2">
-<li>全网启用集成 IS-IS，区域划分参考图示，IS-IS 路由器的 System id 指定为各设备第一个以太网接口的 MAC 地址，实现全网的连通性</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网启用IS-IS协议</span></span><br><span class="line">R1(config)<span class="comment">#router isis</span></span><br><span class="line">R1(config-router)<span class="comment">#net 49.0123.aabb.cc00.1000.00</span></span><br><span class="line">R1(config-router)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int range loopback 1-8 </span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis  </span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#int s1/1       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#net 49.0123.aabb.cc00.2000.00</span></span><br><span class="line">R2(config-router)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R2(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int s1/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#net 49.0123.aabb.cc00.3000.00</span></span><br><span class="line">R3(config-router)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R3(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int s1/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router isis </span></span><br><span class="line">R4(config-router)<span class="comment">#net 49.0456.aabb.cc00.4000.00</span></span><br><span class="line">R4(config-router)<span class="comment">#exit </span></span><br><span class="line">R4(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R4(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R4(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R5(config-router)<span class="comment">#router isis                                     </span></span><br><span class="line">R5(config-router)<span class="comment">#net 49.0456.aabb.cc00.5000.00</span></span><br><span class="line">R5(config-router)<span class="comment">#exit </span></span><br><span class="line">R5(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R5(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R5(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router isis</span></span><br><span class="line">R6(config-router)<span class="comment">#net 49.0456.aabb.cc00.9000.00</span></span><br><span class="line">R6(config-router)<span class="comment">#exit </span></span><br><span class="line">R6(config)<span class="comment">#int range e0/1,lo1-2</span></span><br><span class="line">R6(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#int s1/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router isis</span></span><br><span class="line">R7(config-router)<span class="comment">#net 49.0007.aabb.cc00.7000.00</span></span><br><span class="line">R7(config-router)<span class="comment">#exit </span></span><br><span class="line">R7(config)<span class="comment">#int range lo1-2</span></span><br><span class="line">R7(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R7(config)<span class="comment">#int s1/0</span></span><br><span class="line">R7(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R8(config)<span class="comment">#router isis</span></span><br><span class="line">R8(config-router)<span class="comment">#net 49.0008.aabb.cc00.8000.00</span></span><br><span class="line">R8(config-router)<span class="comment">#exit</span></span><br><span class="line">R8(config)<span class="comment">#int range e0/0,lo1-2</span></span><br><span class="line">R8(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R8(config-if-range)<span class="comment">#exit </span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/11/wNjB11.png"></p>
-<ol start="3">
-<li>查看 IS-IS 的邻居表、拓扑表、数据库和路由表，根据拓扑，修改合适的路由器类型，对比修改完路由器类型之后 IS-IS 各数据库的变化</li>
-</ol>
-<p>&emsp;&emsp;由于在拓扑中，只有R1的端口在同一区域中，故在此以R1为例。</p>
-<p>&emsp;&emsp;R1的邻居表：</p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNj2Ae.png"></p>
-<p>&emsp;&emsp;R1的拓扑表： </p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNjqAg.png"></p>
-<p>&emsp;&emsp;R1的数据库： </p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNvejx.png"></p>
-<p>&emsp;&emsp;R1的路由表： </p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNv8Cd.png"></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将R1的路由器类型改为level-<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> isis</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#is-type</span> level-<span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;修改之后R1的数据库：</p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNvNKP.png"></p>
-<ol start="4">
-<li>实现 R1 优选 R2 对外部网络进行访问</li>
-</ol>
-<p>&emsp;&emsp;通过R1的路由表和路由跟踪可以发现R1对外部路由的访问是通过指向R2和R3的默认路由实现的，且两条路由的开销相等，负载均衡。我们可以通过更改开销来实现 R1 优选 R2 对外部网络进行访问。</p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNvwVS.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNvgK0.png"></p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过配置使R1与R2之间的开销变小，从而使R1优选 R2 对外部网络进行访问</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#int</span> s1/<span class="number">0</span>     </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#isis</span> metric <span class="number">9</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/11/wNvqr6.png"></p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNvjaD.png"></p>
-<ol start="5">
-<li>对 R1 上 loopback 接口网段进行合适的路由汇总</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R2、R3上进行汇总：</span></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br></pre></td></tr></table></figure>
-
-<p>R8的路由表：</p>
-<p><img src="https://s1.ax1x.com/2020/09/11/wNvzPH.png"></p>
-<ol start="6">
-<li>实现 R5 为多路访问网络的 DIS</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改R5的优先级</span></span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#isis priority 100</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s1.ax1x.com/2020/09/11/wNx9xI.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#验证和查看 IS-IS 的相关信息的命令</span></span><br><span class="line">Router<span class="comment">#show ip protocols</span></span><br><span class="line">Router<span class="comment">#show clns protocols</span></span><br><span class="line">Router<span class="comment">#show ip route</span></span><br><span class="line">Router<span class="comment">#show clns neighbor</span></span><br><span class="line">Router<span class="comment">#show clns interface</span></span><br><span class="line">Router<span class="comment">#show isis</span></span><br><span class="line">Router<span class="comment">#show clns route</span></span><br><span class="line">Router<span class="comment">#show isis topology</span></span><br><span class="line">Router<span class="comment">#show isis database</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>路由</tag>
-        <tag>IS-IS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CCNP路由综合实验二</title>
     <url>/2019/04/05/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%BA%8C/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 OSPF stub 区域的特点和配置； OSPF totally stub 区域的特点和配置； OSPF NSSA 区域的特点和配置； OSPF totally NSSA 区域的特点和配置；被动接口的作用掌握 OSPF LSA7 的作用； OSPF 邻居间的验证。</p>
@@ -1894,6 +1808,92 @@
         <tag>OSPF</tag>
         <tag>CCNP</tag>
         <tag>路由</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCNP路由综合实验三</title>
+    <url>/2019/04/12/CCNP%E8%B7%AF%E7%94%B1%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%89/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 IS-IS 的基本配置； IS-IS 路由器等级； IS-IS 的路由汇总； IS-IS 的基本查看和验证； IS-IS 的报文类型及报文的作用。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>熟悉 IS-IS 的基本配置</p>
+</li>
+<li><p>理解 IS-IS 路由器等级</p>
+</li>
+<li><p>理解 IS-IS 的路由汇总</p>
+</li>
+<li><p>掌握 IS-IS 的基本查看和验证</p>
+</li>
+<li><p>理解 IS-IS 的报文类型及报文的作用</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p>​     <img src="https://s1.ax1x.com/2020/09/11/wtxetH.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考拓扑，完成各路由器的基本配置，除图示地址标识外，设备间的地址自己规划</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNSuOP.png"></p>
+<p>&emsp;&emsp;各路由器的基本配置以安装上图所示的地址标识配置完成，此处不再列出具体的配置代码。另外，各，在该拓扑中，各PC机均使用路由器上的Lookback端口模拟，如R1上的11.1.1.1/24、11.1.2.1/24……。以R1、R2的端口配置情况为例。</p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNp7UU.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNpTET.png"></p>
+<ol start="2">
+<li>全网启用集成 IS-IS，区域划分参考图示，IS-IS 路由器的 System id 指定为各设备第一个以太网接口的 MAC 地址，实现全网的连通性</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#全网启用IS-IS协议</span></span><br><span class="line">R1(config)<span class="comment">#router isis</span></span><br><span class="line">R1(config-router)<span class="comment">#net 49.0123.aabb.cc00.1000.00</span></span><br><span class="line">R1(config-router)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int range loopback 1-8 </span></span><br><span class="line">R1(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R1(config)<span class="comment">#int s1/0</span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis  </span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line">R1(config)<span class="comment">#int s1/1       </span></span><br><span class="line">R1(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R1(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#net 49.0123.aabb.cc00.2000.00</span></span><br><span class="line">R2(config-router)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R2(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R2(config)<span class="comment">#int s1/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line">R2(config)<span class="comment">#int e0/0</span></span><br><span class="line">R2(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R2(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#net 49.0123.aabb.cc00.3000.00</span></span><br><span class="line">R3(config-router)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int range loopback 1-2</span></span><br><span class="line">R3(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if-range)<span class="comment">#exit </span></span><br><span class="line">R3(config)<span class="comment">#int s1/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line">R3(config)<span class="comment">#int e0/0</span></span><br><span class="line">R3(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R3(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R4(config)<span class="comment">#router isis </span></span><br><span class="line">R4(config-router)<span class="comment">#net 49.0456.aabb.cc00.4000.00</span></span><br><span class="line">R4(config-router)<span class="comment">#exit </span></span><br><span class="line">R4(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R4(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R4(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R5(config-router)<span class="comment">#router isis                                     </span></span><br><span class="line">R5(config-router)<span class="comment">#net 49.0456.aabb.cc00.5000.00</span></span><br><span class="line">R5(config-router)<span class="comment">#exit </span></span><br><span class="line">R5(config)<span class="comment">#int range e0/0-1,lo1-2</span></span><br><span class="line">R5(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R5(config-if-range)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R6(config)<span class="comment">#router isis</span></span><br><span class="line">R6(config-router)<span class="comment">#net 49.0456.aabb.cc00.9000.00</span></span><br><span class="line">R6(config-router)<span class="comment">#exit </span></span><br><span class="line">R6(config)<span class="comment">#int range e0/1,lo1-2</span></span><br><span class="line">R6(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R6(config)<span class="comment">#int s1/0</span></span><br><span class="line">R6(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R6(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R7(config)<span class="comment">#router isis</span></span><br><span class="line">R7(config-router)<span class="comment">#net 49.0007.aabb.cc00.7000.00</span></span><br><span class="line">R7(config-router)<span class="comment">#exit </span></span><br><span class="line">R7(config)<span class="comment">#int range lo1-2</span></span><br><span class="line">R7(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if-range)<span class="comment">#exit</span></span><br><span class="line">R7(config)<span class="comment">#int s1/0</span></span><br><span class="line">R7(config-if)<span class="comment">#ip router isis</span></span><br><span class="line">R7(config-if)<span class="comment">#exit</span></span><br><span class="line"></span><br><span class="line">R8(config)<span class="comment">#router isis</span></span><br><span class="line">R8(config-router)<span class="comment">#net 49.0008.aabb.cc00.8000.00</span></span><br><span class="line">R8(config-router)<span class="comment">#exit</span></span><br><span class="line">R8(config)<span class="comment">#int range e0/0,lo1-2</span></span><br><span class="line">R8(config-if-range)<span class="comment">#ip router isis</span></span><br><span class="line">R8(config-if-range)<span class="comment">#exit </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/11/wNjB11.png"></p>
+<ol start="3">
+<li>查看 IS-IS 的邻居表、拓扑表、数据库和路由表，根据拓扑，修改合适的路由器类型，对比修改完路由器类型之后 IS-IS 各数据库的变化</li>
+</ol>
+<p>&emsp;&emsp;由于在拓扑中，只有R1的端口在同一区域中，故在此以R1为例。</p>
+<p>&emsp;&emsp;R1的邻居表：</p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNj2Ae.png"></p>
+<p>&emsp;&emsp;R1的拓扑表： </p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNjqAg.png"></p>
+<p>&emsp;&emsp;R1的数据库： </p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNvejx.png"></p>
+<p>&emsp;&emsp;R1的路由表： </p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNv8Cd.png"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#将R1的路由器类型改为level-<span class="number">1</span></span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config)</span></span><span class="selector-id">#router</span> isis</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-router)</span></span><span class="selector-id">#is-type</span> level-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;修改之后R1的数据库：</p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNvNKP.png"></p>
+<ol start="4">
+<li>实现 R1 优选 R2 对外部网络进行访问</li>
+</ol>
+<p>&emsp;&emsp;通过R1的路由表和路由跟踪可以发现R1对外部路由的访问是通过指向R2和R3的默认路由实现的，且两条路由的开销相等，负载均衡。我们可以通过更改开销来实现 R1 优选 R2 对外部网络进行访问。</p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNvwVS.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNvgK0.png"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#通过配置使R1与R2之间的开销变小，从而使R1优选 R2 对外部网络进行访问</span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#int</span> s1/<span class="number">0</span>     </span><br><span class="line"><span class="function"><span class="title">R1</span><span class="params">(config-if)</span></span><span class="selector-id">#isis</span> metric <span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/11/wNvqr6.png"></p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNvjaD.png"></p>
+<ol start="5">
+<li>对 R1 上 loopback 接口网段进行合适的路由汇总</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在R2、R3上进行汇总：</span></span><br><span class="line">R2(config)<span class="comment">#router isis</span></span><br><span class="line">R2(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br><span class="line"></span><br><span class="line">R3(config)<span class="comment">#router isis</span></span><br><span class="line">R3(config-router)<span class="comment">#summary-address 11.0.0.0 255.0.0.0 level-2</span></span><br></pre></td></tr></table></figure>
+
+<p>R8的路由表：</p>
+<p><img src="https://s1.ax1x.com/2020/09/11/wNvzPH.png"></p>
+<ol start="6">
+<li>实现 R5 为多路访问网络的 DIS</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改R5的优先级</span></span><br><span class="line">R5(config)<span class="comment">#int e0/1</span></span><br><span class="line">R5(config-if)<span class="comment">#isis priority 100</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/11/wNx9xI.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#验证和查看 IS-IS 的相关信息的命令</span></span><br><span class="line">Router<span class="comment">#show ip protocols</span></span><br><span class="line">Router<span class="comment">#show clns protocols</span></span><br><span class="line">Router<span class="comment">#show ip route</span></span><br><span class="line">Router<span class="comment">#show clns neighbor</span></span><br><span class="line">Router<span class="comment">#show clns interface</span></span><br><span class="line">Router<span class="comment">#show isis</span></span><br><span class="line">Router<span class="comment">#show clns route</span></span><br><span class="line">Router<span class="comment">#show isis topology</span></span><br><span class="line">Router<span class="comment">#show isis database</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>路由</tag>
+        <tag>IS-IS</tag>
       </tags>
   </entry>
   <entry>
@@ -2084,8 +2084,6 @@
     <title>CSS中“#”与“.”的区别</title>
     <url>/2021/12/14/CSS%E4%B8%AD%E2%80%9C#%E2%80%9D%E4%B8%8E%E2%80%9C.%E2%80%9D%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍CSS中“#”与“.”的区别。</p>
-<a id="more"></a>
-
 <p>&emsp;&emsp;在CSS中用“**#<strong>”定义样式，在调用时必须使用</strong>id<strong>；用“</strong>.<strong>”定义样式，调用时必须使用</strong>class<strong>。用“</strong>#<strong>”定义的样式，一般都是定义结构框架，一些大的容器，且在同一个页面只能出现一次；而“</strong>.<strong>”定义的样式，一般都是起修饰作用或多次重复的样式。</strong>在同一个层里同时出现id和class样式，id更优先于class。**</p>
 <p>id：用来定义页面中大的样式，如栏目划分，顶部，正文，底部等；用“**#top**”的形式来定义；</p>
 <p>class：用来定义一些比较细节的样式，如具体的一个菜单，一行文字等，用“**.text**”的形式来定义。</p>
