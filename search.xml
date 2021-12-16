@@ -955,6 +955,104 @@
       </tags>
   </entry>
   <entry>
+    <title>CCNP交换综合实验一</title>
+    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
+    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
+<a id="more"></a>
+
+<p>【实验目的】</p>
+<ol>
+<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
+</li>
+<li><p>掌握 DTP 的作用和配置</p>
+</li>
+<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
+</li>
+<li><p>掌握以太通道技术的作用和配置</p>
+</li>
+</ol>
+<p>【实验拓扑】</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
+<p>【实验需求】</p>
+<ol>
+<li>参考图示，完成物理拓扑的搭建。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
+<ol start="2">
+<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
+</ol>
+<p>&emsp;①网关地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
+<p>&emsp;②各主机通过DHCP获取IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
+<ol start="3">
+<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
+<ol start="4">
+<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
+</ol>
+<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
+<p>&emsp;&emsp;SW2的VLAN信息：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
+<ol start="5">
+<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
+</ol>
+<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
+<ol start="6">
+<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
+</ol>
+<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
+<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
+<p>FTP_Srv用DHCP获取IP地址：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
+<ol start="7">
+<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
+</ol>
+<p>&emsp;①启用OSPF实现内网全网可达：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
+<p>&emsp;②实现外网可达：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
+<p>③  配置NAT：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
+<p>④  用R1给邻居下发默认路由：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
+<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
+<p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
+<p>【实验中用到的代码】</p>
+<p><strong>VTP：</strong></p>
+<p>vtp mode server———————————————将VTP的模式该为server模式</p>
+<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
+<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
+<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
+<p>当域名与密码相同时才能进行同步</p>
+<p>NAT：</p>
+<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
+<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
+<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
+<p>捆绑链路：</p>
+<p>int range e0/1-2</p>
+<p>switchport truck encapsulation do1q</p>
+<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
+<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
+<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
+<p>下发默认路由：</p>
+<p>router ospf 1</p>
+<p>default-information originate—————————–给邻居下发默认路由</p>
+]]></content>
+      <categories>
+        <category>CCNP实验</category>
+      </categories>
+      <tags>
+        <tag>CCNP</tag>
+        <tag>交换</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CCNA实验四——EIGRP 的简单应用</title>
     <url>/2018/10/07/CCNA%E5%AE%9E%E9%AA%8C%E5%9B%9B/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍 EIGRP 的基本配置； EIGRP 的邻居表、拓扑表以及路由表的含义；查看 EIGRP 路由协议的相关信息； FD、AD、S、FS 以及 FC 的含义； EIGRP 的 hello 报文作用；路由快速收敛的含义； EIGRP 的不等价负载均衡。</p>
@@ -1079,104 +1177,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>EIGRP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CCNP交换综合实验一</title>
-    <url>/2019/02/18/CCNP%E4%BA%A4%E6%8D%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C%E4%B8%80/</url>
-    <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍VLAN、TRUNK、VTP 的作用和配置；DTP 的作用和配置；DHCP 及 DHCP 中继的作用和配置；掌握以太通道技术的作用和配置。</p>
-<a id="more"></a>
-
-<p>【实验目的】</p>
-<ol>
-<li><p>掌握 VLAN、TRUNK、VTP 的作用和配置</p>
-</li>
-<li><p>掌握 DTP 的作用和配置</p>
-</li>
-<li><p>掌握 DHCP 及 DHCP 中继的作用和配置</p>
-</li>
-<li><p>掌握以太通道技术的作用和配置</p>
-</li>
-</ol>
-<p>【实验拓扑】</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTTPG6.png"></p>
-<p>【实验需求】</p>
-<ol>
-<li>参考图示，完成物理拓扑的搭建。</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTeUVH.png"></p>
-<ol start="2">
-<li>在该园区网络中有 4 个 VLAN，分别为 VLAN10、VLAN20、VLAN30 和VLAN40，其中 DHCP SRV 和 PC1 在 VLAN10 中，PC2、PC3 分别在VLAN20和 VLAN30 中，FTP SRV 和 PC4 在 VLAN40 中，其中 VLAN10 的地址段为192.168.10.0/24，VLAN20 的地址段为 192.168.20.0/24，VLAN30 的地址段为 192.168.30.0/24，VLAN40 的地址段为 192.168.40.0/24，各 VLAN 主机的网关都设置为其网段中可用的最后一个主机地址，并且设置 DHCP 服务器的 IP 地址为 192.168.10.100/24，其他主机通过 DHCP 方式获取 IP 地址, 园区网络外部的地址自己规划。</li>
-</ol>
-<p>&emsp;①网关地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/28/dTexRx.png"></p>
-<p>&emsp;②各主机通过DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTL0r8.png"></p>
-<ol start="3">
-<li>采用合适的方式完成交换机链路间的 TRUNK 配置，并采用标准的封装模式。</li>
-</ol>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTLbGR.png"></p>
-<ol start="4">
-<li>设置 SW1 的 VTP 模式为 Server，SW2 的 VTP 模式为 Client，并且设置 VTP 域名为 Company.com，密码为 CCIEPASS，实现该园区网络的 VLAN 信息同步。</li>
-</ol>
-<p>&emsp;&emsp;对SW1和SW2VTP进行设置：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTOLkQ.png"></p>
-<p>&emsp;&emsp;SW2的VLAN信息：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTnjv6.png"></p>
-<ol start="5">
-<li>使用 802.3ad 标准构建两交换机间的以太通道链路, 要求交换机将EtherChannel 的负载均衡设置为 src-dst-ip</li>
-</ol>
-<p>&emsp;&emsp;证捆绑端口的特性都是一样，所以都配置成trunk端口。</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTu9Ve.png"></p>
-<ol start="6">
-<li>根据需求在 DHCP SRV 上建立相应的地址池，并且在各个地址池中排除范围从 10 到 20 之间的 IP 地址空间，同时要求无论 FTP SRV 何时接入交换网络都会获取到 192.168.40.100/24 的地址。</li>
-</ol>
-<p>&emsp;&emsp;在各地址池中排除10-20的IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuP5d.png"></p>
-<p>&emsp;&emsp;在DHCP_Srv中建立一个特定的地址池用使FTP_Srv何时接入交换网络都会获取到 192.168.40.100/24 的地址（由于不知道FTP_Srv的MAC地址，所以先让FTP_Srv使用DHCP获取IP地址，再从DHCP_Srv的 ip dhcp pool binding 得到FTP_Srv的电路ID进行绑定）。</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuExP.png"></p>
-<p>FTP_Srv用DHCP获取IP地址：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuer8.png"></p>
-<ol start="7">
-<li>完成其他必要的配置，实现各主机和 FTP SRV 可以获取相应的 IP 地址，并且实现各主机可以访问 ISP 上的 Web SRV。</li>
-</ol>
-<p>&emsp;①启用OSPF实现内网全网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7sGvt.png"></p>
-<p>&emsp;②实现外网可达：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7sLVO.png"></p>
-<p>③  配置NAT：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/d7s6K0.png"></p>
-<p>④  用R1给邻居下发默认路由：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuqeS.png"></p>
-<p>⑤  主机可以访问 ISP 上的 Web SRV：</p>
-<p><img src="https://s1.ax1x.com/2020/08/29/dTuLdg.png"></p>
-<p>【实验中用到的代码】</p>
-<p><strong>VTP：</strong></p>
-<p>vtp mode server———————————————将VTP的模式该为server模式</p>
-<p>vtp domain Company.com ——————————–将VTP的域名改为Company.com</p>
-<p>vtp password CCIEPASS————————————–密码设置为CCIEPASS</p>
-<p>vtp mode client————————————————将VTP的模式该为client模式（该模式下不能对VLAN进行设置）</p>
-<p>当域名与密码相同时才能进行同步</p>
-<p>NAT：</p>
-<p>access-list 1 permit 192.168.0.0 0.0.255.255———–匹配感兴趣流量（通过ACL来实现）</p>
-<p>ip nat inside source list 1 interface e0/1 overload——将ACL使用在NAT中</p>
-<p>int e0/0<br> ip nat inside<br> int e0/1<br> ip nat outside——————————————————–指定内、外接口</p>
-<p>捆绑链路：</p>
-<p>int range e0/1-2</p>
-<p>switchport truck encapsulation do1q</p>
-<p>switchport mode truck————————————-保证捆绑端口的特性都是一样，所以都配置成trunk端口</p>
-<p>channel-protocol lacp—————————————指定捆绑协议lacp；可选</p>
-<p>channel-group 1 mode active—————————–创建端口捆绑组号码，组号码是本地有效的，模式为active</p>
-<p>下发默认路由：</p>
-<p>router ospf 1</p>
-<p>default-information originate—————————–给邻居下发默认路由</p>
-]]></content>
-      <categories>
-        <category>CCNP实验</category>
-      </categories>
-      <tags>
-        <tag>CCNP</tag>
-        <tag>交换</tag>
       </tags>
   </entry>
   <entry>
@@ -3266,6 +3266,62 @@
       </tags>
   </entry>
   <entry>
+    <title>Postman简介</title>
+    <url>/2021/12/16/Postman%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<p>&emsp;&emsp;Postman是一款功能强大的网页调试与发送网页HTTP请求的Chrome插件。<a id="more"></a></p>
+<h2 id="1-什么是Postman"><a href="#1-什么是Postman" class="headerlink" title="1 什么是Postman"></a>1 什么是Postman</h2><p>&emsp;&emsp;用户在开发或者调试网络程序或者是网页B/S模式的程序的时候是需要一些方法来跟踪网页请求的，用户可以使用一些网络的监视工具比如著名的Firebug等网页调试工具。Postman不仅可以调试简单的CSS、HTML、脚本等简单的网页基本信息，它还可以发送几乎所有类型的HTTP请求！Postman在发送网络HTTP请求方面可以说是Chrome插件类产品中的代表产品之一。</p>
+<p>&emsp;&emsp;当开发人员需要调试一个网页是否运行正常，并不是简简单单地调试网页的HTML、CSS、脚本等信息是否运行正常，更加重要的是网页能够正确是处理各种HTTP请求，毕竟网页的HTTP请求是网站与用户之间进行交互的非常重要的一种方式，在动态网站中，用户的大部分数据都需要通过HTTP请求来与服务器进行交互。</p>
+<p>&emsp;&emsp;Postman插件就充当着这种交互方式的“桥梁”，它可以利用Chrome插件的形式把各种模拟用户HTTP请求的数据发送到服务器，以便开发人员能够及时地作出正确的响应﹐或者是对产品发布之前的错误信息提前处理，进而保证产品上线之后的稳定性和安全性。</p>
+<p>&emsp;&emsp;在Chrome中安装了Postman插件以后，用户只需要在调试网站的时候启动Postman插件来进行几项简单的配置就可以实现对该网站的基本信息修改和发送各种类型的HTTP到该网站中，用户在发送 HTTP数据的时候可以在编写相关测试数据的时候加入一定量的参数信息让测试数据更加准确，而这一切Postman 都会完美地支持。</p>
+<p>&emsp;&emsp;开发人员在使用Postman的时候也许需要经常调试同一个网站或者是同时调试多个网站，如果每次打开Postman插件都要重新设置一遍那样会显得非常麻烦，Postman也考虑到用户的这一个性化需求，所以在 Postman的配置页面中，用户可以添加或者管理多个网站用户启动Postman的时候就能自动打开相应的设置。</p>
+<h2 id="2-Postman布局"><a href="#2-Postman布局" class="headerlink" title="2 Postman布局"></a>2 Postman布局</h2><p><img src="https://s4.ax1x.com/2021/12/16/TPZ0Ld.png" alt="image-20211216110500341"></p>
+<p>&emsp;&emsp;Postman界面分为两部分：左边的Sidebar右边的Request Editor可以快速创建几乎所有的请求。</p>
+<p><img src="https://s4.ax1x.com/2021/12/16/TPZxm9.png" alt="image-20211216151009801"></p>
+<p>请求参数：</p>
+<ul>
+<li><p><strong>Params：</strong>在此处设置变量请求时，会显示在URL后，通过问号传参。</p>
+</li>
+<li><p><strong>Authorization：</strong>Authorization是验证是否拥有从服务器访问所需数据的权限。当发送请求时，通常必须包含参数，以确保请求具有访问和返回所需数据的权限。Postman提供了授权类型，可以轻松地在Postman本地应用程序中处理身份验证协议。</p>
+</li>
+<li><p><strong>Headers：</strong></p>
+<ul>
+<li>Accept：指定客户端能够接受的内容类型（请求头，客户端希望接受的数据类型）。</li>
+<li>Accept-Charset：浏览器可以接受的字符编码集。</li>
+<li>Authorization：HTTP授权的授权证书。</li>
+<li>Content-Type：请求的与实体对于的MIME信息（实体头，发送端实际发送的实体数据的数据类型）。</li>
+<li>Referer：先前网页的地址，当前请求网页紧随其后，即来路。</li>
+</ul>
+</li>
+<li><p><strong>Body：</strong>Body里设置的参数则是接口真正请求时发的参数。不会出现在地址栏。</p>
+<ul>
+<li>none：请求时不带body。</li>
+<li>form-data：就是http请求中的multipart/form-data,它会将表单的数据处理为一条消息，以标签为单元，用分隔符分开。既可以上传键值对，也可以上传文件。当上传的字段是文件时，会有Content-Type来说明文件类型；content-disposition，用来说明字段的一些信息；由于有boundary隔离，所以multipart/form-data既可以上传文件，也可以上传键值对，它采用了键值对的方式，所以可以上传多个文件。</li>
+<li>x-www-form-urlencoded：就是application/x-www-from-urlencoded，会将表单内的数据转换为键值对，当模拟表单上传数据时，用此选项，但当然此表单不能上传文件，只能是文本格式，要上传文件，使用上面的格式。比如，name=ah&amp;age = 23。</li>
+<li>raw：可以上传任意格式的文本，可以上传text、json、xml、html等，其实主要的还是传递json格式的数据，当后端要求json数据格式的时候，就要使用此种格式来测试。</li>
+<li>binary：相当于Content-Type:application/octet-stream，只可以上传二进制数据，通常用来上传文件，一次只能上传一个文件。</li>
+<li>GraphQL：GraphQL 是一种针对 Graph（图状数据）进行查询特别有优势的 Query Language（查询语言），所以叫做 GraphQL。此处可以创建和发送GraphQL的查询。</li>
+</ul>
+</li>
+<li><p><strong>Pre-request Script：</strong>Pre-request Script是集合中请求发送之前需要执行的代码片段。</p>
+</li>
+<li><p><strong>Tests：</strong>用来对接口的响应结果进行测试。</p>
+</li>
+</ul>
+<p>响应体的格式：</p>
+<ul>
+<li><strong>pretty：</strong>格式化json或xml形式的响应内容。</li>
+<li><strong>raw：</strong>仅仅是响应体的一个大文本，可以告诉你响应是否压缩了。</li>
+<li><strong>preview：</strong>在一个沙盒的iframe 中渲染响应的内容。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Postman</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vPC术语介绍</title>
     <url>/2021/03/12/vPC%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<p>&emsp;&emsp;本篇文章主要介绍一些在vPC中常见的一些术语。</p>
@@ -3396,6 +3452,44 @@
       </tags>
   </entry>
   <entry>
+    <title>安恒杯四月月赛misc——Writeup</title>
+    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
+    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
+<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
+<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
+<p>​        将what_you_want.7z导出，发现需要密码。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
+<p>​        根据文件名的提示找到pin，解压获得flag。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
+<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
+<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
+<p>​        首先获取该内存的配置文件</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
+<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
+<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
+<p>​        将其导出</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
+<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
+<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
+<p>​        用winhex打开即可找到flag。</p>
+<p><img src="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
+]]></content>
+      <categories>
+        <category>Writeup</category>
+      </categories>
+      <tags>
+        <tag>ctf</tag>
+        <tag>网络安全</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计算机网络参考模型</title>
     <url>/2019/01/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B/</url>
     <content><![CDATA[<p>&emsp;&emsp;在计算机的网络中，有两个十分重要的参考模型，所有网络通信设备都是以参考模型为标准来研发的。因此熟知参考模型在学习网络知识的过程中是十分重要的。下面就简单的介绍一下两个参考模型。</p>
@@ -3446,44 +3540,6 @@
       <tags>
         <tag>CCNA</tag>
         <tag>网络与数据通信</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安恒杯四月月赛misc——Writeup</title>
-    <url>/2020/04/27/%E5%AE%89%E6%81%92%E6%9D%AF%E5%9B%9B%E6%9C%88%E6%9C%88%E8%B5%9B%E2%80%94%E2%80%94Writeup/</url>
-    <content><![CDATA[<p>&emsp;&emsp;内存取证还是蛮有意思的呀！</p>
-<h3 id="1-6G还远吗？"><a href="#1-6G还远吗？" class="headerlink" title="1.6G还远吗？"></a>1.6G还远吗？</h3><p>​        文件下载下来，速度特别慢，但是在文件夹中用记事本打开即可发现flag。<a id="more"></a></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYltI.png" alt="0"></p>
-<h3 id="2-blueshark"><a href="#2-blueshark" class="headerlink" title="2.blueshark"></a>2.blueshark</h3><p>​        在协议中搜索OBEX协议可以发现传输了一个what_you_want.7z文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYG1f.png" alt="01"></p>
-<p>​        将what_you_want.7z导出，发现需要密码。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYJc8.png" alt="img"></p>
-<p>​        根据文件名的提示找到pin，解压获得flag。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYa7j.png" alt="img"></p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY0Nn.png" alt="img"></p>
-<h3 id="3-keyboard"><a href="#3-keyboard" class="headerlink" title="3.keyboard"></a>3.keyboard</h3><p>​        解压后发现是一个Secret和一个Keyboard.raw。首先用010 Editor打开Secret，里面都是乱码，猜测可能是加密文件。</p>
-<p>​        因此我们用kali自带的内存取证工具volatility对该内存进行操作。</p>
-<p>​        首先获取该内存的配置文件</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYs3V.png"></p>
-<p>​        查看进程，发现其使用了VeraCrypt，这说明之前的猜想是正确的，Secret是一个加密的磁盘文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY6jU.png"></p>
-<p>​        因此我们要寻找一个密码来对磁盘进行解密，我们在进程中找到了keyboard-log，因此使用filescan扫描文件，发现了t.txt文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY2B4.png"></p>
-<p>​        将其导出</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYfE9.png"></p>
-<p>​        将文件打开后，发现密文，根据提示确定是qwe密码。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqY441.png"></p>
-<p>​        解密得到磁盘密码<strong>KEYBOARDDRAOBYEK</strong>，使用VeraCrypt进行解密并挂载，获得here.vhd文件。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYo36.png"></p>
-<p>​        用winhex打开即可找到flag。</p>
-<p><img src="https://s1.ax1x.com/2020/08/30/dqYTgK.png"></p>
-]]></content>
-      <categories>
-        <category>Writeup</category>
-      </categories>
-      <tags>
-        <tag>ctf</tag>
-        <tag>网络安全</tag>
       </tags>
   </entry>
 </search>
